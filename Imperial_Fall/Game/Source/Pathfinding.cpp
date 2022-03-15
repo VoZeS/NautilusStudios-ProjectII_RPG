@@ -258,13 +258,6 @@ void PathFinding::DrawPath(PathFinding* path, fPoint pos, ENTITY_TYPE type)
 {
 	for (uint i = 0; i < path->GetLastPath()->Count(); ++i)
 	{
-		if (type == ENTITY_TYPE::GROUND_ENEMY)
-		{
-			app->render->DrawTexture(app->tex->tileX, METERS_TO_PIXELS(path->GetLastPath()->At(i)->x), METERS_TO_PIXELS(pos.y));
-		}
-		else if (type == ENTITY_TYPE::AIR_ENEMY)
-		{
-			app->render->DrawTexture(app->tex->tileX, METERS_TO_PIXELS(path->GetLastPath()->At(i)->x), METERS_TO_PIXELS(path->GetLastPath()->At(i)->y));
-		}
+		app->render->DrawTexture(app->tex->tileX, METERS_TO_PIXELS(path->GetLastPath()->At(i)->x), METERS_TO_PIXELS(path->GetLastPath()->At(i)->y));
 	}
 }

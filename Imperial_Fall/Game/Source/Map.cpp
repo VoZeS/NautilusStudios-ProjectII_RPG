@@ -121,11 +121,11 @@ void Map::Draw()
 							// ground enemies
 							app->entities->CreateEntity(ENTITY_TYPE::GROUND_ENEMY, pos.x, pos.y);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
+						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
 						{
 							// air enemies
 							app->entities->CreateEntity(ENTITY_TYPE::AIR_ENEMY, pos.x, pos.y);
-						}
+						}*/
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// hearts

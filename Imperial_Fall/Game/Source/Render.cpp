@@ -75,19 +75,29 @@ bool Render::Update(float dt)
 	if (app->entities->entities.start)
 	{
 		Entity* entity = app->entities->GetPlayer();
-		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (2560 / 2);
+		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
+		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
 	}
 
 	if (camera.x > 0)
 	{
 		camera.x = 0;
 	}
-	else if (camera.x < -2560)
+	else if (camera.x < -1280)
 	{
-		camera.x = -2560;
+		camera.x = -1280;
 	}
 
-	SDL_RenderSetLogicalSize(renderer, 2560, 1440);
+	if (camera.y > 0)
+	{
+		camera.y = 0;
+	}
+	else if (camera.y < -720)
+	{
+		camera.y = -720;
+	}
+	LOG("%d", camera.y);
+	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 
 	return true;
 }

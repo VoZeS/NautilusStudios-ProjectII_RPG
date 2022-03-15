@@ -18,7 +18,6 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
-class Background;
 class Map;
 class PathFinding;
 class Physics;
@@ -97,7 +96,6 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
-	Background* background;
 	Map* map;
 	PathFinding* pathfinding;
 	Physics* physics;

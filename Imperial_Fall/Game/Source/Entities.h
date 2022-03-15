@@ -90,7 +90,6 @@ public:
 	int air_lenght = 0;
 	int coins_lenght = 0;
 
-	void KillEnemy(fPoint pos);
 	void PickCoin(fPoint pos);
 	void PickHeart(fPoint pos);
 

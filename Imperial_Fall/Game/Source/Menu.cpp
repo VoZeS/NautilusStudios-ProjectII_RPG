@@ -30,7 +30,7 @@ bool Menu::Awake()
 // Called before the first frame
 bool Menu::Start()
 {
-	r = { 0, 0, 2560, 1440 };
+	r = { 0, 0, 1280, 720 };
 	paused = false;
 	settings = false;
 	dead = false;

@@ -210,12 +210,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(g_enemy, ENTITY_TYPE::GROUND_ENEMY, p);
 	}
 		break;
-	case ENTITY_TYPE::AIR_ENEMY:
+	/*case ENTITY_TYPE::AIR_ENEMY:
 	{
 		Air_Enemies* a_enemy = new Air_Enemies();
 		AddEntity(a_enemy, ENTITY_TYPE::AIR_ENEMY, p);
 	}
-		break;
+		break;*/
 	case ENTITY_TYPE::COIN:
 	{
 		Coins* coin = new Coins();
@@ -230,27 +230,6 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		break;
 	default:
 		break;
-	}
-}
-
-void Entities::KillEnemy(fPoint pos)
-{
-	ListItem<Entity*>* item;
-	Entity* entity = NULL;
-
-	for (item = entities.start; item != NULL; item = item->next)
-	{
-		entity = item->data;
-
-		if (entity->entity_type == ENTITY_TYPE::GROUND_ENEMY || entity->entity_type == ENTITY_TYPE::AIR_ENEMY)
-		{
-			if (pos.x + 1.5f > entity->position.x && pos.x - 1.5f < entity->position.x && pos.y + 2.0f > entity->position.y && pos.y - 2.0f < entity->position.y)
-			{
-				entity->DeleteEntity();
-
-				break;
-			}
-		}
 	}
 }
 
@@ -327,10 +306,10 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 		p_in_array = app->entities->ground_lenght;
 		app->entities->ground_lenght++;
 		break;
-	case ENTITY_TYPE::AIR_ENEMY:
+	/*case ENTITY_TYPE::AIR_ENEMY:
 		p_in_array = app->entities->air_lenght;
 		app->entities->air_lenght++;
-		break;
+		break;*/
 	case ENTITY_TYPE::COIN:
 		p_in_array = app->entities->coins_lenght;
 		app->entities->coins_lenght++;
