@@ -145,7 +145,7 @@ void Player::HandleInput(float dt)
 				}
 			}
 
-			//move right
+			//Move Right
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
