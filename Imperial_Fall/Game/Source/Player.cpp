@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "Player.h"
 #include "Hearts.h"
+#include "Pathfinding.h"
 #include "Menu.h"
 
 #include "Defs.h"
@@ -50,6 +51,45 @@ void Player::InitCustomEntity()
 	b2Fixture* bodyFixture = body->CreateFixture(&fixture);
 	bodyFixture->SetSensor(false);
 	bodyFixture->SetUserData((void*)1); // player collision
+
+	// companion 0
+	c0.comp_number = 0;
+
+	b2BodyDef c0_body;
+	c0_body.type = b2_kinematicBody;
+	c0_body.fixedRotation = true;
+	c0_body.position.Set(position.x, position.y + 5);
+
+	c0.body = app->physics->world->CreateBody(&c0_body);
+
+	b2Fixture* c0_Fixture = body->CreateFixture(&fixture);
+	c0_Fixture->SetSensor(true);
+
+	// companion 1
+	c1.comp_number = 1;
+
+	b2BodyDef c1_body;
+	c1_body.type = b2_kinematicBody;
+	c1_body.fixedRotation = true;
+	c1_body.position.Set(position.x, position.y + 10);
+
+	c1.body = app->physics->world->CreateBody(&c1_body);
+
+	b2Fixture* c1_Fixture = body->CreateFixture(&fixture);
+	c1_Fixture->SetSensor(true);
+
+	// companion 2
+	c2.comp_number = 2;
+
+	b2BodyDef c2_body;
+	c2_body.type = b2_dynamicBody;
+	c2_body.fixedRotation = true;
+	c2_body.position.Set(position.x, position.y + 15);
+
+	c2.body = app->physics->world->CreateBody(&c2_body);
+
+	b2Fixture* c2_Fixture = body->CreateFixture(&fixture);
+	c2_Fixture->SetSensor(true);
 }
 
 // Called each loop iteration
@@ -57,6 +97,14 @@ bool Player::PreUpdate()
 {
 	position.x = body->GetPosition().x;
 	position.y = body->GetPosition().y;
+
+	// companions
+	c0.position.x = c0.body->GetPosition().x;
+	c0.position.y = c0.body->GetPosition().y;
+	c1.position.x = c1.body->GetPosition().x;
+	c1.position.y = c1.body->GetPosition().y;
+	c2.position.x = c2.body->GetPosition().x;
+	c2.position.y = c2.body->GetPosition().y;
 
 	return true;
 }
@@ -232,6 +280,9 @@ void Player::HandleInput(float dt)
 // Called each loop iteration
 bool Player::Update(float dt)
 {
+	FollowPlayer(c0, c0, dt);
+	FollowPlayer(c1, c0, dt);
+	FollowPlayer(c2, c1, dt);
 
 	return true;
 }
@@ -254,6 +305,10 @@ bool Player::Draw()
 			app->render->DrawTexture(app->tex->player_textureR, METERS_TO_PIXELS(position.x - 55.5f), METERS_TO_PIXELS(position.y - 70.0f), &rect);
 		}
 	}*/
+
+	app->render->DrawRectangle({ METERS_TO_PIXELS(c0.position.x), METERS_TO_PIXELS(c0.position.y), 16, 32 }, 0, 255, 0);
+	app->render->DrawRectangle({ METERS_TO_PIXELS(c1.position.x), METERS_TO_PIXELS(c1.position.y), 16, 32 }, 0, 0, 255);
+	app->render->DrawRectangle({ METERS_TO_PIXELS(c2.position.x), METERS_TO_PIXELS(c2.position.y), 16, 32 }, 120, 120, 0);
 	
 	return true;
 }
@@ -301,4 +356,100 @@ void Player::ImpulsePlayer()
 {
 	body->SetLinearVelocity({ body->GetLinearVelocity().x , 0 });
 	body->ApplyForceToCenter({ 0, -25.0f * app->GetDT() }, true);
+}
+
+void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
+{
+	fPoint obj;
+
+	if (c.comp_number == 0)
+	{
+		switch (look_dir)
+		{
+		case 0:
+			obj.x = position.x;
+			obj.y = position.y + 1;
+			break;
+		case 1:
+			obj.x = position.x;
+			obj.y = position.y - 1;
+			break;
+		case 2:
+			obj.x = position.x + 1;
+			obj.y = position.y;
+			break;
+		case 3:
+			obj.x = position.x - 1;
+			obj.y = position.y;
+			break;
+		}
+	}
+	else
+	{
+		switch (look_dir)
+		{
+		case 0:
+			obj.x = pre_c.position.x;
+			obj.y = pre_c.position.y + 1;
+			break;
+		case 1:
+			obj.x = pre_c.position.x;
+			obj.y = pre_c.position.y - 1;
+			break;
+		case 2:
+			obj.x = pre_c.position.x + 1;
+			obj.y = pre_c.position.y;
+			break;
+		case 3:
+			obj.x = pre_c.position.x - 1;
+			obj.y = pre_c.position.y;
+			break;
+		}
+	}
+
+
+	PathFinding* path = new PathFinding();
+	float distx;
+	float disty;
+
+	Entity* player = app->entities->GetPlayer();
+	path->CreatePath({ (int)c.position.x, (int)c.position.y }, { (int)obj.x, (int)obj.y });
+
+	if (c.position.x < obj.x + 1 && c.position.x > obj.x - 1)
+	{
+		distx = 0.0f;
+	}
+	else
+	{
+		int ob_x = path->GetLastPath()->At(path->GetLastPath()->Count() - 1)->x;
+
+		if ((ob_x - c.position.x) > 0)
+		{
+			distx = 1.0f;
+		}
+		else
+		{
+			distx = -1.0f;
+		}
+	}
+
+	if (c.position.y < obj.y + 1 && c.position.y > obj.y - 1)
+	{
+		disty = 0.0f;
+	}
+	else
+	{
+		int ob_y = path->GetLastPath()->At(path->GetLastPath()->Count() - 1)->y;
+
+		if ((ob_y - c.position.y) > 0)
+		{
+			disty = 1.0f;
+		}
+		else
+		{
+			disty = -1.0f;
+		}
+	}
+
+	c.body->SetLinearVelocity({ distx * speed * dt,  disty * speed * dt });
 }

@@ -129,22 +129,22 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
 
 	// north
 	cell.Create(pos.x, pos.y + 1);
-	if(app->pathfinding->IsWalkable(cell))
+	//if(app->pathfinding->IsWalkable(cell))
 		listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.Create(pos.x, pos.y - 1);
-	if(app->pathfinding->IsWalkable(cell))
+	//if(app->pathfinding->IsWalkable(cell))
 		listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.Create(pos.x + 1, pos.y);
-	if(app->pathfinding->IsWalkable(cell))
+	//if(app->pathfinding->IsWalkable(cell))
 		listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.Create(pos.x - 1, pos.y);
-	if(app->pathfinding->IsWalkable(cell))
+	//if(app->pathfinding->IsWalkable(cell))
 		listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	return listToFill.list.Count();
@@ -254,7 +254,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	return ret;
 }
 
-void PathFinding::DrawPath(PathFinding* path, fPoint pos, ENTITY_TYPE type)
+void PathFinding::DrawPath(PathFinding* path, fPoint pos)
 {
 	for (uint i = 0; i < path->GetLastPath()->Count(); ++i)
 	{

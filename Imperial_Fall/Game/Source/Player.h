@@ -6,6 +6,13 @@
 #include "Physics.h"
 #include "Animation.h"
 
+struct Companion
+{
+	int comp_number;
+	fPoint position;
+	b2Body* body;
+};
+
 class Player : public Entity
 {
 public:
@@ -31,6 +38,11 @@ private:
 	fPoint GetPlayerPosition();
 	void SetPlayerPosition(int new_x, int new_y);
 	void ImpulsePlayer();
+
+	void FollowPlayer(Companion c, Companion pre_c, float dt);
+	Companion c0;
+	Companion c1;
+	Companion c2;
 
 private:
 	int w = 20, h = 32;

@@ -150,7 +150,7 @@ bool Ground_Enemies::Draw()
 		{
 			if (app->physics->debug && path_save)
 			{
-				app->pathfinding->DrawPath(path_save, position, ENTITY_TYPE::GROUND_ENEMY);
+				app->pathfinding->DrawPath(path_save, position);
 			}
 		}
 	}
