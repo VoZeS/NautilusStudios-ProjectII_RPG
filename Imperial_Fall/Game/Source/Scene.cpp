@@ -57,7 +57,7 @@ bool Scene::Start()
 bool Scene::PreUpdate()
 {
 
-	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
+	if (/*start_screen != NULL &&*/ app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
 		PassLevel(1);
 	}

@@ -79,7 +79,7 @@ bool Render::Update(float dt)
 		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
 	}
 
-	if (camera.x > 0)
+	/*if (camera.x > 0)
 	{
 		camera.x = 0;
 	}
@@ -95,7 +95,7 @@ bool Render::Update(float dt)
 	else if (camera.y < -720)
 	{
 		camera.y = -720;
-	}
+	}*/
 	LOG("%d", camera.y);
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 

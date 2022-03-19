@@ -75,10 +75,14 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						app->render->DrawTexture(tileset->texture,
-							pos.x,
-							pos.y,
-							&r);
+						if ((METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x) < pos.x + 700 && METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x) > pos.x - 700) &&
+							(METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y) < pos.y + 400 && METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y) > pos.y - 400))
+						{
+							app->render->DrawTexture(tileset->texture,
+								pos.x,
+								pos.y,
+								&r);
+						}
 					}
 
 					if (!collision_loaded)
@@ -91,7 +95,7 @@ void Map::Draw()
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 2)
+						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 2)
 						{
 							// collision death
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), (pos.y + ((r.h * height) / 2)) + (r.h / 2), (r.w * width) / 2, (r.h * height) / 2, 4);
@@ -125,7 +129,7 @@ void Map::Draw()
 						{
 							// air enemies
 							app->entities->CreateEntity(ENTITY_TYPE::AIR_ENEMY, pos.x, pos.y);
-						}*/
+						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// hearts
@@ -135,7 +139,7 @@ void Map::Draw()
 						{
 							// player
 							app->entities->CreateEntity(ENTITY_TYPE::PLAYER, pos.x, pos.y);
-						}
+						}*/
 					}
 				}
 			}

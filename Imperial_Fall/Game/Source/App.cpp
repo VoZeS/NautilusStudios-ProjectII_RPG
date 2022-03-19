@@ -6,7 +6,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
-//#include "Pathfinding.h"
+#include "Pathfinding.h"
 //#include "Physics.h"
 #include "Entities.h"
 //#include "Fonts.h"
@@ -30,12 +30,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	map = new Map();
-	//pathfinding = new PathFinding();
+	pathfinding = new PathFinding();
 	physics = new Physics();
 	entities = new Entities();
 	//fonts = new Fonts();
-	//menu = new Menu();
-	//frontground = new Frontground();
+	menu = new Menu();
+	frontground = new Frontground();
 
 
 	// Ordered for awake / Start / Update
@@ -46,12 +46,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(map);
-	//AddModule(pathfinding);
+	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);
 	//AddModule(fonts);
-	//AddModule(menu);
-	//AddModule(frontground);
+	AddModule(menu);
+	AddModule(frontground);
 
 	// Render last to swap buffer
 	AddModule(render);
