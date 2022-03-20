@@ -44,7 +44,7 @@ bool Scene::Start()
 	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
 	
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 
 	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ חüיגהאaחךכטןמלהaיÆזפצעûש" };
