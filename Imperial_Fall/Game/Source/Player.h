@@ -11,6 +11,8 @@ struct Companion
 	int comp_number;
 	fPoint position;
 	b2Body* body;
+	int look_dir = 1; // 0 --> up, 1 --> down, 2 --> left, 3 --> right
+	Animation* currentAnimation = NULL;
 };
 
 class Player : public Entity
@@ -51,7 +53,7 @@ private:
 public:
 	Animation* currentAnimation = NULL;
 
-	// A set of animations
+	// Assassin Animations
 	Animation idleAnimU;
 	Animation idleAnimD;
 	Animation idleAnimL;
@@ -60,6 +62,26 @@ public:
 	Animation walkAnimD;
 	Animation walkAnimL;
 	Animation walkAnimR;
+
+	// Tank Animations
+	Animation c0_idleAnimU;
+	Animation c0_idleAnimD;
+	Animation c0_idleAnimL;
+	Animation c0_idleAnimR;
+	Animation c0_walkAnimU;
+	Animation c0_walkAnimD;
+	Animation c0_walkAnimL;
+	Animation c0_walkAnimR;
+
+	// Healer Animations
+	Animation c1_idleAnimU;
+	Animation c1_idleAnimD;
+	Animation c1_idleAnimL;
+	Animation c1_idleAnimR;
+	Animation c1_walkAnimU;
+	Animation c1_walkAnimD;
+	Animation c1_walkAnimL;
+	Animation c1_walkAnimR;
 
 	uint walk_sound;
 	int walk_cd = 320;
