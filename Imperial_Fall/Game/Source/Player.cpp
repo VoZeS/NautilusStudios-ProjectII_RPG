@@ -17,7 +17,7 @@
 
 Player::Player() : Entity()
 {
-	// assassin idle animation
+	// main idle animation
 	idleAnimD.PushBack({ 5, 2, 50, 72 });
 	idleAnimD.PushBack({ 65, 2, 50, 72 });
 	idleAnimD.speed = 0.03f;
@@ -34,7 +34,7 @@ Player::Player() : Entity()
 	idleAnimR.PushBack({ 65, 164, 50, 72 });
 	idleAnimR.speed = 0.03f;
 
-	// assassin walk animation
+	// main walk animation
 	walkAnimD.PushBack({ 5, 2, 50, 72 });
 	walkAnimD.PushBack({ 65, 2, 50, 72 });
 	walkAnimD.PushBack({ 125, 2, 50, 72 });
@@ -55,7 +55,7 @@ Player::Player() : Entity()
 	walkAnimR.PushBack({ 125, 164, 50, 72 });
 	walkAnimR.speed = 0.1f;
 
-	// tank idle animation
+	// c0 idle animation
 	c0_idleAnimD.PushBack({ 5, 2, 50, 72 });
 	c0_idleAnimD.PushBack({ 65, 2, 50, 72 });
 	c0_idleAnimD.speed = 0.03f;
@@ -72,7 +72,7 @@ Player::Player() : Entity()
 	c0_idleAnimR.PushBack({ 65, 164, 50, 72 });
 	c0_idleAnimR.speed = 0.03f;
 
-	// tank walk animation
+	// c0 walk animation
 	c0_walkAnimD.PushBack({ 5, 2, 50, 72 });
 	c0_walkAnimD.PushBack({ 65, 2, 50, 72 });
 	c0_walkAnimD.PushBack({ 125, 2, 50, 72 });
@@ -93,7 +93,7 @@ Player::Player() : Entity()
 	c0_walkAnimR.PushBack({ 125, 164, 50, 72 });
 	c0_walkAnimR.speed = 0.1f;
 
-	// healer idle animation
+	// c1 idle animation
 	c1_idleAnimD.PushBack({ 5, 2, 50, 72 });
 	c1_idleAnimD.PushBack({ 65, 2, 50, 72 });
 	c1_idleAnimD.speed = 0.03f;
@@ -110,7 +110,7 @@ Player::Player() : Entity()
 	c1_idleAnimR.PushBack({ 65, 164, 50, 72 });
 	c1_idleAnimR.speed = 0.03f;
 
-	// healer walk animation
+	// c1 walk animation
 	c1_walkAnimD.PushBack({ 5, 2, 50, 72 });
 	c1_walkAnimD.PushBack({ 65, 2, 50, 72 });
 	c1_walkAnimD.PushBack({ 125, 2, 50, 72 });
@@ -130,6 +130,44 @@ Player::Player() : Entity()
 	c1_walkAnimR.PushBack({ 65, 164, 50, 72 });
 	c1_walkAnimR.PushBack({ 125, 164, 50, 72 });
 	c1_walkAnimR.speed = 0.1f;
+
+	// c2 idle animation
+	c2_idleAnimD.PushBack({ 5, 2, 50, 72 });
+	c2_idleAnimD.PushBack({ 65, 2, 50, 72 });
+	c2_idleAnimD.speed = 0.03f;
+
+	c2_idleAnimU.PushBack({ 5, 242, 50, 72 });
+	c2_idleAnimU.PushBack({ 65, 242, 50, 72 });
+	c2_idleAnimU.speed = 0.03f;
+
+	c2_idleAnimL.PushBack({ 5, 84, 50, 72 });
+	c2_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c2_idleAnimL.speed = 0.03f;
+
+	c2_idleAnimR.PushBack({ 5, 164, 50, 72 });
+	c2_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c2_idleAnimR.speed = 0.03f;
+
+	// c2 walk animation
+	c2_walkAnimD.PushBack({ 5, 2, 50, 72 });
+	c2_walkAnimD.PushBack({ 65, 2, 50, 72 });
+	c2_walkAnimD.PushBack({ 125, 2, 50, 72 });
+	c2_walkAnimD.speed = 0.1f;
+
+	c2_walkAnimU.PushBack({ 5, 242, 50, 72 });
+	c2_walkAnimU.PushBack({ 65, 242, 50, 72 });
+	c2_walkAnimU.PushBack({ 125, 242, 50, 72 });
+	c2_walkAnimU.speed = 0.1f;
+
+	c2_walkAnimL.PushBack({ 5, 84, 50, 72 });
+	c2_walkAnimL.PushBack({ 65, 84, 50, 72 });
+	c2_walkAnimL.PushBack({ 125, 84, 50, 72 });
+	c2_walkAnimL.speed = 0.1f;
+
+	c2_walkAnimR.PushBack({ 5, 164, 50, 72 });
+	c2_walkAnimR.PushBack({ 65, 164, 50, 72 });
+	c2_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c2_walkAnimR.speed = 0.1f;
 }
 
 // Destructor
@@ -194,6 +232,7 @@ void Player::InitCustomEntity()
 
 	// companion 2
 	c2.comp_number = 2;
+	c2.currentAnimation = &c2_idleAnimD;
 
 	b2BodyDef c2_body;
 	c2_body.type = b2_dynamicBody;
@@ -389,6 +428,25 @@ void Player::HandleInput(float dt)
 
 		currentAnimation->Update();
 	}
+
+
+	// Charge character
+	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		char_control = 0;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		char_control = 1;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		char_control = 2;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	{
+		char_control = 3;
+	}
 }
 
 // Called each loop iteration
@@ -500,7 +558,7 @@ bool Player::Update(float dt)
 			c1.look_dir = 2;
 		}
 	}
-	else if (abs(c1.body->GetLinearVelocity().x) < abs(c0.body->GetLinearVelocity().y))
+	else if (abs(c1.body->GetLinearVelocity().x) < abs(c1.body->GetLinearVelocity().y))
 	{
 		if (c1.body->GetLinearVelocity().y > 0)
 		{
@@ -558,6 +616,86 @@ bool Player::Update(float dt)
 
 	c1.currentAnimation->Update();
 
+	// c2 animation
+	if (abs(c2.body->GetLinearVelocity().x) > abs(c2.body->GetLinearVelocity().y))
+	{
+		if (c2.body->GetLinearVelocity().x > 0)
+		{
+			if (c2.currentAnimation != &c2_walkAnimR)
+			{
+				c2_walkAnimR.Reset();
+				c2.currentAnimation = &c2_walkAnimR;
+			}
+			c2.look_dir = 3;
+		}
+		else
+		{
+			if (c2.currentAnimation != &c2_walkAnimL)
+			{
+				c2_walkAnimL.Reset();
+				c2.currentAnimation = &c2_walkAnimL;
+			}
+			c2.look_dir = 2;
+		}
+	}
+	else if (abs(c2.body->GetLinearVelocity().x) < abs(c2.body->GetLinearVelocity().y))
+	{
+		if (c2.body->GetLinearVelocity().y > 0)
+		{
+			if (c2.currentAnimation != &c2_walkAnimD)
+			{
+				c2_walkAnimD.Reset();
+				c2.currentAnimation = &c2_walkAnimD;
+			}
+			c2.look_dir = 1;
+		}
+		else
+		{
+			if (c2.currentAnimation != &c2_walkAnimU)
+			{
+				c2_walkAnimU.Reset();
+				c2.currentAnimation = &c2_walkAnimU;
+			}
+			c2.look_dir = 0;
+		}
+	}
+	else
+	{
+		switch (c2.look_dir)
+		{
+		case 0:
+			if (c2.currentAnimation != &c2_idleAnimU)
+			{
+				c2_idleAnimU.Reset();
+				c2.currentAnimation = &c2_idleAnimU;
+			}
+			break;
+		case 1:
+			if (c2.currentAnimation != &c2_idleAnimD)
+			{
+				c2_idleAnimD.Reset();
+				c2.currentAnimation = &c2_idleAnimD;
+			}
+			break;
+		case 2:
+			if (c2.currentAnimation != &c2_idleAnimL)
+			{
+				c2_idleAnimL.Reset();
+				c2.currentAnimation = &c2_idleAnimL;
+			}
+			break;
+		case 3:
+			if (c2.currentAnimation != &c2_idleAnimR)
+			{
+				c2_idleAnimR.Reset();
+				c2.currentAnimation = &c2_idleAnimR;
+			}
+			break;
+		}
+	}
+
+	c2.currentAnimation->Update();
+
 	return true;
 }
 
@@ -567,19 +705,40 @@ bool Player::Draw()
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
 	SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
+	SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
 
 	//app->render->DrawRectangle({ METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y), 16, 32 }, 255, 0, 0);
 	 
 	//if (!app->scene->GetStartScreenState())
 	{
-		app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-		app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-		app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+		switch (char_control)
+		{
+		case 0:
+			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			break;
+		case 1:
+			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			break;
+		case 2:
+			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			break;
+		case 3:
+			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			break;
+		}
 	}
-
-	//app->render->DrawRectangle({ METERS_TO_PIXELS(c0.position.x), METERS_TO_PIXELS(c0.position.y), 16, 32 }, 0, 255, 0);
-	//app->render->DrawRectangle({ METERS_TO_PIXELS(c1.position.x), METERS_TO_PIXELS(c1.position.y), 16, 32 }, 0, 0, 255);
-	app->render->DrawRectangle({ METERS_TO_PIXELS(c2.position.x), METERS_TO_PIXELS(c2.position.y), 16, 32 }, 120, 120, 0);
 	
 	return true;
 }
@@ -627,6 +786,11 @@ void Player::ImpulsePlayer()
 {
 	body->SetLinearVelocity({ body->GetLinearVelocity().x , 0 });
 	body->ApplyForceToCenter({ 0, -25.0f * app->GetDT() }, true);
+}
+
+int Player::GetCharControl()
+{
+	return char_control;
 }
 
 void Player::FollowPlayer(Companion c, Companion pre_c, float dt)

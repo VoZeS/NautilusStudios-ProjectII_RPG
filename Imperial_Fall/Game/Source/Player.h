@@ -41,6 +41,9 @@ private:
 	void SetPlayerPosition(int new_x, int new_y);
 	void ImpulsePlayer();
 
+	int char_control = 0; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
+	int GetCharControl();
+
 	void FollowPlayer(Companion c, Companion pre_c, float dt);
 	Companion c0;
 	Companion c1;
@@ -53,7 +56,7 @@ private:
 public:
 	Animation* currentAnimation = NULL;
 
-	// Assassin Animations
+	// main Animations
 	Animation idleAnimU;
 	Animation idleAnimD;
 	Animation idleAnimL;
@@ -63,7 +66,7 @@ public:
 	Animation walkAnimL;
 	Animation walkAnimR;
 
-	// Tank Animations
+	// c0 Animations
 	Animation c0_idleAnimU;
 	Animation c0_idleAnimD;
 	Animation c0_idleAnimL;
@@ -73,7 +76,7 @@ public:
 	Animation c0_walkAnimL;
 	Animation c0_walkAnimR;
 
-	// Healer Animations
+	// c1 Animations
 	Animation c1_idleAnimU;
 	Animation c1_idleAnimD;
 	Animation c1_idleAnimL;
@@ -82,6 +85,16 @@ public:
 	Animation c1_walkAnimD;
 	Animation c1_walkAnimL;
 	Animation c1_walkAnimR;
+
+	// c2 Animations
+	Animation c2_idleAnimU;
+	Animation c2_idleAnimD;
+	Animation c2_idleAnimL;
+	Animation c2_idleAnimR;
+	Animation c2_walkAnimU;
+	Animation c2_walkAnimD;
+	Animation c2_walkAnimL;
+	Animation c2_walkAnimR;
 
 	uint walk_sound;
 	int walk_cd = 320;
