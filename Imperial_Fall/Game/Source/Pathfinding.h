@@ -43,7 +43,7 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
-	void DrawPath(PathFinding* path, fPoint pos, ENTITY_TYPE type);
+	void DrawPath(PathFinding* path, fPoint pos);
 
 private:
 
