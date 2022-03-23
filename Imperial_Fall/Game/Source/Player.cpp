@@ -264,6 +264,28 @@ bool Player::PreUpdate()
 
 void Player::HandleInput(float dt)
 {
+	// Get gamepad info
+	GamePad& pad = app->input->pads[0];
+
+	if (pad.up == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+	}
+	if (pad.down == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+	}
+	if (pad.left == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+	}
+	if (pad.right == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+	}
+
+
+
 	float fixedSpeed = speed * dt;
 
 	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
