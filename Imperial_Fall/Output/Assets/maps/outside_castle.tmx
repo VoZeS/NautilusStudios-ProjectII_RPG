@@ -30758,6 +30758,9 @@
   </data>
  </layer>
  <layer id="9" name="props" width="121" height="127">
+  <properties>
+   <property name="Draw" type="int" value="1"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
