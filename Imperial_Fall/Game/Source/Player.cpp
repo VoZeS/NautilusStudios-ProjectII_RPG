@@ -276,7 +276,7 @@ void Player::HandleInput(float dt)
 				body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
 				look_dir = 0;
 
-				if (currentAnimation != &walkAnimU)
+				if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
 				{
 					walkAnimU.Reset();
 					currentAnimation = &walkAnimU;
@@ -299,7 +299,7 @@ void Player::HandleInput(float dt)
 				body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
 				look_dir = 1;
 
-				if (currentAnimation != &walkAnimD)
+				if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
 				{
 					walkAnimD.Reset();
 					currentAnimation = &walkAnimD;
@@ -372,11 +372,6 @@ void Player::HandleInput(float dt)
 		else
 		{
 			body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-		}
-
-		if (body->GetLinearVelocity().x != 0 && body->GetLinearVelocity().y != 0)
-		{
-			body->SetLinearVelocity({ 0, 0 });
 		}
 		
 
@@ -706,8 +701,6 @@ bool Player::Draw()
 	SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
 	SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
 	SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
-
-	//app->render->DrawRectangle({ METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y), 16, 32 }, 255, 0, 0);
 	 
 	if (!app->scene->GetStartScreenState())
 	{
@@ -745,7 +738,7 @@ bool Player::Draw()
 
 bool Player::Load(pugi::xml_node& data)
 {
-	position.x = data.child("player").child("position").attribute("x").as_int();
+	/*position.x = data.child("player").child("position").attribute("x").as_int();
 	position.y = data.child("player").child("position").attribute("y").as_int();
 
 	body->SetTransform({ position.x + PIXELS_TO_METERS(w), position.y }, body->GetAngle());
@@ -755,15 +748,15 @@ bool Player::Load(pugi::xml_node& data)
 	if (app->menu->dead)
 	{
 		app->menu->dead = false;
-	}
+	}*/
 
 	return true;
 }
 
 bool Player::Save(pugi::xml_node& data)
 {
-	data.child("player").child("position").attribute("x").set_value(position.x);
-	data.child("player").child("position").attribute("y").set_value(position.y);
+	/*data.child("player").child("position").attribute("x").set_value(position.x);
+	data.child("player").child("position").attribute("y").set_value(position.y);*/
 
 	return true;
 }
