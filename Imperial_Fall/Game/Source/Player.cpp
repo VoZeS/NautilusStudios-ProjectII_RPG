@@ -266,7 +266,7 @@ void Player::HandleInput(float dt)
 {
 	float fixedSpeed = speed * dt;
 
-	//if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
 	{
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 		{
@@ -709,7 +709,7 @@ bool Player::Draw()
 
 	//app->render->DrawRectangle({ METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y), 16, 32 }, 255, 0, 0);
 	 
-	//if (!app->scene->GetStartScreenState())
+	if (!app->scene->GetStartScreenState())
 	{
 		switch (char_control)
 		{
