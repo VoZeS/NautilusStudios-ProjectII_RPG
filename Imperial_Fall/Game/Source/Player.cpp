@@ -283,6 +283,23 @@ void Player::HandleInput(float dt)
 	{
 		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
 	}
+	
+	if (pad.left_y < -0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+	}
+	if (pad.left_y > 0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+	}
+	if (pad.left_x < -0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+	}
+	if (pad.left_x > 0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+	}
 
 
 
