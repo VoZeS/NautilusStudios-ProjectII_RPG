@@ -4,14 +4,14 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-//#include "Scene.h"
-//#include "Map.h"
-//#include "Pathfinding.h"
-//#include "Physics.h"
+#include "Scene.h"
+#include "Map.h"
+#include "Pathfinding.h"
+#include "Physics.h"
 #include "Entities.h"
-//#include "Fonts.h"
-//#include "Menu.h"
-//#include "Frontground.h"
+#include "Fonts.h"
+#include "Menu.h"
+#include "Frontground.h"
 
 
 #include "Defs.h"
@@ -28,14 +28,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	//scene = new Scene();
-	//map = new Map();
-	//pathfinding = new PathFinding();
+	scene = new Scene();
+	map = new Map();
+	pathfinding = new PathFinding();
 	physics = new Physics();
 	entities = new Entities();
-	//fonts = new Fonts();
-	//menu = new Menu();
-	//frontground = new Frontground();
+	fonts = new Fonts();
+	menu = new Menu();
+	frontground = new Frontground();
 
 
 	// Ordered for awake / Start / Update
@@ -44,14 +44,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	//AddModule(scene);
-	//AddModule(map);
-	//AddModule(pathfinding);
+	AddModule(scene);
+	AddModule(map);
+	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);
-	//AddModule(fonts);
-	//AddModule(menu);
-	//AddModule(frontground);
+	AddModule(fonts);
+	AddModule(menu);
+	AddModule(frontground);
 
 	// Render last to swap buffer
 	AddModule(render);

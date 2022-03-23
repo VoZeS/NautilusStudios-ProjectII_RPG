@@ -127,11 +127,12 @@ bool Menu::PreUpdate()
 	
 	int x, y;
 	app->input->GetMousePosition(x, y);
-	float c = -app->render->camera.x;
+	float cx = -app->render->camera.x;
+	float cy = -app->render->camera.y;
 	for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 	{
 		SDL_Rect rect = pause_buttons[i].rect;
-		if (x + c > rect.x && x + c < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 		{
 			if (paused)
 			{
@@ -149,7 +150,7 @@ bool Menu::PreUpdate()
 	for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 	{
 		SDL_Rect rect = menu_buttons[i].rect;
-		if (x + c > rect.x && x + c < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 		{
 			if (intro)
 			{
@@ -167,7 +168,7 @@ bool Menu::PreUpdate()
 	for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
 	{
 		SDL_Rect rect = settings_buttons[i].rect;
-		if (x + c > rect.x && x + c < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 		{
 			if (settings)
 			{
@@ -185,7 +186,7 @@ bool Menu::PreUpdate()
 	for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
 	{
 		SDL_Rect rect = dead_buttons[i].rect;
-		if (x + c > rect.x && x + c < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 		{
 			if (dead)
 			{
@@ -201,7 +202,7 @@ bool Menu::PreUpdate()
 	}
 
 	SDL_Rect rect = lose_button.rect;
-	if (x + c > rect.x && x + c < rect.x + rect.w && y > rect.y && y < rect.y + rect.h)
+	if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 	{
 		if (lose)
 		{
@@ -392,11 +393,13 @@ bool Menu::Update(float dt)
 bool Menu::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;
 	r.x = c_x;
+	r.y = c_y;
 
 	if (app->scene->GetStartScreenState() != NULL)
 	{
-		app->render->DrawTexture(app->tex->Load("Assets/textures/Start_screen.png"), 0 + c_x, 0);
+		app->render->DrawTexture(app->tex->Load("Assets/textures/Start_screen.png"), 0 + c_x, 0 + c_y);
 	}
 
 	if (paused && !intro && !settings)
@@ -409,6 +412,7 @@ bool Menu::PostUpdate()
 		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
 			pause_buttons[i].rect.x = ((int)win_w / 2) - (pause_buttons[i].rect.w / 2) + c_x -300;
+			pause_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1) + c_y;
 
 			if (pause_buttons[i].state == 0)
 			{
@@ -432,6 +436,7 @@ bool Menu::PostUpdate()
 		for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 		{
 			menu_buttons[i].rect.x = ((int)win_w / 2) - (menu_buttons[i].rect.w / 2) + c_x - 300;
+			menu_buttons[i].rect.y = ((int)win_h / (NUM_MENU_BUTTONS + 1)) * (i + 1) + c_y;
 
 			if (menu_buttons[i].state == 0)
 			{
@@ -484,6 +489,7 @@ bool Menu::PostUpdate()
 		for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
 		{
 			settings_buttons[i].rect.x = ((int)win_w / 2) - (settings_buttons[i].rect.w / 2) + c_x;
+			settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1) + c_y;
 
 			if (settings_buttons[i].state == 0)
 			{
