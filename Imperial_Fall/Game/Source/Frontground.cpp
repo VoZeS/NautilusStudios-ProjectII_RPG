@@ -88,6 +88,7 @@ bool Frontground::Update(float dt)
 bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;
 
 	if (!press_e_hide)
 	{
@@ -96,6 +97,7 @@ bool Frontground::PostUpdate()
 	}
 
 	r.x = c_x;
+	r.y = c_y;
 
 	app->render->DrawRectangle(r, 0, 0, 0, a);
 
@@ -140,6 +142,10 @@ bool Frontground::FadeFromBlack(int dest_level)
 				{
 					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2800), PIXELS_TO_METERS(1000));
 				}
+				else if (outside_to_town1 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300));
+				}
 				int w, h;
 				uchar* data = NULL;
 
@@ -155,7 +161,19 @@ bool Frontground::FadeFromBlack(int dest_level)
 			{
 				if (town1_to_town2 == true)
 				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(300), PIXELS_TO_METERS(1500));
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(300), PIXELS_TO_METERS(1600));
+				}
+				else if (forest_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600));
+				}
+				else if (battlefield_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400));
+				}
+				else if (dungeon_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
 				}
 
 				int w, h;
@@ -171,6 +189,8 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("forest.tmx") == true)
 			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500));
+
 				int w, h;
 				uchar* data = NULL;
 
@@ -184,6 +204,8 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("battlefield.tmx") == true)
 			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
+
 				int w, h;
 				uchar* data = NULL;
 
@@ -197,6 +219,8 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("dungeon.tmx") == true)
 			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
+
 				int w, h;
 				uchar* data = NULL;
 
@@ -210,6 +234,11 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("outside_castle.tmx") == true)
 			{
+				if (town1_to_outside == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1400));
+				}
+
 				int w, h;
 				uchar* data = NULL;
 

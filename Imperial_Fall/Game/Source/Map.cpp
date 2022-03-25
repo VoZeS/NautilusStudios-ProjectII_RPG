@@ -75,8 +75,8 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x) < pos.x + 700 && METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x) > pos.x - 700) &&
-							(METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y) < pos.y + 400 && METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y) > pos.y - 400))
+						if ((-app->render->camera.x < pos.x + 1400 && -app->render->camera.x > pos.x - 1400) &&
+							(-app->render->camera.y < pos.y + 800 && -app->render->camera.y > pos.y - 800))
 						{
 							app->render->DrawTexture(tileset->texture,
 								pos.x,

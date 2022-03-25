@@ -43,7 +43,13 @@ public:
 
 
 	bool town1_to_town2 = false,
-		town2_to_town1 = false;
+		town2_to_town1 = false,
+		forest_to_town2 = false,
+		battlefield_to_town2 = false,
+		dungeon_to_town2 = false,
+		town1_to_outside = false,
+		inside_to_outside = false,
+		outside_to_town1 = false;
 
 private:
 	SDL_Rect r;
@@ -51,7 +57,7 @@ private:
 
 	bool go_black = false;
 	bool return_black = false;
-	int fade_speed = 2;
+	int fade_speed = 4;
 
 	int destination_level = -1;
 
