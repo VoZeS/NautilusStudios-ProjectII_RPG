@@ -89,13 +89,33 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		PassLevel(1);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		PassLevel(2);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		PassLevel(3);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	{
+		PassLevel(4);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		PassLevel(5);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+	{
+		PassLevel(6);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+	{
+		PassLevel(7);
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
