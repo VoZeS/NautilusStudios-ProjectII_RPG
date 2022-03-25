@@ -60,6 +60,8 @@ bool Scene::PreUpdate()
 	if (/*start_screen != NULL &&*/ app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
 		PassLevel(1);
+		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(750));
+
 	}
 	else
 	{

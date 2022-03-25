@@ -344,11 +344,17 @@ void Physics::BeginContact(b2Contact* contact)
 		else if ((int)fixtureUserDataB == 12)
 		{
 			// town_1 --> town_2
+			app->frontground->town1_to_town2 = true;
+			app->frontground->town2_to_town1 = false;
+
 			app->scene->PassLevel(2);
 		}
 		else if ((int)fixtureUserDataB == 21)
 		{
 			// town_2 --> town_1
+			app->frontground->town1_to_town2 = false;
+			app->frontground->town2_to_town1 = true;
+
 			app->scene->PassLevel(1);
 		}
 		else if ((int)fixtureUserDataB == 23)

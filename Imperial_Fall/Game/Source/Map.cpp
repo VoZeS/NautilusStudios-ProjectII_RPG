@@ -197,7 +197,7 @@ void Map::Draw()
 						{
 							// hearts
 							app->entities->CreateEntity(ENTITY_TYPE::HEART, pos.x, pos.y);
-						}
+						}*/
 					}
 				}
 			}

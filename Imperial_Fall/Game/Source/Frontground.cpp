@@ -136,6 +136,10 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("town_1.tmx") == true)
 			{
+				if (town2_to_town1 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2800), PIXELS_TO_METERS(1000));
+				}
 				int w, h;
 				uchar* data = NULL;
 
@@ -149,6 +153,11 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("town_2.tmx") == true)
 			{
+				if (town1_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(300), PIXELS_TO_METERS(1500));
+				}
+
 				int w, h;
 				uchar* data = NULL;
 

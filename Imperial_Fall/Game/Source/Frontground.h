@@ -41,6 +41,10 @@ public:
 		press_e_hide = hide;
 	}
 
+
+	bool town1_to_town2 = false,
+		town2_to_town1 = false;
+
 private:
 	SDL_Rect r;
 	Uint8 a;
@@ -53,6 +57,7 @@ private:
 
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
+
 };
 
 #endif
