@@ -75,10 +75,14 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						app->render->DrawTexture(tileset->texture,
-							pos.x,
-							pos.y,
-							&r);
+						if ((METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x) < pos.x + 700 && METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x) > pos.x - 700) &&
+							(METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y) < pos.y + 400 && METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y) > pos.y - 400))
+						{
+							app->render->DrawTexture(tileset->texture,
+								pos.x,
+								pos.y,
+								&r);
+						}
 					}
 
 					if (!collision_loaded)
@@ -88,10 +92,73 @@ void Map::Draw()
 						
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
+							
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
+							
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 2)
+						// --------------------------------------------------------------------------- PASS LEVELS
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
+						{
+							// town_1 --> town_2
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 12);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 21)
+						{
+							// town_2 --> town_1
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 21);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 23)
+						{
+							// town_2 --> forest
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 23);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 32)
+						{
+							// forest --> town_2
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 32);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 24)
+						{
+							// town_2 --> battlefield
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 24);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 42)
+						{
+							// battlefield --> town_2
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 42);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 25)
+						{
+							// town_2 --> dungeon
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 25);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 52)
+						{
+							// dungeon --> town_2
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 52);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 16)
+						{
+							// town_1 --> outside_castle
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 16);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 61)
+						{
+							// outside_castle-> town_1
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 61);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 67)
+						{
+							// outside_castle-> inside_castle
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 67);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 76)
+						{
+							// inside_castle-> outside_castle
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 76);
+						}
+						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 2)
 						{
 							// collision death
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), (pos.y + ((r.h * height) / 2)) + (r.h / 2), (r.w * width) / 2, (r.h * height) / 2, 4);
@@ -125,7 +192,7 @@ void Map::Draw()
 						{
 							// air enemies
 							app->entities->CreateEntity(ENTITY_TYPE::AIR_ENEMY, pos.x, pos.y);
-						}*/
+						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// hearts

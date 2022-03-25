@@ -230,6 +230,18 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	if (collision == 5) fixture.isSensor = true;
 	else if (collision == 6) fixture.isSensor = true;
 	else if (collision == 7) fixture.isSensor = true;
+	else if (collision == 12) fixture.isSensor = true;
+	else if (collision == 21) fixture.isSensor = true;
+	else if (collision == 23) fixture.isSensor = true;
+	else if (collision == 32) fixture.isSensor = true;
+	else if (collision == 24) fixture.isSensor = true;
+	else if (collision == 42) fixture.isSensor = true;
+	else if (collision == 52) fixture.isSensor = true;
+	else if (collision == 25) fixture.isSensor = true;
+	else if (collision == 16) fixture.isSensor = true;
+	else if (collision == 61) fixture.isSensor = true;
+	else if (collision == 67) fixture.isSensor = true;
+	else if (collision == 76) fixture.isSensor = true;
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
 	fix->SetUserData((void*)collision);
@@ -327,6 +339,68 @@ void Physics::BeginContact(b2Contact* contact)
 			Entity* entity = app->entities->GetPlayer();
 			app->entities->PickHeart(entity->GetPlayerPosition());
 		}
+
+		// --------------------------------------------------------------- PASS LEVELS
+		else if ((int)fixtureUserDataB == 12)
+		{
+			// town_1 --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 21)
+		{
+			// town_2 --> town_1
+			app->scene->PassLevel(1);
+		}
+		else if ((int)fixtureUserDataB == 23)
+		{
+			// town_2 --> forest
+			app->scene->PassLevel(3);
+		}
+		else if ((int)fixtureUserDataB == 32)
+		{
+			// forest --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 24)
+		{
+			// town_2 --> battlefield
+			app->scene->PassLevel(4);
+		}
+		else if ((int)fixtureUserDataB == 42)
+		{
+			// battlefield --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 25)
+		{
+			// town_2 --> dungeon
+			app->scene->PassLevel(5);
+		}
+		else if ((int)fixtureUserDataB == 52)
+		{
+			// dungeon --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 16)
+		{
+			// town_1 --> outside_castle
+			app->scene->PassLevel(6);
+		}
+		else if ((int)fixtureUserDataB == 61)
+		{
+			// outside_castle -->  town_1
+			app->scene->PassLevel(1);
+		}
+		else if ((int)fixtureUserDataB == 67)
+		{
+			// outside_castle --> inside_castle
+			app->scene->PassLevel(7);
+		}
+		else if ((int)fixtureUserDataB == 76)
+		{
+			// inside_castle -->  outside_castle
+			app->scene->PassLevel(6);
+		}
 	}
 
 	if ((int)fixtureUserDataB == 2)
@@ -377,6 +451,67 @@ void Physics::BeginContact(b2Contact* contact)
 			// hearts
 			Entity* entity = app->entities->GetPlayer();
 			app->entities->PickHeart(entity->GetPlayerPosition());
+		}
+		// --------------------------------------------------------------- PASS LEVELS
+		else if ((int)fixtureUserDataB == 12)
+		{
+			// town_1 --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 21)
+		{
+			// town_2 --> town_1
+			app->scene->PassLevel(1);
+		}
+		else if ((int)fixtureUserDataB == 23)
+		{
+			// town_2 --> forest
+			app->scene->PassLevel(3);
+		}
+		else if ((int)fixtureUserDataB == 32)
+		{
+			// forest --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 24)
+		{
+			// town_2 --> battlefield
+			app->scene->PassLevel(4);
+		}
+		else if ((int)fixtureUserDataB == 42)
+		{
+			// battlefield --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 25)
+		{
+			// town_2 --> dungeon
+			app->scene->PassLevel(5);
+		}
+		else if ((int)fixtureUserDataB == 52)
+		{
+			// dungeon --> town_2
+			app->scene->PassLevel(2);
+		}
+		else if ((int)fixtureUserDataB == 16)
+		{
+			// town_1 --> outside_castle
+			app->scene->PassLevel(6);
+		}
+		else if ((int)fixtureUserDataB == 61)
+		{
+			// outside_castle -->  town_1
+			app->scene->PassLevel(1);
+		}
+		else if ((int)fixtureUserDataB == 67)
+		{
+			// outside_castle --> inside_castle
+			app->scene->PassLevel(7);
+		}
+		else if ((int)fixtureUserDataB == 76)
+		{
+			// inside_castle -->  outside_castle
+			app->scene->PassLevel(6);
 		}
 	}
 }

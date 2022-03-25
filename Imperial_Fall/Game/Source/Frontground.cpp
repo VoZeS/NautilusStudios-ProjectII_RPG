@@ -134,7 +134,7 @@ bool Frontground::FadeFromBlack(int dest_level)
 			break;
 		case 1: 
 			app->SaveGameRequest();
-			if (app->map->Load("level1.tmx") == true)
+			if (app->map->Load("town_1.tmx") == true)
 			{
 				int w, h;
 				uchar* data = NULL;
@@ -147,7 +147,7 @@ bool Frontground::FadeFromBlack(int dest_level)
 			break;
 		case 2:
 			app->SaveGameRequest();
-			if (app->map->Load("level2.tmx") == true)
+			if (app->map->Load("town_2.tmx") == true)
 			{
 				int w, h;
 				uchar* data = NULL;
@@ -157,6 +157,71 @@ bool Frontground::FadeFromBlack(int dest_level)
 				RELEASE_ARRAY(data);
 			}
 			app->scene->current_level = 2;
+			break;
+		case 3:
+			app->SaveGameRequest();
+			if (app->map->Load("forest.tmx") == true)
+			{
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 3;
+			break;
+		case 4:
+			app->SaveGameRequest();
+			if (app->map->Load("battlefield.tmx") == true)
+			{
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 4;
+			break;
+		case 5:
+			app->SaveGameRequest();
+			if (app->map->Load("dungeon.tmx") == true)
+			{
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 5;
+			break;
+		case 6:
+			app->SaveGameRequest();
+			if (app->map->Load("outside_castle.tmx") == true)
+			{
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 6;
+			break;
+		case 7:
+			app->SaveGameRequest();
+			if (app->map->Load("inside_castle.tmx") == true)
+			{
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 7;
 			break;
 		}
 	}
