@@ -134,7 +134,7 @@ bool Frontground::FadeFromBlack(int dest_level)
 			break;
 		case 1: 
 			app->SaveGameRequest();
-			if (app->map->Load("battlefield.tmx") == true)
+			if (app->map->Load("town_1.tmx") == true)
 			{
 				int w, h;
 				uchar* data = NULL;

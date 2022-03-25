@@ -97,14 +97,13 @@ void Map::Draw()
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
 							
 						}
-
-						// ------------------------------------------------------------------------------------------------------------------------------------ PASS LEVELS
+						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
 						{
 							// town_1 --> town_2
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 12);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 21)
 						{
 							// town_2 --> town_1
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 21);
