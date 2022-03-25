@@ -95,8 +95,7 @@ bool Render::Update(float dt)
 	else if (camera.y < -720)
 	{
 		camera.y = -720;
-	}*/
-	LOG("%d", camera.y);
+	}
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 
 	return true;

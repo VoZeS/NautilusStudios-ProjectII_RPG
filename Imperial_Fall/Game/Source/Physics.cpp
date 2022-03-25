@@ -61,7 +61,16 @@ bool Physics::Start()
 // Called each loop iteration
 bool Physics::PreUpdate()
 {
-	world->Step(1.0f / 60.0f, 6, 2);
+	
+	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+	{
+		world->Step(1.0f / 60.0f, 6, 2);
+
+	}
+	else
+	{
+		world->Step(0, 6, 2);
+	}
 
 	return true;
 }

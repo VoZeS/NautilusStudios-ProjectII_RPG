@@ -198,11 +198,6 @@ void Map::Draw()
 							// hearts
 							app->entities->CreateEntity(ENTITY_TYPE::HEART, pos.x, pos.y);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
-						{
-							// player
-							app->entities->CreateEntity(ENTITY_TYPE::PLAYER, pos.x, pos.y);
-						}*/
 					}
 				}
 			}

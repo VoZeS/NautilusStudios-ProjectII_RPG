@@ -7,9 +7,9 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Pathfinding.h"
-//#include "Physics.h"
+#include "Physics.h"
 #include "Entities.h"
-//#include "Fonts.h"
+#include "Fonts.h"
 #include "Menu.h"
 #include "Frontground.h"
 
@@ -33,7 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding();
 	physics = new Physics();
 	entities = new Entities();
-	//fonts = new Fonts();
+	fonts = new Fonts();
 	menu = new Menu();
 	frontground = new Frontground();
 
@@ -49,7 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);
-	//AddModule(fonts);
+	AddModule(fonts);
 	AddModule(menu);
 	AddModule(frontground);
 

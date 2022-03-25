@@ -119,7 +119,7 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-	//if (!app->scene->GetStartScreenState())
+	if (!app->scene->GetStartScreenState())
 	{
 		ListItem<Entity*>* item;
 		Entity* entity = NULL;
