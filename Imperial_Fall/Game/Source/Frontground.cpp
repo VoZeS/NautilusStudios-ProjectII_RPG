@@ -238,6 +238,10 @@ bool Frontground::FadeFromBlack(int dest_level)
 				{
 					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1400));
 				}
+				else if (inside_to_outside == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100));
+				}
 
 				int w, h;
 				uchar* data = NULL;
@@ -252,6 +256,8 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("inside_castle.tmx") == true)
 			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(500), PIXELS_TO_METERS(800));
+
 				int w, h;
 				uchar* data = NULL;
 
