@@ -75,8 +75,8 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((-app->render->camera.x < pos.x + 1400 && -app->render->camera.x > pos.x - 1400) &&
-							(-app->render->camera.y < pos.y + 800 && -app->render->camera.y > pos.y - 800))
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50 ) &&
+							(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
 						{
 							app->render->DrawTexture(tileset->texture,
 								pos.x,
