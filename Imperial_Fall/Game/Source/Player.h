@@ -39,6 +39,15 @@ private:
 
 	fPoint GetPlayerPosition();
 	void SetPlayerPosition(int new_x, int new_y);
+
+	fPoint GetCompanion0Position();
+	fPoint GetCompanion1Position();
+	fPoint GetCompanion2Position();
+
+	void SetCompanion0Position(int new_x, int new_y);
+	void SetCompanion1Position(int new_x, int new_y);
+	void SetCompanion2Position(int new_x, int new_y);
+
 	void ImpulsePlayer();
 
 	int char_control = 0; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard

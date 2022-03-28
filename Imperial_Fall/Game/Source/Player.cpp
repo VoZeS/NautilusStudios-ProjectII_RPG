@@ -804,6 +804,19 @@ fPoint Player::GetPlayerPosition()
 {
 	return position;
 }
+fPoint Player::GetCompanion0Position()
+{
+	return c0.position;
+
+}
+fPoint Player::GetCompanion1Position()
+{
+	return c1.position;
+}
+fPoint Player::GetCompanion2Position()
+{
+	return c2.position;
+}
 
 void Player::SetPlayerPosition(int new_x, int new_y)
 {
@@ -813,6 +826,34 @@ void Player::SetPlayerPosition(int new_x, int new_y)
 	body->SetTransform({ position.x, position.y }, body->GetAngle());
 	body->ApplyForceToCenter({ 0, 1 }, true);
 }
+
+void Player::SetCompanion0Position(int new_x, int new_y)
+{
+	c0.position.x = new_x;
+	c0.position.y = new_y;
+
+	body->SetTransform({ c0.position.x, c0.position.y }, body->GetAngle());
+	body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion1Position(int new_x, int new_y)
+{
+	c1.position.x = new_x;
+	c1.position.y = new_y;
+
+	body->SetTransform({ c1.position.x, c1.position.y }, body->GetAngle());
+	body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion2Position(int new_x, int new_y)
+{
+	c2.position.x = new_x;
+	c2.position.y = new_y;
+
+	body->SetTransform({ c2.position.x, c2.position.y }, body->GetAngle());
+	body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
 
 void Player::ImpulsePlayer()
 {
