@@ -46,6 +46,9 @@ bool Textures::Start()
 	tank_texture = Load("Assets/textures/Tanque.png");
 	healer_texture = Load("Assets/textures/Healer.png");
 	wizard_texture = Load("Assets/textures/Mago.png");
+	start_menu = Load("Assets/textures/Start_screen.png");
+
+
 	hab_tex = Load("Assets/textures/HabilityMack.png");
 	slime_textureR = Load("Assets/textures/SlimeR.png");
 	slime_textureL = Load("Assets/textures/SlimeL.png");

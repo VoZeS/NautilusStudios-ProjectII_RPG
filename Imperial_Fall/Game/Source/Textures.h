@@ -41,6 +41,9 @@ public:
 	SDL_Texture* tank_texture = NULL;
 	SDL_Texture* healer_texture = NULL;
 	SDL_Texture* wizard_texture = NULL;
+	SDL_Texture* start_menu = NULL;
+
+
 	SDL_Texture* hab_tex = NULL;
 	SDL_Texture* slime_textureR = NULL;
 	SDL_Texture* slime_textureL = NULL;

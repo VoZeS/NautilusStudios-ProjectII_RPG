@@ -399,7 +399,7 @@ bool Menu::PostUpdate()
 
 	if (app->scene->GetStartScreenState() != NULL)
 	{
-		app->render->DrawTexture(app->tex->Load("Assets/textures/Start_screen.png"), 0 + c_x, 0 + c_y);
+		app->render->DrawTexture(app->tex->start_menu, 0 + c_x, 0 + c_y);
 	}
 
 	if (paused && !intro && !settings)
