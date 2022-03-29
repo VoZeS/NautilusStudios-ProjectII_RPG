@@ -40,6 +40,15 @@ public:
 	// custom fuctions
 	virtual fPoint GetPlayerPosition();
 	virtual void SetPlayerPosition(int new_x, int new_y);
+
+	virtual fPoint GetCompanion0Position();
+	virtual fPoint GetCompanion1Position();
+	virtual fPoint GetCompanion2Position();
+
+	virtual void SetCompanion0Position(int new_x, int new_y);
+	virtual void SetCompanion1Position(int new_x, int new_y);
+	virtual void SetCompanion2Position(int new_x, int new_y);
+
 	virtual void ImpulsePlayer();
 	virtual void PlayerDeath();
 	virtual void SwitchDirection();
