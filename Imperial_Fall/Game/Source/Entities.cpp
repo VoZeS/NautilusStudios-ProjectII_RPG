@@ -371,6 +371,10 @@ void Entity::SetPlayerPosition(int new_x, int new_y)
 
 }
 
+void Entity::SetPlayerLookDir(int lookDir)
+{
+}
+
 fPoint Entity::GetCompanion0Position()
 {
 	return { 0,0 };
@@ -395,6 +399,18 @@ void Entity::SetCompanion1Position(int new_x, int new_y)
 }
 
 void Entity::SetCompanion2Position(int new_x, int new_y)
+{
+}
+
+void Entity::SetCompanion0LookDir(int lookDir)
+{
+}
+
+void Entity::SetCompanion1LookDir(int lookDir)
+{
+}
+
+void Entity::SetCompanion2LookDir(int lookDir)
 {
 }
 

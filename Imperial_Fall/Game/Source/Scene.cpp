@@ -57,11 +57,14 @@ bool Scene::Start()
 bool Scene::PreUpdate()
 {
 
-	if (/*start_screen != NULL &&*/ app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
+	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
+		app->entities->GetPlayer()->SetPlayerLookDir(0);
 		PassLevel(1);
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(750));
-
+		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(1000));
+		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(1000));
+		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(1000));
+		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
 	}
 	else
 	{
@@ -91,31 +94,31 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(1);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(2);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(3);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(4);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(5);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(6);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(7);
 	}

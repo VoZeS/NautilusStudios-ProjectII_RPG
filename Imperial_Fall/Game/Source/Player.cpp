@@ -854,6 +854,26 @@ void Player::SetCompanion2Position(int new_x, int new_y)
 	c2.body->ApplyForceToCenter({ 0, 1 }, true);
 }
 
+void Player::SetCompanion0LookDir(int lookDir)
+{
+	c0.look_dir = lookDir;
+}
+
+void Player::SetCompanion1LookDir(int lookDir)
+{
+	c1.look_dir = lookDir;
+}
+
+void Player::SetCompanion2LookDir(int lookDir)
+{
+	c2.look_dir = lookDir;
+}
+
+void Player::SetPlayerLookDir(int lookDir)
+{
+	look_dir = lookDir;
+}
+
 
 void Player::ImpulsePlayer()
 {

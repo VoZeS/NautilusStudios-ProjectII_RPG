@@ -39,6 +39,7 @@ private:
 
 	fPoint GetPlayerPosition();
 	void SetPlayerPosition(int new_x, int new_y);
+	void SetPlayerLookDir(int lookDir);
 
 	fPoint GetCompanion0Position();
 	fPoint GetCompanion1Position();
@@ -47,6 +48,11 @@ private:
 	void SetCompanion0Position(int new_x, int new_y);
 	void SetCompanion1Position(int new_x, int new_y);
 	void SetCompanion2Position(int new_x, int new_y);
+
+	void SetCompanion0LookDir(int lookDir);
+	void SetCompanion1LookDir(int lookDir);
+	void SetCompanion2LookDir(int lookDir);
+
 
 	void ImpulsePlayer();
 
