@@ -47,6 +47,10 @@ public:
 
 	int textFont = -1;
 
+	uint letlengh = 0;
+
+	int letter_cd = 0;
+
 private:
 	SDL_Texture* start_screen;
 

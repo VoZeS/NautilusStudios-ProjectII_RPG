@@ -159,6 +159,25 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	letter_cd += dt;
+
+	if (app->GetFPS() == 16)//60 fps
+	{
+		if (letter_cd >= 60 * dt * 0.1f)
+		{
+			letlengh++;
+			letter_cd = 0;
+		}
+	}
+	else //30 fps
+	{
+		if (letter_cd >= 120 * dt * 0.1f)
+		{
+			letlengh++;
+			letter_cd = 0;
+		}
+	}
+	
 	return true;
 }
 
@@ -168,6 +187,7 @@ bool Scene::PostUpdate()
 	bool ret = true;
 
 	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;
 
 	if (start_screen != NULL) 
 	{
@@ -177,10 +197,10 @@ bool Scene::PostUpdate()
 	{
 		app->map->Draw();
 
-		app->fonts->BlitText(c_x + 30, 5, textFont, "MONEDAS: ");
-		app->fonts->BlitText(c_x + 330, 5, textFont, app->entities->numCoins);
-		app->fonts->BlitText(c_x + 30, 45, textFont, "VIDAS: ");
-		app->fonts->BlitText(c_x + 250, 45, textFont, app->entities->numLifes);
+		app->fonts->BlitTextLetter(c_x + 30,c_y + 5, textFont, "MONEDAS: ", 1,255, 255, 255, 1920, 1, letlengh);
+		//app->fonts->BlitText(c_x + 330, 5, textFont, app->entities->numCoins);
+		//app->fonts->BlitText(c_x + 30, 45, textFont, "VIDAS: ");
+		//app->fonts->BlitText(c_x + 250, 45, textFont, app->entities->numLifes);
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)

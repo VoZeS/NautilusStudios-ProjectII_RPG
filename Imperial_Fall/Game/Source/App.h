@@ -143,6 +143,8 @@ private:
 public:
 	float GetDT();
 
+	float GetFPS();
+
 	void ToggleFPS();
 
 };

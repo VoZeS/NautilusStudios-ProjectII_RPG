@@ -158,3 +158,80 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 	}
 }
 
+void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom, int r, int g, int b, int max, int down, uint len)
+{
+	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || fonts[font_id].texture == nullptr)
+	{
+		//LOG("Unable to render text with bmp font id %d", font_id);
+		return;
+	}
+	int x0 = x;
+	int y0 = y;
+
+	const Font* font = &fonts[font_id];
+	SDL_Rect spriteRect;
+
+	//uint len = strlen(text);
+
+	spriteRect.w = 42;
+	spriteRect.h = 42;
+
+	for (uint i = 0; i < len; ++i)
+	{
+		uint charIndex = 0;
+
+		for (uint j = 0; j < font->totalLength; ++j)
+		{
+			if (font->table[j] == text[i])
+			{
+				charIndex = j;
+				break;
+			}
+		}
+
+		spriteRect.x = spriteRect.w * (charIndex % font->columns);
+		spriteRect.y = spriteRect.h * (charIndex / font->columns);
+		if (text[i] == '|') {
+			x = x0;
+			y += spriteRect.h * zoom + zoom * down;
+		}
+		else if (text[i] == 'M' || text[i] == 'W' || text[i] == 'm' || text[i] == 'w') {
+			app->render->DrawTexture(font->texture, x + 4, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w;
+		}
+		else {
+			app->render->DrawTexture(font->texture, x, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 8;
+		}
+
+
+
+		/*
+		else if (text[i] == 'I') {
+
+
+			app->render->DrawTexture(font->texture, x - 2 * zoom + zoom, y + zoom, &spriteRect);
+			x += spriteRect.w * zoom - zoom - 5 * zoom;
+		}
+		else if (text[i] == 'T') {
+			app->render->DrawTexture(font->texture, x + zoom, y + zoom, &spriteRect, 0.0f, false, zoom, r, g, b);
+			x += spriteRect.w * zoom - 2 * zoom;
+		}
+		else if (text[i] == '0' || text[i] == '1' || text[i] == '2' || text[i] == '3' || text[i] == '4' || text[i] == '5' || text[i] == '6' || text[i] == '7' || text[i] == '8' || text[i] == '9') {
+			app->render->DrawTexture(font->texture, x + zoom, y + zoom, &spriteRect, 0.0f, false, zoom, r, g, b);
+			x += spriteRect.w * zoom - 2 * zoom;
+		}
+		else {
+			app->render->DrawTexture(font->texture, x + zoom, y + zoom, &spriteRect, 0.0f, false, zoom, r, g, b);
+			x += spriteRect.w * zoom - zoom;
+		}
+		*/
+		/*
+		if (x > max) {
+			x = x0;
+			y += spriteRect.h * zoom + zoom * down;
+		}
+		*/
+	}
+}
+
