@@ -260,6 +260,14 @@ bool Menu::Update(float dt)
 				if (!started)
 				{
 					app->scene->PassLevel(1);
+					app->entities->GetPlayer()->SetPlayerLookDir(0);
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion0LookDir(0);
+					app->entities->GetPlayer()->SetCompanion1LookDir(0);
+					app->entities->GetPlayer()->SetCompanion2LookDir(0);
 					saving = true;
 					intro = false;
 					paused = false;
