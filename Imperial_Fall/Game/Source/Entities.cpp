@@ -5,6 +5,7 @@
 
 #include "Player.h"
 #include "Enemies.h"
+#include "NPC.h"
 #include "Coins.h"
 #include "Hearts.h"
 
@@ -204,6 +205,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(player, ENTITY_TYPE::PLAYER, p);
 	}
 		break;
+	case ENTITY_TYPE::NPC:
+	{
+		Player* player = new Player();
+		AddEntity(player, ENTITY_TYPE::PLAYER, p);
+	}
+	break;
 	case ENTITY_TYPE::GROUND_ENEMY:
 	{
 		Ground_Enemies* g_enemy = new Ground_Enemies();
