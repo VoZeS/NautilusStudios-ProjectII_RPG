@@ -15,9 +15,13 @@
 NPC::NPC() : Entity()
 {
 	// main idle animation
-	idleAnim.PushBack({ 10, 3, 51, 78 });
-	idleAnim.PushBack({ 62, 3, 51, 78 });
-	idleAnim.speed = 0.03f;
+	//idleAnim_renato.PushBack({ 10, 3, 51, 78 });
+	idleAnim_renato.PushBack({ 62, 3, 51, 78 });
+	idleAnim_renato.speed = 0.03f;
+
+	idleAnim_vendedores.PushBack({ 0, 0, 64, 80 });
+	idleAnim_vendedores.PushBack({ 0, 80, 64, 80 });
+	idleAnim_vendedores.speed = 0.03f;
 }
 
 // Destructor
@@ -26,8 +30,16 @@ NPC::~NPC()
 
 void NPC::InitCustomEntity(int npc)
 {
-	currentAnimation = &idleAnim;
 	npc_type = npc;
+
+	if (npc_type == 1)
+	{
+		currentAnimation = &idleAnim_renato;
+	}
+	else
+	{
+		currentAnimation = &idleAnim_vendedores;
+	}
 
 	// body
 	b2BodyDef p_body;
@@ -72,6 +84,7 @@ bool NPC::Update(float dt)
 	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
 	{
 		currentAnimation->Update();
+		LOG("%d", npc_type);
 	}
 
 	return true;
@@ -84,7 +97,19 @@ bool NPC::Draw()
 	 
 	if (!app->scene->GetStartScreenState())
 	{
-		app->render->DrawTexture(app->tex->renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+		switch (npc_type)
+		{
+		case 1: app->render->DrawTexture(app->tex->renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 40.0f), &rect);
+			break;
+		case 2: app->render->DrawTexture(app->tex->curandero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+			break;
+		case 3: app->render->DrawTexture(app->tex->herrero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+			break;
+		case 4: app->render->DrawTexture(app->tex->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+			break;
+		default:
+			break;
+		}
 	}
 	
 	return true;

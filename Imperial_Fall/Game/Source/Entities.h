@@ -12,6 +12,9 @@ enum class ENTITY_TYPE
 {
 	PLAYER = 0,
 	RENATO,
+	CURANDERO,
+	HERRERO,
+	GRANJERO,
 	GROUND_ENEMY,
 	STATIC_ENEMY, // create one for each diferent enemy
 	COIN,

@@ -99,8 +99,23 @@ void Map::Draw()
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
 						{
-							// collision Renato
+							// Renato
 							app->entities->CreateEntity(ENTITY_TYPE::RENATO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 6)
+						{
+							// Curandero
+							app->entities->CreateEntity(ENTITY_TYPE::CURANDERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 7)
+						{
+							// Herrero
+							app->entities->CreateEntity(ENTITY_TYPE::HERRERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
+						{
+							// Granjero
+							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
