@@ -265,6 +265,45 @@ bool Player::PreUpdate()
 
 void Player::HandleInput(float dt)
 {
+	// Get gamepad info
+	GamePad& pad = app->input->pads[0];
+
+	if (pad.up == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+	}
+	if (pad.down == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+	}
+	if (pad.left == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+	}
+	if (pad.right == true)
+	{
+		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+	}
+	
+	if (pad.left_y < -0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+	}
+	if (pad.left_y > 0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+	}
+	if (pad.left_x < -0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+	}
+	if (pad.left_x > 0.5f)
+	{
+		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+	}
+
+
+
 	float fixedSpeed = speed * dt;
 
 	if (app->scene->godmode)
@@ -814,6 +853,19 @@ fPoint Player::GetPlayerPosition()
 {
 	return position;
 }
+fPoint Player::GetCompanion0Position()
+{
+	return c0.position;
+
+}
+fPoint Player::GetCompanion1Position()
+{
+	return c1.position;
+}
+fPoint Player::GetCompanion2Position()
+{
+	return c2.position;
+}
 
 void Player::SetPlayerPosition(int new_x, int new_y)
 {
@@ -823,6 +875,54 @@ void Player::SetPlayerPosition(int new_x, int new_y)
 	body->SetTransform({ position.x, position.y }, body->GetAngle());
 	body->ApplyForceToCenter({ 0, 1 }, true);
 }
+
+void Player::SetCompanion0Position(int new_x, int new_y)
+{
+	c0.position.x = new_x;
+	c0.position.y = new_y;
+
+	c0.body->SetTransform({ c0.position.x, c0.position.y }, c0.body->GetAngle());
+	c0.body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion1Position(int new_x, int new_y)
+{
+	c1.position.x = new_x;
+	c1.position.y = new_y;
+
+	c1.body->SetTransform({ c1.position.x, c1.position.y }, c1.body->GetAngle());
+	c1.body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion2Position(int new_x, int new_y)
+{
+	c2.position.x = new_x;
+	c2.position.y = new_y;
+
+	c2.body->SetTransform({ c2.position.x, c2.position.y }, c2.body->GetAngle());
+	c2.body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion0LookDir(int lookDir)
+{
+	c0.look_dir = lookDir;
+}
+
+void Player::SetCompanion1LookDir(int lookDir)
+{
+	c1.look_dir = lookDir;
+}
+
+void Player::SetCompanion2LookDir(int lookDir)
+{
+	c2.look_dir = lookDir;
+}
+
+void Player::SetPlayerLookDir(int lookDir)
+{
+	look_dir = lookDir;
+}
+
 
 void Player::ImpulsePlayer()
 {

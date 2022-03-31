@@ -88,6 +88,7 @@ bool Frontground::Update(float dt)
 bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;
 
 	if (!press_e_hide)
 	{
@@ -96,6 +97,7 @@ bool Frontground::PostUpdate()
 	}
 
 	r.x = c_x;
+	r.y = c_y;
 
 	app->render->DrawRectangle(r, 0, 0, 0, a);
 
@@ -134,8 +136,23 @@ bool Frontground::FadeFromBlack(int dest_level)
 			break;
 		case 1: 
 			app->SaveGameRequest();
-			if (app->map->Load("level1.tmx") == true)
+			if (app->map->Load("town_1.tmx") == true)
 			{
+				if (town2_to_town1 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
+				}
+				else if (outside_to_town1 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(100));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+
+				}
 				int w, h;
 				uchar* data = NULL;
 
@@ -147,8 +164,37 @@ bool Frontground::FadeFromBlack(int dest_level)
 			break;
 		case 2:
 			app->SaveGameRequest();
-			if (app->map->Load("level2.tmx") == true)
+			if (app->map->Load("town_2.tmx") == true)
 			{
+				if (town1_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
+				}
+				else if (forest_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2800));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2900));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(3000));
+				}
+				else if (battlefield_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(200));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(100));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(0));
+				}
+				else if (dungeon_to_town2 == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
+				}
+
 				int w, h;
 				uchar* data = NULL;
 
@@ -157,6 +203,106 @@ bool Frontground::FadeFromBlack(int dest_level)
 				RELEASE_ARRAY(data);
 			}
 			app->scene->current_level = 2;
+			break;
+		case 3:
+			app->SaveGameRequest();
+			if (app->map->Load("forest.tmx") == true)
+			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500));
+				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(300));
+				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(200));
+				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
+
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 3;
+			break;
+		case 4:
+			app->SaveGameRequest();
+			if (app->map->Load("battlefield.tmx") == true)
+			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
+				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000));
+				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100));
+				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 4;
+			break;
+		case 5:
+			app->SaveGameRequest();
+			if (app->map->Load("dungeon.tmx") == true)
+			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
+				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
+				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(950), PIXELS_TO_METERS(200));
+				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
+
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 5;
+			break;
+		case 6:
+			app->SaveGameRequest();
+			if (app->map->Load("outside_castle.tmx") == true)
+			{
+				if (town1_to_outside == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1500));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1600));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1700));
+				}
+				else if (inside_to_outside == true)
+				{
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(500));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100));
+				}
+
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 6;
+			break;
+		case 7:
+			app->SaveGameRequest();
+			if (app->map->Load("inside_castle.tmx") == true)
+			{
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(500), PIXELS_TO_METERS(800));
+				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(600));
+				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(500));
+				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(400));
+
+				int w, h;
+				uchar* data = NULL;
+
+				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+				RELEASE_ARRAY(data);
+			}
+			app->scene->current_level = 7;
 			break;
 		}
 	}

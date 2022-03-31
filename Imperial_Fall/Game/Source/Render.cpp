@@ -79,24 +79,148 @@ bool Render::Update(float dt)
 		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
 	}
 
-	if (camera.x > 0)
+	if (app->scene->current_level == 1)
 	{
-		camera.x = 0;
+		if (camera.x > 0)
+		{
+			camera.x = 0;
+		}
+		else if (camera.x < -1900)
+		{
+			camera.x = -1900;
+		}
+
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -500)
+		{
+			camera.y = -500;
+		}
 	}
-	else if (camera.x < -1280)
+	else if (app->scene->current_level == 2)
 	{
-		camera.x = -1280;
+		if (camera.x > 0)
+		{
+			camera.x = 0;
+		}
+		else if (camera.x < -1450)
+		{
+			camera.x = -1450;
+		}
+
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -2400)
+		{
+			camera.y = -2400;
+		}
+
+	}
+	else if (app->scene->current_level == 3)
+	{
+		if (camera.x > 0)
+		{
+			camera.x = 0;
+		}
+		else if (camera.x < -1600)
+		{
+			camera.x = -1600;
+		}
+
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -2000)
+		{
+			camera.y = -2000;
+		}
+	}
+	else if (app->scene->current_level == 4)
+	{
+		if (camera.x > -120)
+		{
+			camera.x = -120;
+		}
+		else if (camera.x < -1700)
+		{
+			camera.x = -1700;
+		}
+
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -2400)
+		{
+			camera.y = -2400;
+		}
+	}
+	else if (app->scene->current_level == 5)
+	{
+		if (camera.x > -0)
+		{
+			camera.x = -0;
+		}
+		else if (camera.x < -2300)
+		{
+			camera.x = -2300;
+		}
+
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -1320)
+		{
+			camera.y = -1320;
+		}
+	}
+	else if (app->scene->current_level == 6)
+	{
+	if (camera.x > -0)
+	{
+		camera.x = -0;
+	}
+	else if (camera.x < -700)
+	{
+		camera.x = -700;
 	}
 
 	if (camera.y > 0)
 	{
 		camera.y = 0;
 	}
-	else if (camera.y < -720)
+	else if (camera.y < -970)
 	{
-		camera.y = -720;
+		camera.y = -970;
 	}
-	
+	}
+	else if (app->scene->current_level == 7)
+	{
+	if (camera.x > -0)
+	{
+		camera.x = -0;
+	}
+	else if (camera.x < -200)
+	{
+		camera.x = -200;
+	}
+
+	if (camera.y > 0)
+	{
+		camera.y = 0;
+	}
+	else if (camera.y < -600)
+	{
+		camera.y = -600;
+	}
+	}
+
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 
 	return true;
