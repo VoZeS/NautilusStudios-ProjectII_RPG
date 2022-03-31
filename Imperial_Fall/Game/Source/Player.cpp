@@ -178,6 +178,7 @@ void Player::InitCustomEntity()
 {
 	currentAnimation = &idleAnimD;
 	look_dir = 1;
+	collision_active = true;
 
 	walk_sound = app->audio->LoadFx("Assets/audio/fx/step_sound.wav");
 
@@ -198,7 +199,7 @@ void Player::InitCustomEntity()
 	fixture.shape = &box;
 	fixture.density = 1.0f;
 	fixture.friction = 0.0f;
-	b2Fixture* bodyFixture = body->CreateFixture(&fixture);
+	bodyFixture = body->CreateFixture(&fixture);
 	bodyFixture->SetSensor(false);
 	bodyFixture->SetUserData((void*)1); // player collision
 
@@ -304,6 +305,44 @@ void Player::HandleInput(float dt)
 
 
 	float fixedSpeed = speed * dt;
+
+	if (app->scene->godmode)
+	{
+		fixedSpeed *= 2;
+		if (collision_active)
+		{
+			body->DestroyFixture(bodyFixture);
+			b2PolygonShape box;
+			box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+			b2FixtureDef fixture;
+			fixture.shape = &box;
+			fixture.density = 1.0f;
+			fixture.friction = 0.0f;
+			bodyFixture = body->CreateFixture(&fixture);
+			bodyFixture->SetSensor(true);
+			bodyFixture->SetUserData((void*)2); // player without collision
+
+			collision_active = false;
+		}
+	}
+	else
+	{
+		if (!collision_active)
+		{
+			body->DestroyFixture(bodyFixture);
+			b2PolygonShape box;
+			box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+			b2FixtureDef fixture;
+			fixture.shape = &box;
+			fixture.density = 1.0f;
+			fixture.friction = 0.0f;
+			bodyFixture = body->CreateFixture(&fixture);
+			bodyFixture->SetSensor(false);
+			bodyFixture->SetUserData((void*)1); // player collision
+
+			collision_active = true;
+		}
+	}
 
 	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
 	{
@@ -777,25 +816,35 @@ bool Player::Draw()
 
 bool Player::Load(pugi::xml_node& data)
 {
-	/*position.x = data.child("player").child("position").attribute("x").as_int();
+	position.x = data.child("player").child("position").attribute("x").as_int();
 	position.y = data.child("player").child("position").attribute("y").as_int();
+	c0.position.x = data.child("player").child("comp0").attribute("x").as_int();
+	c0.position.y = data.child("player").child("comp0").attribute("y").as_int();
+	c1.position.x = data.child("player").child("comp1").attribute("x").as_int();
+	c1.position.y = data.child("player").child("comp1").attribute("y").as_int();
+	c2.position.x = data.child("player").child("comp2").attribute("x").as_int();
+	c2.position.y = data.child("player").child("comp2").attribute("y").as_int();
 
-	body->SetTransform({ position.x + PIXELS_TO_METERS(w), position.y }, body->GetAngle());
-	body->ApplyForceToCenter({ 0, 1 }, true);
+	body->SetTransform({ position.x + PIXELS_TO_METERS(w), position.y + PIXELS_TO_METERS(h) }, body->GetAngle());
+	c0.body->SetTransform({ c0.position.x + PIXELS_TO_METERS(w), c0.position.y + PIXELS_TO_METERS(h) }, c0.body->GetAngle());
+	c1.body->SetTransform({ c1.position.x + PIXELS_TO_METERS(w), c1.position.y + PIXELS_TO_METERS(h) }, c1.body->GetAngle());
+	c2.body->SetTransform({ c2.position.x + PIXELS_TO_METERS(w), c2.position.y + PIXELS_TO_METERS(h) }, c2.body->GetAngle());
 
-	currentAnimation = &idleAnimD;
-	if (app->menu->dead)
-	{
-		app->menu->dead = false;
-	}*/
+	look_dir = 1;
 
 	return true;
 }
 
 bool Player::Save(pugi::xml_node& data)
 {
-	/*data.child("player").child("position").attribute("x").set_value(position.x);
-	data.child("player").child("position").attribute("y").set_value(position.y);*/
+	data.child("player").child("position").attribute("x").set_value(position.x);
+	data.child("player").child("position").attribute("y").set_value(position.y);
+	data.child("player").child("comp0").attribute("x").set_value(c0.position.x);
+	data.child("player").child("comp0").attribute("y").set_value(c0.position.y);
+	data.child("player").child("comp1").attribute("x").set_value(c1.position.x);
+	data.child("player").child("comp1").attribute("y").set_value(c1.position.y);
+	data.child("player").child("comp2").attribute("x").set_value(c2.position.x);
+	data.child("player").child("comp2").attribute("y").set_value(c2.position.y);
 
 	return true;
 }
@@ -977,6 +1026,12 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 		{
 			disty = -1.0f;
 		}
+	}
+
+	if (app->scene->godmode)
+	{
+		distx *= 2;
+		disty *= 2;
 	}
 
 	c.body->SetLinearVelocity({ distx * speed * dt,  disty * speed * dt });
