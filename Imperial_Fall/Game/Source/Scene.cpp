@@ -47,7 +47,7 @@ bool Scene::Start()
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ Ã§Ã¼Ã©Ã¢Ã¤Ã aÃ§ÃªÃ«Ã¨Ã¯Ã®Ã¬Ã¤aÃ©Ã†Ã¦Ã´Ã¶Ã²Ã»Ã¹" };
 	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
 
 	return true;

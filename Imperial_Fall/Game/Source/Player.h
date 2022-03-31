@@ -52,6 +52,8 @@ private:
 private:
 	int w = 20, h = 32;
 	float speed = 0.3f;
+	bool collision_active;
+	b2Fixture* bodyFixture;
 
 public:
 	Animation* currentAnimation = NULL;

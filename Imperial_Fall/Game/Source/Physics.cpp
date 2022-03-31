@@ -187,11 +187,6 @@ bool Physics::PostUpdate()
 						c_g = 100;
 						c_b = 100;
 						break;
-					default:
-						c_r = 0;
-						c_g = 0;
-						c_b = 255;
-						break;
 					}
 					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), c_r, c_g, c_b);
 				}
