@@ -46,7 +46,15 @@ bool Entities::Start()
 
 	while (item != NULL && ret == true)
 	{
-		item->data->InitCustomEntity();
+		switch (item->data->entity_type)
+		{
+		case ENTITY_TYPE::RENATO:
+			item->data->InitCustomEntity(1);
+			break;
+		default:
+			item->data->InitCustomEntity();
+			break;
+		}
 		item = item->next;
 	}
 
@@ -205,10 +213,10 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(player, ENTITY_TYPE::PLAYER, p);
 	}
 		break;
-	case ENTITY_TYPE::NPC:
+	case ENTITY_TYPE::RENATO:
 	{
-		Player* player = new Player();
-		AddEntity(player, ENTITY_TYPE::PLAYER, p);
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::RENATO, p);
 	}
 	break;
 	case ENTITY_TYPE::GROUND_ENEMY:
@@ -328,7 +336,7 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	}
 }
 
-void Entity::InitCustomEntity()
+void Entity::InitCustomEntity(int npc)
 {
 
 }

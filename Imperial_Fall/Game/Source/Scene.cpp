@@ -144,19 +144,6 @@ bool Scene::Update(float dt)
 	if (start_screen != NULL)
 	{
 		app->map->Draw();
-		
-	}
-
-	if (godmode)
-	{
-		if (app->input->GetKey(SDL_SCANCODE_LEFT))
-		{
-			app->render->MoveCamera(-5);
-		}
-		if (app->input->GetKey(SDL_SCANCODE_RIGHT))
-		{
-			app->render->MoveCamera(5);
-		}
 	}
 
 	return true;

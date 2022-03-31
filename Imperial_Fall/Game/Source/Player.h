@@ -23,7 +23,7 @@ public:
 	virtual ~Player();
 
 private:
-	void InitCustomEntity();
+	void InitCustomEntity(int npc);
 
 	bool PreUpdate();
 

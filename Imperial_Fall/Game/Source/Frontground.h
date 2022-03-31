@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+#include "Log.h"
+
 class Frontground : public Module
 {
 public:

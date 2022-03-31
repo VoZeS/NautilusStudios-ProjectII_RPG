@@ -97,6 +97,11 @@ void Map::Draw()
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
 							
 						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
+						{
+							// collision Renato
+							app->entities->CreateEntity(ENTITY_TYPE::RENATO, pos.x, pos.y);
+						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
 						{

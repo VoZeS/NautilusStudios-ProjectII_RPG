@@ -132,17 +132,17 @@ bool Physics::PostUpdate()
 					
 					switch ((int)userData)
 					{
-					case 0:
+					case 0: // default
 						c_r = 0;
 						c_g = 0;
 						c_b = 255;
 						break;
-					case 1:
+					case 1: // player
 						c_r = 255;
 						c_g = 128;
 						c_b = 0;
 						break;
-					case 2:
+					case 2: // NPC
 						c_r = 128;
 						c_g = 0;
 						c_b = 255;
@@ -290,16 +290,14 @@ void Physics::BeginContact(b2Contact* contact)
 			}
 		}
 	}
-	else if ((int)fixtureUserDataA == 2)
-	{
-		if ((int)fixtureUserDataB == 3)
-		{
-			on_collosion++;
-		}
-	}
 	else if ((int)fixtureUserDataA == 1)
 	{
-		if ((int)fixtureUserDataB == 4 && !app->scene->godmode)
+		if ((int)fixtureUserDataB == 2)
+		{
+			// npc contact
+			app->frontground->SetPressE_Hide(false);
+		}
+		else if ((int)fixtureUserDataB == 4 && !app->scene->godmode)
 		{
 			// player death
 			Entity* entity = app->entities->GetPlayer();
@@ -474,16 +472,14 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataB == 2)
+	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 3)
+		if ((int)fixtureUserDataA == 2)
 		{
-			on_collosion++;
+			// npc contact
+			app->frontground->SetPressE_Hide(false);
 		}
-	}
-	else if ((int)fixtureUserDataB == 1)
-	{
-		if ((int)fixtureUserDataA == 4 && !app->scene->godmode)
+		else if ((int)fixtureUserDataA == 4 && !app->scene->godmode)
 		{
 			// player death
 			Entity* entity = app->entities->GetPlayer();
@@ -664,16 +660,14 @@ void Physics::EndContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
-	if ((int)fixtureUserDataA == 2)
+	if ((int)fixtureUserDataA == 1)
 	{
-		if ((int)fixtureUserDataB == 3)
+		if ((int)fixtureUserDataB == 2)
 		{
-			on_collosion--;
+			// npc contact
+			app->frontground->SetPressE_Hide(true);
 		}
-	}
-	else if ((int)fixtureUserDataA == 1)
-	{
-		if ((int)fixtureUserDataB == 5)
+		else if ((int)fixtureUserDataB == 5)
 		{
 			// hide save level
 			app->frontground->SetPressE_Hide(true);
@@ -693,15 +687,13 @@ void Physics::EndContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataB == 2)
+	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 3)
+		if ((int)fixtureUserDataA == 2)
 		{
-			on_collosion--;
+			// npc contact
+			app->frontground->SetPressE_Hide(true);
 		}
-	}
-	else if ((int)fixtureUserDataB == 1)
-	{
 		if ((int)fixtureUserDataA == 5)
 		{
 			// hide save level

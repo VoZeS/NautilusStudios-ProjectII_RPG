@@ -18,155 +18,155 @@
 Player::Player() : Entity()
 {
 	// main idle animation
-	idleAnimD.PushBack({ 5, 2, 50, 72 });
-	idleAnimD.PushBack({ 65, 2, 50, 72 });
+	idleAnimD.PushBack({ 5, 0, 50, 72 });
+	idleAnimD.PushBack({ 65, 0, 50, 72 });
 	idleAnimD.speed = 0.03f;
 
-	idleAnimU.PushBack({ 5, 242, 50, 72 });
-	idleAnimU.PushBack({ 65, 242, 50, 72 });
+	idleAnimU.PushBack({ 5, 240, 50, 72 });
+	idleAnimU.PushBack({ 65, 240, 50, 72 });
 	idleAnimU.speed = 0.03f;
 
-	idleAnimL.PushBack({ 5, 84, 50, 72 });
-	idleAnimL.PushBack({ 65, 84, 50, 72 });
+	idleAnimL.PushBack({ 5, 82, 50, 72 });
+	idleAnimL.PushBack({ 65, 82, 50, 72 });
 	idleAnimL.speed = 0.03f;
 
-	idleAnimR.PushBack({ 5, 164, 50, 72 });
-	idleAnimR.PushBack({ 65, 164, 50, 72 });
+	idleAnimR.PushBack({ 5, 162, 50, 72 });
+	idleAnimR.PushBack({ 65, 162, 50, 72 });
 	idleAnimR.speed = 0.03f;
 
 	// main walk animation
-	walkAnimD.PushBack({ 5, 2, 50, 72 });
-	walkAnimD.PushBack({ 65, 2, 50, 72 });
-	walkAnimD.PushBack({ 125, 2, 50, 72 });
+	walkAnimD.PushBack({ 5, 0, 50, 72 });
+	walkAnimD.PushBack({ 65, 0, 50, 72 });
+	walkAnimD.PushBack({ 125, 0, 50, 72 });
 	walkAnimD.speed = 0.1f;
 
-	walkAnimU.PushBack({ 5, 242, 50, 72 });
-	walkAnimU.PushBack({ 65, 242, 50, 72 });
-	walkAnimU.PushBack({ 125, 242, 50, 72 });
+	walkAnimU.PushBack({ 5, 240, 50, 72 });
+	walkAnimU.PushBack({ 65, 240, 50, 72 });
+	walkAnimU.PushBack({ 125, 240, 50, 72 });
 	walkAnimU.speed = 0.1f;
 
-	walkAnimL.PushBack({ 5, 84, 50, 72 });
-	walkAnimL.PushBack({ 65, 84, 50, 72 });
-	walkAnimL.PushBack({ 125, 84, 50, 72 });
+	walkAnimL.PushBack({ 5, 82, 50, 72 });
+	walkAnimL.PushBack({ 65, 82, 50, 72 });
+	walkAnimL.PushBack({ 125, 82, 50, 72 });
 	walkAnimL.speed = 0.1f;
 
-	walkAnimR.PushBack({ 5, 164, 50, 72 });
-	walkAnimR.PushBack({ 65, 164, 50, 72 });
-	walkAnimR.PushBack({ 125, 164, 50, 72 });
+	walkAnimR.PushBack({ 5, 162, 50, 72 });
+	walkAnimR.PushBack({ 65, 162, 50, 72 });
+	walkAnimR.PushBack({ 125, 162, 50, 72 });
 	walkAnimR.speed = 0.1f;
 
 	// c0 idle animation
-	c0_idleAnimD.PushBack({ 5, 2, 50, 72 });
-	c0_idleAnimD.PushBack({ 65, 2, 50, 72 });
+	c0_idleAnimD.PushBack({ 5, 0, 50, 72 });
+	c0_idleAnimD.PushBack({ 65, 0, 50, 72 });
 	c0_idleAnimD.speed = 0.03f;
 
-	c0_idleAnimU.PushBack({ 5, 242, 50, 72 });
-	c0_idleAnimU.PushBack({ 65, 242, 50, 72 });
+	c0_idleAnimU.PushBack({ 5, 240, 50, 72 });
+	c0_idleAnimU.PushBack({ 65, 240, 50, 72 });
 	c0_idleAnimU.speed = 0.03f;
 
-	c0_idleAnimL.PushBack({ 5, 84, 50, 72 });
-	c0_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c0_idleAnimL.PushBack({ 5, 82, 50, 72 });
+	c0_idleAnimL.PushBack({ 65, 82, 50, 72 });
 	c0_idleAnimL.speed = 0.03f;
 
-	c0_idleAnimR.PushBack({ 5, 164, 50, 72 });
-	c0_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c0_idleAnimR.PushBack({ 5, 162, 50, 72 });
+	c0_idleAnimR.PushBack({ 65, 162, 50, 72 });
 	c0_idleAnimR.speed = 0.03f;
 
 	// c0 walk animation
-	c0_walkAnimD.PushBack({ 5, 2, 50, 72 });
-	c0_walkAnimD.PushBack({ 65, 2, 50, 72 });
-	c0_walkAnimD.PushBack({ 125, 2, 50, 72 });
+	c0_walkAnimD.PushBack({ 5, 0, 50, 72 });
+	c0_walkAnimD.PushBack({ 65, 0, 50, 72 });
+	c0_walkAnimD.PushBack({ 125, 0, 50, 72 });
 	c0_walkAnimD.speed = 0.1f;
 
-	c0_walkAnimU.PushBack({ 5, 242, 50, 72 });
-	c0_walkAnimU.PushBack({ 65, 242, 50, 72 });
-	c0_walkAnimU.PushBack({ 125, 242, 50, 72 });
+	c0_walkAnimU.PushBack({ 5, 240, 50, 72 });
+	c0_walkAnimU.PushBack({ 65, 240, 50, 72 });
+	c0_walkAnimU.PushBack({ 125, 240, 50, 72 });
 	c0_walkAnimU.speed = 0.1f;
 
-	c0_walkAnimL.PushBack({ 5, 84, 50, 72 });
-	c0_walkAnimL.PushBack({ 65, 84, 50, 72 });
-	c0_walkAnimL.PushBack({ 125, 84, 50, 72 });
+	c0_walkAnimL.PushBack({ 5, 82, 50, 72 });
+	c0_walkAnimL.PushBack({ 65, 82, 50, 72 });
+	c0_walkAnimL.PushBack({ 125, 82, 50, 72 });
 	c0_walkAnimL.speed = 0.1f;
 
-	c0_walkAnimR.PushBack({ 5, 164, 50, 72 });
-	c0_walkAnimR.PushBack({ 65, 164, 50, 72 });
-	c0_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c0_walkAnimR.PushBack({ 5, 162, 50, 72 });
+	c0_walkAnimR.PushBack({ 65, 162, 50, 72 });
+	c0_walkAnimR.PushBack({ 125, 162, 50, 72 });
 	c0_walkAnimR.speed = 0.1f;
 
 	// c1 idle animation
-	c1_idleAnimD.PushBack({ 5, 2, 50, 72 });
-	c1_idleAnimD.PushBack({ 65, 2, 50, 72 });
+	c1_idleAnimD.PushBack({ 5, 0, 50, 72 });
+	c1_idleAnimD.PushBack({ 65, 0, 50, 72 });
 	c1_idleAnimD.speed = 0.03f;
 
-	c1_idleAnimU.PushBack({ 5, 242, 50, 72 });
-	c1_idleAnimU.PushBack({ 65, 242, 50, 72 });
+	c1_idleAnimU.PushBack({ 5, 240, 50, 72 });
+	c1_idleAnimU.PushBack({ 65, 240, 50, 72 });
 	c1_idleAnimU.speed = 0.03f;
 
-	c1_idleAnimL.PushBack({ 5, 84, 50, 72 });
-	c1_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c1_idleAnimL.PushBack({ 5, 82, 50, 72 });
+	c1_idleAnimL.PushBack({ 65, 82, 50, 72 });
 	c1_idleAnimL.speed = 0.03f;
 
-	c1_idleAnimR.PushBack({ 5, 164, 50, 72 });
-	c1_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c1_idleAnimR.PushBack({ 5, 162, 50, 72 });
+	c1_idleAnimR.PushBack({ 65, 162, 50, 72 });
 	c1_idleAnimR.speed = 0.03f;
 
 	// c1 walk animation
-	c1_walkAnimD.PushBack({ 5, 2, 50, 72 });
-	c1_walkAnimD.PushBack({ 65, 2, 50, 72 });
-	c1_walkAnimD.PushBack({ 125, 2, 50, 72 });
+	c1_walkAnimD.PushBack({ 5, 0, 50, 72 });
+	c1_walkAnimD.PushBack({ 65, 0, 50, 72 });
+	c1_walkAnimD.PushBack({ 125, 0, 50, 72 });
 	c1_walkAnimD.speed = 0.1f;
 
-	c1_walkAnimU.PushBack({ 5, 242, 50, 72 });
-	c1_walkAnimU.PushBack({ 65, 242, 50, 72 });
-	c1_walkAnimU.PushBack({ 125, 242, 50, 72 });
+	c1_walkAnimU.PushBack({ 5, 240, 50, 72 });
+	c1_walkAnimU.PushBack({ 65, 240, 50, 72 });
+	c1_walkAnimU.PushBack({ 125, 240, 50, 72 });
 	c1_walkAnimU.speed = 0.1f;
 	
-	c1_walkAnimL.PushBack({ 5, 84, 50, 72 });
-	c1_walkAnimL.PushBack({ 65, 84, 50, 72 });
-	c1_walkAnimL.PushBack({ 125, 84, 50, 72 });
+	c1_walkAnimL.PushBack({ 5, 82, 50, 72 });
+	c1_walkAnimL.PushBack({ 65, 82, 50, 72 });
+	c1_walkAnimL.PushBack({ 125, 82, 50, 72 });
 	c1_walkAnimL.speed = 0.1f;
 
-	c1_walkAnimR.PushBack({ 5, 164, 50, 72 });
-	c1_walkAnimR.PushBack({ 65, 164, 50, 72 });
-	c1_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c1_walkAnimR.PushBack({ 5, 162, 50, 72 });
+	c1_walkAnimR.PushBack({ 65, 162, 50, 72 });
+	c1_walkAnimR.PushBack({ 125, 162, 50, 72 });
 	c1_walkAnimR.speed = 0.1f;
 
 	// c2 idle animation
-	c2_idleAnimD.PushBack({ 5, 2, 50, 72 });
-	c2_idleAnimD.PushBack({ 65, 2, 50, 72 });
+	c2_idleAnimD.PushBack({ 5, 0, 50, 72 });
+	c2_idleAnimD.PushBack({ 65, 0, 50, 72 });
 	c2_idleAnimD.speed = 0.03f;
 
-	c2_idleAnimU.PushBack({ 5, 242, 50, 72 });
-	c2_idleAnimU.PushBack({ 65, 242, 50, 72 });
+	c2_idleAnimU.PushBack({ 5, 240, 50, 72 });
+	c2_idleAnimU.PushBack({ 65, 240, 50, 72 });
 	c2_idleAnimU.speed = 0.03f;
 
-	c2_idleAnimL.PushBack({ 5, 84, 50, 72 });
-	c2_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c2_idleAnimL.PushBack({ 5, 82, 50, 72 });
+	c2_idleAnimL.PushBack({ 65, 82, 50, 72 });
 	c2_idleAnimL.speed = 0.03f;
 
-	c2_idleAnimR.PushBack({ 5, 164, 50, 72 });
-	c2_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c2_idleAnimR.PushBack({ 5, 162, 50, 72 });
+	c2_idleAnimR.PushBack({ 65, 162, 50, 72 });
 	c2_idleAnimR.speed = 0.03f;
 
 	// c2 walk animation
-	c2_walkAnimD.PushBack({ 5, 2, 50, 72 });
-	c2_walkAnimD.PushBack({ 65, 2, 50, 72 });
-	c2_walkAnimD.PushBack({ 125, 2, 50, 72 });
+	c2_walkAnimD.PushBack({ 5, 0, 50, 72 });
+	c2_walkAnimD.PushBack({ 65, 0, 50, 72 });
+	c2_walkAnimD.PushBack({ 125, 0, 50, 72 });
 	c2_walkAnimD.speed = 0.1f;
 
-	c2_walkAnimU.PushBack({ 5, 242, 50, 72 });
-	c2_walkAnimU.PushBack({ 65, 242, 50, 72 });
-	c2_walkAnimU.PushBack({ 125, 242, 50, 72 });
+	c2_walkAnimU.PushBack({ 5, 240, 50, 72 });
+	c2_walkAnimU.PushBack({ 65, 240, 50, 72 });
+	c2_walkAnimU.PushBack({ 125, 240, 50, 72 });
 	c2_walkAnimU.speed = 0.1f;
 
-	c2_walkAnimL.PushBack({ 5, 84, 50, 72 });
-	c2_walkAnimL.PushBack({ 65, 84, 50, 72 });
-	c2_walkAnimL.PushBack({ 125, 84, 50, 72 });
+	c2_walkAnimL.PushBack({ 5, 82, 50, 72 });
+	c2_walkAnimL.PushBack({ 65, 82, 50, 72 });
+	c2_walkAnimL.PushBack({ 125, 82, 50, 72 });
 	c2_walkAnimL.speed = 0.1f;
 
-	c2_walkAnimR.PushBack({ 5, 164, 50, 72 });
-	c2_walkAnimR.PushBack({ 65, 164, 50, 72 });
-	c2_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c2_walkAnimR.PushBack({ 5, 162, 50, 72 });
+	c2_walkAnimR.PushBack({ 65, 162, 50, 72 });
+	c2_walkAnimR.PushBack({ 125, 162, 50, 72 });
 	c2_walkAnimR.speed = 0.1f;
 }
 
@@ -174,7 +174,7 @@ Player::Player() : Entity()
 Player::~Player()
 {}
 
-void Player::InitCustomEntity()
+void Player::InitCustomEntity(int npc)
 {
 	currentAnimation = &idleAnimD;
 	look_dir = 1;
@@ -235,7 +235,7 @@ void Player::InitCustomEntity()
 	c2.currentAnimation = &c2_idleAnimD;
 
 	b2BodyDef c2_body;
-	c2_body.type = b2_dynamicBody;
+	c2_body.type = b2_kinematicBody;
 	c2_body.fixedRotation = true;
 	c2_body.position.Set(position.x, position.y + 15);
 

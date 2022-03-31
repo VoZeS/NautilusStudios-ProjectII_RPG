@@ -14,11 +14,9 @@ public:
 	virtual ~NPC();
 
 private:
-	void InitCustomEntity();
+	void InitCustomEntity(int npc);
 
 	bool PreUpdate();
-
-	void HandleInput(float dt);
 
 	bool Update(float dt);
 
@@ -30,6 +28,7 @@ private:
 
 private:
 	int w = 20, h = 32;
+	int npc_type; // renato = 1,
 
 public:
 	Animation* currentAnimation = NULL;
