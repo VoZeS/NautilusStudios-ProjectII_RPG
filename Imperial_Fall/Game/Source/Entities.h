@@ -11,6 +11,10 @@
 enum class ENTITY_TYPE
 {
 	PLAYER = 0,
+	RENATO,
+	CURANDERO,
+	HERRERO,
+	GRANJERO,
 	GROUND_ENEMY,
 	STATIC_ENEMY, // create one for each diferent enemy
 	COIN,
@@ -25,7 +29,7 @@ public:
 
 	void Init(ENTITY_TYPE type, fPoint p);
 
-	virtual void InitCustomEntity();
+	virtual void InitCustomEntity(int npc = 0);
 	virtual bool PreUpdate();
 	virtual void HandleInput(float dt);
 	virtual bool Update(float dt);

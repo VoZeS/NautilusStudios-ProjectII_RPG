@@ -6,7 +6,7 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="-140" />
+		<camera x="0" y="-1240" />
 	</renderer>
 	<entities>
 		<player>
@@ -16,10 +16,10 @@
 			<comp2 x="10" y="20.1212254" />
 		</player>
 		<enemies>
-			<ground0 x="32.0005074" y="22.3999996" state="0" />
-			<ground1 x="48.6405067" y="9.59999943" state="0" />
-			<ground2 x="65.9204865" y="26.2399998" state="0" />
-			<ground3 x="70.4004898" y="16" state="0" />
+			<ground0 x="31.9988213" y="22.3999996" state="0" />
+			<ground1 x="48.6388206" y="9.59999943" state="0" />
+			<ground2 x="65.9188461" y="26.2399998" state="0" />
+			<ground3 x="70.3988495" y="16" state="0" />
 			<air0 x="14.7199993" y="8.70753574" state="0" />
 			<air1 x="99.1999969" y="11.9075365" state="0" />
 		</enemies>

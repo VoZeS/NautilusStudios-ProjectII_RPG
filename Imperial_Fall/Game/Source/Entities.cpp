@@ -5,6 +5,7 @@
 
 #include "Player.h"
 #include "Enemies.h"
+#include "NPC.h"
 #include "Coins.h"
 #include "Hearts.h"
 
@@ -45,7 +46,24 @@ bool Entities::Start()
 
 	while (item != NULL && ret == true)
 	{
-		item->data->InitCustomEntity();
+		switch (item->data->entity_type)
+		{
+		case ENTITY_TYPE::RENATO:
+			item->data->InitCustomEntity(1);
+			break;
+		case ENTITY_TYPE::CURANDERO:
+			item->data->InitCustomEntity(2);
+			break;
+		case ENTITY_TYPE::HERRERO:
+			item->data->InitCustomEntity(3);
+			break;
+		case ENTITY_TYPE::GRANJERO:
+			item->data->InitCustomEntity(4);
+			break;
+		default:
+			item->data->InitCustomEntity();
+			break;
+		}
 		item = item->next;
 	}
 
@@ -72,7 +90,24 @@ bool Entities::PreUpdate()
 
 		if (!entity->init)
 		{
-			item->data->InitCustomEntity();
+			switch (entity->entity_type)
+			{
+			case ENTITY_TYPE::RENATO:
+				entity->InitCustomEntity(1);
+				break;
+			case ENTITY_TYPE::CURANDERO:
+				entity->InitCustomEntity(2);
+				break;
+			case ENTITY_TYPE::HERRERO:
+				entity->InitCustomEntity(3);
+				break;
+			case ENTITY_TYPE::GRANJERO:
+				entity->InitCustomEntity(4);
+				break;
+			default:
+				entity->InitCustomEntity();
+				break;
+			}
 			entity->init = true;
 		}
 		else
@@ -148,6 +183,21 @@ bool Entities::PostUpdate()
 // Called before quitting
 bool Entities::CleanUp()
 {
+	if (!app->scene->GetStartScreenState())
+	{
+		ListItem<Entity*>* item;
+		Entity* entity = NULL;
+
+		for (item = entities.start; item != NULL; item = item->next)
+		{
+			entity = item->data;
+
+			if (entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO || entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+			{
+				entities.Del(item);
+			}
+		}
+	}
 
 	return true;
 }
@@ -202,6 +252,30 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 	{
 		Player* player = new Player();
 		AddEntity(player, ENTITY_TYPE::PLAYER, p);
+	}
+		break;
+	case ENTITY_TYPE::RENATO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::RENATO, p);
+	}
+		break;
+	case ENTITY_TYPE::CURANDERO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::CURANDERO, p);
+	}
+		break;
+	case ENTITY_TYPE::HERRERO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::HERRERO, p);
+	}
+		break;
+	case ENTITY_TYPE::GRANJERO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
 	case ENTITY_TYPE::GROUND_ENEMY:
@@ -321,7 +395,7 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	}
 }
 
-void Entity::InitCustomEntity()
+void Entity::InitCustomEntity(int npc)
 {
 
 }

@@ -212,7 +212,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 				lastPath.Flip();
 				ret = lastPath.Count();
-				LOG("Created path of %d steps in %d iterations", ret, iterations);
+				//LOG("Created path of %d steps in %d iterations", ret, iterations);
 				break;
 			}
 
