@@ -45,17 +45,37 @@ public:
 
 	int current_level = 0;
 
+	int textFontDialog= -1;
+
 	int textFont = -1;
+
+	int limitLenght = 0;
 
 	uint letlengh = 0;
 
 	int letter_cd = 0;
+
+	bool inDialog = false;
+	bool inDialogRenato = false;
+	bool inDialogAlly = false;
+	bool inDialogEnemy = false;
 
 private:
 	SDL_Texture* start_screen;
 
 	SDL_Texture* pathTex;
 	SDL_Texture* originTex;
+
+	// Dialog Stuff
+	pugi::xml_document dialogFile;
+	pugi::xml_node dialog;
+	pugi::xml_node renato;
+	pugi::xml_node text1;
+
+	std::string linea1String_Renato;
+	const char* linea1Char_Renato;
+
+	bool LoadDialog();
 
 	iPoint origin;
 	bool originSelected = false;

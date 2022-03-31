@@ -10,6 +10,7 @@
 
 #define CONFIG_FILENAME		"config.xml"
 #define SAVE_STATE_FILENAME "save_game.xml"
+#define DIALOG_FILENAME		"dialog.xml"
 
 // Modules
 class Window;

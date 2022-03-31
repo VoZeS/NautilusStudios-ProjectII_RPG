@@ -171,7 +171,7 @@ void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom
 	const Font* font = &fonts[font_id];
 	SDL_Rect spriteRect;
 
-	//uint len = strlen(text);
+	app->scene->limitLenght = strlen(text);
 
 	spriteRect.w = 42;
 	spriteRect.h = 42;
