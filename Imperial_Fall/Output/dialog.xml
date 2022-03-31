@@ -2,4 +2,10 @@
 	<renato>
 		<text1 linea1="Buenas, soy Renato." linea2="Id a matar a un templario"/>
 	</renato>
+	<ally>
+		<text1 linea1="Buenos dias, ahora no puedo atenderte." linea2="Vete, por favor."/>
+	</ally>
+	<enemy>
+		<text1 linea1="¿¡Quién eres!? Te voy a derrotar."/>
+	</enemy>
 </dialog>
