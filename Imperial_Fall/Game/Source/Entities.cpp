@@ -478,6 +478,11 @@ void Entity::PlayerDeath()
 
 }
 
+bool Entity::IsPlayerEnabled()
+{
+	return true;
+}
+
 void Entity::ImpulsePlayer()
 {
 

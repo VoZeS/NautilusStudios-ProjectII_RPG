@@ -130,6 +130,11 @@ bool Frontground::FadeFromBlack(int dest_level)
 {
 	return_black = true;
 
+	if (!app->entities->GetPlayer()->IsPlayerEnabled())
+	{
+		app->entities->GetPlayer()->init = false;
+	}
+
 	if (dest_level != -1)
 	{
 		app->map->CleanMaps();
@@ -336,36 +341,17 @@ bool Frontground::FadeOutCombat()
 
 	app->SaveGameRequest();
 
-	/*if (app->map->Load("town_1.tmx") == true)
-	{
-		if (town2_to_town1 == true)
-		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
-		}
-		else if (outside_to_town1 == true)
-		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(100));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
-		}
-		int w, h;
-		uchar* data = NULL;
+	app->map->Load("outside_castle.tmx");
 
-		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-		RELEASE_ARRAY(data);
-	}*/
+	app->entities->GetPlayer()->DeleteEntity();
 
 	return true;
 }
 
 bool Frontground::ReturnToField()
 {
-	
+	in_combat = false;
+	app->scene->PassLevel(app->scene->current_level);
 
 	return true;
 }

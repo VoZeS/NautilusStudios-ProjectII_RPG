@@ -84,7 +84,6 @@ bool NPC::Update(float dt)
 	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
 	{
 		currentAnimation->Update();
-		LOG("%d", npc_type);
 	}
 
 	return true;
