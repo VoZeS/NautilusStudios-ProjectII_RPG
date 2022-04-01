@@ -182,7 +182,21 @@ bool Scene::Update(float dt)
 	if (start_screen != NULL)
 	{
 		app->map->Draw();
-		
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		if (!app->frontground->GetCombatState())
+		{
+			app->frontground->FadeInCombat();
+		}
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		if (app->frontground->GetCombatState())
+		{
+			app->frontground->ReturnToField();
+		}
 	}
 
 	return true;

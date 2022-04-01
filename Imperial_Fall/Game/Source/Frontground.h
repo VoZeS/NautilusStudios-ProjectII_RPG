@@ -36,9 +36,20 @@ public:
 
 	bool FadeFromBlack(int dest_level); // if -1 --> no level change
 
+	bool FadeInCombat(); // start combat
+
+	bool FadeOutCombat();
+
+	bool ReturnToField(); // end combat
+
 	void SetPressE_Hide(bool hide)
 	{
 		press_e_hide = hide;
+	}
+
+	bool GetCombatState()
+	{
+		return in_combat;
 	}
 
 
@@ -63,6 +74,8 @@ private:
 
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
+
+	bool in_combat = false;
 
 };
 

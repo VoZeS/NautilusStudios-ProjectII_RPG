@@ -73,8 +73,15 @@ bool Frontground::Update(float dt)
 	if (a >= 255)
 	{
 		go_black = false;
-		FadeFromBlack(destination_level);
-		
+
+		if (in_combat)
+		{
+			FadeOutCombat();
+		}
+		else
+		{
+			FadeFromBlack(destination_level);
+		}
 	}
 	else if (a <= 0)
 	{
@@ -307,7 +314,58 @@ bool Frontground::FadeFromBlack(int dest_level)
 		}
 	}
 
+	return true;
+}
+
+bool Frontground::FadeInCombat()
+{
+	go_black = true;
+	in_combat = true;
 
 	return true;
 }
 
+bool Frontground::FadeOutCombat()
+{
+	return_black = true;
+
+	app->map->CleanMaps();
+	app->physics->CleanMapBoxes();
+	app->map->collision_loaded = false;
+	app->entities->CleanUp();
+
+	app->SaveGameRequest();
+
+	/*if (app->map->Load("town_1.tmx") == true)
+	{
+		if (town2_to_town1 == true)
+		{
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
+		}
+		else if (outside_to_town1 == true)
+		{
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(100));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+		}
+		int w, h;
+		uchar* data = NULL;
+
+		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}*/
+
+	return true;
+}
+
+bool Frontground::ReturnToField()
+{
+	
+
+	return true;
+}
