@@ -179,6 +179,7 @@ void Player::InitCustomEntity(int npc)
 	currentAnimation = &idleAnimD;
 	look_dir = 1;
 	collision_active = true;
+	player_enabled = true;
 
 	walk_sound = app->audio->LoadFx("Assets/audio/fx/step_sound.wav");
 
@@ -775,39 +776,51 @@ bool Player::Update(float dt)
 // Called each loop iteration
 bool Player::Draw()
 {
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
-	SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
-	SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
-	 
-	if (!app->scene->GetStartScreenState())
+	if (plan_to_delete)
 	{
-		switch (char_control)
+		app->physics->world->DestroyBody(body);
+		app->physics->world->DestroyBody(c0.body);
+		app->physics->world->DestroyBody(c1.body);
+		app->physics->world->DestroyBody(c2.body);
+		plan_to_delete = false;
+	}
+
+	if (player_enabled)
+	{
+		SDL_Rect rect = currentAnimation->GetCurrentFrame();
+		SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
+		SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
+		SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
+
+		if (!app->scene->GetStartScreenState())
 		{
-		case 0:
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			break;
-		case 1:
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			break;
-		case 2:
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			break;
-		case 3:
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			break;
+			switch (char_control)
+			{
+			case 0:
+				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				break;
+			case 1:
+				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				break;
+			case 2:
+				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				break;
+			case 3:
+				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				break;
+			}
 		}
 	}
 	
@@ -923,6 +936,13 @@ void Player::SetPlayerLookDir(int lookDir)
 	look_dir = lookDir;
 }
 
+bool Player::DeleteEntity()
+{
+	player_enabled = false;
+	plan_to_delete = true;
+
+	return true;
+}
 
 void Player::ImpulsePlayer()
 {

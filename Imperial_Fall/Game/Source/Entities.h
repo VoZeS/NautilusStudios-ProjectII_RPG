@@ -58,6 +58,7 @@ public:
 	virtual void SetCompanion1LookDir(int lookDir);
 	virtual void SetCompanion2LookDir(int lookDir);
 
+	virtual bool IsPlayerEnabled();
 	virtual void ImpulsePlayer();
 	virtual void PlayerDeath();
 	virtual void SwitchDirection();

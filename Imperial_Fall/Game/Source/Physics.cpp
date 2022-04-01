@@ -132,12 +132,12 @@ bool Physics::PostUpdate()
 					
 					switch ((int)userData)
 					{
-					case 1:
+					case 1: // player
 						c_r = 255;
 						c_g = 128;
 						c_b = 0;
 						break;
-					case 2:
+					case 2: // npc interaction
 						c_r = 128;
 						c_g = 0;
 						c_b = 255;
@@ -178,6 +178,11 @@ bool Physics::PostUpdate()
 						c_b = 50;
 						break;
 					case 10:
+						c_r = 100;
+						c_g = 100;
+						c_b = 100;
+						break;
+					default:
 						c_r = 100;
 						c_g = 100;
 						c_b = 100;

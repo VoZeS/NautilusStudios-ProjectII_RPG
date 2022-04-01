@@ -73,8 +73,15 @@ bool Frontground::Update(float dt)
 	if (a >= 255)
 	{
 		go_black = false;
-		FadeFromBlack(destination_level);
-		
+
+		if (in_combat)
+		{
+			FadeOutCombat();
+		}
+		else
+		{
+			FadeFromBlack(destination_level);
+		}
 	}
 	else if (a <= 0)
 	{
@@ -122,6 +129,11 @@ bool Frontground::FadeToBlack(int dest_level)
 bool Frontground::FadeFromBlack(int dest_level)
 {
 	return_black = true;
+
+	if (!app->entities->GetPlayer()->IsPlayerEnabled())
+	{
+		app->entities->GetPlayer()->init = false;
+	}
 
 	if (dest_level != -1)
 	{
@@ -307,7 +319,39 @@ bool Frontground::FadeFromBlack(int dest_level)
 		}
 	}
 
+	return true;
+}
+
+bool Frontground::FadeInCombat()
+{
+	go_black = true;
+	in_combat = true;
 
 	return true;
 }
 
+bool Frontground::FadeOutCombat()
+{
+	return_black = true;
+
+	app->map->CleanMaps();
+	app->physics->CleanMapBoxes();
+	app->map->collision_loaded = false;
+	app->entities->CleanUp();
+
+	app->SaveGameRequest();
+
+	app->map->Load("outside_castle.tmx");
+
+	app->entities->GetPlayer()->DeleteEntity();
+
+	return true;
+}
+
+bool Frontground::ReturnToField()
+{
+	in_combat = false;
+	app->scene->PassLevel(app->scene->current_level);
+
+	return true;
+}
