@@ -97,6 +97,26 @@ void Map::Draw()
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
 							
 						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
+						{
+							// Renato
+							app->entities->CreateEntity(ENTITY_TYPE::RENATO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 6)
+						{
+							// Curandero
+							app->entities->CreateEntity(ENTITY_TYPE::CURANDERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 7)
+						{
+							// Herrero
+							app->entities->CreateEntity(ENTITY_TYPE::HERRERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
+						{
+							// Granjero
+							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
+						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
 						{

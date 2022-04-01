@@ -128,6 +128,7 @@ bool Frontground::FadeFromBlack(int dest_level)
 		app->map->CleanMaps();
 		app->physics->CleanMapBoxes();
 		app->map->collision_loaded = false;
+		app->entities->CleanUp();
 
 		switch (dest_level)
 		{
@@ -151,7 +152,6 @@ bool Frontground::FadeFromBlack(int dest_level)
 					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(100));
 					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
 					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
-
 				}
 				int w, h;
 				uchar* data = NULL;

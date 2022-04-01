@@ -280,15 +280,13 @@ void Physics::BeginContact(b2Contact* contact)
 			}
 		}
 	}
-	else if ((int)fixtureUserDataA == 2)
-	{
-		if ((int)fixtureUserDataB == 3)
-		{
-			on_collosion++;
-		}
-	}
 	else if ((int)fixtureUserDataA == 1)
 	{
+		if ((int)fixtureUserDataB == 2)
+		{
+			// npc contact
+			app->frontground->SetPressE_Hide(false);
+		}
 		if ((int)fixtureUserDataB == 4 && !app->scene->godmode)
 		{
 			// player death
@@ -464,15 +462,14 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataB == 2)
+	
+	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 3)
+		if ((int)fixtureUserDataA == 2)
 		{
-			on_collosion++;
+			// npc contact
+			app->frontground->SetPressE_Hide(false);
 		}
-	}
-	else if ((int)fixtureUserDataB == 1)
-	{
 		if ((int)fixtureUserDataA == 4 && !app->scene->godmode)
 		{
 			// player death
@@ -654,15 +651,13 @@ void Physics::EndContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
-	if ((int)fixtureUserDataA == 2)
+	if ((int)fixtureUserDataA == 1)
 	{
-		if ((int)fixtureUserDataB == 3)
+		if ((int)fixtureUserDataB == 2)
 		{
-			on_collosion--;
+			// npc contact
+			app->frontground->SetPressE_Hide(true);
 		}
-	}
-	else if ((int)fixtureUserDataA == 1)
-	{
 		if ((int)fixtureUserDataB == 5)
 		{
 			// hide save level
@@ -683,15 +678,13 @@ void Physics::EndContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataB == 2)
+	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 3)
+		if ((int)fixtureUserDataA == 2)
 		{
-			on_collosion--;
+			// npc contact
+			app->frontground->SetPressE_Hide(true);
 		}
-	}
-	else if ((int)fixtureUserDataB == 1)
-	{
 		if ((int)fixtureUserDataA == 5)
 		{
 			// hide save level

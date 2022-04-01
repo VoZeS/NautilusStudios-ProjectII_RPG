@@ -28,6 +28,7 @@
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\Hearts.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
+    <ClCompile Include="Source\NPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\Hearts.h" />
     <ClInclude Include="Source\Entities.h" />
+    <ClInclude Include="Source\NPC.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
