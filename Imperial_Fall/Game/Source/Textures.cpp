@@ -46,6 +46,10 @@ bool Textures::Start()
 	tank_texture = Load("Assets/textures/Tanque.png");
 	healer_texture = Load("Assets/textures/Healer.png");
 	wizard_texture = Load("Assets/textures/Mago.png");
+	renato_bueno = Load("Assets/textures/renato_bueno.png");
+	curandero = Load("Assets/textures/curandero.png");
+	herrero = Load("Assets/textures/herrero.png");
+	granjero = Load("Assets/textures/granjero.png");
 	start_menu = Load("Assets/textures/Start_screen.png");
 
 

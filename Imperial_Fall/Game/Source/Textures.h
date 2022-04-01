@@ -41,6 +41,10 @@ public:
 	SDL_Texture* tank_texture = NULL;
 	SDL_Texture* healer_texture = NULL;
 	SDL_Texture* wizard_texture = NULL;
+	SDL_Texture* renato_bueno = NULL;
+	SDL_Texture* curandero = NULL;
+	SDL_Texture* herrero = NULL;
+	SDL_Texture* granjero = NULL;
 	SDL_Texture* start_menu = NULL;
 
 

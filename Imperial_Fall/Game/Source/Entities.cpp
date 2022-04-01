@@ -380,7 +380,7 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	}
 }
 
-void Entity::InitCustomEntity()
+void Entity::InitCustomEntity(int npc)
 {
 
 }

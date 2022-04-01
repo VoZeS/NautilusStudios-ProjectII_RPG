@@ -174,7 +174,7 @@ Player::Player() : Entity()
 Player::~Player()
 {}
 
-void Player::InitCustomEntity()
+void Player::InitCustomEntity(int npc)
 {
 	currentAnimation = &idleAnimD;
 	look_dir = 1;

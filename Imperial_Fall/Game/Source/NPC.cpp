@@ -20,7 +20,7 @@ NPC::NPC() : Entity()
 	idleAnim_renato.speed = 0.03f;
 
 	idleAnim_vendedores.PushBack({ 0, 0, 64, 80 });
-	idleAnim_vendedores.PushBack({ 0, 80, 64, 80 });
+	idleAnim_vendedores.PushBack({ 64, 0, 64, 80 });
 	idleAnim_vendedores.speed = 0.03f;
 }
 
