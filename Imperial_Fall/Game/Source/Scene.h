@@ -47,8 +47,20 @@ public:
 
 	int textFont = -1;
 
-private:
+	int nh;
+	bool esc = false;
+	bool dale = false;
+	
+	bool activarMenu = true;
+	bool activarSettings = false;
+	bool movCamara = false;
+
+
 	SDL_Texture* start_screen;
+private:
+	
+	SDL_Texture* settings_screen;
+
 
 	SDL_Texture* pathTex;
 	SDL_Texture* originTex;

@@ -40,9 +40,9 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	app->SaveGameRequest();
-
-	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
 	
+	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
+	settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
@@ -191,14 +191,43 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	
 	bool ret = true;
 
 	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;
 
-	if (start_screen != NULL) 
+	//--------------------------------------MENU----------------------------
+
+	 //Primera pantalla menu
+	if (esc == false && app->menu->settings == false)
 	{
-		app->render->DrawTexture(start_screen, 0, 0);
+		
+		app->render->DrawTexture(start_screen, -150, 100);
 	}
+
+	//-------------------Settings
+	if (app->menu->settings == true)
+	{
+		app->render->DrawTexture(settings_screen, -140, 140);
+	}
+
+
+	//Una vez pulses el Espacio entrara el menu de opciones
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && esc == false)
+	{
+		esc = true;
+	}
+
+	//Segunda Pantalla Menu
+	if (start_screen != NULL && esc == true && app->menu->settings == false)
+	{
+		app->render->DrawTexture(start_screen, -150, -555);
+	}
+
+
+
+	//----------------------------------------------------------------------
 	else
 	{
 		app->map->Draw();
@@ -261,7 +290,6 @@ bool Scene::QuitStartScreen()
 
 bool Scene::ReturnStartScreen()
 {
-	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
-
+	
 	return true;
 }

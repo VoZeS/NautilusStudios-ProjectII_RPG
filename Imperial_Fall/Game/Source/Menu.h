@@ -12,6 +12,7 @@ struct Button {
 	SDL_Rect rect = { 0, 0, 220, 70 };
 	SDL_Texture* tex = NULL;
 	SDL_Texture* alt_tex = NULL;
+	
 
 
 	int state = 0; // 0->idle, 1->above, 2->pressed
@@ -42,7 +43,8 @@ public:
 
 	bool lose;
 
-private:
+	SDL_Texture* torch_fire = NULL;
+	SDL_Rect PauseMenuHUD;
 	SDL_Rect r;
 	bool intro;
 	bool paused;
@@ -51,8 +53,11 @@ private:
 	bool fullscreen;
 	bool credits;
 
-	int xbarra = 635;
-	int xbarra2 = 635;
+private:
+	
+
+	int xbarra = 135;
+	int xbarra2 = 135;
 	bool slider;
 	bool slider2;
 
