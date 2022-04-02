@@ -9,6 +9,9 @@
  <tileset firstgid="2078" name="sprites_tilesets_medieval_village" tilewidth="32" tileheight="32" tilecount="1472" columns="46">
   <image source="sprites_tilesets_medieval_village.png" width="1496" height="1030"/>
  </tileset>
+ <tileset firstgid="3550" name="Castle floor" tilewidth="32" tileheight="32" tilecount="210" columns="30">
+  <image source="Castle floor.png" width="972" height="247"/>
+ </tileset>
  <layer id="1" name="floor&amp;wall" width="121" height="127">
   <properties>
    <property name="Draw" type="int" value="1"/>
@@ -43,10 +46,10 @@
    <tile gid="3436"/>
    <tile gid="3436"/>
    <tile gid="3436"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="3720"/>
+   <tile gid="3720"/>
+   <tile gid="3720"/>
+   <tile gid="3720"/>
    <tile gid="3436"/>
    <tile gid="3436"/>
    <tile gid="3436"/>
@@ -164,10 +167,10 @@
    <tile gid="3436"/>
    <tile gid="3436"/>
    <tile gid="3436"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="3750"/>
+   <tile gid="3750"/>
+   <tile gid="3750"/>
+   <tile gid="3750"/>
    <tile gid="3436"/>
    <tile gid="3436"/>
    <tile gid="3436"/>
@@ -284,12 +287,12 @@
    <tile gid="1526"/>
    <tile gid="1522"/>
    <tile gid="1523"/>
-   <tile gid="1524"/>
-   <tile gid="1525"/>
-   <tile gid="1526"/>
-   <tile gid="1522"/>
-   <tile gid="1523"/>
-   <tile gid="1524"/>
+   <tile gid="3441"/>
+   <tile gid="3720"/>
+   <tile gid="3720"/>
+   <tile gid="3720"/>
+   <tile gid="3720"/>
+   <tile gid="3441"/>
    <tile gid="1525"/>
    <tile gid="1526"/>
    <tile gid="1522"/>
@@ -405,12 +408,12 @@
    <tile gid="1587"/>
    <tile gid="1583"/>
    <tile gid="1584"/>
-   <tile gid="1585"/>
-   <tile gid="1586"/>
-   <tile gid="1587"/>
-   <tile gid="1583"/>
-   <tile gid="1584"/>
-   <tile gid="1585"/>
+   <tile gid="3441"/>
+   <tile gid="3750"/>
+   <tile gid="3750"/>
+   <tile gid="3750"/>
+   <tile gid="3750"/>
+   <tile gid="3441"/>
    <tile gid="1586"/>
    <tile gid="1587"/>
    <tile gid="1583"/>
@@ -526,12 +529,12 @@
    <tile gid="1648"/>
    <tile gid="1644"/>
    <tile gid="1645"/>
-   <tile gid="1646"/>
-   <tile gid="1647"/>
-   <tile gid="1648"/>
-   <tile gid="1644"/>
-   <tile gid="1645"/>
-   <tile gid="1646"/>
+   <tile gid="3441"/>
+   <tile gid="3441"/>
+   <tile gid="3441"/>
+   <tile gid="3441"/>
+   <tile gid="3441"/>
+   <tile gid="3441"/>
    <tile gid="1647"/>
    <tile gid="1648"/>
    <tile gid="1644"/>

@@ -283,10 +283,10 @@ bool Frontground::FadeFromBlack(int dest_level)
 				}
 				else if (inside_to_outside == true)
 				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(500));
-					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
-					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
-					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100));
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(0));
 				}
 
 				int w, h;
@@ -302,10 +302,10 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->SaveGameRequest();
 			if (app->map->Load("inside_castle.tmx") == true)
 			{
-				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(500), PIXELS_TO_METERS(800));
-				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(600));
-				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(500));
-				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(400));
+				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000));
+				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200));
+				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300));
+				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
 
 				int w, h;
 				uchar* data = NULL;
