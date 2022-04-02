@@ -136,7 +136,7 @@ bool Menu::PreUpdate()
 		{
 			if (paused)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			pause_buttons[i].state = 1;
@@ -154,7 +154,7 @@ bool Menu::PreUpdate()
 		{
 			if (intro)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			menu_buttons[i].state = 1;
@@ -172,7 +172,7 @@ bool Menu::PreUpdate()
 		{
 			if (settings)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			settings_buttons[i].state = 1;
@@ -190,7 +190,7 @@ bool Menu::PreUpdate()
 		{
 			if (dead)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			dead_buttons[i].state = 1;
@@ -206,7 +206,7 @@ bool Menu::PreUpdate()
 	{
 		if (lose)
 		{
-			app->audio->PlayFx(hover_sound);
+			//app->audio->PlayFx(hover_sound);
 		}
 		lose_button.state = 1;
 	}

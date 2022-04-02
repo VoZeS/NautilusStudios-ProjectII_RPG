@@ -183,6 +183,19 @@ bool Entities::PostUpdate()
 // Called before quitting
 bool Entities::CleanUp()
 {
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		entity = item->data;
+
+		if (entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO || entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+		{
+			app->physics->world->DestroyBody(entity->body);
+			entities.Del(item);
+		}
+	}
 
 	return true;
 }

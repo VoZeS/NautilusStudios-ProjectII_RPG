@@ -11,6 +11,7 @@
 #include "Entities.h"
 #include "Fonts.h"
 #include "Menu.h"
+#include "Combat_Menu.h"
 #include "Frontground.h"
 
 
@@ -35,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entities = new Entities();
 	fonts = new Fonts();
 	menu = new Menu();
+	combat_menu = new Combat_Menu();
 	frontground = new Frontground();
 
 
@@ -51,6 +53,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entities);
 	AddModule(fonts);
 	AddModule(menu);
+	AddModule(combat_menu);
 	AddModule(frontground);
 
 	// Render last to swap buffer

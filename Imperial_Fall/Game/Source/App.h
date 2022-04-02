@@ -24,6 +24,7 @@ class Physics;
 class Entities;
 class Fonts;
 class Menu;
+class Combat_Menu;
 class Frontground;
 
 
@@ -102,6 +103,7 @@ public:
 	Entities* entities;
 	Fonts* fonts;
 	Menu* menu;
+	Combat_Menu* combat_menu;
 	Frontground* frontground;
 
 private:
