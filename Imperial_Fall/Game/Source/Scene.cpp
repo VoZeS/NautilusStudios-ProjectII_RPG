@@ -39,6 +39,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+
 	app->SaveGameRequest();
 	
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
@@ -97,6 +98,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		app->entities->GetPlayer()->SetPlayerLookDir(0);
@@ -193,9 +195,9 @@ bool Scene::PostUpdate()
 {
 	
 	bool ret = true;
-
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+	
 
 	//--------------------------------------MENU----------------------------
 
@@ -203,39 +205,40 @@ bool Scene::PostUpdate()
 	if (esc == false && app->menu->settings == false)
 	{
 		
-		app->render->DrawTexture(start_screen, -150, 100);
+		app->render->DrawTexture(start_screen, c_x, c_y);
 	}
 
 	//-------------------Settings
 	if (app->menu->settings == true)
 	{
-		app->render->DrawTexture(settings_screen, -140, 140);
+		app->render->DrawTexture(settings_screen, c_x, c_y);
 	}
 
 
 	//Una vez pulses el Espacio entrara el menu de opciones
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && esc == false)
 	{
+		c_y = app->render->camera.y += 300;
 		esc = true;
 	}
 
 	//Segunda Pantalla Menu
 	if (start_screen != NULL && esc == true && app->menu->settings == false)
 	{
-		app->render->DrawTexture(start_screen, -150, -555);
+		app->render->DrawTexture(start_screen, c_x, c_y-700);
 	}
 
 
 
 	//----------------------------------------------------------------------
-	else
+	else if(app->menu->started)
 	{
 		app->map->Draw();
 
-		app->fonts->BlitText(c_x + 30, 5, textFont, "MONEDAS: ");
-		app->fonts->BlitText(c_x + 330, 5, textFont, app->entities->numCoins);
-		app->fonts->BlitText(c_x + 30, 45, textFont, "VIDAS: ");
-		app->fonts->BlitText(c_x + 250, 45, textFont, app->entities->numLifes);
+		app->fonts->BlitText(c_x + 30, c_y + 5, textFont, "MONEDAS: ");
+		app->fonts->BlitText(c_x + 330, c_y + 5, textFont, app->entities->numCoins);
+		app->fonts->BlitText(c_x + 30, c_y + 45, textFont, "VIDAS: ");
+		app->fonts->BlitText(c_x + 250, c_y + 45, textFont, app->entities->numLifes);
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -290,6 +293,6 @@ bool Scene::QuitStartScreen()
 
 bool Scene::ReturnStartScreen()
 {
-	
+	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 	return true;
 }

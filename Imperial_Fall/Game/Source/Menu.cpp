@@ -41,6 +41,7 @@ bool Menu::Start()
 	fullscreen = false;
 	vsync = false;
 	credits = false;
+	intro = false;
 
 	pause_buttons[0].state = 1;
 	menu_buttons[0].state = 1;
@@ -446,20 +447,20 @@ bool Menu::PostUpdate()
 			for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 			{
 				
-				pause_buttons[0].rect.x = 200;
-				pause_buttons[0].rect.y = 610;
+				pause_buttons[0].rect.x = c_x+90;
+				pause_buttons[0].rect.y = c_y+100;
 
 				///Boton Opciones
-				pause_buttons[1].rect.x = 200;
-				pause_buttons[1].rect.y = 720;
+				pause_buttons[1].rect.x = c_x+90;
+				pause_buttons[1].rect.y = c_y+200;
 
 				//Boton Creditos
-				pause_buttons[2].rect.x = 200;
-				pause_buttons[2].rect.y = 830;
+				pause_buttons[2].rect.x = c_x+90;
+				pause_buttons[2].rect.y = c_y+300;
 
 				//Boton Salir
-				pause_buttons[3].rect.x = 200;
-				pause_buttons[3].rect.y = 930;
+				pause_buttons[3].rect.x = c_x +90;
+				pause_buttons[3].rect.y = c_y +400;
 				
 				if (pause_buttons[i].state == 0)
 				{
@@ -485,20 +486,20 @@ bool Menu::PostUpdate()
 			{
 
 				//Boton Jugar
-				menu_buttons[0].rect.x = -100;
-				menu_buttons[0].rect.y = 310;
+				menu_buttons[0].rect.x =c_x +100;
+				menu_buttons[0].rect.y = c_y +10;
 
 				///Boton Opciones
-				menu_buttons[1].rect.x = -100;
-				menu_buttons[1].rect.y = 520;
+				menu_buttons[1].rect.x = c_x ;
+				menu_buttons[1].rect.y = c_y + 200;
 
 				//Boton Creditos
-				menu_buttons[2].rect.x = -100;
-				menu_buttons[2].rect.y = 730;
+				menu_buttons[2].rect.x = c_x ;
+				menu_buttons[2].rect.y = c_y + 300;
 
 				//Boton Salir
-				menu_buttons[3].rect.x = 340;
-				menu_buttons[3].rect.y = 730;
+				menu_buttons[3].rect.x = c_x ;
+				menu_buttons[3].rect.y = c_y+ 400;
 
 				//---------------------Fondo Constante
 				if (menu_buttons[i].state == 0)
@@ -510,22 +511,22 @@ bool Menu::PostUpdate()
 				//Boton Jugar Antorcha
 				else if (menu_buttons[0].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, 195, 320);
+					app->render->DrawTexture(torch_fire, c_x+195, c_y+ 320);
 				}
 				//Boton Opciones Antorcha
 				else if (menu_buttons[1].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, 250, 520);
+					app->render->DrawTexture(torch_fire, c_x +250, c_y +520);
 				}
 				//Boton Creditos Antorcha
 				else if (menu_buttons[2].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, -130, 755);
+					app->render->DrawTexture(torch_fire, c_x -130, c_y+755);
 				}
 				//Boton Salir Antorcha
 				else if (menu_buttons[3].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, 535, 710);
+					app->render->DrawTexture(torch_fire, c_x+ 535, c_y +710);
 				}
 
 				//-----------------------Se activa cuando haces click

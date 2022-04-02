@@ -53,6 +53,7 @@ public:
 	bool fullscreen;
 	bool credits;
 
+	bool started = false;
 private:
 	
 
@@ -86,7 +87,7 @@ private:
 
 	uint win_w, win_h;
 	
-	bool started = false;
+	
 	int save_cd = 50;
 	bool saving = false;
 
