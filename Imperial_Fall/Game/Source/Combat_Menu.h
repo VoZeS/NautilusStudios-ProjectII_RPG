@@ -3,11 +3,13 @@
 
 #include "Module.h"
 #include "Menu.h"
+#include "Animation.h"
+#include "Point.h"
 
 #define NUM_BUTTONS 7  //Bottones generales
-#define NUM_ITEMS_BUTTONS 4
-#define NUM_ENEMIES_BUTTONS 4
-#define NUM_ALLIES_BUTTONS 4
+#define NUM_ITEMS_BUTTONS 5
+#define NUM_ENEMIES_BUTTONS 5
+#define NUM_ALLIES_BUTTONS 5
 
 
 struct Button;
@@ -46,7 +48,7 @@ private:
 	Button general_buttons[NUM_BUTTONS];
 	Button items_buttons[NUM_ITEMS_BUTTONS];
 	Button enemies_buttons[NUM_ENEMIES_BUTTONS];
-	Button allies_buttons[NUM_ENEMIES_BUTTONS];
+	Button allies_buttons[NUM_ALLIES_BUTTONS];
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;
@@ -63,6 +65,17 @@ private:
 	// sound
 	uint click_sound;
 	uint hover_sound;
+
+	// animation
+	Animation* currentAnimation = NULL;
+
+	Animation idleAnim;
+
+	// positions
+	fPoint action_pos[NUM_BUTTONS];
+	fPoint item_pos[NUM_ITEMS_BUTTONS];
+	fPoint enemy_pos[NUM_ENEMIES_BUTTONS];
+	fPoint ally_pos[NUM_ALLIES_BUTTONS];
 
 };
 

@@ -47,7 +47,7 @@ public:
 		press_e_hide = hide;
 	}
 
-	bool GetCombatState()
+	int GetCombatState()
 	{
 		return in_combat;
 	}
@@ -75,7 +75,7 @@ private:
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
 
-	bool in_combat = false;
+	int in_combat = 0; // 0 --> no combat, 1 --> entering in combat, 2 --> in combat
 
 };
 

@@ -74,7 +74,7 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		if (in_combat)
+		if (in_combat != 0)
 		{
 			FadeOutCombat();
 		}
@@ -325,7 +325,7 @@ bool Frontground::FadeFromBlack(int dest_level)
 bool Frontground::FadeInCombat()
 {
 	go_black = true;
-	in_combat = true;
+	in_combat = 1;
 
 	return true;
 }
@@ -344,13 +344,14 @@ bool Frontground::FadeOutCombat()
 	app->map->Load("outside_castle.tmx");
 
 	app->entities->GetPlayer()->DeleteEntity();
+	in_combat = 2;
 
 	return true;
 }
 
 bool Frontground::ReturnToField()
 {
-	in_combat = false;
+	in_combat = 0;
 	app->scene->PassLevel(app->scene->current_level);
 
 	return true;
