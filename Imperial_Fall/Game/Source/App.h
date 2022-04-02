@@ -23,8 +23,9 @@ class PathFinding;
 class Physics;
 class Entities;
 class Fonts;
-class Menu;
+class Combat_Manager;
 class Combat_Menu;
+class Menu;
 class Frontground;
 
 
@@ -102,8 +103,9 @@ public:
 	Physics* physics;
 	Entities* entities;
 	Fonts* fonts;
-	Menu* menu;
+	Combat_Manager* combat_manager;
 	Combat_Menu* combat_menu;
+	Menu* menu;
 	Frontground* frontground;
 
 private:

@@ -30,6 +30,8 @@
     <ClCompile Include="Source\Entities.cpp" />
     <ClCompile Include="Source\NPC.cpp" />
     <ClCompile Include="Source\Combat_Menu.cpp" />
+    <ClCompile Include="Source\Combat_Entities.cpp" />
+    <ClCompile Include="Source\Combat_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -85,6 +87,9 @@
     <ClInclude Include="Source\Entities.h" />
     <ClInclude Include="Source\NPC.h" />
     <ClInclude Include="Source\Combat_Menu.h" />
+    <ClInclude Include="Source\Combat_Entities.h" />
+    <ClInclude Include="Source\Skills.h" />
+    <ClInclude Include="Source\Combat_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

@@ -90,6 +90,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Coins.cpp" />
+    <ClCompile Include="Source\Combat_Entities.cpp" />
+    <ClCompile Include="Source\Combat_Manager.cpp" />
     <ClCompile Include="Source\Combat_Menu.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
@@ -114,6 +116,8 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Coins.h" />
+    <ClInclude Include="Source\Combat_Entities.h" />
+    <ClInclude Include="Source\Combat_Manager.h" />
     <ClInclude Include="Source\Combat_Menu.h" />
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\Entities.h" />
@@ -134,6 +138,7 @@
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Render.h" />
+    <ClInclude Include="Source\Skills.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Window.h" />

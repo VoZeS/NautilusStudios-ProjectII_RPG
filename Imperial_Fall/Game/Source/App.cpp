@@ -10,8 +10,9 @@
 #include "Physics.h"
 #include "Entities.h"
 #include "Fonts.h"
-#include "Menu.h"
+#include "Combat_Manager.h"
 #include "Combat_Menu.h"
+#include "Menu.h"
 #include "Frontground.h"
 
 
@@ -35,8 +36,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	physics = new Physics();
 	entities = new Entities();
 	fonts = new Fonts();
-	menu = new Menu();
+	combat_manager = new Combat_Manager();
 	combat_menu = new Combat_Menu();
+	menu = new Menu();
 	frontground = new Frontground();
 
 
@@ -52,6 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(entities);
 	AddModule(fonts);
+	AddModule(combat_manager);
 	AddModule(combat_menu);
 	AddModule(menu);
 	AddModule(frontground);
