@@ -55,6 +55,7 @@ public:
 	bool activarSettings = false;
 	bool movCamara = false;
 
+	
 
 	SDL_Texture* start_screen;
 private:

@@ -242,9 +242,11 @@ bool Menu::Update(float dt)
 			{
 			case 0:
 				paused = false;
+				started = true;
 				break;
 			case 1:
 				settings = true;
+				started = true;
 				break;
 			case 2:
 				app->scene->ReturnStartScreen();
@@ -486,20 +488,20 @@ bool Menu::PostUpdate()
 			{
 
 				//Boton Jugar
-				menu_buttons[0].rect.x =c_x +100;
-				menu_buttons[0].rect.y = c_y +10;
+				menu_buttons[0].rect.x =c_x + 50 ;
+				menu_buttons[0].rect.y = c_y +150;
 
 				///Boton Opciones
-				menu_buttons[1].rect.x = c_x ;
-				menu_buttons[1].rect.y = c_y + 200;
+				menu_buttons[1].rect.x = c_x + 50;
+				menu_buttons[1].rect.y = c_y + 380;
 
 				//Boton Creditos
-				menu_buttons[2].rect.x = c_x ;
-				menu_buttons[2].rect.y = c_y + 300;
+				menu_buttons[2].rect.x = c_x + 50;
+				menu_buttons[2].rect.y = c_y + 570;
 
 				//Boton Salir
-				menu_buttons[3].rect.x = c_x ;
-				menu_buttons[3].rect.y = c_y+ 400;
+				menu_buttons[3].rect.x = c_x + 500;
+				menu_buttons[3].rect.y = c_y+ 570;
 
 				//---------------------Fondo Constante
 				if (menu_buttons[i].state == 0)

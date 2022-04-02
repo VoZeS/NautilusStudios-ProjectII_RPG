@@ -39,6 +39,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	
+	
 
 	app->SaveGameRequest();
 	
@@ -57,7 +59,7 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
-
+	
 	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
 		app->entities->GetPlayer()->SetPlayerLookDir(0);
@@ -213,11 +215,16 @@ bool Scene::PostUpdate()
 	{
 		app->render->DrawTexture(settings_screen, c_x, c_y);
 	}
+	else {
+		app->menu->settings = false;
+	}
 
 
 	//Una vez pulses el Espacio entrara el menu de opciones
+
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && esc == false)
 	{
+	
 		c_y = app->render->camera.y += 300;
 		esc = true;
 	}
@@ -294,5 +301,6 @@ bool Scene::QuitStartScreen()
 bool Scene::ReturnStartScreen()
 {
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
+	app->menu->started = false;
 	return true;
 }
