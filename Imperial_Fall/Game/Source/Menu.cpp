@@ -14,6 +14,12 @@
 Menu::Menu() : Module()
 {
 	name.Create("menu");
+
+	torch_selection_anim.PushBack({ 0,0,35,49 });
+	torch_selection_anim.PushBack({ 35,0,35,49 });
+	torch_selection_anim.PushBack({ 70,0,35,49 });
+	torch_selection_anim.speed = 0.05f;
+	torch_selection_anim.loop = true;
 }
 
 // Destructor
@@ -235,7 +241,10 @@ bool Menu::PreUpdate()
 // Called each loop iteration
 bool Menu::Update(float dt)
 {
-	
+	// ------------------------------------- Anims Update
+	torch_selection_anim.Update();
+
+
 	if (app->scene->esc == true) {
 	// pause buttons
 	if (paused && !intro && !settings)
@@ -540,15 +549,15 @@ bool Menu::PostUpdate()
 			{
 
 				//Boton Jugar
-				menu_buttons[0].rect.x =c_x + 50 ;
+				menu_buttons[0].rect.x =c_x + 60 ;
 				menu_buttons[0].rect.y = c_y +150;
 
 				///Boton Opciones
-				menu_buttons[1].rect.x = c_x + 50;
+				menu_buttons[1].rect.x = c_x + 100;
 				menu_buttons[1].rect.y = c_y + 380;
 
 				//Boton Creditos
-				menu_buttons[2].rect.x = c_x + 50;
+				menu_buttons[2].rect.x = c_x + 75;
 				menu_buttons[2].rect.y = c_y + 570;
 
 				//Boton Salir
@@ -565,22 +574,26 @@ bool Menu::PostUpdate()
 				//Boton Jugar Antorcha
 				else if (menu_buttons[0].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, c_x+195, c_y+ 320);
+					app->render->DrawTexture(torch_fire, menu_buttons[0].rect.x + 10, menu_buttons[0].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+					
 				}
 				//Boton Opciones Antorcha
 				else if (menu_buttons[1].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, c_x +250, c_y +520);
+					app->render->DrawTexture(torch_fire, menu_buttons[1].rect.x - 40, menu_buttons[1].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+
 				}
 				//Boton Creditos Antorcha
 				else if (menu_buttons[2].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, c_x -130, c_y+755);
+					app->render->DrawTexture(torch_fire, menu_buttons[2].rect.x - 20, menu_buttons[2].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+
 				}
 				//Boton Salir Antorcha
 				else if (menu_buttons[3].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, c_x+ 535, c_y +710);
+					app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 10, menu_buttons[3].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+
 				}
 
 				//Recuadro en Botones cuando haces click Izquiero

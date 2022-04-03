@@ -2,6 +2,8 @@
 #define __MENU_H__
 
 #include "Module.h"
+#include "Animation.h"
+
 
 #define NUM_PAUSE_BUTTONS 4
 #define NUM_MENU_BUTTONS 4
@@ -61,6 +63,7 @@ public:
 	bool started = false;
 private:
 	
+	Animation torch_selection_anim;
 
 	int xbarra = 135;
 	int xbarra2 = 135;
