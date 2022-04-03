@@ -14,7 +14,9 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 
 	alive = true;
 
-	skills[0] = SetSkill(owner, 0); // read from xml
+	entity_type = owner;
+
+	skills[0] = SetSkill(entity_type, 0); // read from xml
 }
 
 bool Combat_Entities::DamageEntity(int amount)
@@ -47,7 +49,7 @@ bool Combat_Entities::DamageEntity(int amount)
 
 void Combat_Entities::ReloadMana(int amount)
 {
-	if (amount == -1)
+	if (amount == 0)
 	{
 		actual_mana += max_mana / 2;
 	}
@@ -59,6 +61,10 @@ void Combat_Entities::ReloadMana(int amount)
 	if (actual_mana > max_mana)
 	{
 		actual_mana = max_mana;
+	}
+	else if (actual_mana < 0)
+	{
+		actual_mana = 0;
 	}
 }
 
@@ -91,8 +97,82 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			stab.mana_cost = 10;
 			stab.objective = true;
 			stab.attack_type = true;
+			stab.element = 0;
+			stab.strenght = 0;
 
 			return stab;
+			break;
+		}
+	}
+	else if (owner == 1)
+	{
+		switch (skill_number)
+		{
+		case 0:
+			Skill slash;
+			slash.owner = owner;
+			slash.skill_name = "Stab";
+			slash.mana_cost = 10;
+			slash.objective = true;
+			slash.attack_type = true;
+			slash.element = 0;
+			slash.strenght = 0;
+
+			return slash;
+			break;
+		}
+	}
+	else if (owner == 2)
+	{
+		switch (skill_number)
+		{
+		case 0:
+			Skill staff_blow;
+			staff_blow.owner = owner;
+			staff_blow.skill_name = "Stab";
+			staff_blow.mana_cost = 10;
+			staff_blow.objective = true;
+			staff_blow.attack_type = true;
+			staff_blow.element = 0;
+			staff_blow.strenght = 0;
+
+			return staff_blow;
+			break;
+		}
+	}
+	else if (owner == 3)
+	{
+		switch (skill_number)
+		{
+		case 0:
+			Skill stone;
+			stone.owner = owner;
+			stone.skill_name = "Stab";
+			stone.mana_cost = 10;
+			stone.objective = true;
+			stone.attack_type = true;
+			stone.element = 0;
+			stone.strenght = 0;
+
+			return stone;
+			break;
+		}
+	}
+	else
+	{
+		switch (skill_number)
+		{
+		case 0:
+			Skill punch;
+			punch.owner = owner;
+			punch.skill_name = "Stab";
+			punch.mana_cost = 10;
+			punch.objective = true;
+			punch.attack_type = true;
+			punch.element = 0;
+			punch.strenght = 0;
+
+			return punch;
 			break;
 		}
 	}

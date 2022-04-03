@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "Scene.h"
 #include "Frontground.h"
+#include "Combat_Manager.h"
 #include "Combat_Menu.h"
 #include "Player.h"
 #include "Defs.h"
@@ -160,7 +161,7 @@ bool Combat_Menu::PreUpdate()
 		in_combat = true;
 	}
 
-	if (in_combat && !app->menu->GetGameState())
+	if (in_combat && !app->menu->GetGameState() && allies_turn)
 	{
 		int x, y;
 		app->input->GetMousePosition(x, y);
@@ -251,7 +252,7 @@ bool Combat_Menu::PreUpdate()
 // Called each loop iteration
 bool Combat_Menu::Update(float dt)
 {
-	if (in_combat)
+	if (in_combat && allies_turn)
 	{
 		// general buttons
 		if (!in_items && !in_enemies && !in_allies)
@@ -263,47 +264,51 @@ bool Combat_Menu::Update(float dt)
 				{
 				case 0:
 					//prepare attack 1
-					//if (/*damage skill*/)
+					if (app->combat_manager->GetActualEntity()->GetSkill(0).objective)
 					{
 						in_enemies = true;
 					}
-					//else if (/*support skill*/)
-					{
-						//in_allies = true;
-					}
-					break;
-				case 1:
-					//prepare attack 2
-					//if (/*damage skill*/)
-					{
-						//in_enemies = true;
-					}
-					//else if (/*support skill*/)
+					else
 					{
 						in_allies = true;
 					}
+					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(0);
+					break;
+				case 1:
+					//prepare attack 2
+					if (app->combat_manager->GetActualEntity()->GetSkill(1).objective)
+					{
+						in_enemies = true;
+					}
+					else
+					{
+						in_allies = true;
+					}
+					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(1);
 					break;
 				case 2:
 					//prepare attack 3
-					//if (/*damage skill*/)
+					if (app->combat_manager->GetActualEntity()->GetSkill(2).objective)
 					{
 						in_enemies = true;
 					}
-					//else if (/*support skill*/)
+					else
 					{
-						//in_allies = true;
+						in_allies = true;
 					}
+					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(2);
 					break;
 				case 3:
 					//prepare attack 4
-					//if (/*damage skill*/)
+					if (app->combat_manager->GetActualEntity()->GetSkill(3).objective)
 					{
 						in_enemies = true;
 					}
-					//else if (/*support skill*/)
+					else
 					{
-						//in_allies = true;
+						in_allies = true;
 					}
+					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(3);
 					break;
 				case 4:
 					//reload mana
@@ -317,6 +322,7 @@ bool Combat_Menu::Update(float dt)
 					break;
 				}
 
+				in_action = true;
 				general_buttons[chosed].state = 2;
 			}
 		}
@@ -397,18 +403,22 @@ bool Combat_Menu::Update(float dt)
 				case 0:
 					//choose enemy 1
 					in_enemies = false;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(0));
 					break;
 				case 1:
 					//choose enemy 2
 					in_enemies = false;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(1));
 					break;
 				case 2:
 					//choose enemy 3
 					in_enemies = false;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(2));
 					break;
 				case 3:
 					//choose enemy 4
 					in_enemies = false;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(3));
 					break;
 				case 4:
 					//cancel action
@@ -416,6 +426,7 @@ bool Combat_Menu::Update(float dt)
 					break;
 				}
 
+				in_action = false;
 				enemies_buttons[chosed].state = 2;
 			}
 		}
@@ -450,6 +461,7 @@ bool Combat_Menu::Update(float dt)
 					break;
 				}
 
+				in_action = false;
 				allies_buttons[chosed].state = 2;
 			}
 		}
@@ -519,88 +531,91 @@ bool Combat_Menu::PostUpdate()
 			}
 		}
 
-		if (!in_items && !in_enemies && !in_allies)
+		if (allies_turn)
 		{
-			for (size_t i = 0; i < NUM_BUTTONS; i++)
+			if (!in_items && !in_enemies && !in_allies)
 			{
-				general_buttons[i].rect.x = action_pos[i].x + c_x;
-				general_buttons[i].rect.y = action_pos[i].y + c_y;
+				for (size_t i = 0; i < NUM_BUTTONS; i++)
+				{
+					general_buttons[i].rect.x = action_pos[i].x + c_x;
+					general_buttons[i].rect.y = action_pos[i].y + c_y;
 
-				if (general_buttons[i].state == 1 && !in_action)
-				{
-					app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
-				}
-				else if (general_buttons[i].state == 2 && !in_action)
-				{
-					app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
-				}
-				else if (general_buttons[i].state == 0)
-				{
-					app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					if (general_buttons[i].state == 1 && !in_action)
+					{
+						app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
+					}
+					else if (general_buttons[i].state == 2 && !in_action)
+					{
+						app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+					}
+					else if (general_buttons[i].state == 0)
+					{
+						app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					}
 				}
 			}
-		}
 
-		if (in_items && !in_enemies && !in_allies)
-		{
-			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+			if (in_items && !in_enemies && !in_allies)
 			{
-				items_buttons[i].rect.x = item_pos[i].x + c_x;
-				items_buttons[i].rect.y = item_pos[i].y + c_y;
+				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+				{
+					items_buttons[i].rect.x = item_pos[i].x + c_x;
+					items_buttons[i].rect.y = item_pos[i].y + c_y;
 
-				if (items_buttons[i].state == 0)
-				{
-					app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-				}
-				else if (items_buttons[i].state == 1)
-				{
-					app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
-				}
-				else if (items_buttons[i].state == 2)
-				{
-					app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
+					if (items_buttons[i].state == 0)
+					{
+						app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					}
+					else if (items_buttons[i].state == 1)
+					{
+						app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
+					}
+					else if (items_buttons[i].state == 2)
+					{
+						app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
+					}
 				}
 			}
-		}
 
-		if (!in_items && in_enemies && !in_allies)
-		{
-			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+			if (!in_items && in_enemies && !in_allies)
 			{
-				if (enemies_buttons[i].state == 1)
+				for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
 				{
-					// aiming sprites
-					app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
-				}
-				else if (enemies_buttons[i].state == 2)
-				{
-					// fire sprites
-					app->render->DrawRectangle(enemies_buttons[i].rect, 0, 255, 0);
-				}
-				else if (enemies_buttons[i].state == 0 && i == 4)
-				{
-					app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					if (enemies_buttons[i].state == 1)
+					{
+						// aiming sprites
+						app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
+					}
+					else if (enemies_buttons[i].state == 2)
+					{
+						// fire sprites
+						app->render->DrawRectangle(enemies_buttons[i].rect, 0, 255, 0);
+					}
+					else if (enemies_buttons[i].state == 0 && i == 4)
+					{
+						app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					}
 				}
 			}
-		}
 
-		if (!in_items && !in_enemies && in_allies)
-		{
-			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+			if (!in_items && !in_enemies && in_allies)
 			{
-				if (allies_buttons[i].state == 1)
+				for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
 				{
-					// aiming sprites
-					app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
-				}
-				else if (allies_buttons[i].state == 2)
-				{
-					// fire sprites
-					app->render->DrawRectangle(allies_buttons[i].rect, 0, 255, 0);
-				}
-				else if (allies_buttons[i].state == 0 && i == 4)
-				{
-					app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					if (allies_buttons[i].state == 1)
+					{
+						// aiming sprites
+						app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
+					}
+					else if (allies_buttons[i].state == 2)
+					{
+						// fire sprites
+						app->render->DrawRectangle(allies_buttons[i].rect, 0, 255, 0);
+					}
+					else if (allies_buttons[i].state == 0 && i == 4)
+					{
+						app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					}
 				}
 			}
 		}

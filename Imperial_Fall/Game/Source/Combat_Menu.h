@@ -33,10 +33,16 @@ public:
 
 	bool CleanUp();
 
+	void SetAlliesTurn(bool h)
+	{
+		allies_turn = h;
+	}
+
 private:
 
 	bool in_combat = false;
 	bool in_action = false;
+	bool allies_turn = false;
 
 	bool in_items = false;
 	bool in_enemies = false;
@@ -76,6 +82,9 @@ private:
 	fPoint item_pos[NUM_ITEMS_BUTTONS];
 	fPoint enemy_pos[NUM_ENEMIES_BUTTONS];
 	fPoint ally_pos[NUM_ALLIES_BUTTONS];
+
+	// combat manager
+	Skill skill_prepared;
 
 };
 

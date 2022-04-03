@@ -14,7 +14,7 @@ public:
 	}
 
 	bool DamageEntity(int amount);
-	void ReloadMana(int amount = -1);
+	void ReloadMana(int amount = 0);
 	void HealEntity(int amount);
 	void ShieldEntity(int amount);
 
@@ -59,6 +59,16 @@ public:
 		return shield;
 	}
 
+	int GetType()
+	{
+		return entity_type;
+	}
+
+	Skill GetSkill(int pos)
+	{
+		return skills[pos];
+	}
+
 private:
 	Skill SetSkill(int owner, int skill_number);
 
@@ -71,6 +81,7 @@ private:
 	int shield;
 
 	bool alive;
+	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
 
 	Skill skills[4];
 };
