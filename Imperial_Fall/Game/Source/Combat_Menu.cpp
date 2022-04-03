@@ -264,6 +264,39 @@ bool Combat_Menu::PreUpdate()
 		}
 	}
 
+	if (prep_in_items)
+	{
+		in_items = false;
+		prep_in_items = false;
+		for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+		{
+			items_buttons[i].state = 0;
+		}
+	}
+	if (prep_in_enemies)
+	{
+		in_enemies = false;
+		prep_in_enemies = false;
+		for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+		{
+			enemies_buttons[i].state = 0;
+		}
+	}
+	if (prep_in_allies)
+	{
+		in_allies = false;
+		prep_in_allies = false;
+		for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+		{
+			allies_buttons[i].state = 0;
+		}
+	}
+
+	if (app->combat_manager->GetInAnimation() == 1)
+	{
+		app->combat_manager->SetInAnimation(2);
+	}
+
 	return true;
 }
 
@@ -330,6 +363,7 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 4:
 					//reload mana
+					app->combat_manager->GetActualEntity()->ReloadMana();
 					break;
 				case 5:
 					//open item menu
@@ -420,27 +454,27 @@ bool Combat_Menu::Update(float dt)
 				{
 				case 0:
 					//choose enemy 1
-					in_enemies = false;
+					prep_in_enemies = true;
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(0));
 					break;
 				case 1:
 					//choose enemy 2
-					in_enemies = false;
+					prep_in_enemies = true;
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(1));
 					break;
 				case 2:
 					//choose enemy 3
-					in_enemies = false;
+					prep_in_enemies = true;
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(2));
 					break;
 				case 3:
 					//choose enemy 4
-					in_enemies = false;
+					prep_in_enemies = true;
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(3));
 					break;
 				case 4:
 					//cancel action
-					in_enemies = false;
+					prep_in_enemies = true;
 					break;
 				}
 
@@ -459,23 +493,23 @@ bool Combat_Menu::Update(float dt)
 				{
 				case 0:
 					//choose ally 1
-					in_allies = false;
+					prep_in_allies = true;
 					break;
 				case 1:
 					//choose ally 2
-					in_allies = false;
+					prep_in_allies = true;
 					break;
 				case 2:
 					//choose ally 3
-					in_allies = false;
+					prep_in_allies = true;
 					break;
 				case 3:
 					//choose ally 4
-					in_allies = false;
+					prep_in_allies = true;
 					break;
 				case 4:
 					//cancel action
-					in_allies = false;
+					prep_in_allies = true;
 					break;
 				}
 
@@ -549,7 +583,7 @@ bool Combat_Menu::PostUpdate()
 			}
 		}
 
-		if (allies_turn)
+		if (allies_turn && app->combat_manager->GetInAnimation() != 2)
 		{
 			if (!in_items && !in_enemies && !in_allies)
 			{
@@ -615,7 +649,7 @@ bool Combat_Menu::PostUpdate()
 					else if (enemies_buttons[i].state == 2)
 					{
 						// fire sprites
-						app->render->DrawRectangle(enemies_buttons[i].rect, 0, 255, 0);
+						app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
 					}
 					else if (enemies_buttons[i].state == 0 && i == 4)
 					{
@@ -641,7 +675,7 @@ bool Combat_Menu::PostUpdate()
 					else if (allies_buttons[i].state == 2)
 					{
 						// fire sprites
-						app->render->DrawRectangle(allies_buttons[i].rect, 0, 255, 0);
+						app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
 					}
 					else if (allies_buttons[i].state == 0 && i == 4)
 					{
@@ -654,6 +688,10 @@ bool Combat_Menu::PostUpdate()
 					}
 				}
 			}
+		}
+		else if (app->combat_manager->GetInAnimation() == 2)
+		{
+			app->fonts->BlitText(500 + c_x, 100 + c_y, textFont, skill_prepared.skill_name);
 		}
 	}
 

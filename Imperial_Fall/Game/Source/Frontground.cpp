@@ -322,10 +322,15 @@ bool Frontground::FadeFromBlack(int dest_level)
 	return true;
 }
 
-bool Frontground::FadeInCombat()
+bool Frontground::FadeInCombat(ENEMIES enemies[])
 {
 	go_black = true;
 	in_combat = 1;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		enemies_to_fight[i] = enemies[i];
+	}
 
 	return true;
 }

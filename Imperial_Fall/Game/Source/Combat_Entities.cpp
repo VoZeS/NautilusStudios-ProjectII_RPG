@@ -22,6 +22,67 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 	skills[3] = SetSkill(entity_type, 3); // read from xml
 }
 
+Combat_Entities::Combat_Entities(ENEMIES enemy)
+{
+	switch (enemy)
+	{
+	case ENEMIES::SKELLETON:
+		max_health = 100;
+		actual_health = max_health;
+		max_mana = 50;
+		actual_mana = max_mana;
+		this->speed = 8;
+		this->power = 10;
+		shield = 0;
+
+		alive = true;
+
+		entity_type = 4;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case ENEMIES::GOBLIN:
+		max_health = 70;
+		actual_health = max_health;
+		max_mana = 30;
+		actual_mana = max_mana;
+		this->speed = 12;
+		this->power = 8;
+		shield = 0;
+
+		alive = true;
+
+		entity_type = 4;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case ENEMIES::TEMPLAR:
+		max_health = 150;
+		actual_health = max_health;
+		max_mana = 100;
+		actual_mana = max_mana;
+		this->speed = 10;
+		this->power = 15;
+		shield = 0;
+
+		alive = true;
+
+		entity_type = 4;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	}
+}
+
 bool Combat_Entities::DamageEntity(int amount)
 {
 	if (shield > 0)

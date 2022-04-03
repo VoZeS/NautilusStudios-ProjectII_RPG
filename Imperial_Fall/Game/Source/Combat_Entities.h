@@ -3,10 +3,18 @@
 
 #include "Skills.h"
 
+enum class ENEMIES
+{
+	SKELLETON,
+	GOBLIN,
+	TEMPLAR
+};
+
 class Combat_Entities
 {
 public:
 	Combat_Entities(int health, int mana, int speed, int power, int owner);
+	Combat_Entities(ENEMIES enemy);
 
 	bool GetEntityState()
 	{
@@ -81,7 +89,7 @@ private:
 	int shield;
 
 	bool alive;
-	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
+	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> enemy
 
 	Skill skills[4];
 };

@@ -32,13 +32,7 @@ bool Combat_Manager::Awake()
 // Called before the first frame
 bool Combat_Manager::Start()
 {
-	/*for (size_t i = 0; i < 4; i++)
-	{
-		general_buttons[i].rect.x = action_pos[i].x;
-		general_buttons[i].rect.y = action_pos[i].y;
-		general_buttons[i].rect.w = 400;
-		general_buttons[i].rect.h = 50;
-	}*/
+	
 	return true;
 }
 
@@ -56,15 +50,15 @@ bool Combat_Manager::PreUpdate()
 		{
 			//init allies
 			allies[0] = new Combat_Entities(100, 50, 20, 14, 0); // assassin
-			allies[1] = new Combat_Entities(100, 50, 10, 14, 1); // tank
-			allies[2] = new Combat_Entities(100, 50, 11, 14, 2); // healer
+			allies[1] = new Combat_Entities(100, 50, 7, 14, 1); // tank
+			allies[2] = new Combat_Entities(100, 50, 9, 14, 2); // healer
 			allies[3] = new Combat_Entities(100, 50, 12, 14, 3); // wizard
 
 			//init enemies
-			enemies[0] = new Combat_Entities(50, 50, 8, 14, 4);
-			enemies[1] = new Combat_Entities(50, 50, 9, 14, 5);
-			enemies[2] = new Combat_Entities(50, 50, 16, 14, 6);
-			enemies[3] = new Combat_Entities(50, 50, 5, 14, 7);
+			for (size_t i = 0; i < 4; i++)
+			{
+				enemies[i] = new Combat_Entities(app->frontground->GetEnemiesToFight(i));
+			}
 
 			//set turn order
 			SetOrder();
@@ -91,7 +85,7 @@ bool Combat_Manager::PreUpdate()
 // Called each loop iteration
 bool Combat_Manager::Update(float dt)
 {
-	if (in_combat && !pass_turn)
+	if (in_combat && !pass_turn && !in_animation)
 	{
 		if (turn_order[turn]->GetType() == 0 || turn_order[turn]->GetType() == 1 || turn_order[turn]->GetType() == 2 || turn_order[turn]->GetType() == 3) // allies
 		{
@@ -101,6 +95,19 @@ bool Combat_Manager::Update(float dt)
 		{
 			// AI
 			EnemyTurn(turn_order[turn]);
+		}
+	}
+
+	if (in_animation == 2)
+	{
+		animation_cd += dt;
+		if (animation_cd >= 60 * dt)
+		{
+			pass_turn = true;
+			app->combat_menu->SetAlliesTurn(false);
+
+			in_animation = 0;
+			animation_cd = 0;
 		}
 	}
 
@@ -160,7 +167,7 @@ void Combat_Manager::SetOrder()
 	{
 		for (size_t j = 0; j < 8; j++)
 		{
-			if (aux[j]->GetSpeed() > max && !InArray(turn_order, i, aux[j]->GetSpeed()))
+			if (aux[j]->GetSpeed() > max && !InArray(turn_order, i, aux[j]))
 			{
 				id = j;
 				max = allies[j]->GetSpeed();
@@ -171,11 +178,11 @@ void Combat_Manager::SetOrder()
 	}
 }
 
-bool Combat_Manager::InArray(Combat_Entities* array[], int length, int speed)
+bool Combat_Manager::InArray(Combat_Entities* array[], int length, Combat_Entities* check)
 {
 	for (size_t i = 0; i < length; i++)
 	{
-		if (array[i]->GetSpeed() == speed)
+		if (array[i] == check)
 		{
 			return true;
 		}
@@ -188,33 +195,51 @@ void Combat_Manager::UpdateHUD()
 	int cx = -app->render->camera.x;
 	int cy = -app->render->camera.y;
 
-	// max health
+	// max health allies
 	app->render->DrawRectangle({ 350 + cx - 200, 150 + cy, allies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 250 + cx - 200, 250 + cy, allies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 350 + cx - 200, 350 + cy, allies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 250 + cx - 200, 450 + cy, allies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
-	// actual health
+	// actual health allies
 	app->render->DrawRectangle({ 351 + cx - 200, 151 + cy, allies[0]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 251 + cx - 200, 251 + cy, allies[1]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 351 + cx - 200, 351 + cy, allies[2]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 251 + cx - 200, 451 + cy, allies[3]->GetActualHealth(), 28 }, 255, 0, 0);
 
-	// max mana
+	// max mana allies
 	app->render->DrawRectangle({ 350 + cx - 200, 150 + cy + 35, allies[0]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 250 + cx - 200, 250 + cy + 35, allies[1]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 350 + cx - 200, 350 + cy + 35, allies[2]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 250 + cx - 200, 450 + cy + 35, allies[3]->GetMaxMana(), 30 }, 0, 0, 70);
 
-	// actual mana
+	// actual mana allies
 	app->render->DrawRectangle({ 351 + cx - 200, 151 + cy + 35, allies[0]->GetActualMana(), 28}, 0, 0, 255);
 	app->render->DrawRectangle({ 251 + cx - 200, 251 + cy + 35, allies[1]->GetActualMana(), 28 }, 0, 0, 255);
 	app->render->DrawRectangle({ 351 + cx - 200, 351 + cy + 35, allies[2]->GetActualMana(), 28 }, 0, 0, 255);
 	app->render->DrawRectangle({ 251 + cx - 200, 451 + cy + 35, allies[3]->GetActualMana(), 28 }, 0, 0, 255);
 
-	/*ally_pos[0] = {350.0f, 150.0f};
-	ally_pos[1] = { 250.0f, 250.0f };
-	ally_pos[2] = { 350.0f, 350.0f };
-	ally_pos[3] = { 250.0f, 450.0f };*/
+	// max health enemies
+	app->render->DrawRectangle({ 866 + cx + 60, 150 + cy, enemies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
+	app->render->DrawRectangle({ 966 + cx + 60, 250 + cy, enemies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
+	app->render->DrawRectangle({ 866 + cx + 60, 350 + cy, enemies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
+	app->render->DrawRectangle({ 966 + cx + 60, 450 + cy, enemies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
+	// actual health enemies
+	app->render->DrawRectangle({ 867 + cx + 60, 151 + cy, enemies[0]->GetActualHealth(), 28 }, 255, 0, 0);
+	app->render->DrawRectangle({ 967 + cx + 60, 251 + cy, enemies[1]->GetActualHealth(), 28 }, 255, 0, 0);
+	app->render->DrawRectangle({ 867 + cx + 60, 351 + cy, enemies[2]->GetActualHealth(), 28 }, 255, 0, 0);
+	app->render->DrawRectangle({ 967 + cx + 60, 451 + cy, enemies[3]->GetActualHealth(), 28 }, 255, 0, 0);
+
+	// max mana enemies
+	app->render->DrawRectangle({ 866 + cx + 60, 150 + cy + 35, enemies[0]->GetMaxMana(), 30 }, 0, 0, 70);
+	app->render->DrawRectangle({ 966 + cx + 60, 250 + cy + 35, enemies[1]->GetMaxMana(), 30 }, 0, 0, 70);
+	app->render->DrawRectangle({ 866 + cx + 60, 350 + cy + 35, enemies[2]->GetMaxMana(), 30 }, 0, 0, 70);
+	app->render->DrawRectangle({ 966 + cx + 60, 450 + cy + 35, enemies[3]->GetMaxMana(), 30 }, 0, 0, 70);
+
+	// actual mana enemies
+	app->render->DrawRectangle({ 867 + cx + 60, 151 + cy + 35, enemies[0]->GetActualMana(), 28 }, 0, 0, 255);
+	app->render->DrawRectangle({ 967 + cx + 60, 251 + cy + 35, enemies[1]->GetActualMana(), 28 }, 0, 0, 255);
+	app->render->DrawRectangle({ 867 + cx + 60, 351 + cy + 35, enemies[2]->GetActualMana(), 28 }, 0, 0, 255);
+	app->render->DrawRectangle({ 967 + cx + 60, 451 + cy + 35, enemies[3]->GetActualMana(), 28 }, 0, 0, 255);
 }
 
 void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entities* objective)
@@ -222,11 +247,13 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 	user->ReloadMana(-skill.mana_cost);
 	objective->DamageEntity(user->GetPower());
 
-	pass_turn = true;
-	app->combat_menu->SetAlliesTurn(false);
+	in_animation = 1;
+	//pass_turn = true;
+	//app->combat_menu->SetAlliesTurn(false);
 }
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
+	app->combat_menu->SetSkillPrepared(user->GetSkill(0));
 	UseSkill(user, user->GetSkill(0), allies[0]);
 }

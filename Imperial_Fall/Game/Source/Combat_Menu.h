@@ -38,6 +38,11 @@ public:
 		allies_turn = h;
 	}
 
+	void SetSkillPrepared(Skill skill)
+	{
+		skill_prepared = skill;
+	}
+
 private:
 
 	bool in_combat = false;
@@ -47,6 +52,9 @@ private:
 	bool in_items = false;
 	bool in_enemies = false;
 	bool in_allies = false;
+	bool prep_in_items = false;
+	bool prep_in_enemies = false;
+	bool prep_in_allies = false;
 
 	SDL_Rect r;
 

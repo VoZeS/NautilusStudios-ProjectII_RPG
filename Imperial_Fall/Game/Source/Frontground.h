@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+enum class ENEMIES;
+
 class Frontground : public Module
 {
 public:
@@ -36,9 +38,16 @@ public:
 
 	bool FadeFromBlack(int dest_level); // if -1 --> no level change
 
-	bool FadeInCombat(); // start combat
+	bool FadeInCombat(ENEMIES enemies[]); // start combat
+
+	ENEMIES enemies_to_fight[4];
 
 	bool FadeOutCombat();
+
+	ENEMIES GetEnemiesToFight(int n)
+	{
+		return enemies_to_fight[n];
+	}
 
 	bool ReturnToField(); // end combat
 

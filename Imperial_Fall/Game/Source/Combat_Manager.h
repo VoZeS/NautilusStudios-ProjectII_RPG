@@ -29,7 +29,7 @@ public:
 	bool CleanUp();
 
 	void SetOrder();
-	bool InArray(Combat_Entities* array[], int length, int speed);
+	bool InArray(Combat_Entities* array[], int length, Combat_Entities* check);
 
 	void UpdateHUD();
 
@@ -52,6 +52,16 @@ public:
 
 	void EnemyTurn(Combat_Entities* user);
 
+	int GetInAnimation()
+	{
+		return in_animation;
+	}
+
+	void SetInAnimation(int n)
+	{
+		in_animation = n;
+	}
+
 private:
 	bool in_combat = false;
 	bool in_action = false;
@@ -64,6 +74,9 @@ private:
 	
 	Combat_Entities* allies[4] = { NULL };
 	Combat_Entities* enemies[4] = { NULL };
+
+	int animation_cd = 0;
+	int in_animation = 0; // 0 --> no, 1 --> starting, 2 --> in
 };
 
 #endif

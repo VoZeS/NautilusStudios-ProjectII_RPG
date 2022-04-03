@@ -5,6 +5,7 @@
 #include "Physics.h"
 
 struct SDL_Texture;
+enum class ENEMIES;
 
 class Scene : public Module
 {
