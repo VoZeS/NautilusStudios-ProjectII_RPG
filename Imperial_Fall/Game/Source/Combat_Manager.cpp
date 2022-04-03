@@ -12,6 +12,9 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 Combat_Manager::Combat_Manager() : Module()
 {
 	name.Create("combat_manager");
@@ -50,8 +53,8 @@ bool Combat_Manager::PreUpdate()
 		{
 			//init allies
 			allies[0] = new Combat_Entities(100, 50, 20, 14, 0); // assassin
-			allies[1] = new Combat_Entities(100, 50, 7, 14, 1); // tank
-			allies[2] = new Combat_Entities(100, 50, 9, 14, 2); // healer
+			allies[1] = new Combat_Entities(100, 50, 9, 14, 1); // healer
+			allies[2] = new Combat_Entities(100, 50, 7, 14, 2); // tank
 			allies[3] = new Combat_Entities(100, 50, 12, 14, 3); // wizard
 
 			//init enemies
@@ -69,11 +72,16 @@ bool Combat_Manager::PreUpdate()
 		{
 			if (pass_turn)
 			{
-				turn++;
-				if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
+				srand(time(NULL));
+				do
 				{
-					turn = 0;
-				}
+					turn++;
+					if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
+					{
+						turn = 0;
+					}
+				} while (!turn_order[turn]->GetEntityState());
+				
 				pass_turn = false;
 			}
 		}
@@ -218,6 +226,12 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 351 + cx - 200, 351 + cy + 35, allies[2]->GetActualMana(), 28 }, 0, 0, 255);
 	app->render->DrawRectangle({ 251 + cx - 200, 451 + cy + 35, allies[3]->GetActualMana(), 28 }, 0, 0, 255);
 
+	// shield allies
+	app->render->DrawRectangle({ 351 + cx - 200 + allies[0]->GetActualHealth(), 151 + cy, allies[0]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 251 + cx - 200 + allies[0]->GetActualHealth(), 251 + cy, allies[1]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 351 + cx - 200 + allies[0]->GetActualHealth(), 351 + cy, allies[2]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 251 + cx - 200 + allies[0]->GetActualHealth(), 451 + cy, allies[3]->GetShield(), 28 }, 120, 120, 120);
+
 	// max health enemies
 	app->render->DrawRectangle({ 866 + cx + 60, 150 + cy, enemies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 966 + cx + 60, 250 + cy, enemies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
@@ -240,20 +254,112 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 967 + cx + 60, 251 + cy + 35, enemies[1]->GetActualMana(), 28 }, 0, 0, 255);
 	app->render->DrawRectangle({ 867 + cx + 60, 351 + cy + 35, enemies[2]->GetActualMana(), 28 }, 0, 0, 255);
 	app->render->DrawRectangle({ 967 + cx + 60, 451 + cy + 35, enemies[3]->GetActualMana(), 28 }, 0, 0, 255);
+
+	// shield allies
+	app->render->DrawRectangle({ 866 + cx + 60 + enemies[0]->GetActualHealth(), 151 + cy, enemies[0]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 966 + cx + 60 + enemies[0]->GetActualHealth(), 251 + cy, enemies[1]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 866 + cx + 60 + enemies[0]->GetActualHealth(), 351 + cy, enemies[2]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 966 + cx + 60 + enemies[0]->GetActualHealth(), 451 + cy, enemies[3]->GetShield(), 28 }, 120, 120, 120);
 }
 
 void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entities* objective)
 {
-	user->ReloadMana(-skill.mana_cost);
-	objective->DamageEntity(user->GetPower());
+	if (user->GetActualMana() < skill.mana_cost)
+	{
+		app->combat_menu->CancelAction();
+	}
+	else
+	{
+		user->ReloadMana(-skill.mana_cost);
 
-	in_animation = 1;
-	//pass_turn = true;
-	//app->combat_menu->SetAlliesTurn(false);
+		// power calculation
+		int damage;
+
+		switch (skill.strenght)
+		{
+		case 0: damage = 0.7f * user->GetPower();
+			break;
+		case 1: damage = user->GetPower();
+			break;
+		case 2: damage = 1.3f * user->GetPower();
+			break;
+		}
+
+		// lauch skill
+		if (skill.objective == OBJECTIVE::ONE_ENEMY)
+		{
+			objective->DamageEntity(damage);
+		}
+		else if (skill.objective == OBJECTIVE::ALL_ENEMY)
+		{
+			for (size_t i = 0; i < 4; i++)
+			{
+				enemies[i]->DamageEntity(damage);
+			}
+		}
+		else if (skill.objective == OBJECTIVE::ONE_ALLY)
+		{
+			if (skill.support_type == SUPPORT_TYPE::SHIELD)
+			{
+				objective->ShieldEntity(damage);
+			}
+			else if (skill.support_type == SUPPORT_TYPE::HEAL)
+			{
+				objective->HealEntity(damage);
+			}
+			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+			{
+				objective->CleanEntity();
+			}
+			else if (skill.support_type == SUPPORT_TYPE::REVIVE)
+			{
+				// revive
+			}
+		}
+		else if (skill.objective == OBJECTIVE::ALL_ALLY)
+		{
+			if (skill.support_type == SUPPORT_TYPE::SHIELD)
+			{
+				for (size_t i = 0; i < 4; i++)
+				{
+					allies[i]->ShieldEntity(damage);
+				}
+			}
+			else if (skill.support_type == SUPPORT_TYPE::HEAL)
+			{
+				for (size_t i = 0; i < 4; i++)
+				{
+					allies[i]->HealEntity(damage);
+				}
+			}
+			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+			{
+				for (size_t i = 0; i < 4; i++)
+				{
+					allies[i]->CleanEntity();
+				}
+			}
+		}
+		else if (skill.objective == OBJECTIVE::SELF)
+		{
+			if (skill.buff_type == BUFF_TYPE::STEALTH)
+			{
+
+			}
+			else if (skill.buff_type == BUFF_TYPE::TAUNT)
+			{
+
+			}
+		}
+		
+		in_animation = 1;
+	}
 }
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
+	int r = rand() % 4;
+
 	app->combat_menu->SetSkillPrepared(user->GetSkill(0));
-	UseSkill(user, user->GetSkill(0), allies[0]);
+	UseSkill(user, user->GetSkill(0), allies[r]);
 }
