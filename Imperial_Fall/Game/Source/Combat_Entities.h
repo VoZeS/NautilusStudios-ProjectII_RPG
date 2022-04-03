@@ -15,6 +15,7 @@ class Combat_Entities
 public:
 	Combat_Entities(int health, int mana, int speed, int power, int owner);
 	Combat_Entities(ENEMIES enemy);
+	~Combat_Entities();
 
 	bool GetEntityState()
 	{

@@ -132,29 +132,6 @@ bool Combat_Menu::Start()
 	allies_buttons[4].rect.w = 400;
 	allies_buttons[4].rect.h = 50;
 
-	/*general_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Attack 1
-	general_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Attack 2
-	general_buttons[2].tex = app->tex->Load("Assets/textures/Exit.png"); // Attack 3
-	general_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Attack 4
-	general_buttons[4].tex = app->tex->Load("Assets/textures/Exit.png"); //Reload Mana
-	general_buttons[5].tex = app->tex->Load("Assets/textures/Exit.png"); // Use Item
-	general_buttons[6].tex = app->tex->Load("Assets/textures/Exit.png"); // Scape
-
-	items_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Item 1
-	items_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Item 2
-	items_buttons[2].tex = app->tex->Load("Assets/textures/Exit.png"); // Item 3
-	items_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Item 4
-	
-	enemies_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Enemy 1
-	enemies_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Enemy 2
-	enemies_buttons[2].tex = app->tex->Load("Assets/textures/Exit.png"); // Enemy 3
-	enemies_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Enemy 4
-
-	allies_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Ally 1
-	allies_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Ally 2
-	allies_buttons[2].tex = app->tex->Load("Assets/textures/Exit.png"); // Ally 3
-	allies_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Ally 4*/
-
 	return true;
 }
 
@@ -164,6 +141,11 @@ bool Combat_Menu::PreUpdate()
 	if (app->frontground->GetCombatState() == 2)
 	{
 		in_combat = true;
+	}
+	else if (app->frontground->GetCombatState() == 0)
+	{
+		in_combat = false;
+		allies_turn = false;
 	}
 
 	if (in_combat && !app->menu->GetGameState() && allies_turn)
@@ -232,6 +214,13 @@ bool Combat_Menu::PreUpdate()
 					}
 				}
 			}
+			for (size_t i = 0; i < 4; i++)
+			{
+				if (!app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
+				{
+					enemies_buttons[i].state = 0;
+				}
+			}
 		}
 		
 		if (!in_items && !in_enemies && in_allies)
@@ -267,6 +256,13 @@ bool Combat_Menu::PreUpdate()
 					{
 						allies_buttons[i].state = 0;
 					}
+				}
+			}
+			for (size_t i = 0; i < 4; i++)
+			{
+				if (!app->combat_manager->GetEnemyByNumber(i)->GetEntityState() && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
+				{
+					enemies_buttons[i].state = 0;
 				}
 			}
 		}

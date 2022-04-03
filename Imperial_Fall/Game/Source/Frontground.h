@@ -61,7 +61,6 @@ public:
 		return in_combat;
 	}
 
-
 	bool town1_to_town2 = false,
 		town2_to_town1 = false,
 		forest_to_town2 = false,
@@ -84,7 +83,7 @@ private:
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
 
-	int in_combat = 0; // 0 --> no combat, 1 --> entering in combat, 2 --> in combat
+	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat
 
 };
 

@@ -83,6 +83,11 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 	}
 }
 
+Combat_Entities::~Combat_Entities()
+{
+
+}
+
 bool Combat_Entities::DamageEntity(int amount)
 {
 	if (shield > 0)

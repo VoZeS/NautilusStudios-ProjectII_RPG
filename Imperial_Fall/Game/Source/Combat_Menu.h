@@ -11,7 +11,6 @@
 #define NUM_ENEMIES_BUTTONS 5
 #define NUM_ALLIES_BUTTONS 5
 
-
 struct Button;
 
 class Combat_Menu : public Module
@@ -48,6 +47,11 @@ public:
 		prep_in_items = true;
 		prep_in_enemies = true;
 		prep_in_allies = true;
+	}
+
+	void SetGameState(bool b)
+	{
+		in_combat = b;
 	}
 
 private:

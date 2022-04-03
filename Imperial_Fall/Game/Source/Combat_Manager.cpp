@@ -46,6 +46,11 @@ bool Combat_Manager::PreUpdate()
 	{
 		in_combat = true;
 	}
+	else if (app->frontground->GetCombatState() == 0)
+	{
+		in_combat = false;
+		combat_init = false;
+	}
 
 	if (in_combat && !app->menu->GetGameState())
 	{

@@ -74,9 +74,14 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		if (in_combat != 0)
+		if (in_combat == 1 || in_combat == 2)
 		{
 			FadeOutCombat();
+		}
+		else if (in_combat == 3)
+		{
+			in_combat = 0;
+			FadeFromBlack(destination_level);
 		}
 		else
 		{
@@ -356,7 +361,7 @@ bool Frontground::FadeOutCombat()
 
 bool Frontground::ReturnToField()
 {
-	in_combat = 0;
+	in_combat = 3;
 	app->scene->PassLevel(app->scene->current_level);
 
 	return true;
