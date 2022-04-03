@@ -327,8 +327,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Lunge";
 			skill.mana_cost = 10;
-			skill.objective = true;
-			skill.attack_type = true;
+			skill.objective = OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.strenght = 0;
 			break;
@@ -336,8 +335,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Block"; // Bloqueo de escudo (puede bloquear y evitar un ataque a sus compañeros)
 			skill.mana_cost = 20;
-			skill.objective = false;
-			skill.attack_type = true;
+			skill.objective = OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.strenght = 0;
 			break;
@@ -345,8 +343,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Templar Scream"; // +5 de daño en todos SUS ataques
 			skill.mana_cost = 20;
-			skill.objective = false;
-			skill.attack_type = true;
+			skill.objective = OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.strenght = 0;
 			break;
@@ -354,8 +351,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Fire Edge"; // Daño medio con fuego
 			skill.mana_cost = 20;
-			skill.objective = true;
-			skill.attack_type = true;
+			skill.objective = OBJECTIVE::ONE_ENEMY;
 			skill.element = 1;
 			skill.strenght = 1;
 			break;
@@ -377,8 +373,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Heal"; // Cura +15 de vida a quien menos vida tenga
 			skill.mana_cost = 30;
-			skill.objective = false;
-			skill.attack_type = true;
+			skill.objective = OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.strenght = 0;
 			break;
@@ -386,8 +381,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "HeartBreaker"; // Roba +5 de vida a los PROTAGONISTAS y se los pone a los ENEMIGOS
 			skill.mana_cost = 20;
-			skill.objective = true;
-			skill.attack_type = false;
+			skill.objective = OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;
 			skill.strenght = 0;
 			break;
@@ -395,38 +389,33 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	}
 	else if (owner == 6) // Goblin (ENEMY)
 	{
-	switch (skill_number)
-	{
-	case 0:
-		skill.owner = owner;
-		skill.skill_name = "Scratch";
-		skill.mana_cost = 10;
-		skill.objective = true;
-		skill.attack_type = true;
-		skill.element = 0;
-		skill.strenght = 0;
-		break;
-	case 1:
-		skill.owner = owner;
-		skill.skill_name = "Triple Scratch"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque
-		skill.mana_cost = 35;
-		skill.objective = true;
-		skill.attack_type = false;
-		skill.element = 0;
-		skill.strenght = 0;
-		break;
-	case 2:
-		skill.owner = owner;
-		skill.skill_name = "Reap";
-		skill.mana_cost = 20;
-		skill.objective = true;
-		skill.attack_type = true;
-		skill.element = 0;
-		skill.strenght = 1;
-		break;
-	}
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Scratch";
+			skill.mana_cost = 10;
+			skill.objective = OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Triple Scratch"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque
+			skill.mana_cost = 35;
+			skill.objective = OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Reap";
+			skill.mana_cost = 20;
+			skill.objective = OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.strenght = 1;
+			break;
+		}
 	}
 	return skill;
-
-
-	}
+}
