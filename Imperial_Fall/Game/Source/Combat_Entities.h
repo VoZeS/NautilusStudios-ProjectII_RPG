@@ -23,8 +23,9 @@ public:
 
 	bool DamageEntity(int amount);
 	void ReloadMana(int amount = 0);
-	void HealEntity(int amount);
 	void ShieldEntity(int amount);
+	void HealEntity(int amount);
+	void CleanEntity();
 
 	int CheckMana()
 	{

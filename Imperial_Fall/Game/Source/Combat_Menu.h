@@ -43,6 +43,13 @@ public:
 		skill_prepared = skill;
 	}
 
+	void CancelAction()
+	{
+		prep_in_items = true;
+		prep_in_enemies = true;
+		prep_in_allies = true;
+	}
+
 private:
 
 	bool in_combat = false;

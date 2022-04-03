@@ -222,6 +222,16 @@ bool Combat_Menu::PreUpdate()
 					enemies_buttons[i].state = 0;
 				}
 			}
+			if (skill_prepared.objective == OBJECTIVE::ALL_ENEMY)
+			{
+				if (enemies_buttons[0].state == 1 || enemies_buttons[1].state == 1 || enemies_buttons[2].state == 1 || enemies_buttons[3].state == 1)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						enemies_buttons[i].state = 1;
+					}
+				}
+			}
 		}
 		
 		if (!in_items && !in_enemies && in_allies)
@@ -237,6 +247,26 @@ bool Combat_Menu::PreUpdate()
 				else
 				{
 					allies_buttons[i].state = 0;
+				}
+			}
+			if (skill_prepared.objective == OBJECTIVE::ALL_ALLY)
+			{
+				if (allies_buttons[0].state == 1 || allies_buttons[1].state == 1 || allies_buttons[2].state == 1 || allies_buttons[3].state == 1)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						allies_buttons[i].state = 1;
+					}
+				}
+			}
+			else if (skill_prepared.objective == OBJECTIVE::SELF)
+			{
+				if (allies_buttons[skill_prepared.owner].state != 1)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						allies_buttons[i].state = 0;
+					}
 				}
 			}
 		}
@@ -315,7 +345,8 @@ bool Combat_Menu::Update(float dt)
 				{
 				case 0:
 					//prepare attack 1
-					if (app->combat_manager->GetActualEntity()->GetSkill(0).objective)
+					if (app->combat_manager->GetActualEntity()->GetSkill(0).objective == OBJECTIVE::ONE_ENEMY || 
+						app->combat_manager->GetActualEntity()->GetSkill(0).objective == OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -327,7 +358,8 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 1:
 					//prepare attack 2
-					if (app->combat_manager->GetActualEntity()->GetSkill(1).objective)
+					if (app->combat_manager->GetActualEntity()->GetSkill(1).objective == OBJECTIVE::ONE_ENEMY ||
+						app->combat_manager->GetActualEntity()->GetSkill(1).objective == OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -339,7 +371,8 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 2:
 					//prepare attack 3
-					if (app->combat_manager->GetActualEntity()->GetSkill(2).objective)
+					if (app->combat_manager->GetActualEntity()->GetSkill(2).objective == OBJECTIVE::ONE_ENEMY ||
+						app->combat_manager->GetActualEntity()->GetSkill(2).objective == OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -351,7 +384,8 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 3:
 					//prepare attack 4
-					if (app->combat_manager->GetActualEntity()->GetSkill(3).objective)
+					if (app->combat_manager->GetActualEntity()->GetSkill(3).objective == OBJECTIVE::ONE_ENEMY ||
+						app->combat_manager->GetActualEntity()->GetSkill(3).objective == OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -364,6 +398,8 @@ bool Combat_Menu::Update(float dt)
 				case 4:
 					//reload mana
 					app->combat_manager->GetActualEntity()->ReloadMana();
+					skill_prepared.skill_name = "reload";
+					app->combat_manager->SetInAnimation(1);
 					break;
 				case 5:
 					//open item menu
@@ -494,18 +530,22 @@ bool Combat_Menu::Update(float dt)
 				case 0:
 					//choose ally 1
 					prep_in_allies = true;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(0));
 					break;
 				case 1:
 					//choose ally 2
 					prep_in_allies = true;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(1));
 					break;
 				case 2:
 					//choose ally 3
 					prep_in_allies = true;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(2));
 					break;
 				case 3:
 					//choose ally 4
 					prep_in_allies = true;
+					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(3));
 					break;
 				case 4:
 					//cancel action
@@ -542,16 +582,13 @@ bool Combat_Menu::PostUpdate()
 
 			if (i != 4)
 			{
-				switch (i)
+				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
 				{
-				case 0: texture = app->tex->assassin_texture;
-					break;
-				case 1: texture = app->tex->healer_texture;
-					break;
-				case 2: texture = app->tex->tank_texture;
-					break;
-				case 3: texture = app->tex->wizard_texture;
-					break;
+					texture = app->tex->assassin_texture;
+				}
+				else
+				{
+					texture = app->tex->tank_texture;
 				}
 
 				// enemies sprites
