@@ -59,9 +59,11 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+
 	
 	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
+	
 		app->entities->GetPlayer()->SetPlayerLookDir(0);
 		PassLevel(1);
 		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
@@ -208,7 +210,7 @@ bool Scene::PostUpdate()
 	prueba = { zom_x,zom_y,zom_w,zom_h };
 	fondoNegro = { c_x,c_y,1280,720 };
 	
-
+	
 	//--------------------------------------MENU----------------------------
 
 	//Desplazamiento del fondo al inicio del juego
@@ -217,6 +219,7 @@ bool Scene::PostUpdate()
 	{
 		desMenu = true;
 		c_y_menu -= 10.0f;
+		fuegoSeguir = true;
 
 	}
 
@@ -256,7 +259,7 @@ bool Scene::PostUpdate()
 
 	if ( daleZom2 == true) {
 
-		
+
 			app->render->DrawRectangle(fondoNegro, 0, 0, 0);
 	
 		zom_w += 25;
@@ -271,10 +274,11 @@ bool Scene::PostUpdate()
 
 	if ( opciones == true)
 	{
+	
 		app->render->DrawTexture(settings_screen, c_x, c_y);		
 	}
 
-
+	
 
 	//----------------------------------------------------
 	/*
@@ -296,6 +300,7 @@ bool Scene::PostUpdate()
 	if (start_screen != NULL && esc == true && app->menu->settings == false)
 	{
 		app->render->DrawTexture(start_screen, c_x, c_y-700);
+
 	}
 
 	//----------------------------------------------------------------------

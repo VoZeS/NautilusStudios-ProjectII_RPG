@@ -15,11 +15,54 @@ Menu::Menu() : Module()
 {
 	name.Create("menu");
 
-	torch_selection_anim.PushBack({ 0,0,35,49 });
-	torch_selection_anim.PushBack({ 35,0,35,49 });
-	torch_selection_anim.PushBack({ 70,0,35,49 });
-	torch_selection_anim.speed = 0.05f;
+	torch_selection_anim.PushBack({ 0,0,33,49 });
+	torch_selection_anim.PushBack({ 35,0,33,49 });
+	torch_selection_anim.PushBack({ 70,0,33,49 });
+	torch_selection_anim.speed = 0.1f;
 	torch_selection_anim.loop = true;
+
+    torch_light_1_anim.PushBack({ 0,0,460,240 });
+	torch_light_1_anim.PushBack({ 490,0,460,240 });
+	torch_light_1_anim.PushBack({ 1000,0,460,240 });
+	torch_light_1_anim.speed = 0.165f;
+	torch_light_1_anim.loop = true;
+
+	torch_light_2_anim.PushBack({ 0,0,570,182 });
+	torch_light_2_anim.PushBack({ 566,0,570,182 });
+	torch_light_2_anim.PushBack({ 1140,0,570,182 });
+	torch_light_2_anim.speed = 0.165f;
+	torch_light_2_anim.loop = true;
+
+	torch_light_3_anim.PushBack({ 0,0,520,182 });
+	torch_light_3_anim.PushBack({ 522,0,520,182 });
+	torch_light_3_anim.PushBack({ 1023,0,520,182 });
+	torch_light_3_anim.speed = 0.165f;
+	torch_light_3_anim.loop = true;
+
+	torch_light_4_anim.PushBack({ 0,0,318,167 });
+	torch_light_4_anim.PushBack({ 318,0,318,167 });
+	torch_light_4_anim.PushBack({ 660,0,318,167 });
+	torch_light_4_anim.speed = 0.165f;
+	torch_light_4_anim.loop = true;
+
+	big_fire_anim.PushBack({ 0,0,400,720 });
+	big_fire_anim.PushBack({400,0,300,720 });
+	big_fire_anim.PushBack({ 700,0,400,720 });
+	big_fire_anim.speed = 0.07f;
+	big_fire_anim.loop = true;
+
+	light_big_fire_anim.PushBack({ 0,113,600,545 });
+	light_big_fire_anim.PushBack({ 600,113,600,545 });
+	light_big_fire_anim.PushBack({ 1260,113,600,545 });
+	light_big_fire_anim.speed = 0.165f;
+	light_big_fire_anim.loop = true;
+
+
+	smook_big_fire_anim.PushBack({ 0,0,350,490 });
+	smook_big_fire_anim.PushBack({ 350,0,350,490 });
+	smook_big_fire_anim.PushBack({ 700,0,350,490 });
+	smook_big_fire_anim.speed = 0.065f;
+	smook_big_fire_anim.loop = true;
 }
 
 // Destructor
@@ -120,6 +163,17 @@ bool Menu::Start()
 
 
 	torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
+	light_fire1 = app->tex->Load("Assets/textures/Torch1_light.png");
+	light_fire2 = app->tex->Load("Assets/textures/Torch2_light.png");
+	light_fire3 = app->tex->Load("Assets/textures/Torch3_light.png");
+	light_fire4 = app->tex->Load("Assets/textures/Torch4_light.png");
+
+	big_fire = app->tex->Load("Assets/textures/Big_Fire.png");
+	big_fire_light = app->tex->Load("Assets/textures/Big_Fire_Light.png");
+
+	smook_big_fire = app->tex->Load("Assets/textures/Smoke.png");
+
+	
 
 	return true;
 }
@@ -243,6 +297,15 @@ bool Menu::Update(float dt)
 {
 	// ------------------------------------- Anims Update
 	torch_selection_anim.Update();
+	torch_light_1_anim.Update();
+	torch_light_2_anim.Update();
+	torch_light_3_anim.Update();
+	torch_light_4_anim.Update();
+
+
+	big_fire_anim.Update();
+	light_big_fire_anim.Update();
+	smook_big_fire_anim.Update();
 
 
 	if (app->scene->esc == true) {
@@ -438,11 +501,27 @@ bool Menu::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
-
+	
 	r.x = c_x;
 	r.y = c_y;
 
+	if (app->scene->fuegoSeguir == true ) {
+		seguir-=10;
+	
+	}
+	if (seguir <= 900 )
+	{
+		app->scene->fuegoSeguir = false;
+	}
+	if (settings==false && !started) {
 
+		app->render->DrawTexture(smook_big_fire, c_x + 980, c_y + seguir +90, &(smook_big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(big_fire_light, c_x + 725, c_y + seguir + 900, &(light_big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(big_fire, c_x + 940, c_y + seguir +620, &(big_fire_anim.GetCurrentFrame()));
+		
+	}
+	
+	
 	//---------------------------------------------------------HUD PAUSE---------------------------------------------
 	//Dimensiones Hud Pause
 	PauseMenuHUD.x = c_x+ c_x_menu-500;
@@ -545,6 +624,7 @@ bool Menu::PostUpdate()
 		//----------------------------------------------------HUD INICIO------------------------------------------
 		if (intro && !settings)
 		{
+
 			for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 			{
 
@@ -574,25 +654,29 @@ bool Menu::PostUpdate()
 				//Boton Jugar Antorcha
 				else if (menu_buttons[0].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, menu_buttons[0].rect.x + 10, menu_buttons[0].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire1, menu_buttons[0].rect.x-132, menu_buttons[0].rect.y - 90, &(torch_light_1_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[0].rect.x + 280, menu_buttons[0].rect.y+20, &(torch_selection_anim.GetCurrentFrame()));
 					
 				}
 				//Boton Opciones Antorcha
 				else if (menu_buttons[1].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, menu_buttons[1].rect.x - 40, menu_buttons[1].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire2, menu_buttons[0].rect.x - 102, menu_buttons[0].rect.y +156, &(torch_light_2_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[1].rect.x +291, menu_buttons[1].rect.y-5, &(torch_selection_anim.GetCurrentFrame()));
 
 				}
 				//Boton Creditos Antorcha
 				else if (menu_buttons[2].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, menu_buttons[2].rect.x - 20, menu_buttons[2].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire3, menu_buttons[0].rect.x - 130, menu_buttons[0].rect.y +359, &(torch_light_3_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[2].rect.x - 55, menu_buttons[2].rect.y+40, &(torch_selection_anim.GetCurrentFrame()));
 
 				}
 				//Boton Salir Antorcha
 				else if (menu_buttons[3].state == 1)
 				{
-					app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 10, menu_buttons[3].rect.y, &(torch_selection_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire4, menu_buttons[0].rect.x +402, menu_buttons[0].rect.y +372, &(torch_light_4_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 185, menu_buttons[3].rect.y-3, &(torch_selection_anim.GetCurrentFrame()));
 
 				}
 

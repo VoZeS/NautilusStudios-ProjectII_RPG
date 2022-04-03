@@ -46,6 +46,15 @@ public:
 	bool lose;
 
 	SDL_Texture* torch_fire = NULL;
+	SDL_Texture* light_fire1 = NULL;
+	SDL_Texture* light_fire2 = NULL;
+	SDL_Texture* light_fire3 = NULL;
+	SDL_Texture* light_fire4 = NULL;
+
+	SDL_Texture* big_fire = NULL;
+	SDL_Texture* big_fire_light = NULL;
+	SDL_Texture* smook_big_fire = NULL;
+
 	SDL_Rect PauseMenuHUD;
 	SDL_Rect r;
 	bool intro;
@@ -55,6 +64,7 @@ public:
 	bool fullscreen;
 	bool credits;
 
+	int seguir;
 	
 	bool stop = false;
 	bool desMenu = false;
@@ -64,6 +74,16 @@ public:
 private:
 	
 	Animation torch_selection_anim;
+	Animation torch_light_1_anim;
+	Animation torch_light_2_anim;
+	Animation torch_light_3_anim;
+	Animation torch_light_4_anim;
+
+
+
+	Animation big_fire_anim;
+	Animation light_big_fire_anim;
+	Animation smook_big_fire_anim;
 
 	int xbarra = 135;
 	int xbarra2 = 135;

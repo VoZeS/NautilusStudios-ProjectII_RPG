@@ -48,6 +48,9 @@ public:
 	int textFont = -1;
 
 	int nh;
+
+	bool fuegoSeguir = false;
+
 	bool esc = false;
 	bool desMenu = false;
 	
