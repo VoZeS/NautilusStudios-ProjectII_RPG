@@ -32,6 +32,9 @@ bool Menu::Start()
 {
 	r = { 0, 0, 1280, 720 };
 	PauseMenuHUD = { 100,500,400,720 }; //Cuadro Menu Pause
+
+	
+
 	paused = false;
 	settings = false;
 	dead = false;
@@ -120,14 +123,16 @@ bool Menu::PreUpdate()
 {
 	intro = app->scene->GetStartScreenState();
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
 	{
 		paused = !paused;
+		
 	}
 
 	if (settings && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		settings = false;
+		app->scene->opciones = false;
 	}
 
 	if (app->scene->esc == true) {
@@ -161,7 +166,7 @@ bool Menu::PreUpdate()
 		SDL_Rect rect = menu_buttons[i].rect;
 		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 		{
-			if (intro)
+			if (intro && !settings)
 			{
 				app->audio->PlayFx(hover_sound);
 			}
@@ -247,9 +252,12 @@ bool Menu::Update(float dt)
 			case 1:
 				settings = true;
 				started = true;
+			
+				app->scene->opciones = true;
 				break;
 			case 2:
 				app->scene->ReturnStartScreen();
+				
 				paused = false;
 				break;
 			case 3:
@@ -286,6 +294,7 @@ bool Menu::Update(float dt)
 					intro = false;
 					paused = false;
 					started = true;
+			
 
 				}
 				else
@@ -296,6 +305,7 @@ bool Menu::Update(float dt)
 				break;
 			case 1:
 				settings = true;
+				app->scene->daleZom1 = true;
 					break;
 			case 2:
 				credits = !credits;
@@ -315,44 +325,41 @@ bool Menu::Update(float dt)
 		
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && settings_buttons[chosed].state == 1)
 		{
-
-			app->audio->PlayFx(click_sound);
-			switch (chosed)
-			{
-			case 0:
-				slider = !slider;
-				break;
-			case 1:
-				slider2 = !slider2;
-				break;
-			case 2:
-				fullscreen = !fullscreen;
-				if (fullscreen)
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
 				{
-					SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				case 0:
+					slider = !slider;
+					break;
+				case 1:
+					slider2 = !slider2;
+					break;
+				case 2:
+					fullscreen = !fullscreen;
+					if (fullscreen)
+					{
+						SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+					}
+					else
+					{
+						SDL_SetWindowFullscreen(app->win->window, 0);
+					}
+					break;
+				case 3:
+					vsync = !vsync;
+					if (vsync)
+					{
+						// 1 to activate, 0 to deactivate
+						SDL_GL_SetSwapInterval(1);
+					}
+					else
+					{
+						SDL_GL_SetSwapInterval(0);
+					}
+					break;
 				}
-				else
-				{
-					SDL_SetWindowFullscreen(app->win->window, 0);
-				}
-				break;
-			case 3:
-				vsync = !vsync;
-				if (vsync)
-				{
-					// 1 to activate, 0 to deactivate
-					SDL_GL_SetSwapInterval(1);
-				}
-				else
-				{
-					SDL_GL_SetSwapInterval(0);
-				}
-				break;
-			}
-			
-			settings_buttons[chosed].state = 2;
+				settings_buttons[chosed].state = 2;
 		}
-		
 	
 	}
 
@@ -425,9 +432,11 @@ bool Menu::PostUpdate()
 
 	r.x = c_x;
 	r.y = c_y;
+
+
 	//---------------------------------------------------------HUD PAUSE---------------------------------------------
 	//Dimensiones Hud Pause
-	PauseMenuHUD.x = c_x;
+	PauseMenuHUD.x = c_x+ c_x_menu-500;
 	PauseMenuHUD.y = c_y;
 
 	if (app->scene->esc == true ) {
@@ -437,49 +446,92 @@ bool Menu::PostUpdate()
 			app->render->DrawTexture(app->tex->start_menu, 0 + c_x, 0 + c_y);
 		}
 
+		//Hace que el menu se quite
+		if (!paused )
+		{
+			if (c_x_menu >= 100 && stop == false)
+			{
+				c_x_menu -= 35.0f;
+
+				if (c_x_menu >= -200)
+				{
+					stop = false;
+				}
+			}
+			
+		}
+
+		//Fondo Negro transparente que sale cuando pausas
+		if (intro == false && paused)
+		{
+			app->render->DrawRectangle(r, 0, 0, 0, 200);
+		}
+
+		//Cuando pausas se pone un fondo verde (Substituir en un futuro por un HUD creado)
+		app->render->DrawRectangle(PauseMenuHUD, 18, 188, 18, 200);
+
+
+		//Hace que el menu aparezca
 		if (paused && !intro && !settings)
 		{
-			if (intro == false)
+		
+			if (desMenu == true && c_x_menu <= 400)
 			{
-				app->render->DrawRectangle(r, 0, 0, 0, 200);
+				c_x_menu += 15.0f;
 			}
-			if (paused) //Cuando pausas se pone un fondo verde (Substituir en un futuro por un HUD creado
-				app->render->DrawRectangle(PauseMenuHUD, 18, 188, 18, 200);
 
+			if (c_x_menu >= -50)
+			{
+				desMenu = false;
+			}
+
+			if (paused)
+			{
+				desMenu = true;	
+			}
+
+	 //--------------------BOTONES MENU SCAPE IN GAME
 			for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 			{
-				
-				pause_buttons[0].rect.x = c_x+90;
+				//Boton Continuar
+				pause_buttons[0].rect.x = c_x+ c_x_menu - 350;
 				pause_buttons[0].rect.y = c_y+100;
 
-				///Boton Opciones
-				pause_buttons[1].rect.x = c_x+90;
+				//Boton Opciones
+				pause_buttons[1].rect.x = c_x + c_x_menu - 350;
 				pause_buttons[1].rect.y = c_y+200;
 
 				//Boton Creditos
-				pause_buttons[2].rect.x = c_x+90;
+				pause_buttons[2].rect.x = c_x + c_x_menu - 350;
 				pause_buttons[2].rect.y = c_y+300;
 
 				//Boton Salir
-				pause_buttons[3].rect.x = c_x +90;
+				pause_buttons[3].rect.x = c_x + c_x_menu - 350;
 				pause_buttons[3].rect.y = c_y +400;
 				
+				//Recuadro en Botones permanente
 				if (pause_buttons[i].state == 0)
 				{
 					
 				}
+				//Recuadro en Botones Si pasas por encima
 				else if (pause_buttons[i].state == 1)
 				{
 					app->render->DrawRectangle(pause_buttons[i].rect, inColorR, inColorG, inColorB);
 				}
+
+				//Recuadro en Botones cuando haces click Izquiero
 				else if (pause_buttons[i].state == 2)
 				{
 					app->render->DrawRectangle(pause_buttons[i].rect, pColorR, pColorG, pColorB);
 				}
 
+				//Imprime las imagenes de los botones
 				app->render->DrawTexture(pause_buttons[i].tex, pause_buttons[i].rect.x + 10, pause_buttons[i].rect.y + 10);
 			}
 		}
+	//------------------------------------------------------
+	
 
 		//----------------------------------------------------HUD INICIO------------------------------------------
 		if (intro && !settings)
@@ -503,13 +555,13 @@ bool Menu::PostUpdate()
 				menu_buttons[3].rect.x = c_x + 500;
 				menu_buttons[3].rect.y = c_y+ 570;
 
-				//---------------------Fondo Constante
+				//Recuadro en Botones permanente
 				if (menu_buttons[i].state == 0)
 				{
 
 				}
 
-				//----------------------Alumbra el boton cuando pones el raton encima
+				//Recuadro en Botones Si pasas por encima
 				//Boton Jugar Antorcha
 				else if (menu_buttons[0].state == 1)
 				{
@@ -531,17 +583,12 @@ bool Menu::PostUpdate()
 					app->render->DrawTexture(torch_fire, c_x+ 535, c_y +710);
 				}
 
-				//-----------------------Se activa cuando haces click
+				//Recuadro en Botones cuando haces click Izquiero
 				else if (menu_buttons[i].state == 2)
 				{
 
 				}
 
-
-				else if (menu_buttons[i].state == 3)
-				{
-
-				}
 				if (credits)
 				{
 					app->render->DrawTexture(menu_buttons[i].alt_tex, 1000, 500);
@@ -566,7 +613,7 @@ bool Menu::PostUpdate()
 			}
 		}
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
-		if (settings)
+		if (settings && app->scene->opciones==true)
 		{
 		
 			int z, w;

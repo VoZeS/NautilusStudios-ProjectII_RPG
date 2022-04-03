@@ -40,7 +40,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	
-	
+	c_y_menu = -app->render->camera.y +140; //Posicion de la camara en el inicio del juego
 
 	app->SaveGameRequest();
 	
@@ -199,46 +199,108 @@ bool Scene::PostUpdate()
 	bool ret = true;
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+	SDL_Rect prueba;
+	SDL_Rect fondoNegro;
+	zom_w;
+	zom_h;
+	zom_x;
+	zom_y;
+	prueba = { zom_x,zom_y,zom_w,zom_h };
+	fondoNegro = { c_x,c_y,1280,720 };
 	
 
 	//--------------------------------------MENU----------------------------
 
+	//Desplazamiento del fondo al inicio del juego
+	//Una vez pulses el Espacio entrara el menu de opciones
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || desMenu==true)
+	{
+		desMenu = true;
+		c_y_menu -= 10.0f;
+
+	}
+
+	//Limite de donde la camara llegara al principio del juego
+	if (c_y_menu <= -555)
+	{
+		esc = true;
+		desMenu = false;
+    }
+
 	 //Primera pantalla menu
 	if (esc == false && app->menu->settings == false)
 	{
-		
-		app->render->DrawTexture(start_screen, c_x, c_y);
+		app->render->DrawTexture(start_screen, c_x, c_y_menu);
 	}
 
-	//-------------------Settings
+
+
+	//zoom prueba------------------------------------
+	if (daleZom1 == true ) {
+
+		
+		app->render->DrawRectangle(fondoNegro , 0, 0, 0);
+		
+
+		zom_w -= 25;
+		zom_h -= 15;
+		app->render->DrawTexture(start_screen, c_x+zom_x, c_y+zom_y, &prueba);
+
+		if (zom_w <= 0 || zom_h <= 0)
+		{
+			daleZom1 = false;
+			daleZom2 = true;
+		}
+	
+	}
+
+	if ( daleZom2 == true) {
+
+		
+			app->render->DrawRectangle(fondoNegro, 0, 0, 0);
+	
+		zom_w += 25;
+		zom_h += 15;
+		app->render->DrawTexture(settings_screen, c_x + zom_x, c_y + zom_y, &prueba);
+		
+		if (zom_w >= 1280 || zom_h >= 720) {
+			daleZom2 = false;
+			opciones = true;
+		}
+	}
+
+	if ( opciones == true)
+	{
+		app->render->DrawTexture(settings_screen, c_x, c_y);		
+	}
+
+
+
+	//----------------------------------------------------
+	/*
+	* //-------------------Settings
 	if (app->menu->settings == true)
 	{
+		
 		app->render->DrawTexture(settings_screen, c_x, c_y);
 	}
 	else {
 		app->menu->settings = false;
 	}
 
-
-	//Una vez pulses el Espacio entrara el menu de opciones
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && esc == false)
-	{
+	*/
 	
-		c_y = app->render->camera.y += 300;
-		esc = true;
-	}
 
+	
 	//Segunda Pantalla Menu
 	if (start_screen != NULL && esc == true && app->menu->settings == false)
 	{
 		app->render->DrawTexture(start_screen, c_x, c_y-700);
 	}
 
-
-
 	//----------------------------------------------------------------------
-	else if(app->menu->started)
+
+	 if(app->menu->started)
 	{
 		app->map->Draw();
 
@@ -302,5 +364,6 @@ bool Scene::ReturnStartScreen()
 {
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 	app->menu->started = false;
+	app->frontground->SetA_Black();
 	return true;
 }

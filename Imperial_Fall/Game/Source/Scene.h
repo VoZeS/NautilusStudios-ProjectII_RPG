@@ -49,13 +49,22 @@ public:
 
 	int nh;
 	bool esc = false;
-	bool dale = false;
+	bool desMenu = false;
 	
 	bool activarMenu = true;
 	bool activarSettings = false;
 	bool movCamara = false;
 
+	float c_y_menu;
 	
+	bool daleZom1=false;
+	bool daleZom2 = false;
+	int zom_x = 0;
+	int zom_y = 0;
+	int zom_w = 1280;
+	int zom_h = 720;
+
+	bool opciones = false;
 
 	SDL_Texture* start_screen;
 private:

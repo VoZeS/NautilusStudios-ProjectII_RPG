@@ -53,6 +53,11 @@ public:
 	bool fullscreen;
 	bool credits;
 
+	
+	bool stop = false;
+	bool desMenu = false;
+	float c_x_menu;
+
 	bool started = false;
 private:
 	
