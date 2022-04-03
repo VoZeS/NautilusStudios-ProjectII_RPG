@@ -241,30 +241,35 @@ bool Scene::PostUpdate()
 	//zoom prueba------------------------------------
 	if (daleZom1 == true ) {
 
-		
+	
 		app->render->DrawRectangle(fondoNegro , 0, 0, 0);
-		
+		zom_x += 25;
+		zom_y += 15;
 
-		zom_w -= 25;
-		zom_h -= 15;
+		zom_w -= 25*2;
+		zom_h -= 15*2;
 		app->render->DrawTexture(start_screen, c_x+zom_x, c_y+zom_y, &prueba);
 
 		if (zom_w <= 0 || zom_h <= 0)
 		{
 			daleZom1 = false;
 			daleZom2 = true;
+
 		}
 	
 	}
 
 	if ( daleZom2 == true) {
-
-
-			app->render->DrawRectangle(fondoNegro, 0, 0, 0);
 	
-		zom_w += 25;
-		zom_h += 15;
-		app->render->DrawTexture(settings_screen, c_x + zom_x, c_y + zom_y, &prueba);
+		app->render->DrawRectangle(fondoNegro, 0, 0, 0);
+
+		zom_x -= 25;
+		zom_y -= 15;
+
+	
+		zom_w += 25*2;
+		zom_h += 15*2;
+		app->render->DrawTexture(settings_screen, c_x + zom_x , c_y + zom_y, &prueba);
 		
 		if (zom_w >= 1280 || zom_h >= 720) {
 			daleZom2 = false;
