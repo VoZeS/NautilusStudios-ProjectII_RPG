@@ -26,18 +26,18 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 {
 	switch (enemy)
 	{
-	case ENEMIES::SKELLETON:
-		max_health = 100;
+	case ENEMIES::HEALER:
+		max_health = 90;
 		actual_health = max_health;
-		max_mana = 50;
+		max_mana = 80;
 		actual_mana = max_mana;
-		this->speed = 8;
-		this->power = 10;
+		this->speed = 40;
+		this->power = 30;
 		shield = 0;
 
 		alive = true;
 
-		entity_type = 4;
+		entity_type = 5;
 
 		skills[0] = SetSkill(entity_type, 0); // read from xml
 		skills[1] = SetSkill(entity_type, 1); // read from xml
@@ -45,17 +45,17 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 3); // read from xml
 		break;
 	case ENEMIES::GOBLIN:
-		max_health = 70;
+		max_health = 80;
 		actual_health = max_health;
-		max_mana = 30;
+		max_mana = 50;
 		actual_mana = max_mana;
-		this->speed = 12;
-		this->power = 8;
+		this->speed = 60;
+		this->power = 50;
 		shield = 0;
 
 		alive = true;
 
-		entity_type = 4;
+		entity_type = 6;
 
 		skills[0] = SetSkill(entity_type, 0); // read from xml
 		skills[1] = SetSkill(entity_type, 1); // read from xml
@@ -63,12 +63,12 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 3); // read from xml
 		break;
 	case ENEMIES::TEMPLAR:
-		max_health = 150;
+		max_health = 100;
 		actual_health = max_health;
-		max_mana = 100;
+		max_mana = 40;
 		actual_mana = max_mana;
-		this->speed = 10;
-		this->power = 15;
+		this->speed = 30;
+		this->power = 60;
 		shield = 0;
 
 		alive = true;
@@ -320,9 +320,51 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		}
 	}
-	else
+	else if (owner == 4) // Templar (ENEMY)
 	{
-		switch (skill_number) // enemies
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Lunge";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Block"; // Bloqueo de escudo (puede bloquear y evitar un ataque a sus compañeros)
+			skill.mana_cost = 20;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Templar Scream"; // +5 de daño en todos SUS ataques
+			skill.mana_cost = 20;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Fire Edge"; // Daño medio con fuego
+			skill.mana_cost = 20;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 1;
+			skill.strenght = 1;
+			break;
+		}
+	}
+	else if (owner == 5) // EnemyHealer (ENEMY)
+	{
+		switch (skill_number)
 		{
 		case 0:
 			skill.owner = owner;
@@ -333,8 +375,60 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.strenght = 0;
 			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Heal"; // Cura +15 de vida a quien menos vida tenga
+			skill.mana_cost = 30;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "HeartBreaker"; // Roba +5 de vida a los PROTAGONISTAS y se los pone a los ENEMIGOS
+			skill.mana_cost = 20;
+			skill.objective = true;
+			skill.attack_type = false;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
 		}
 	}
-
+	else if (owner == 6) // Goblin (ENEMY)
+	{
+	switch (skill_number)
+	{
+	case 0:
+		skill.owner = owner;
+		skill.skill_name = "Scratch";
+		skill.mana_cost = 10;
+		skill.objective = true;
+		skill.attack_type = true;
+		skill.element = 0;
+		skill.strenght = 0;
+		break;
+	case 1:
+		skill.owner = owner;
+		skill.skill_name = "Triple Scratch"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque
+		skill.mana_cost = 35;
+		skill.objective = true;
+		skill.attack_type = false;
+		skill.element = 0;
+		skill.strenght = 0;
+		break;
+	case 2:
+		skill.owner = owner;
+		skill.skill_name = "Reap";
+		skill.mana_cost = 20;
+		skill.objective = true;
+		skill.attack_type = true;
+		skill.element = 0;
+		skill.strenght = 1;
+		break;
+	}
+	}
 	return skill;
-}
+
+
+	}

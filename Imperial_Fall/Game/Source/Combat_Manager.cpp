@@ -49,10 +49,10 @@ bool Combat_Manager::PreUpdate()
 		if (!combat_init)
 		{
 			//init allies
-			allies[0] = new Combat_Entities(100, 50, 20, 14, 0); // assassin
-			allies[1] = new Combat_Entities(100, 50, 7, 14, 1); // tank
-			allies[2] = new Combat_Entities(100, 50, 9, 14, 2); // healer
-			allies[3] = new Combat_Entities(100, 50, 12, 14, 3); // wizard
+			allies[0] = new Combat_Entities(70, 50, 50, 65, 0); // assassin
+			allies[1] = new Combat_Entities(140, 50, 10, 50, 1); // tank
+			allies[2] = new Combat_Entities(100, 60, 30, 50, 2); // healer
+			allies[3] = new Combat_Entities(85, 70, 35, 60, 3); // wizard
 
 			//init enemies
 			for (size_t i = 0; i < 4; i++)
@@ -248,6 +248,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 	objective->DamageEntity(user->GetPower());
 
 	in_animation = 1;
+
 	//pass_turn = true;
 	//app->combat_menu->SetAlliesTurn(false);
 }

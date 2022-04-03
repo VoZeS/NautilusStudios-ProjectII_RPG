@@ -5,7 +5,7 @@
 
 enum class ENEMIES
 {
-	SKELLETON,
+	HEALER,
 	GOBLIN,
 	TEMPLAR
 };
@@ -89,7 +89,7 @@ private:
 	int shield;
 
 	bool alive;
-	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> enemy
+	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> Templar, 5 --> EnemyHealer, 6 --> Goblin
 
 	Skill skills[4];
 };
