@@ -32,7 +32,13 @@ bool Combat_Manager::Awake()
 // Called before the first frame
 bool Combat_Manager::Start()
 {
-	
+	/*for (size_t i = 0; i < 4; i++)
+	{
+		general_buttons[i].rect.x = action_pos[i].x;
+		general_buttons[i].rect.y = action_pos[i].y;
+		general_buttons[i].rect.w = 400;
+		general_buttons[i].rect.h = 50;
+	}*/
 	return true;
 }
 
@@ -120,10 +126,10 @@ bool Combat_Manager::PostUpdate()
 					enemies[0]->GetActualHealth(), enemies[0]->GetActualMana(), enemies[1]->GetActualHealth(), enemies[1]->GetActualMana(),
 					enemies[2]->GetActualHealth(), enemies[2]->GetActualMana(), enemies[3]->GetActualHealth(), enemies[3]->GetActualMana());
 			}
-			
+			UpdateHUD();
 		}
 	}
-
+	
 	return true;
 }
 
@@ -175,6 +181,40 @@ bool Combat_Manager::InArray(Combat_Entities* array[], int length, int speed)
 		}
 	}
 	return false;
+}
+
+void Combat_Manager::UpdateHUD()
+{
+	int cx = -app->render->camera.x;
+	int cy = -app->render->camera.y;
+
+	// max health
+	app->render->DrawRectangle({ 350 + cx - 200, 150 + cy, allies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
+	app->render->DrawRectangle({ 250 + cx - 200, 250 + cy, allies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
+	app->render->DrawRectangle({ 350 + cx - 200, 350 + cy, allies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
+	app->render->DrawRectangle({ 250 + cx - 200, 450 + cy, allies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
+	// actual health
+	app->render->DrawRectangle({ 351 + cx - 200, 151 + cy, allies[0]->GetActualHealth(), 28 }, 255, 0, 0);
+	app->render->DrawRectangle({ 251 + cx - 200, 251 + cy, allies[1]->GetActualHealth(), 28 }, 255, 0, 0);
+	app->render->DrawRectangle({ 351 + cx - 200, 351 + cy, allies[2]->GetActualHealth(), 28 }, 255, 0, 0);
+	app->render->DrawRectangle({ 251 + cx - 200, 451 + cy, allies[3]->GetActualHealth(), 28 }, 255, 0, 0);
+
+	// max mana
+	app->render->DrawRectangle({ 350 + cx - 200, 150 + cy + 35, allies[0]->GetMaxMana(), 30 }, 0, 0, 70);
+	app->render->DrawRectangle({ 250 + cx - 200, 250 + cy + 35, allies[1]->GetMaxMana(), 30 }, 0, 0, 70);
+	app->render->DrawRectangle({ 350 + cx - 200, 350 + cy + 35, allies[2]->GetMaxMana(), 30 }, 0, 0, 70);
+	app->render->DrawRectangle({ 250 + cx - 200, 450 + cy + 35, allies[3]->GetMaxMana(), 30 }, 0, 0, 70);
+
+	// actual mana
+	app->render->DrawRectangle({ 351 + cx - 200, 151 + cy + 35, allies[0]->GetActualMana(), 28}, 0, 0, 255);
+	app->render->DrawRectangle({ 251 + cx - 200, 251 + cy + 35, allies[1]->GetActualMana(), 28 }, 0, 0, 255);
+	app->render->DrawRectangle({ 351 + cx - 200, 351 + cy + 35, allies[2]->GetActualMana(), 28 }, 0, 0, 255);
+	app->render->DrawRectangle({ 251 + cx - 200, 451 + cy + 35, allies[3]->GetActualMana(), 28 }, 0, 0, 255);
+
+	/*ally_pos[0] = {350.0f, 150.0f};
+	ally_pos[1] = { 250.0f, 250.0f };
+	ally_pos[2] = { 350.0f, 350.0f };
+	ally_pos[3] = { 250.0f, 450.0f };*/
 }
 
 void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entities* objective)

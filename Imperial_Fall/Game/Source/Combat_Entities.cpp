@@ -7,7 +7,7 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 	actual_health = health;
 	max_health = health;
 	actual_mana = mana;
-	max_health = health;
+	max_mana = mana;
 	this->speed = speed;
 	this->power = power;
 	shield = 0;
@@ -17,6 +17,9 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 	entity_type = owner;
 
 	skills[0] = SetSkill(entity_type, 0); // read from xml
+	skills[1] = SetSkill(entity_type, 1); // read from xml
+	skills[2] = SetSkill(entity_type, 2); // read from xml
+	skills[3] = SetSkill(entity_type, 3); // read from xml
 }
 
 bool Combat_Entities::DamageEntity(int amount)
@@ -41,6 +44,7 @@ bool Combat_Entities::DamageEntity(int amount)
 
 	if (actual_health <= 0)
 	{
+		actual_health = 0;
 		alive = false;
 	}
 
@@ -86,94 +90,190 @@ void Combat_Entities::ShieldEntity(int amount)
 
 Skill Combat_Entities::SetSkill(int owner, int skill_number)
 {
-	if (owner == 0)
+	Skill skill;
+	if (owner == 0) // assassin
 	{
 		switch (skill_number)
 		{
 		case 0:
-			Skill stab;
-			stab.owner = owner;
-			stab.skill_name = "Stab";
-			stab.mana_cost = 10;
-			stab.objective = true;
-			stab.attack_type = true;
-			stab.element = 0;
-			stab.strenght = 0;
-
-			return stab;
+			skill.owner = owner;
+			skill.skill_name = "Stab";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Strong Stab";
+			skill.mana_cost = 20;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 1;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Bomb";
+			skill.mana_cost = 20;
+			skill.objective = true;
+			skill.attack_type = false;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Stealth";
+			skill.mana_cost = 20;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
 			break;
 		}
 	}
-	else if (owner == 1)
+	else if (owner == 1) // tank
 	{
 		switch (skill_number)
 		{
 		case 0:
-			Skill slash;
-			slash.owner = owner;
-			slash.skill_name = "Stab";
-			slash.mana_cost = 10;
-			slash.objective = true;
-			slash.attack_type = true;
-			slash.element = 0;
-			slash.strenght = 0;
-
-			return slash;
+			skill.owner = owner;
+			skill.skill_name = "Slash";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Heavy Slash";
+			skill.mana_cost = 20;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 1;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Taunt";
+			skill.mana_cost = 20;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Pierce Slash";
+			skill.mana_cost = 15;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
 			break;
 		}
 	}
-	else if (owner == 2)
+	else if (owner == 2) // healer
 	{
 		switch (skill_number)
 		{
 		case 0:
-			Skill staff_blow;
-			staff_blow.owner = owner;
-			staff_blow.skill_name = "Stab";
-			staff_blow.mana_cost = 10;
-			staff_blow.objective = true;
-			staff_blow.attack_type = true;
-			staff_blow.element = 0;
-			staff_blow.strenght = 0;
-
-			return staff_blow;
+			skill.owner = owner;
+			skill.skill_name = "Staff Blow";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Shield";
+			skill.mana_cost = 20;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Heal";
+			skill.mana_cost = 15;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Clean";
+			skill.mana_cost = 10;
+			skill.objective = false;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
 			break;
 		}
 	}
-	else if (owner == 3)
+	else if (owner == 3) // wizard
 	{
 		switch (skill_number)
 		{
 		case 0:
-			Skill stone;
-			stone.owner = owner;
-			stone.skill_name = "Stab";
-			stone.mana_cost = 10;
-			stone.objective = true;
-			stone.attack_type = true;
-			stone.element = 0;
-			stone.strenght = 0;
-
-			return stone;
+			skill.owner = owner;
+			skill.skill_name = "Stone";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Rock";
+			skill.mana_cost = 20;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 1;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Fire Ball";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 1;
+			skill.strenght = 0;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Water Jet";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 3;
+			skill.strenght = 0;
 			break;
 		}
 	}
 	else
 	{
-		switch (skill_number)
+		switch (skill_number) // enemies
 		{
 		case 0:
-			Skill punch;
-			punch.owner = owner;
-			punch.skill_name = "Stab";
-			punch.mana_cost = 10;
-			punch.objective = true;
-			punch.attack_type = true;
-			punch.element = 0;
-			punch.strenght = 0;
-
-			return punch;
+			skill.owner = owner;
+			skill.skill_name = "Punch";
+			skill.mana_cost = 10;
+			skill.objective = true;
+			skill.attack_type = true;
+			skill.element = 0;
+			skill.strenght = 0;
 			break;
 		}
 	}
+
+	return skill;
 }

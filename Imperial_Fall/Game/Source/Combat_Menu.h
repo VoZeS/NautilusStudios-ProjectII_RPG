@@ -86,6 +86,8 @@ private:
 	// combat manager
 	Skill skill_prepared;
 
+	int textFont = -1;
+
 };
 
 #endif

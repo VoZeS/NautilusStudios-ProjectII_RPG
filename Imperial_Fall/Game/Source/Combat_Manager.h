@@ -7,11 +7,6 @@
 #include "Point.h"
 #include "Combat_Entities.h"
 
-#define NUM_BUTTONS 7  //Bottones generales
-#define NUM_ITEMS_BUTTONS 5
-#define NUM_ENEMIES_BUTTONS 5
-#define NUM_ALLIES_BUTTONS 5
-
 class Combat_Entities;
 
 class Combat_Manager : public Module
@@ -35,6 +30,8 @@ public:
 
 	void SetOrder();
 	bool InArray(Combat_Entities* array[], int length, int speed);
+
+	void UpdateHUD();
 
 	Combat_Entities* GetActualEntity()
 	{

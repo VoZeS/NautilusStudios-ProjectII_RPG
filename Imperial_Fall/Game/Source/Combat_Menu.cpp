@@ -5,6 +5,7 @@
 #include "Audio.h"
 #include "Input.h"
 #include "Scene.h"
+#include "Fonts.h"
 #include "Frontground.h"
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
@@ -29,18 +30,22 @@ Combat_Menu::~Combat_Menu()
 bool Combat_Menu::Awake()
 {
 
+
 	return true;
 }
 
 // Called before the first frame
 bool Combat_Menu::Start()
 {
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
+
 	r = { 0, 0, 1280, 720 };
 	currentAnimation = &idleAnim;
 
-	general_buttons[0].state = 1;
+	/*general_buttons[0].state = 1; only with controller
 	items_buttons[0].state = 1;
-	enemies_buttons[0].state = 1;
+	enemies_buttons[0].state = 1;*/
 	chosed = 0;
 	app->win->GetWindowSize(win_w, win_h);
 
@@ -167,59 +172,72 @@ bool Combat_Menu::PreUpdate()
 		app->input->GetMousePosition(x, y);
 		float cx = -app->render->camera.x;
 		float cy = -app->render->camera.y;
-		for (size_t i = 0; i < NUM_BUTTONS; i++)
+
+		if (!in_items && !in_enemies && !in_allies)
 		{
-			SDL_Rect rect = general_buttons[i].rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
-				chosed = i;
-				general_buttons[i].state = 1;
-			}
-			else
-			{
-				general_buttons[i].state = 0;
+				SDL_Rect rect = general_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					chosed = i;
+					general_buttons[i].state = 1;
+				}
+				else
+				{
+					general_buttons[i].state = 0;
+				}
 			}
 		}
-
-		for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+		
+		if (in_items && !in_enemies && !in_allies)
 		{
-			SDL_Rect rect = items_buttons[i].rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 			{
-				chosed = i;
-				items_buttons[i].state = 1;
-			}
-			else
-			{
-				items_buttons[i].state = 0;
+				SDL_Rect rect = items_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					chosed = i;
+					items_buttons[i].state = 1;
+				}
+				else
+				{
+					items_buttons[i].state = 0;
+				}
 			}
 		}
-
-		for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+		
+		if (!in_items && in_enemies && !in_allies)
 		{
-			SDL_Rect rect = enemies_buttons[i].rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
 			{
-				chosed = i;
-				enemies_buttons[i].state = 1;
-			}
-			else
-			{
-				enemies_buttons[i].state = 0;
+				SDL_Rect rect = enemies_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					chosed = i;
+					enemies_buttons[i].state = 1;
+				}
+				else
+				{
+					enemies_buttons[i].state = 0;
+				}
 			}
 		}
-
-		for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+		
+		if (!in_items && !in_enemies && in_allies)
 		{
-			SDL_Rect rect = allies_buttons[i].rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
 			{
-				chosed = i;
-				allies_buttons[i].state = 1;
-			}
-			else
-			{
-				allies_buttons[i].state = 0;
+				SDL_Rect rect = allies_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					chosed = i;
+					allies_buttons[i].state = 1;
+				}
+				else
+				{
+					allies_buttons[i].state = 0;
+				}
 			}
 		}
 	}
@@ -553,6 +571,14 @@ bool Combat_Menu::PostUpdate()
 						app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
 					}
 				}
+
+				for (size_t i = 0; i < 4; i++)
+				{
+					general_buttons[i].rect.x = action_pos[i].x + c_x;
+					general_buttons[i].rect.y = action_pos[i].y + c_y;
+
+					app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 15, textFont, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
+				}
 			}
 
 			if (in_items && !in_enemies && !in_allies)
@@ -595,6 +621,11 @@ bool Combat_Menu::PostUpdate()
 					{
 						app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
 					}
+
+					if (i == 4)
+					{
+						app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 15, textFont, skill_prepared.skill_name);
+					}
 				}
 			}
 
@@ -615,6 +646,11 @@ bool Combat_Menu::PostUpdate()
 					else if (allies_buttons[i].state == 0 && i == 4)
 					{
 						app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					}
+
+					if (i == 4)
+					{
+						app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, textFont, skill_prepared.skill_name);
 					}
 				}
 			}
