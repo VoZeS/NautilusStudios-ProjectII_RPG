@@ -20,6 +20,17 @@ Combat_Menu::Combat_Menu() : Module()
 	idleAnim.PushBack({ 5, 164, 50, 72 });
 	idleAnim.PushBack({ 65, 164, 50, 72 });
 	idleAnim.speed = 0.03f;
+
+	goblinAnim.PushBack({ 0, 0, 64, 70 });
+	goblinAnim.PushBack({ 64, 0, 64, 70 });
+	goblinAnim.PushBack({ 128, 0, 64, 70 });
+	goblinAnim.PushBack({ 192, 0, 64, 70 });
+	goblinAnim.speed = 0.03f;
+
+	skeletonAnim.PushBack({ 0, 0, 192, 210 });
+	skeletonAnim.PushBack({ 192, 0, 192, 210 });
+	skeletonAnim.PushBack({ 384, 0, 192, 210 });
+	skeletonAnim.speed = 0.03f;
 }
 
 // Destructor
@@ -141,6 +152,41 @@ bool Combat_Menu::PreUpdate()
 	if (app->frontground->GetCombatState() == 2)
 	{
 		in_combat = true;
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
+			{
+				switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
+				{
+				case 6:
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &goblinAnim)
+					{
+						app->combat_manager->GetEnemyByNumber(i)->current_anim = &goblinAnim;
+					}
+					break;
+				case 7:
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &skeletonAnim)
+					{
+						app->combat_manager->GetEnemyByNumber(i)->current_anim = &skeletonAnim;
+					}
+					break;
+				default:
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
+					{
+						app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
+					}
+					break;
+				}
+			}
+			else
+			{
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
+				}
+			}
+		}
 	}
 	else if (app->frontground->GetCombatState() == 0)
 	{
@@ -238,10 +284,11 @@ bool Combat_Menu::PreUpdate()
 						}
 					}
 				}
+				// if one enemy stealth
 				b.buff_type = BUFF_TYPE::STEALTH;
 				if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && enemies_buttons[i].state == 1)
 				{
-					enemies_buttons[i].state == 0;
+					enemies_buttons[i].state = 0;
 				}
 			}
 		}
@@ -582,6 +629,13 @@ bool Combat_Menu::Update(float dt)
 	}
 
 	currentAnimation->Update();
+	if (in_combat)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			app->combat_manager->GetEnemyByNumber(i)->current_anim->Update();
+		}
+	}
 
 	return true;
 }
@@ -606,18 +660,35 @@ bool Combat_Menu::PostUpdate()
 			{
 				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
 				{
-					texture = app->tex->assassin_texture;
+					switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
+					{
+					case 6: 
+						texture = app->tex->goblin;
+						rect = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
+						break;
+					case 7:
+						texture = app->tex->skeleton;
+						rect = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 50, &rect);
+						break;
+					default: 
+						texture = app->tex->assassin_texture;
+						rect = currentAnimation->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
+						break;
+					}
 				}
 				else
 				{
 					texture = app->tex->tank_texture;
+					rect = currentAnimation->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 				}
-
-				// enemies sprites
-				app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 			}
 		}
 
+		rect = currentAnimation->GetCurrentFrame();
 		for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
 		{
 			allies_buttons[i].rect.x = ally_pos[i].x + c_x;
@@ -703,12 +774,16 @@ bool Combat_Menu::PostUpdate()
 					if (enemies_buttons[i].state == 1)
 					{
 						// aiming sprites
-						app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
+						//app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
+						SDL_Rect rect = { 0, 0, 64, 64 };
+						app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 					}
 					else if (enemies_buttons[i].state == 2)
 					{
 						// fire sprites
-						app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
+						//app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
+						SDL_Rect rect = { 64, 0, 64, 64 };
+						app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 					}
 					else if (enemies_buttons[i].state == 0 && i == 4)
 					{
@@ -729,12 +804,16 @@ bool Combat_Menu::PostUpdate()
 					if (allies_buttons[i].state == 1)
 					{
 						// aiming sprites
-						app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
+						//app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
+						SDL_Rect rect = { 128, 0, 64, 64 };
+						app->render->DrawTexture(app->tex->target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
 					}
 					else if (allies_buttons[i].state == 2)
 					{
 						// fire sprites
-						app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
+						//app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
+						SDL_Rect rect = { 192, 0, 64, 64 };
+						app->render->DrawTexture(app->tex->target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
 					}
 					else if (allies_buttons[i].state == 0 && i == 4)
 					{

@@ -46,6 +46,9 @@ public:
 	SDL_Texture* herrero = NULL;
 	SDL_Texture* granjero = NULL;
 	SDL_Texture* start_menu = NULL;
+	SDL_Texture* target = NULL;
+	SDL_Texture* goblin = NULL;
+	SDL_Texture* skeleton = NULL;
 
 
 	SDL_Texture* hab_tex = NULL;

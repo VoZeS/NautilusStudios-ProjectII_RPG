@@ -95,6 +95,8 @@ private:
 	Animation* currentAnimation = NULL;
 
 	Animation idleAnim;
+	Animation goblinAnim;
+	Animation skeletonAnim;
 
 	// positions
 	fPoint action_pos[NUM_BUTTONS];

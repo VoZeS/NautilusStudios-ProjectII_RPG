@@ -51,6 +51,9 @@ bool Textures::Start()
 	herrero = Load("Assets/textures/herrero.png");
 	granjero = Load("Assets/textures/granjero.png");
 	start_menu = Load("Assets/textures/Start_screen.png");
+	target = Load("Assets/textures/Target.png");
+	goblin = Load("Assets/textures/goblin.png");
+	skeleton = Load("Assets/textures/skeleton.png");
 
 
 	hab_tex = Load("Assets/textures/HabilityMack.png");

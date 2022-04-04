@@ -186,7 +186,7 @@ bool Scene::Update(float dt)
 			ENEMIES enemies[4];
 			enemies[0] = ENEMIES::HEALER;
 			enemies[1] = ENEMIES::TEMPLAR;
-			enemies[2] = ENEMIES::HEALER;
+			enemies[2] = ENEMIES::SKELETON;
 			enemies[3] = ENEMIES::GOBLIN;
 			app->frontground->FadeInCombat(enemies);
 		}

@@ -101,7 +101,6 @@ bool Combat_Manager::PreUpdate()
 			{
 				app->menu->SetWinLose(1); // lose
 			}
-			
 		}
 	}
 

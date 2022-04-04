@@ -2,13 +2,15 @@
 #define __COMBAT_ENTITIES_H__
 
 #include "Skills.h"
+#include "Animation.h"
 #include "List.h"
 
 enum class ENEMIES
 {
+	TEMPLAR = 0,
 	HEALER,
 	GOBLIN,
-	TEMPLAR
+	SKELETON
 };
 
 struct BUFF {
@@ -95,6 +97,8 @@ public:
 	{
 		return buffs;
 	}
+
+	Animation* current_anim = NULL;
 
 private:
 	Skill SetSkill(int owner, int skill_number);

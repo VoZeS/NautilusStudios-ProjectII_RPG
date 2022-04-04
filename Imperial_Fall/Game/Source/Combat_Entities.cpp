@@ -26,42 +26,6 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 {
 	switch (enemy)
 	{
-	case ENEMIES::HEALER:
-		max_health = 90;
-		actual_health = max_health;
-		max_mana = 80;
-		actual_mana = max_mana;
-		this->speed = 40;
-		this->power = 30;
-		shield = 0;
-
-		alive = true;
-
-		entity_type = 5;
-
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
-		break;
-	case ENEMIES::GOBLIN:
-		max_health = 80;
-		actual_health = max_health;
-		max_mana = 50;
-		actual_mana = max_mana;
-		this->speed = 60;
-		this->power = 50;
-		shield = 0;
-
-		alive = true;
-
-		entity_type = 6;
-
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
-		break;
 	case ENEMIES::TEMPLAR:
 		max_health = 100;
 		actual_health = max_health;
@@ -79,6 +43,60 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[1] = SetSkill(entity_type, 1); // read from xml
 		skills[2] = SetSkill(entity_type, 2); // read from xml
 		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case ENEMIES::HEALER:
+		max_health = 90;
+		actual_health = max_health;
+		max_mana = 80;
+		actual_mana = max_mana;
+		this->speed = 40;
+		this->power = 30;
+		shield = 0;
+
+		alive = true;
+
+		entity_type = 5;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 0); // read from xml
+		break;
+	case ENEMIES::GOBLIN:
+		max_health = 80;
+		actual_health = max_health;
+		max_mana = 50;
+		actual_mana = max_mana;
+		this->speed = 60;
+		this->power = 50;
+		shield = 0;
+
+		alive = true;
+
+		entity_type = 6;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 0); // read from xml
+		break;
+	case ENEMIES::SKELETON:
+		max_health = 100;
+		actual_health = max_health;
+		max_mana = 30;
+		actual_mana = max_mana;
+		this->speed = 35;
+		this->power = 45;
+		shield = 0;
+
+		alive = true;
+
+		entity_type = 7;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 0); // read from xml
 		break;
 	}
 }
@@ -336,7 +354,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::TAUNT;
-			skill.buff_turns = 2;
+			skill.buff_turns = 1;
 			break;
 		case 3:
 			skill.owner = owner;
@@ -485,6 +503,42 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_strenght = 1;
 			break;
 		}
+	}
+	else if (owner == 7) // Skeleton (ENEMY)
+	{
+	switch (skill_number)
+	{
+	case 0:
+		skill.owner = owner;
+		skill.skill_name = "Silence Slash";
+		skill.mana_cost = 15;
+		skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+		skill.ally_objective = ALLY_OBJECTIVE::SELF;
+		skill.element = 0;
+		skill.att_strenght = 0;
+		skill.buff_type = BUFF_TYPE::STEALTH;
+		skill.buff_turns = 1;
+		break;
+	case 1:
+		skill.owner = owner;
+		skill.skill_name = "Auto-Shield";
+		skill.mana_cost = 10;
+		skill.ally_objective = ALLY_OBJECTIVE::SELF;
+		skill.element = 0;
+		skill.supp_strenght = 0;
+		skill.support_type = SUPPORT_TYPE::SHIELD;
+		break;
+	case 2:
+		skill.owner = owner;
+		skill.skill_name = "Steal Life";
+		skill.mana_cost = 20;
+		skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+		skill.ally_objective = ALLY_OBJECTIVE::SELF;
+		skill.element = 0;
+		skill.att_strenght = 0;
+		skill.supp_strenght = 0;
+		break;
+	}
 	}
 	return skill;
 }
