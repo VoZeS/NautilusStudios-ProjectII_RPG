@@ -50,6 +50,8 @@ public:
 
 	void UseSkill(Combat_Entities* user, Skill skill, Combat_Entities* objective);
 
+	void UpdateBuffs();
+
 	void EnemyTurn(Combat_Entities* user);
 
 	int GetInAnimation()

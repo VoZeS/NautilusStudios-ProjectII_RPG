@@ -204,7 +204,7 @@ bool Combat_Menu::PreUpdate()
 					enemies_buttons[i].state = 0;
 				}
 			}
-			if (skill_prepared.objective == OBJECTIVE::ALL_ENEMY)
+			if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 			{
 				if (enemies_buttons[0].state == 1 || enemies_buttons[1].state == 1 || enemies_buttons[2].state == 1 || enemies_buttons[3].state == 1)
 				{
@@ -238,7 +238,7 @@ bool Combat_Menu::PreUpdate()
 					allies_buttons[i].state = 0;
 				}
 			}
-			if (skill_prepared.objective == OBJECTIVE::ALL_ALLY)
+			if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
 			{
 				if (allies_buttons[0].state == 1 || allies_buttons[1].state == 1 || allies_buttons[2].state == 1 || allies_buttons[3].state == 1)
 				{
@@ -248,7 +248,7 @@ bool Combat_Menu::PreUpdate()
 					}
 				}
 			}
-			else if (skill_prepared.objective == OBJECTIVE::SELF)
+			else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
 			{
 				if (allies_buttons[skill_prepared.owner].state != 1)
 				{
@@ -260,9 +260,9 @@ bool Combat_Menu::PreUpdate()
 			}
 			for (size_t i = 0; i < 4; i++)
 			{
-				if (!app->combat_manager->GetEnemyByNumber(i)->GetEntityState() && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
+				if (!app->combat_manager->GetAllyByNumber(i)->GetEntityState() && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
 				{
-					enemies_buttons[i].state = 0;
+					allies_buttons[i].state = 0;
 				}
 			}
 		}
@@ -341,8 +341,8 @@ bool Combat_Menu::Update(float dt)
 				{
 				case 0:
 					//prepare attack 1
-					if (app->combat_manager->GetActualEntity()->GetSkill(0).objective == OBJECTIVE::ONE_ENEMY || 
-						app->combat_manager->GetActualEntity()->GetSkill(0).objective == OBJECTIVE::ALL_ENEMY)
+					if (app->combat_manager->GetActualEntity()->GetSkill(0).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY || 
+						app->combat_manager->GetActualEntity()->GetSkill(0).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -354,8 +354,8 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 1:
 					//prepare attack 2
-					if (app->combat_manager->GetActualEntity()->GetSkill(1).objective == OBJECTIVE::ONE_ENEMY ||
-						app->combat_manager->GetActualEntity()->GetSkill(1).objective == OBJECTIVE::ALL_ENEMY)
+					if (app->combat_manager->GetActualEntity()->GetSkill(1).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY ||
+						app->combat_manager->GetActualEntity()->GetSkill(1).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -367,8 +367,8 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 2:
 					//prepare attack 3
-					if (app->combat_manager->GetActualEntity()->GetSkill(2).objective == OBJECTIVE::ONE_ENEMY ||
-						app->combat_manager->GetActualEntity()->GetSkill(2).objective == OBJECTIVE::ALL_ENEMY)
+					if (app->combat_manager->GetActualEntity()->GetSkill(2).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY ||
+						app->combat_manager->GetActualEntity()->GetSkill(2).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}
@@ -380,8 +380,8 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 3:
 					//prepare attack 4
-					if (app->combat_manager->GetActualEntity()->GetSkill(3).objective == OBJECTIVE::ONE_ENEMY ||
-						app->combat_manager->GetActualEntity()->GetSkill(3).objective == OBJECTIVE::ALL_ENEMY)
+					if (app->combat_manager->GetActualEntity()->GetSkill(3).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY ||
+						app->combat_manager->GetActualEntity()->GetSkill(3).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 					{
 						in_enemies = true;
 					}

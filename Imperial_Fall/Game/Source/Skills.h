@@ -4,10 +4,16 @@
 #include <string>
 using namespace std;
 
-enum class OBJECTIVE
+enum class ENEMY_OBJECTIVE
 {
-	ONE_ENEMY = 0,
-	ALL_ENEMY,
+	NOTHING = 0,
+	ONE_ENEMY,
+	ALL_ENEMY
+};
+
+enum class ALLY_OBJECTIVE
+{
+	NOTHING = 0,
 	ONE_ALLY,
 	ALL_ALLY,
 	SELF
@@ -36,12 +42,16 @@ public:
 
 	const char* skill_name = "name";
 	int mana_cost = 0;
-	// objective
-	OBJECTIVE objective = OBJECTIVE::ONE_ENEMY;
+	// enemy objective
+	ENEMY_OBJECTIVE enemy_objective = ENEMY_OBJECTIVE::NOTHING;
+	// ally objective
+	ALLY_OBJECTIVE ally_objective = ALLY_OBJECTIVE::NOTHING;
 	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water
 	int element = 0;
 	// 0 --> low damage, 1 --> mid damage, 2 --> high damage
-	int strenght = 0;
+	int att_strenght = 0;
+	// 0 --> low damage, 1 --> mid damage, 2 --> high damage
+	int supp_strenght = 0;
 
 	// specific
 
@@ -49,6 +59,7 @@ public:
 	SUPPORT_TYPE support_type = SUPPORT_TYPE::NOTHING;
 	// buff type
 	BUFF_TYPE buff_type = BUFF_TYPE::NOTHING;
+	int buff_turns = 0;
 };
 
 #endif

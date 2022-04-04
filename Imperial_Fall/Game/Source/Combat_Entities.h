@@ -2,12 +2,18 @@
 #define __COMBAT_ENTITIES_H__
 
 #include "Skills.h"
+#include "List.h"
 
 enum class ENEMIES
 {
 	HEALER,
 	GOBLIN,
 	TEMPLAR
+};
+
+struct BUFF {
+	BUFF_TYPE buff_type;
+	uint turns = 0;
 };
 
 class Combat_Entities
@@ -79,6 +85,17 @@ public:
 		return skills[pos];
 	}
 
+	// Buffs
+	int FindBuff(BUFF buff); // return turns remaning or -1 if entity don't have that buff
+	void AddBuff(BUFF_TYPE type, int turns);
+	void AddTurns(BUFF buff, int turns_to_add);
+	void UpdateBuffs();
+	void RemoveAllBuffs();
+	List<BUFF> GetBuffList()
+	{
+		return buffs;
+	}
+
 private:
 	Skill SetSkill(int owner, int skill_number);
 
@@ -94,6 +111,8 @@ private:
 	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> Templar, 5 --> EnemyHealer, 6 --> Goblin
 
 	Skill skills[4];
+
+	List<BUFF> buffs;
 };
 
 #endif

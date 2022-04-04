@@ -279,8 +279,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 
 		// power calculation
 		int damage;
+		int support;
 
-		switch (skill.strenght)
+		switch (skill.att_strenght)
 		{
 		case 0: damage = 0.7f * user->GetPower();
 			break;
@@ -290,27 +291,39 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			break;
 		}
 
-		// lauch skill
-		if (skill.objective == OBJECTIVE::ONE_ENEMY)
+		switch (skill.supp_strenght)
+		{
+		case 0: support = 0.7f * user->GetPower();
+			break;
+		case 1: support = user->GetPower();
+			break;
+		case 2: support = 1.3f * user->GetPower();
+			break;
+		}
+
+		// lauch attack skill
+		if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 		{
 			objective->DamageEntity(damage);
 		}
-		else if (skill.objective == OBJECTIVE::ALL_ENEMY)
+		else if (skill.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 		{
 			for (size_t i = 0; i < 4; i++)
 			{
 				enemies[i]->DamageEntity(damage);
 			}
 		}
-		else if (skill.objective == OBJECTIVE::ONE_ALLY)
+
+		// lauch support skill
+		if (skill.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
 		{
 			if (skill.support_type == SUPPORT_TYPE::SHIELD)
 			{
-				objective->ShieldEntity(damage);
+				objective->ShieldEntity(support);
 			}
 			else if (skill.support_type == SUPPORT_TYPE::HEAL)
 			{
-				objective->HealEntity(damage);
+				objective->HealEntity(support);
 			}
 			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
 			{
@@ -321,20 +334,20 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				// revive
 			}
 		}
-		else if (skill.objective == OBJECTIVE::ALL_ALLY)
+		else if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
 		{
 			if (skill.support_type == SUPPORT_TYPE::SHIELD)
 			{
 				for (size_t i = 0; i < 4; i++)
 				{
-					allies[i]->ShieldEntity(damage);
+					allies[i]->ShieldEntity(support);
 				}
 			}
 			else if (skill.support_type == SUPPORT_TYPE::HEAL)
 			{
 				for (size_t i = 0; i < 4; i++)
 				{
-					allies[i]->HealEntity(damage);
+					allies[i]->HealEntity(support);
 				}
 			}
 			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
@@ -345,19 +358,41 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 			}
 		}
-		else if (skill.objective == OBJECTIVE::SELF)
+		else if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
 		{
+			if (skill.support_type == SUPPORT_TYPE::SHIELD)
+			{
+				user->ShieldEntity(support);
+			}
+			else if (skill.support_type == SUPPORT_TYPE::HEAL)
+			{
+				user->HealEntity(support);
+			}
+			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+			{
+				user->CleanEntity();
+			}
+
 			if (skill.buff_type == BUFF_TYPE::STEALTH)
 			{
-
+				user->AddBuff(skill.buff_type, skill.buff_turns);
 			}
 			else if (skill.buff_type == BUFF_TYPE::TAUNT)
 			{
-
+				user->AddBuff(skill.buff_type, skill.buff_turns);
 			}
 		}
 
 		in_animation = 1;
+	}
+}
+
+void Combat_Manager::UpdateBuffs()
+{
+	for (size_t i = 0; i < 4; i++)
+	{
+		allies[i]->UpdateBuffs();
+		enemies[i]->UpdateBuffs();
 	}
 }
 
