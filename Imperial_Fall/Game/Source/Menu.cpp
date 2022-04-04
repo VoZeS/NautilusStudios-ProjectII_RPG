@@ -181,6 +181,9 @@ bool Menu::Start()
 // Called each loop iteration
 bool Menu::PreUpdate()
 {
+
+	LOG("%d", chosed);
+
 	intro = app->scene->GetStartScreenState();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
@@ -203,59 +206,68 @@ bool Menu::PreUpdate()
 	float cx = -app->render->camera.x;
 	float cy = -app->render->camera.y;
 
-	for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
+	if (paused)
 	{
-		SDL_Rect rect = pause_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
-			if (paused)
+			SDL_Rect rect = pause_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				app->audio->PlayFx(hover_sound);
+				if (paused)
+				{
+					app->audio->PlayFx(hover_sound);
+				}
+				chosed = i;
+				pause_buttons[i].state = 1;
 			}
-			chosed = i;
-			pause_buttons[i].state = 1;
-		}
-		else
-		{
-			pause_buttons[i].state = 0;
+			else
+			{
+				pause_buttons[i].state = 0;
+			}
 		}
 	}
-
-	for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
+	else if (intro && !settings)
 	{
-		SDL_Rect rect = menu_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+		for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 		{
-			if (intro && !settings)
+			SDL_Rect rect = menu_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				app->audio->PlayFx(hover_sound);
+				if (intro && !settings)
+				{
+					app->audio->PlayFx(hover_sound);
+				}
+				chosed = i;
+				menu_buttons[i].state = 1;
 			}
-			chosed = i;
-			menu_buttons[i].state = 1;
-		}
-		else
-		{
-			menu_buttons[i].state = 0;
+			else
+			{
+				menu_buttons[i].state = 0;
+			}
 		}
 	}
-
-	for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+	
+	if (settings) 
 	{
-		SDL_Rect rect = settings_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+		for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
 		{
-			if (settings)
+			SDL_Rect rect = settings_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				app->audio->PlayFx(hover_sound);
+				if (settings)
+				{
+					app->audio->PlayFx(hover_sound);
+				}
+				chosed = i;
+				settings_buttons[i].state = 1;
 			}
-			chosed = i;
-			settings_buttons[i].state = 1;
-		}
-		else
-		{
-			settings_buttons[i].state = 0;
+			else
+			{
+				settings_buttons[i].state = 0;
+			}
 		}
 	}
+	
 
 	for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
 	{
