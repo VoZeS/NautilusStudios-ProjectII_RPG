@@ -32,7 +32,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		max_mana = 80;
 		actual_mana = max_mana;
 		this->speed = 40;
-		this->power = 300;
+		this->power = 30;
 		shield = 0;
 
 		alive = true;
@@ -50,7 +50,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		max_mana = 50;
 		actual_mana = max_mana;
 		this->speed = 60;
-		this->power = 500;
+		this->power = 50;
 		shield = 0;
 
 		alive = true;
@@ -68,7 +68,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		max_mana = 40;
 		actual_mana = max_mana;
 		this->speed = 30;
-		this->power = 600;
+		this->power = 60;
 		shield = 0;
 
 		alive = true;
