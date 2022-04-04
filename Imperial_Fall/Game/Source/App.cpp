@@ -234,7 +234,7 @@ bool App::PreUpdate()
 		if(pModule->active == false) {
 			continue;
 		}
-
+		
 		ret = item->data->PreUpdate();
 	}
 

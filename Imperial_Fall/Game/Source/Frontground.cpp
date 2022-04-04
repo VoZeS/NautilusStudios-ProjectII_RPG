@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Player.h"
+#include "Menu.h"
 #include "Frontground.h"
 
 #include "Defs.h"
@@ -74,14 +75,33 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		if (in_combat == 1 || in_combat == 2)
+		if (in_combat == 0 && restart == 2)
+		{
+			restart = 0;
+			return_black = true;
+			app->SaveGameRequest();
+			in_combat = 2;
+		}
+		else if (in_combat == 1 || in_combat == 2)
 		{
 			FadeOutCombat();
 		}
 		else if (in_combat == 3)
 		{
-			in_combat = 0;
-			FadeFromBlack(destination_level);
+			if (restart == 0)
+			{
+				// return field
+				in_combat = 0;
+				app->menu->SetWinLose(-1); // both false
+				FadeFromBlack(destination_level);
+			}
+			else if (restart == 1)
+			{
+				// restart
+				in_combat = 0;
+				app->menu->SetWinLose(-1); // both false
+				restart = 2;
+			}
 		}
 		else
 		{
@@ -363,6 +383,15 @@ bool Frontground::ReturnToField()
 {
 	in_combat = 3;
 	app->scene->PassLevel(app->scene->current_level);
+
+	return true;
+}
+
+bool Frontground::ResetCombat()
+{
+	go_black = true;
+	in_combat = 3;
+	restart = 1;
 
 	return true;
 }

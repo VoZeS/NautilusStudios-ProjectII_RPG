@@ -52,6 +52,8 @@ public:
 
 	bool ReturnToField(); // end combat
 
+	bool ResetCombat();
+
 	void SetPressE_Hide(bool hide)
 	{
 		press_e_hide = hide;
@@ -85,7 +87,7 @@ private:
 	bool press_e_hide = true;
 
 	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat, 4 --> restart combat
-
+	int  restart = 0; // 0 --> desactivado, 1 --> activado, 2 --> proceso
 };
 
 #endif

@@ -58,7 +58,7 @@ bool Combat_Manager::PreUpdate()
 		if (!combat_init)
 		{
 			//init allies
-			allies[0] = new Combat_Entities(70, 50, 50, 65, 0); // assassin
+			allies[0] = new Combat_Entities(70, 50, 50, 650, 0); // assassin
 			allies[1] = new Combat_Entities(100, 60, 30, 50, 1); // healer
 			allies[2] = new Combat_Entities(140, 50, 10, 50, 2); // tank
 			allies[3] = new Combat_Entities(85, 70, 35, 60, 3); // wizard
@@ -95,21 +95,11 @@ bool Combat_Manager::PreUpdate()
 			}
 			else if (CheckCombatState() == 1)
 			{
-				if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && app->frontground->GetCombatState())
-				{
-					app->frontground->ReturnToField();
-				}
+				app->menu->SetWinLose(0); // win
 			}
 			else if (CheckCombatState() == 2)
 			{
-				if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && app->frontground->GetCombatState()) // EXIT BATTLE
-				{
-					app->frontground->ReturnToField();
-				}
-				else if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && app->frontground->GetCombatState()) // RESTART BATTLE
-				{
-					// RESTART BATTLE
-				}
+				app->menu->SetWinLose(1); // lose
 			}
 			
 		}
@@ -418,7 +408,7 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int r = rand() % 4;
+	int r;
 
 	if (user->GetActualMana() < user->GetSkill(0).mana_cost)
 	{
@@ -430,6 +420,10 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 	}
 	else
 	{
+		do
+		{
+			r = rand() % 4;
+		} while (!allies[r]->GetEntityState());
 		app->combat_menu->SetSkillPrepared(user->GetSkill(0));
 		UseSkill(user, user->GetSkill(0), allies[r]);
 	}

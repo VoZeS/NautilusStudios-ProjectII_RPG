@@ -1,1 +1,27 @@
 <?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<scene />
+	<renderer>
+		<camera x="-160" y="-500" />
+	</renderer>
+	<entities>
+		<player>
+			<position x="16" y="19.0020599" />
+			<comp0 x="15.0012751" y="18.9196014" />
+			<comp1 x="14.0377054" y="17.7826653" />
+			<comp2 x="13.0711432" y="17.702961" />
+		</player>
+		<enemies>
+			<ground0 x="31.9988213" y="22.3999996" state="0" />
+			<ground1 x="48.6388206" y="9.59999943" state="0" />
+			<ground2 x="65.9188461" y="26.2399998" state="0" />
+			<ground3 x="70.3988495" y="16" state="0" />
+			<air0 x="14.7199993" y="8.70753574" state="0" />
+			<air1 x="99.1999969" y="11.9075365" state="0" />
+		</enemies>
+	</entities>
+</game_state>
