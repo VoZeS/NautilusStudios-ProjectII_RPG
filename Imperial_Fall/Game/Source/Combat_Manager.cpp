@@ -58,8 +58,8 @@ bool Combat_Manager::PreUpdate()
 		{
 			//init allies
 			allies[0] = new Combat_Entities(70, 50, 50, 65, 0); // assassin
-			allies[1] = new Combat_Entities(100, 60, 30, 50, 2); // healer
-			allies[2] = new Combat_Entities(140, 50, 10, 50, 1); // tank
+			allies[1] = new Combat_Entities(100, 60, 30, 50, 1); // healer
+			allies[2] = new Combat_Entities(140, 50, 10, 50, 2); // tank
 			allies[3] = new Combat_Entities(85, 70, 35, 60, 3); // wizard
 
 			//init enemies
@@ -75,20 +75,32 @@ bool Combat_Manager::PreUpdate()
 		}
 		else
 		{
-			if (pass_turn)
+			if (CheckCombatState() == 0)
 			{
-				srand(time(NULL));
-				do
+				if (pass_turn)
 				{
-					turn++;
-					if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
+					srand(time(NULL));
+					do
 					{
-						turn = 0;
-					}
-				} while (!turn_order[turn]->GetEntityState());
-
-				pass_turn = false;
+						turn++;
+						if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
+						{
+							turn = 0;
+						}
+					} while (!turn_order[turn]->GetEntityState());
+					UpdateBuffs();
+					pass_turn = false;
+				}
 			}
+			else if (CheckCombatState() == 1)
+			{
+				// set win
+			}
+			else if (CheckCombatState() == 1)
+			{
+				// set lose
+			}
+			
 		}
 	}
 
@@ -123,6 +135,7 @@ bool Combat_Manager::Update(float dt)
 			animation_cd = 0;
 		}
 	}
+	
 
 	return true;
 }
@@ -260,7 +273,7 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 867 + cx + 60, 351 + cy + 35, enemies[2]->GetActualMana(), 28 }, 0, 0, 255);
 	app->render->DrawRectangle({ 967 + cx + 60, 451 + cy + 35, enemies[3]->GetActualMana(), 28 }, 0, 0, 255);
 
-	// shield allies
+	// shield enemies
 	app->render->DrawRectangle({ 866 + cx + 60 + enemies[0]->GetActualHealth(), 151 + cy, enemies[0]->GetShield(), 28 }, 120, 120, 120);
 	app->render->DrawRectangle({ 966 + cx + 60 + enemies[0]->GetActualHealth(), 251 + cy, enemies[1]->GetShield(), 28 }, 120, 120, 120);
 	app->render->DrawRectangle({ 866 + cx + 60 + enemies[0]->GetActualHealth(), 351 + cy, enemies[2]->GetShield(), 28 }, 120, 120, 120);
@@ -389,17 +402,55 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 
 void Combat_Manager::UpdateBuffs()
 {
-	for (size_t i = 0; i < 4; i++)
-	{
-		allies[i]->UpdateBuffs();
-		enemies[i]->UpdateBuffs();
-	}
+	GetActualEntity()->UpdateBuffs();
 }
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
 	int r = rand() % 4;
 
-	app->combat_menu->SetSkillPrepared(user->GetSkill(0));
-	UseSkill(user, user->GetSkill(0), allies[r]);
+	if (user->GetActualMana() < user->GetSkill(0).mana_cost)
+	{
+		user->ReloadMana();
+		Skill reload;
+		reload.skill_name = "reload";
+		app->combat_menu->SetSkillPrepared(reload);
+		SetInAnimation(1);
+	}
+	else
+	{
+		app->combat_menu->SetSkillPrepared(user->GetSkill(0));
+		UseSkill(user, user->GetSkill(0), allies[r]);
+	}
+}
+
+int Combat_Manager::CheckCombatState()
+{
+	int ret = 0;
+	int allies_alive = 0;
+	int enemies_alive = 0;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (allies[i]->GetEntityState())
+		{
+			allies_alive++;
+		}
+
+		if (enemies[i]->GetEntityState())
+		{
+			enemies_alive++;
+		}
+	}
+
+	if (allies_alive == 0)
+	{
+		ret = 2;
+	}
+	else if (enemies_alive == 0)
+	{
+		ret = 1;
+	}
+
+	return ret;
 }

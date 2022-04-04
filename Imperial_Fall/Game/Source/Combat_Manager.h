@@ -64,6 +64,9 @@ public:
 		in_animation = n;
 	}
 
+	// 0 --> normal, 1 --> win, 2 --> lose
+	int CheckCombatState();
+
 private:
 	bool in_combat = false;
 	bool in_action = false;

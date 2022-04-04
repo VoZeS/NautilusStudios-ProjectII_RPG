@@ -167,7 +167,7 @@ int Combat_Entities::FindBuff(BUFF buff)
 	{
 		if (buff.buff_type == item->data.buff_type)
 		{
-			return buff.turns;
+			return item->data.turns;
 		}
 	}
 	return -1;
@@ -336,7 +336,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::TAUNT;
-			skill.buff_turns = 1;
+			skill.buff_turns = 2;
 			break;
 		case 3:
 			skill.owner = owner;

@@ -206,7 +206,10 @@ bool Combat_Menu::PreUpdate()
 			}
 			if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 			{
-				if (enemies_buttons[0].state == 1 || enemies_buttons[1].state == 1 || enemies_buttons[2].state == 1 || enemies_buttons[3].state == 1)
+				if ((enemies_buttons[0].state == 1 && app->combat_manager->GetEnemyByNumber(0)->GetEntityState()) || 
+					(enemies_buttons[1].state == 1 && app->combat_manager->GetEnemyByNumber(1)->GetEntityState()) ||
+					(enemies_buttons[2].state == 1 && app->combat_manager->GetEnemyByNumber(2)->GetEntityState()) ||
+					(enemies_buttons[3].state == 1 && app->combat_manager->GetEnemyByNumber(3)->GetEntityState()))
 				{
 					for (size_t i = 0; i < 4; i++)
 					{
@@ -216,9 +219,29 @@ bool Combat_Menu::PreUpdate()
 			}
 			for (size_t i = 0; i < 4; i++)
 			{
+				// if enemy dead
 				if (!app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
 				{
 					enemies_buttons[i].state = 0;
+				}
+
+				BUFF b;
+				// if one enemy taunt
+				b.buff_type = BUFF_TYPE::TAUNT;
+				if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1)
+				{
+					for (size_t j = 0; j < 4; j++)
+					{
+						if (j != i)
+						{
+							enemies_buttons[j].state = 0;
+						}
+					}
+				}
+				b.buff_type = BUFF_TYPE::STEALTH;
+				if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && enemies_buttons[i].state == 1)
+				{
+					enemies_buttons[i].state == 0;
 				}
 			}
 		}
@@ -351,6 +374,7 @@ bool Combat_Menu::Update(float dt)
 						in_allies = true;
 					}
 					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(0);
+					in_action = true;
 					break;
 				case 1:
 					//prepare attack 2
@@ -364,6 +388,7 @@ bool Combat_Menu::Update(float dt)
 						in_allies = true;
 					}
 					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(1);
+					in_action = true;
 					break;
 				case 2:
 					//prepare attack 3
@@ -377,6 +402,7 @@ bool Combat_Menu::Update(float dt)
 						in_allies = true;
 					}
 					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(2);
+					in_action = true;
 					break;
 				case 3:
 					//prepare attack 4
@@ -390,6 +416,7 @@ bool Combat_Menu::Update(float dt)
 						in_allies = true;
 					}
 					skill_prepared = app->combat_manager->GetActualEntity()->GetSkill(3);
+					in_action = true;
 					break;
 				case 4:
 					//reload mana
@@ -406,7 +433,6 @@ bool Combat_Menu::Update(float dt)
 					break;
 				}
 
-				in_action = true;
 				general_buttons[chosed].state = 2;
 			}
 		}
