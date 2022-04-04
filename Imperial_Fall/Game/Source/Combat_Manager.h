@@ -48,6 +48,11 @@ public:
 		return allies[n];
 	}
 
+	Combat_Entities* GetItemList()
+	{
+		return items;
+	}
+
 	void UseSkill(Combat_Entities* user, Skill skill, Combat_Entities* objective);
 
 	void UpdateBuffs();
@@ -79,6 +84,7 @@ private:
 	
 	Combat_Entities* allies[4] = { NULL };
 	Combat_Entities* enemies[4] = { NULL };
+	Combat_Entities* items = NULL;
 
 	int animation_cd = 0;
 	int in_animation = 0; // 0 --> no, 1 --> starting, 2 --> in

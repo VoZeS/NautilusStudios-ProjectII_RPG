@@ -25,6 +25,7 @@ enum class SUPPORT_TYPE // other allies
 	HEAL,
 	SHIELD,
 	CLEAN,
+	RELOAD,
 	REVIVE
 };
 
@@ -59,7 +60,7 @@ public:
 	SUPPORT_TYPE support_type = SUPPORT_TYPE::NOTHING;
 	// buff type
 	BUFF_TYPE buff_type = BUFF_TYPE::NOTHING;
-	int buff_turns = 0;
+	int buff_turns = 0; // used with shield too
 };
 
 #endif

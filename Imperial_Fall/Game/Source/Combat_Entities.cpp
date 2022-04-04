@@ -11,6 +11,7 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 	this->speed = speed;
 	this->power = power;
 	shield = 0;
+	shield_turns = 0;
 
 	alive = true;
 
@@ -34,6 +35,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		this->speed = 30;
 		this->power = 60;
 		shield = 0;
+		shield_turns = 0;
 
 		alive = true;
 
@@ -52,6 +54,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		this->speed = 40;
 		this->power = 30;
 		shield = 0;
+		shield_turns = 0;
 
 		alive = true;
 
@@ -70,6 +73,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		this->speed = 60;
 		this->power = 50;
 		shield = 0;
+		shield_turns = 0;
 
 		alive = true;
 
@@ -81,13 +85,14 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 0); // read from xml
 		break;
 	case ENEMIES::SKELETON:
-		max_health = 100;
+		max_health = 50;
 		actual_health = max_health;
 		max_mana = 30;
 		actual_mana = max_mana;
 		this->speed = 35;
-		this->power = 45;
+		this->power = 60;
 		shield = 0;
+		shield_turns = 0;
 
 		alive = true;
 
@@ -99,6 +104,14 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 0); // read from xml
 		break;
 	}
+}
+
+Combat_Entities::Combat_Entities()
+{
+	skills[0] = SetSkill(-1, 0); // read from xml
+	skills[1] = SetSkill(-1, 1); // read from xml
+	skills[2] = SetSkill(-1, 2); // read from xml
+	skills[3] = SetSkill(-1, 3); // read from xml
 }
 
 Combat_Entities::~Combat_Entities()
@@ -156,9 +169,10 @@ void Combat_Entities::ReloadMana(int amount)
 	}
 }
 
-void Combat_Entities::ShieldEntity(int amount)
+void Combat_Entities::ShieldEntity(int amount, int turns)
 {
 	shield += amount;
+	shield_turns += turns;
 }
 
 void Combat_Entities::HealEntity(int amount)
@@ -175,6 +189,18 @@ void Combat_Entities::HealEntity(int amount)
 void Combat_Entities::CleanEntity()
 {
 	// remove debuffs
+}
+
+void Combat_Entities::UpdateShield()
+{
+	if (shield_turns > 0)
+	{
+		shield_turns--;
+		if (shield_turns == 0)
+		{
+			shield = 0;
+		}
+	}
 }
 
 int Combat_Entities::FindBuff(BUFF buff)
@@ -248,7 +274,47 @@ void Combat_Entities::RemoveAllBuffs()
 Skill Combat_Entities::SetSkill(int owner, int skill_number)
 {
 	Skill skill;
-	if (owner == 0) // assassin
+	if (owner == -1) // items
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "HP Potion";
+			skill.mana_cost = 0;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "MP Potion";
+			skill.mana_cost = 0;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::RELOAD;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Fire Granade";
+			skill.mana_cost = 0;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 0;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Lightning Knife";
+			skill.mana_cost = 0;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 1;
+			break;
+		}
+	}
+	else if (owner == 0) // assassin
 	{
 		switch (skill_number)
 		{
@@ -307,6 +373,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
 			break;
 		case 2:
 			skill.owner = owner;
@@ -527,6 +594,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		skill.element = 0;
 		skill.supp_strenght = 0;
 		skill.support_type = SUPPORT_TYPE::SHIELD;
+		skill.buff_turns = 1;
 		break;
 	case 2:
 		skill.owner = owner;

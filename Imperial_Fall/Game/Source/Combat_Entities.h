@@ -23,6 +23,7 @@ class Combat_Entities
 public:
 	Combat_Entities(int health, int mana, int speed, int power, int owner);
 	Combat_Entities(ENEMIES enemy);
+	Combat_Entities();
 	~Combat_Entities();
 
 	bool GetEntityState()
@@ -32,7 +33,7 @@ public:
 
 	bool DamageEntity(int amount);
 	void ReloadMana(int amount = 0);
-	void ShieldEntity(int amount);
+	void ShieldEntity(int amount, int turns);
 	void HealEntity(int amount);
 	void CleanEntity();
 
@@ -77,6 +78,8 @@ public:
 		return shield;
 	}
 
+	void UpdateShield();
+
 	int GetType()
 	{
 		return entity_type;
@@ -110,6 +113,7 @@ private:
 	int speed;
 	int power;
 	int shield;
+	int shield_turns;
 
 	bool alive;
 	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> Templar, 5 --> EnemyHealer, 6 --> Goblin

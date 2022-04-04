@@ -63,9 +63,9 @@ private:
 	bool in_items = false;
 	bool in_enemies = false;
 	bool in_allies = false;
-	bool prep_in_items = false;
-	bool prep_in_enemies = false;
-	bool prep_in_allies = false;
+	int prep_in_items = 0; // 0 --> unactive, 1 --> to false, 2 --> to true
+	int prep_in_enemies = 0; // 0 --> unactive, 1 --> to false, 2 --> to true
+	int prep_in_allies = 0; // 0 --> unactive, 1 --> to false, 2 --> to true
 
 	SDL_Rect r;
 
