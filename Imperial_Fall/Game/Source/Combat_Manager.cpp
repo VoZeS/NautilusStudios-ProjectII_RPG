@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Defs.h"
 #include "Log.h"
+#include "Fonts.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -94,11 +95,21 @@ bool Combat_Manager::PreUpdate()
 			}
 			else if (CheckCombatState() == 1)
 			{
-				// set win
+				if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && app->frontground->GetCombatState())
+				{
+					app->frontground->ReturnToField();
+				}
 			}
-			else if (CheckCombatState() == 1)
+			else if (CheckCombatState() == 2)
 			{
-				// set lose
+				if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && app->frontground->GetCombatState()) // EXIT BATTLE
+				{
+					app->frontground->ReturnToField();
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && app->frontground->GetCombatState()) // RESTART BATTLE
+				{
+					// RESTART BATTLE
+				}
 			}
 			
 		}
@@ -296,21 +307,21 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 
 		switch (skill.att_strenght)
 		{
-		case 0: damage = 0.7f * user->GetPower();
+		case 0: damage = 0.2f * user->GetPower();
 			break;
-		case 1: damage = user->GetPower();
+		case 1: damage = 0.4f * user->GetPower();
 			break;
-		case 2: damage = 1.3f * user->GetPower();
+		case 2: damage = 0.6f * user->GetPower();
 			break;
 		}
 
 		switch (skill.supp_strenght)
 		{
-		case 0: support = 0.7f * user->GetPower();
+		case 0: support = 0.2f * user->GetPower();
 			break;
-		case 1: support = user->GetPower();
+		case 1: support = 0.4f * user->GetPower();
 			break;
-		case 2: support = 1.3f * user->GetPower();
+		case 2: support = 0.6f * user->GetPower();
 			break;
 		}
 

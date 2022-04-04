@@ -470,7 +470,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 1:
 			skill.owner = owner;
-			skill.skill_name = "Triple Scratch"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque******Ruben: Todos por favor, no 3
+			skill.skill_name = "Multiple Scratch"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque******Ruben: Todos por favor, no 3*****DAVID: HAHHAHAH VALE TODOS
 			skill.mana_cost = 35;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;

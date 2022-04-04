@@ -40,6 +40,7 @@ public:
 
 	bool FadeInCombat(ENEMIES enemies[]); // start combat
 
+
 	ENEMIES enemies_to_fight[4];
 
 	bool FadeOutCombat();
@@ -83,7 +84,7 @@ private:
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
 
-	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat
+	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat, 4 --> restart combat
 
 };
 
