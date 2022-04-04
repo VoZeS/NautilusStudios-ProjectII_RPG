@@ -58,8 +58,8 @@ bool Combat_Manager::PreUpdate()
 		{
 			//init allies
 			allies[0] = new Combat_Entities(70, 50, 50, 65, 0); // assassin
-			allies[1] = new Combat_Entities(140, 50, 10, 50, 1); // tank
-			allies[2] = new Combat_Entities(100, 60, 30, 50, 2); // healer
+			allies[1] = new Combat_Entities(100, 60, 30, 50, 2); // healer
+			allies[2] = new Combat_Entities(140, 50, 10, 50, 1); // tank
 			allies[3] = new Combat_Entities(85, 70, 35, 60, 3); // wizard
 
 			//init enemies
