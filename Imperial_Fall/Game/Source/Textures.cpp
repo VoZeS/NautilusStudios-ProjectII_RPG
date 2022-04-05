@@ -52,8 +52,10 @@ bool Textures::Start()
 	granjero = Load("Assets/textures/granjero.png");
 	start_menu = Load("Assets/textures/Start_screen.png");
 	target = Load("Assets/textures/Target.png");
+	skull = Load("Assets/textures/skull.png");
 	goblin = Load("Assets/textures/goblin.png");
 	skeleton = Load("Assets/textures/skeleton.png");
+	mushroom = Load("Assets/textures/mushroom.png");
 	heroes_icons = Load("Assets/textures/heroes_icons.png");
 	enemies_icons = Load("Assets/textures/enemies_icons.png");
 	turn_icon = Load("Assets/textures/turn_icon.png");

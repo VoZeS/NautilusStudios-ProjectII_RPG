@@ -22,6 +22,12 @@ Combat_Menu::Combat_Menu() : Module()
 	idleAnim.PushBack({ 65, 164, 50, 72 });
 	idleAnim.speed = 0.03f;
 
+	mushroomAnim.PushBack({ 0, 0, 100, 125 });
+	mushroomAnim.PushBack({ 100, 0, 100, 125 });
+	mushroomAnim.PushBack({ 200, 0, 100, 125 });
+	mushroomAnim.PushBack({ 300, 0, 100, 125 });
+	mushroomAnim.speed = 0.03f;
+
 	goblinAnim.PushBack({ 0, 0, 64, 70 });
 	goblinAnim.PushBack({ 64, 0, 64, 70 });
 	goblinAnim.PushBack({ 128, 0, 64, 70 });
@@ -78,16 +84,16 @@ bool Combat_Menu::Start()
 	item_pos[3] = { 714.0f, 550.0f };
 	item_pos[4] = { 852.0f, 550.0f };
 
-	enemy_pos[0] = { 866.0f, 150.0f };
-	enemy_pos[1] = { 966.0f, 250.0f };
-	enemy_pos[2] = { 866.0f, 350.0f };
-	enemy_pos[3] = { 966.0f, 450.0f };
-	enemy_pos[4] = { 415.0f, 660.0f };
+	enemy_pos[0] = { 866.0f, 180.0f };
+	enemy_pos[1] = { 966.0f, 280.0f };
+	enemy_pos[2] = { 866.0f, 380.0f };
+	enemy_pos[3] = { 966.0f, 480.0f };
+	enemy_pos[4] = { 415.0f, 60.0f };
 
-	ally_pos[0] = { 350.0f, 150.0f };
-	ally_pos[1] = { 250.0f, 250.0f };
-	ally_pos[2] = { 350.0f, 350.0f };
-	ally_pos[3] = { 250.0f, 450.0f };
+	ally_pos[0] = { 350.0f, 180.0f };
+	ally_pos[1] = { 250.0f, 280.0f };
+	ally_pos[2] = { 350.0f, 380.0f };
+	ally_pos[3] = { 250.0f, 480.0f };
 	ally_pos[4] = { 415.0f, 660.0f };
 
 	// attack buttons dimensions
@@ -160,6 +166,12 @@ bool Combat_Menu::PreUpdate()
 			{
 				switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 				{
+				case 5:
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &mushroomAnim)
+					{
+						app->combat_manager->GetEnemyByNumber(i)->current_anim = &mushroomAnim;
+					}
+					break;
 				case 6:
 					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &goblinAnim)
 					{
@@ -185,7 +197,7 @@ bool Combat_Menu::PreUpdate()
 				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
 				{
 					app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
-				}
+				}//////////////////////////////////////////
 			}
 		}
 	}
@@ -209,12 +221,26 @@ bool Combat_Menu::PreUpdate()
 				SDL_Rect rect = general_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					chosed = i;
-					general_buttons[i].state = 1;
+					if (app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost && i < 4)
+					{
+						general_buttons[i].state = 3;
+					}
+					else
+					{
+						chosed = i;
+						general_buttons[i].state = 1;
+					}
 				}
 				else
 				{
-					general_buttons[i].state = 0;
+					if (app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost && i < 4)
+					{
+						general_buttons[i].state = 3;
+					}
+					else
+					{
+						general_buttons[i].state = 0;
+					}
 				}
 			}
 		}
@@ -687,6 +713,11 @@ bool Combat_Menu::PostUpdate()
 				{
 					switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 					{
+					case 5:
+						texture = app->tex->mushroom;
+						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x -20, enemies_buttons[i].rect.y - 20, &r);
+						break;
 					case 6: 
 						texture = app->tex->goblin;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
@@ -706,8 +737,8 @@ bool Combat_Menu::PostUpdate()
 				}
 				else
 				{
-					texture = app->tex->tank_texture;
-					r = currentAnimation->GetCurrentFrame();
+					texture = app->tex->skull;
+					r = { 64, 0, 64, 64 };
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
 				}
 			}
@@ -721,20 +752,28 @@ bool Combat_Menu::PostUpdate()
 
 			if (i != 4)
 			{
-				switch (i)
+				if (app->combat_manager->GetAllyByNumber(i)->GetEntityState())
 				{
-				case 0: texture = app->tex->assassin_texture;
-					break;
-				case 1: texture = app->tex->healer_texture;
-					break;
-				case 2: texture = app->tex->tank_texture;
-					break;
-				case 3: texture = app->tex->wizard_texture;
-					break;
-				}
+					switch (i)
+					{
+					case 0: texture = app->tex->assassin_texture;
+						break;
+					case 1: texture = app->tex->healer_texture;
+						break;
+					case 2: texture = app->tex->tank_texture;
+						break;
+					case 3: texture = app->tex->wizard_texture;
+						break;
+					}
 
-				// heroes sprites
-				app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
+					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
+				}
+				else
+				{
+					texture = app->tex->skull;
+					r = { 0, 0, 64, 64 };
+					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
+				}
 			}
 		}
 
@@ -756,6 +795,11 @@ bool Combat_Menu::PostUpdate()
 							g_rect = { 0, 50, 400, 50 };
 						}
 						else if (general_buttons[i].state == 2 && !in_action)
+						{
+							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+							g_rect = { 0, 100, 400, 50 };
+						}
+						else if (general_buttons[i].state == 3)
 						{
 							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 							g_rect = { 0, 100, 400, 50 };

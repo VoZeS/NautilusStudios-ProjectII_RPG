@@ -294,6 +294,8 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 800, 8 + cy);
 	switch (enemies[0]->GetType())
 	{
+	case 5: rect = { 128, 0, 64, 64 };
+		  break;
 	case 6: rect = { 0, 0, 64, 64 };
 		break;
 	case 7: rect = { 64, 0, 64, 64 };
@@ -320,6 +322,8 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 800, 8 + cy + 67);
 	switch (enemies[1]->GetType())
 	{
+	case 5: rect = { 128, 0, 64, 64 };
+		  break;
 	case 6: rect = { 0, 0, 64, 64 };
 		  break;
 	case 7: rect = { 64, 0, 64, 64 };
@@ -346,6 +350,8 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 250 + 800, 8 + cy);
 	switch (enemies[2]->GetType())
 	{
+	case 5: rect = { 128, 0, 64, 64 };
+		  break;
 	case 6: rect = { 0, 0, 64, 64 };
 		  break;
 	case 7: rect = { 64, 0, 64, 64 };
@@ -372,6 +378,8 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 250 + 800, 8 + cy + 67);
 	switch (enemies[3]->GetType())
 	{
+	case 5: rect = { 128, 0, 64, 64 };
+		  break;
 	case 6: rect = { 0, 0, 64, 64 };
 		  break;
 	case 7: rect = { 64, 0, 64, 64 };

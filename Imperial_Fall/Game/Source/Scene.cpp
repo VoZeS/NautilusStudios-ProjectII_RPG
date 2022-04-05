@@ -184,7 +184,7 @@ bool Scene::Update(float dt)
 		if (!app->frontground->GetCombatState())
 		{
 			ENEMIES enemies[4];
-			enemies[0] = ENEMIES::HEALER;
+			enemies[0] = ENEMIES::MUSHROOM;
 			enemies[1] = ENEMIES::TEMPLAR;
 			enemies[2] = ENEMIES::SKELETON;
 			enemies[3] = ENEMIES::GOBLIN;

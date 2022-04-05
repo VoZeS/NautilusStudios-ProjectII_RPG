@@ -47,8 +47,10 @@ public:
 	SDL_Texture* granjero = NULL;
 	SDL_Texture* start_menu = NULL;
 	SDL_Texture* target = NULL;
+	SDL_Texture* skull = NULL;
 	SDL_Texture* goblin = NULL;
 	SDL_Texture* skeleton = NULL;
+	SDL_Texture* mushroom = NULL;
 	SDL_Texture* heroes_icons = NULL;
 	SDL_Texture* enemies_icons = NULL;
 	SDL_Texture* turn_icon = NULL;

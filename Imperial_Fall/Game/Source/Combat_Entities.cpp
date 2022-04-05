@@ -46,7 +46,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[2] = SetSkill(entity_type, 2); // read from xml
 		skills[3] = SetSkill(entity_type, 3); // read from xml
 		break;
-	case ENEMIES::HEALER:
+	case ENEMIES::MUSHROOM:
 		max_health = 90;
 		actual_health = max_health;
 		max_mana = 80;

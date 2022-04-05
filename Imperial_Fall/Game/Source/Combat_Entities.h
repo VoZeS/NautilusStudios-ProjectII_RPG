@@ -9,7 +9,7 @@
 enum class ENEMIES
 {
 	TEMPLAR = 0,
-	HEALER,
+	MUSHROOM,
 	GOBLIN,
 	SKELETON
 };
