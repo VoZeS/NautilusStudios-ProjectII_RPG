@@ -83,6 +83,7 @@ bool Combat_Manager::PreUpdate()
 				if (pass_turn)
 				{
 					srand(time(NULL));
+					SetEntitiesPositions();
 					do
 					{
 						turn++;
@@ -530,6 +531,11 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		}
 
 		in_animation = 1;
+
+		if (skill.anim_effect != ANIM_EFFECT::EMPTY)
+		{
+			app->combat_menu->SetSkillAnimation(skill.anim_effect, objective->position.x, objective->position.y);
+		}
 	}
 }
 
@@ -560,6 +566,15 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		} while (!allies[r]->GetEntityState());
 		app->combat_menu->SetSkillPrepared(user->GetSkill(0));
 		UseSkill(user, user->GetSkill(0), allies[r]);
+	}
+}
+
+void Combat_Manager::SetEntitiesPositions()
+{
+	for (size_t i = 0; i < 4; i++)
+	{
+		allies[i]->position = app->combat_menu->GetEntityPosition(true, i);
+		enemies[i]->position = app->combat_menu->GetEntityPosition(false, i);
 	}
 }
 

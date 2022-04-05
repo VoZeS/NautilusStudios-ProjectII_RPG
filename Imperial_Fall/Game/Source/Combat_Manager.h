@@ -69,6 +69,8 @@ public:
 		in_animation = n;
 	}
 
+	void SetEntitiesPositions();
+
 	// 0 --> normal, 1 --> win, 2 --> lose
 	int CheckCombatState();
 

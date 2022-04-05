@@ -4,6 +4,7 @@
 #include "Skills.h"
 #include "Animation.h"
 #include "List.h"
+#include "Point.h"
 
 enum class ENEMIES
 {
@@ -118,6 +119,7 @@ public:
 	}
 
 	Animation* current_anim = NULL;
+	iPoint position = { 0, 0 };
 
 private:
 	Skill SetSkill(int owner, int skill_number);

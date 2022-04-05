@@ -62,6 +62,7 @@ bool Textures::Start()
 	whitemark_400x50 = Load("Assets/textures/400x50_whitemark.png");
 	whitemark_110x110 = Load("Assets/textures/110x110_whitemark.png");
 	whitemark_128x128 = Load("Assets/textures/128x128_whitemark.png");
+	particles_texture = Load("Assets/textures/particlesBig.png");
 
 
 	hab_tex = Load("Assets/textures/HabilityMack.png");

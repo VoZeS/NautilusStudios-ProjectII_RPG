@@ -9,6 +9,7 @@
 #include "Frontground.h"
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
+#include "Particles.h"
 #include "Player.h"
 #include "Defs.h"
 #include "Log.h"
@@ -954,6 +955,29 @@ bool Combat_Menu::PostUpdate()
 		else if (app->combat_manager->GetInAnimation() == 2)
 		{
 			app->fonts->BlitText(500 + c_x, 100 + c_y, textFont, skill_prepared.skill_name);
+			if (skill_effect != ANIM_EFFECT::EMPTY)
+			{
+				if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						app->particles->PlayParticle(skill_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+					}
+				}
+				else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						app->particles->PlayParticle(skill_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+					}
+				}
+				else
+				{
+					app->particles->PlayParticle(skill_effect, objective_pos.x - 32, objective_pos.y - 32);
+				}
+
+				SetSkillAnimation(ANIM_EFFECT::EMPTY, 0, 0);
+			}
 		}
 	}
 
@@ -965,4 +989,22 @@ bool Combat_Menu::CleanUp()
 {
 
 	return true;
+}
+
+iPoint Combat_Menu::GetEntityPosition(bool ally, int n)
+{
+	iPoint pos;
+
+	if (ally)
+	{
+		pos.x = allies_buttons[n].rect.x;
+		pos.y = allies_buttons[n].rect.y;
+	}
+	else
+	{
+		pos.x = enemies_buttons[n].rect.x;
+		pos.y = enemies_buttons[n].rect.y;
+	}
+
+	return pos;
 }

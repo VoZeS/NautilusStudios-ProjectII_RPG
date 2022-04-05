@@ -13,8 +13,8 @@
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
 #include "Menu.h"
+#include "Particles.h"
 #include "Frontground.h"
-
 
 #include "Defs.h"
 #include "Log.h"
@@ -39,6 +39,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	combat_manager = new Combat_Manager();
 	combat_menu = new Combat_Menu();
 	menu = new Menu();
+	particles = new Particles();
 	frontground = new Frontground();
 
 
@@ -57,6 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(combat_manager);
 	AddModule(combat_menu);
 	AddModule(menu);
+	AddModule(particles);
 	AddModule(frontground);
 
 	// Render last to swap buffer

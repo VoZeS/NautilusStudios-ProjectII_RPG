@@ -42,6 +42,13 @@ public:
 		skill_prepared = skill;
 	}
 
+	void SetSkillAnimation(ANIM_EFFECT effect, int pos_x, int pos_y)
+	{
+		skill_effect = effect;
+		objective_pos.x = pos_x;
+		objective_pos.y = pos_y;
+	}
+
 	void CancelAction()
 	{
 		prep_in_items = true;
@@ -53,6 +60,8 @@ public:
 	{
 		in_combat = b;
 	}
+
+	iPoint GetEntityPosition(bool ally, int n);
 
 private:
 
@@ -106,6 +115,8 @@ private:
 
 	// combat manager
 	Skill skill_prepared;
+	ANIM_EFFECT skill_effect;
+	iPoint objective_pos;
 
 	int textFont = -1;
 
