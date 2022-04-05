@@ -123,6 +123,7 @@ private:
 	uint click_sound;
 	uint hover_sound;
 
+
 };
 
 #endif

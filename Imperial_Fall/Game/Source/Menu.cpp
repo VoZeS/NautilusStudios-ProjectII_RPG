@@ -53,9 +53,9 @@ Menu::Menu() : Module()
 	big_fire_anim.speed = 0.1f;
 	big_fire_anim.loop = true;
 
-	light_big_fire_anim.PushBack({ 4,0,518,378 });
+	light_big_fire_anim.PushBack({ 4,0,518,405 });
 	light_big_fire_anim.PushBack({ 533,0,563,405 });
-	light_big_fire_anim.PushBack({ 1106,0,494,355 });
+	light_big_fire_anim.PushBack({ 1106,0,494,405 });
 	light_big_fire_anim.speed = 0.165f;
 	light_big_fire_anim.loop = true;
 
@@ -531,9 +531,9 @@ bool Menu::PostUpdate()
 	if (settings==false && !started) {
 
 	
-		app->render->DrawTexture(big_fire_light, c_x + 756, c_y + seguir + 933, &(light_big_fire_anim.GetCurrentFrame()));
-		app->render->DrawTexture(big_fire, c_x + 940, c_y + seguir +620, &(big_fire_anim.GetCurrentFrame()));
-		app->render->DrawTexture(smook_big_fire, c_x + 1000, c_y + seguir + 300, &(smook_big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(big_fire_light, c_x + 752, c_y + seguir + 930, &(light_big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(big_fire, c_x + 897, c_y + seguir +585, &(big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(smook_big_fire, c_x + 960, c_y + seguir + 300, &(smook_big_fire_anim.GetCurrentFrame()));
 		
 	}
 	

@@ -228,6 +228,7 @@ bool Scene::PostUpdate()
 	{
 		esc = true;
 		desMenu = false;
+		fuegoSeguir = false;
     }
 
 	 //Primera pantalla menu
