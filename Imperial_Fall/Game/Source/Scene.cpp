@@ -217,6 +217,7 @@ bool Scene::PostUpdate()
 	//Una vez pulses el Espacio entrara el menu de opciones
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || desMenu==true)
 	{
+		space_boton = false;
 		desMenu = true;
 		c_y_menu -= 10.0f;
 		fuegoSeguir = true;
@@ -236,6 +237,7 @@ bool Scene::PostUpdate()
 	{
 
 		app->render->DrawTexture(start_screen, c_x, c_y_menu);
+		
 	}
 
 
@@ -307,7 +309,10 @@ bool Scene::PostUpdate()
 	//Segunda Pantalla Menu
 	if (start_screen != NULL && esc == true && app->menu->settings == false)
 	{
+		
+
 		app->render->DrawTexture(start_screen, c_x, c_y-700);
+		
 
 	}
 

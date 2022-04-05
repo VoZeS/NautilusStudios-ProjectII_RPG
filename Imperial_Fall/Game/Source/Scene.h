@@ -67,7 +67,11 @@ public:
 	int zom_w = 1280;
 	int zom_h = 720;
 
+
+	bool space_boton = true; //Desactiva el boton ESPACIO del principio
+
 	bool opciones = false;
+	SDL_Rect r;
 
 	SDL_Texture* start_screen;
 private:

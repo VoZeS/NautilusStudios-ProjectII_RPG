@@ -65,6 +65,12 @@ Menu::Menu() : Module()
 	smook_big_fire_anim.PushBack({ 238,0,217,490 });
 	smook_big_fire_anim.speed = 0.06f;
 	smook_big_fire_anim.loop = true;
+
+
+	space_boton_anim.PushBack({ 3,0,189,80 });
+	space_boton_anim.PushBack({ 196,0,199,80 });
+	space_boton_anim.speed = 0.06f;
+	space_boton_anim.loop = true;
 }
 
 // Destructor
@@ -143,12 +149,24 @@ bool Menu::Start()
 	dead_buttons[0].tex = app->tex->Load("Assets/textures/Load.png"); // Load
 	dead_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); //Exit
 
-	menu_buttons[0].tex = app->tex->Load("Assets/textures/Play.png"); // Play
-	menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
-	menu_buttons[1].tex = app->tex->Load("Assets/textures/Settings.png"); // Settings
-	menu_buttons[2].tex = app->tex->Load("Assets/textures/Credits.png"); // Credits
-	menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsImage.png"); // Credits
-	menu_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Exit
+	//----------------------------------------------------------------MENU INICIO BOTONES------------------------
+	menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/PlaySprite.png"); // Play
+	menu_buttons[0].tex = app->tex->Load("Assets/textures/PlayDarkSprite.png"); // Play
+
+	//menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
+
+	menu_buttons[1].alt_tex = app->tex->Load("Assets/textures/SettingsSprite.png"); // Settings
+	menu_buttons[1].tex = app->tex->Load("Assets/textures/SettingsDarkSprite.png"); // Settings
+
+	menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsSprite.png"); // Credits
+	menu_buttons[2].tex = app->tex->Load("Assets/textures/CreditsDarkSprite.png"); // Credits
+
+	//menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsImage.png"); // Credits
+
+	menu_buttons[3].alt_tex = app->tex->Load("Assets/textures/ExitSprite.png"); // Exit
+	menu_buttons[3].tex = app->tex->Load("Assets/textures/ExitDarkSprite.png"); // Exit
+
+	//----------------------------------------------------------------
 
 	settings_buttons[0].alt_tex = settings_buttons[1].alt_tex = app->tex->Load("Assets/textures/Slider.png"); // Slider
 	settings_buttons[0].tex = app->tex->Load("Assets/textures/Sound.png"); // Audio
@@ -172,8 +190,10 @@ bool Menu::Start()
 
 	big_fire = app->tex->Load("Assets/textures/Big_Fire.png");
 	big_fire_light = app->tex->Load("Assets/textures/Big_Fire_Light.png");
-
 	smook_big_fire = app->tex->Load("Assets/textures/Smoke.png");
+
+	space_boton = app->tex->Load("Assets/textures/Space_Boton_Anim.png");
+	
 
 	
 
@@ -320,6 +340,7 @@ bool Menu::Update(float dt)
 	big_fire_anim.Update();
 	light_big_fire_anim.Update();
 	smook_big_fire_anim.Update();
+	space_boton_anim.Update();
 
 
 	if (app->scene->esc == true) {
@@ -534,6 +555,10 @@ bool Menu::PostUpdate()
 		app->render->DrawTexture(big_fire_light, c_x + 752, c_y + seguir + 930, &(light_big_fire_anim.GetCurrentFrame()));
 		app->render->DrawTexture(big_fire, c_x + 897, c_y + seguir +585, &(big_fire_anim.GetCurrentFrame()));
 		app->render->DrawTexture(smook_big_fire, c_x + 960, c_y + seguir + 300, &(smook_big_fire_anim.GetCurrentFrame()));
+
+		//Boton que sale en la primera pantalla para pasarla
+		if(app->scene->space_boton)
+		app->render->DrawTexture(space_boton, c_x+500 , c_y + seguir+630, &(space_boton_anim.GetCurrentFrame()));
 		
 	}
 	
@@ -640,29 +665,30 @@ bool Menu::PostUpdate()
 		//----------------------------------------------------HUD INICIO------------------------------------------
 		if (intro && !settings)
 		{
-
+	
 			for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 			{
 
 				//Boton Jugar
-				menu_buttons[0].rect.x =c_x + 60 ;
+				menu_buttons[0].rect.x =c_x + 70 ;
 				menu_buttons[0].rect.y = c_y +150;
 
 				///Boton Opciones
-				menu_buttons[1].rect.x = c_x + 100;
-				menu_buttons[1].rect.y = c_y + 380;
+				menu_buttons[1].rect.x = c_x + 50;
+				menu_buttons[1].rect.y = c_y + 385;
 
 				//Boton Creditos
-				menu_buttons[2].rect.x = c_x + 75;
-				menu_buttons[2].rect.y = c_y + 570;
+				menu_buttons[2].rect.x = c_x + 65;
+				menu_buttons[2].rect.y = c_y + 590;
 
 				//Boton Salir
-				menu_buttons[3].rect.x = c_x + 500;
-				menu_buttons[3].rect.y = c_y+ 570;
+				menu_buttons[3].rect.x = c_x + 525;
+				menu_buttons[3].rect.y = c_y+ 590;
 
 				//Recuadro en Botones permanente
 				if (menu_buttons[i].state == 0)
 				{
+					app->render->DrawTexture(menu_buttons[i].tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y-5);
 
 				}
 
@@ -670,30 +696,30 @@ bool Menu::PostUpdate()
 				//Boton Jugar Antorcha
 				else if (menu_buttons[0].state == 1)
 				{
-					app->render->DrawTexture(light_fire1, menu_buttons[0].rect.x-132, menu_buttons[0].rect.y - 90, &(torch_light_1_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire1, menu_buttons[0].rect.x-142, menu_buttons[0].rect.y - 87, &(torch_light_1_anim.GetCurrentFrame()));
 					app->render->DrawTexture(torch_fire, menu_buttons[0].rect.x + 280, menu_buttons[0].rect.y+20, &(torch_selection_anim.GetCurrentFrame()));
 					
 				}
 				//Boton Opciones Antorcha
 				else if (menu_buttons[1].state == 1)
 				{
-					app->render->DrawTexture(light_fire2, menu_buttons[0].rect.x - 102, menu_buttons[0].rect.y +156, &(torch_light_2_anim.GetCurrentFrame()));
-					app->render->DrawTexture(torch_fire, menu_buttons[1].rect.x +291, menu_buttons[1].rect.y-5, &(torch_selection_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire2, menu_buttons[1].rect.x - 90, menu_buttons[1].rect.y - 80, &(torch_light_2_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[1].rect.x +348, menu_buttons[1].rect.y-10, &(torch_selection_anim.GetCurrentFrame()));
 
 				}
 				//Boton Creditos Antorcha
 				else if (menu_buttons[2].state == 1)
 				{
-					app->render->DrawTexture(light_fire3, menu_buttons[0].rect.x - 130, menu_buttons[0].rect.y +359, &(torch_light_3_anim.GetCurrentFrame()));
-					app->render->DrawTexture(torch_fire, menu_buttons[2].rect.x - 55, menu_buttons[2].rect.y+40, &(torch_selection_anim.GetCurrentFrame()));
+					app->render->DrawTexture(light_fire3, menu_buttons[2].rect.x - 140, menu_buttons[2].rect.y - 80, &(torch_light_3_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[2].rect.x - 38, menu_buttons[2].rect.y+20, &(torch_selection_anim.GetCurrentFrame()));
 
 				}
 				//Boton Salir Antorcha
 				else if (menu_buttons[3].state == 1)
 				{
-					app->render->DrawTexture(light_fire4, menu_buttons[0].rect.x +402, menu_buttons[0].rect.y +372, &(torch_light_4_anim.GetCurrentFrame()));
-					app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 185, menu_buttons[3].rect.y-3, &(torch_selection_anim.GetCurrentFrame()));
-
+					app->render->DrawTexture(light_fire4, menu_buttons[3].rect.x - 65, menu_buttons[3].rect.y-67, &(torch_light_4_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 164, menu_buttons[3].rect.y-25, &(torch_selection_anim.GetCurrentFrame()));
+				
 				}
 
 				//Recuadro en Botones cuando haces click Izquiero
@@ -707,23 +733,14 @@ bool Menu::PostUpdate()
 					app->render->DrawTexture(menu_buttons[i].alt_tex, 1000, 500);
 				}
 
-				if (i == 0)
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[i].state == 1)
 				{
-					if (started)
-					{
-						app->render->DrawTexture(menu_buttons[i].alt_tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y + 10);
-					}
-					else
-					{
-						app->render->DrawTexture(menu_buttons[i].tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y + 10);
-					}
-
-				}
-				else
-				{
-					app->render->DrawTexture(menu_buttons[i].tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y + 10);
+					
+					app->render->DrawTexture(menu_buttons[i].alt_tex, menu_buttons[i].rect.x, menu_buttons[i].rect.y - 20);
 				}
 			}
+
 		}
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
 		if (settings )//&& app->scene->opciones==true)

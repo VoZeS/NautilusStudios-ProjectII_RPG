@@ -55,6 +55,9 @@ public:
 	SDL_Texture* big_fire_light = NULL;
 	SDL_Texture* smook_big_fire = NULL;
 
+	SDL_Texture* space_boton = NULL;
+
+
 	SDL_Rect PauseMenuHUD;
 	SDL_Rect r;
 	bool intro;
@@ -84,6 +87,7 @@ private:
 	Animation big_fire_anim;
 	Animation light_big_fire_anim;
 	Animation smook_big_fire_anim;
+	Animation space_boton_anim;
 
 	int xbarra = 135;
 	int xbarra2 = 135;
