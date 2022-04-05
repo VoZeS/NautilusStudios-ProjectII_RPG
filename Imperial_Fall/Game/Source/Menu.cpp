@@ -45,23 +45,25 @@ Menu::Menu() : Module()
 	torch_light_4_anim.speed = 0.165f;
 	torch_light_4_anim.loop = true;
 
-	big_fire_anim.PushBack({ 0,0,400,720 });
-	big_fire_anim.PushBack({400,0,300,720 });
-	big_fire_anim.PushBack({ 700,0,400,720 });
-	big_fire_anim.speed = 0.07f;
+
+	big_fire_anim.PushBack({ 244,0,231,720 });
+	big_fire_anim.PushBack({ 475,0,400,720 });
+	big_fire_anim.PushBack({ 0,0,244,720 });
+	
+	big_fire_anim.speed = 0.1f;
 	big_fire_anim.loop = true;
 
-	light_big_fire_anim.PushBack({ 0,113,600,545 });
-	light_big_fire_anim.PushBack({ 600,113,600,545 });
-	light_big_fire_anim.PushBack({ 1260,113,600,545 });
+	light_big_fire_anim.PushBack({ 4,0,518,378 });
+	light_big_fire_anim.PushBack({ 533,0,563,405 });
+	light_big_fire_anim.PushBack({ 1106,0,494,355 });
 	light_big_fire_anim.speed = 0.165f;
 	light_big_fire_anim.loop = true;
 
 
-	smook_big_fire_anim.PushBack({ 0,0,350,490 });
-	smook_big_fire_anim.PushBack({ 350,0,350,490 });
-	smook_big_fire_anim.PushBack({ 700,0,350,490 });
-	smook_big_fire_anim.speed = 0.065f;
+	smook_big_fire_anim.PushBack({ 0,0,226,490 });
+	smook_big_fire_anim.PushBack({ 460,0,225,490 });
+	smook_big_fire_anim.PushBack({ 238,0,217,490 });
+	smook_big_fire_anim.speed = 0.06f;
 	smook_big_fire_anim.loop = true;
 }
 
@@ -337,7 +339,7 @@ bool Menu::Update(float dt)
 				settings = true;
 				started = true;
 			
-				app->scene->opciones = true;
+				//app->scene->opciones = true;
 				break;
 			case 2:
 				app->scene->ReturnStartScreen();
@@ -389,7 +391,7 @@ bool Menu::Update(float dt)
 				break;
 			case 1:
 				settings = true;
-				app->scene->daleZom1 = true;
+				//app->scene->daleZom1 = true;
 					break;
 			case 2:
 				credits = !credits;
@@ -527,9 +529,10 @@ bool Menu::PostUpdate()
 	}
 	if (settings==false && !started) {
 
-		app->render->DrawTexture(smook_big_fire, c_x + 980, c_y + seguir +90, &(smook_big_fire_anim.GetCurrentFrame()));
-		app->render->DrawTexture(big_fire_light, c_x + 725, c_y + seguir + 900, &(light_big_fire_anim.GetCurrentFrame()));
+	
+		app->render->DrawTexture(big_fire_light, c_x + 756, c_y + seguir + 933, &(light_big_fire_anim.GetCurrentFrame()));
 		app->render->DrawTexture(big_fire, c_x + 940, c_y + seguir +620, &(big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(smook_big_fire, c_x + 1000, c_y + seguir + 300, &(smook_big_fire_anim.GetCurrentFrame()));
 		
 	}
 	
@@ -722,7 +725,7 @@ bool Menu::PostUpdate()
 			}
 		}
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
-		if (settings && app->scene->opciones==true)
+		if (settings )//&& app->scene->opciones==true)
 		{
 		
 			int z, w;

@@ -233,13 +233,15 @@ bool Scene::PostUpdate()
 	 //Primera pantalla menu
 	if (esc == false && app->menu->settings == false)
 	{
+
 		app->render->DrawTexture(start_screen, c_x, c_y_menu);
 	}
 
 
 
 	//zoom prueba------------------------------------
-	if (daleZom1 == true ) {
+	/*
+	* 	if (daleZom1 == true ) {
 
 	
 		app->render->DrawRectangle(fondoNegro , 0, 0, 0);
@@ -282,22 +284,22 @@ bool Scene::PostUpdate()
 	
 		app->render->DrawTexture(settings_screen, c_x, c_y);		
 	}
+	*/
+
 
 	
 
 	//----------------------------------------------------
-	/*
-	* //-------------------Settings
+	
+	 //-------------------Settings
 	if (app->menu->settings == true)
 	{
 		
 		app->render->DrawTexture(settings_screen, c_x, c_y);
 	}
-	else {
-		app->menu->settings = false;
-	}
+	
 
-	*/
+
 	
 
 	
