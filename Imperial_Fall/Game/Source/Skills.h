@@ -36,6 +36,13 @@ enum class BUFF_TYPE // self
 	TAUNT
 };
 
+enum class DEBUFF_TYPE
+{
+	NOTHING = 0,
+	BURN,
+	DEF_REDUCC
+};
+
 struct Skill
 {
 public:
@@ -60,6 +67,7 @@ public:
 	SUPPORT_TYPE support_type = SUPPORT_TYPE::NOTHING;
 	// buff type
 	BUFF_TYPE buff_type = BUFF_TYPE::NOTHING;
+	DEBUFF_TYPE debuff_type = DEBUFF_TYPE::NOTHING;
 	int buff_turns = 0; // used with shield too
 };
 

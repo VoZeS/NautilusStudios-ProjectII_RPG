@@ -153,14 +153,6 @@ bool Combat_Manager::PostUpdate()
 		}
 		else
 		{
-			if (app->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-			{
-				LOG("ally1 h:%d and m:%d, ally2 h:%d and m:%d, ally3 h:%d and m:%d, ally4 h:%d and m:%d, enemy1 h:%d and m:%d, enemy2 h:%d and m:%d, enemy3 h:%d and m:%d, enemy4 h:%d and m:%d",
-					allies[0]->GetActualHealth(), allies[0]->GetActualMana(), allies[1]->GetActualHealth(), allies[1]->GetActualMana(),
-					allies[2]->GetActualHealth(), allies[2]->GetActualMana(), allies[3]->GetActualHealth(), allies[3]->GetActualMana(),
-					enemies[0]->GetActualHealth(), enemies[0]->GetActualMana(), enemies[1]->GetActualHealth(), enemies[1]->GetActualMana(),
-					enemies[2]->GetActualHealth(), enemies[2]->GetActualMana(), enemies[3]->GetActualHealth(), enemies[3]->GetActualMana());
-			}
 			UpdateHUD();
 		}
 	}
@@ -440,12 +432,20 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 		{
 			objective->DamageEntity(damage);
+			if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+			{
+				objective->AddDebuff(skill.debuff_type, skill.buff_turns);
+			}
 		}
 		else if (skill.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 		{
 			for (size_t i = 0; i < 4; i++)
 			{
 				enemies[i]->DamageEntity(damage);
+				if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+				{
+					enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+				}
 			}
 		}
 
@@ -523,11 +523,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				user->ReloadMana(support * 5);
 			}
 
-			if (skill.buff_type == BUFF_TYPE::STEALTH)
-			{
-				user->AddBuff(skill.buff_type, skill.buff_turns);
-			}
-			else if (skill.buff_type == BUFF_TYPE::TAUNT)
+			if (skill.buff_type != BUFF_TYPE::NOTHING)
 			{
 				user->AddBuff(skill.buff_type, skill.buff_turns);
 			}
@@ -540,6 +536,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 void Combat_Manager::UpdateBuffs()
 {
 	GetActualEntity()->UpdateBuffs();
+	GetActualEntity()->UpdateDebuffs();
 	GetActualEntity()->UpdateShield();
 }
 

@@ -18,6 +18,11 @@ struct BUFF {
 	uint turns = 0;
 };
 
+struct DEBUFF {
+	DEBUFF_TYPE debuff_type;
+	uint turns = 0;
+};
+
 class Combat_Entities
 {
 public:
@@ -93,12 +98,23 @@ public:
 	// Buffs
 	int FindBuff(BUFF buff); // return turns remaning or -1 if entity don't have that buff
 	void AddBuff(BUFF_TYPE type, int turns);
-	void AddTurns(BUFF buff, int turns_to_add);
+	void AddBuffTurns(BUFF buff, int turns_to_add);
 	void UpdateBuffs();
 	void RemoveAllBuffs();
 	List<BUFF> GetBuffList()
 	{
 		return buffs;
+	}
+
+	// Debuffs
+	int FindDebuff(DEBUFF debuff); // return turns remaning or -1 if entity don't have that buff
+	void AddDebuff(DEBUFF_TYPE type, int turns);
+	void AddDebuffTurns(DEBUFF debuff, int turns_to_add);
+	void UpdateDebuffs();
+	void RemoveAllDebuffs();
+	List<DEBUFF> GetDebuffList()
+	{
+		return debuffs;
 	}
 
 	Animation* current_anim = NULL;
@@ -121,6 +137,7 @@ private:
 	Skill skills[4];
 
 	List<BUFF> buffs;
+	List<DEBUFF> debuffs;
 };
 
 #endif

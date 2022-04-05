@@ -229,11 +229,11 @@ void Combat_Entities::AddBuff(BUFF_TYPE type, int turns)
 	}
 	else
 	{
-		AddTurns(new_buff, turns);
+		AddBuffTurns(new_buff, turns);
 	}
 }
 
-void Combat_Entities::AddTurns(BUFF buff, int turns_to_add)
+void Combat_Entities::AddBuffTurns(BUFF buff, int turns_to_add)
 {
 	ListItem<BUFF>* item;
 
@@ -262,6 +262,74 @@ void Combat_Entities::UpdateBuffs()
 }
 
 void Combat_Entities::RemoveAllBuffs()
+{
+	ListItem<BUFF>* item;
+
+	for (item = buffs.start; item != NULL; item = item->next)
+	{
+		buffs.Del(item);
+	}
+}
+
+int Combat_Entities::FindDebuff(DEBUFF debuff)
+{
+	ListItem<DEBUFF>* item;
+
+	for (item = debuffs.start; item != NULL; item = item->next)
+	{
+		if (debuff.debuff_type == item->data.debuff_type)
+		{
+			return item->data.turns;
+		}
+	}
+	return -1;
+}
+
+void Combat_Entities::AddDebuff(DEBUFF_TYPE type, int turns)
+{
+	DEBUFF new_debuff;
+	new_debuff.debuff_type = type;
+
+	if (FindDebuff(new_debuff) == -1)
+	{
+		new_debuff.turns = turns;
+		debuffs.Add(new_debuff);
+	}
+	else
+	{
+		AddDebuffTurns(new_debuff, turns);
+	}
+}
+
+void Combat_Entities::AddDebuffTurns(DEBUFF debuff, int turns_to_add)
+{
+	ListItem<DEBUFF>* item;
+
+	for (item = debuffs.start; item != NULL; item = item->next)
+	{
+		if (debuff.debuff_type == item->data.debuff_type)
+		{
+			debuff.turns += turns_to_add;
+			break;
+		}
+	}
+}
+
+void Combat_Entities::UpdateDebuffs()
+{
+	ListItem<DEBUFF>* item;
+
+	for (item = debuffs.start; item != NULL; item = item->next)
+	{
+		item->data.turns--;
+		if (item->data.turns == 0)
+		{
+			debuffs.Del(item);
+		}
+	}
+}
+
+void Combat_Entities::RemoveAllDebuffs()
 {
 	ListItem<BUFF>* item;
 
@@ -303,6 +371,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 1;
 			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::BURN;
+			skill.buff_turns = 1;
 			break;
 		case 3:
 			skill.owner = owner;

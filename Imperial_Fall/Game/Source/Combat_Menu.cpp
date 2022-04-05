@@ -955,18 +955,6 @@ bool Combat_Menu::PostUpdate()
 		{
 			app->fonts->BlitText(500 + c_x, 100 + c_y, textFont, skill_prepared.skill_name);
 		}
-		/*else if (app->combat_manager->CheckCombatState() == 1)
-		{
-			app->fonts->BlitText(100 + c_x, 100 + c_y, textFont, "You defeat all your enemies! Good!");
-			app->fonts->BlitText(100 + c_x, 500 + c_y, textFont, "Press ENTER to continue.");
-		}
-		else if (app->combat_manager->CheckCombatState() == 2)
-		{
-			app->fonts->BlitText(100 + c_x, 100 + c_y, textFont, "You were defeated... Try again...");
-			app->fonts->BlitText(100 + c_x, 500 + c_y, textFont, "Press ENTER to TRY AGAIN.");
-			app->fonts->BlitText(100 + c_x, 600 + c_y, textFont, "Press SPACE to EXIT BATTLE.");
-
-		}*/
 	}
 
 	return true;
