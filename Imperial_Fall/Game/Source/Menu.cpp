@@ -337,6 +337,7 @@ bool Menu::Update(float dt)
 				break;
 			case 1:
 				settings = true;
+				paused = false;
 				started = true;
 			
 				//app->scene->opciones = true;
