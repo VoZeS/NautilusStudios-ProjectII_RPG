@@ -337,7 +337,7 @@ bool Menu::Update(float dt)
 				break;
 			case 1:
 				settings = true;
-				paused = false;
+				paused = true;
 				started = true;
 			
 				//app->scene->opciones = true;
@@ -551,7 +551,7 @@ bool Menu::PostUpdate()
 		}
 
 		//Hace que el menu se quite
-		if (!paused )
+		if (!paused &&!settings )
 		{
 			if (c_x_menu >= 100 && stop == false)
 			{
@@ -566,7 +566,7 @@ bool Menu::PostUpdate()
 		}
 
 		//Fondo Negro transparente que sale cuando pausas
-		if (intro == false && paused)
+		if (paused)
 		{
 			app->render->DrawRectangle(r, 0, 0, 0, 200);
 		}
@@ -731,12 +731,9 @@ bool Menu::PostUpdate()
 		
 			int z, w;
 			app->input->GetMousePosition(z, w);
+
 			
-			if (intro == false)
-			{
 			
-				app->render->DrawRectangle(r, 0, 0, 0, 200);
-			}
 			if(paused)
 			app->render->DrawRectangle(PauseMenuHUD, 18, 188, 18, 200);
 
@@ -842,6 +839,7 @@ bool Menu::PostUpdate()
 			}
 		}
 
+		
 
 		if (lose)
 		{
