@@ -741,23 +741,60 @@ bool Combat_Menu::PostUpdate()
 		{
 			if (!in_items && !in_enemies && !in_allies)
 			{
+				SDL_Rect g_rect;
 				for (size_t i = 0; i < NUM_BUTTONS; i++)
 				{
 					general_buttons[i].rect.x = action_pos[i].x + c_x;
 					general_buttons[i].rect.y = action_pos[i].y + c_y;
 
-					if (general_buttons[i].state == 1 && !in_action)
+					if (i < 4)
 					{
-						app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
+						if (general_buttons[i].state == 1 && !in_action)
+						{
+							//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
+							g_rect = { 0, 50, 400, 50 };
+						}
+						else if (general_buttons[i].state == 2 && !in_action)
+						{
+							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+							g_rect = { 0, 100, 400, 50 };
+						}
+						else if (general_buttons[i].state == 0)
+						{
+							//app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+							switch (app->combat_manager->GetActualEntity()->GetSkill(i).element)
+							{
+							case 0: g_rect = { 0, 0, 400, 50 };
+								  break;
+							case 1: g_rect = { 0, 150, 400, 50 };
+								  break;
+							case 2: g_rect = { 0, 250, 400, 50 };
+								  break;
+							case 3: g_rect = { 0, 200, 400, 50 };
+								  break;
+							}
+						}
+						texture = app->tex->whitemark_400x50;
 					}
-					else if (general_buttons[i].state == 2 && !in_action)
+					else
 					{
-						app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+						if (general_buttons[i].state == 1 && !in_action)
+						{
+							//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
+							g_rect = { 0, 110, 110, 110 };
+						}
+						else if (general_buttons[i].state == 2 && !in_action)
+						{
+							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+							g_rect = { 0, 220, 110, 110 };
+						}
+						else if (general_buttons[i].state == 0)
+						{
+							g_rect = { 0, 0, 110, 110 };
+						}
+						texture = app->tex->whitemark_110x110;
 					}
-					else if (general_buttons[i].state == 0)
-					{
-						app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-					}
+					app->render->DrawTexture(texture, general_buttons[i].rect.x, general_buttons[i].rect.y, &g_rect);
 				}
 
 				for (size_t i = 0; i < 4; i++)
@@ -765,12 +802,13 @@ bool Combat_Menu::PostUpdate()
 					general_buttons[i].rect.x = action_pos[i].x + c_x;
 					general_buttons[i].rect.y = action_pos[i].y + c_y;
 
-					app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 15, textFont, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
+					app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, textFont, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
 				}
 			}
 
 			if (in_items && !in_enemies && !in_allies)
 			{
+				SDL_Rect i_rect;
 				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 				{
 					items_buttons[i].rect.x = item_pos[i].x + c_x;
@@ -778,21 +816,26 @@ bool Combat_Menu::PostUpdate()
 
 					if (items_buttons[i].state == 0)
 					{
-						app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						//app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						i_rect = { 0, 0, 128, 128 };
 					}
 					else if (items_buttons[i].state == 1)
 					{
-						app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
+						//app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
+						i_rect = { 0, 128, 128, 128 };
 					}
 					else if (items_buttons[i].state == 2)
 					{
-						app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
+						//app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
+						i_rect = { 0, 256, 128, 128 };
 					}
+					app->render->DrawTexture(app->tex->whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
 				}
 			}
 
 			if (!in_items && in_enemies && !in_allies)
 			{
+				SDL_Rect e_rect;
 				for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
 				{
 					if (enemies_buttons[i].state == 1)
@@ -800,7 +843,9 @@ bool Combat_Menu::PostUpdate()
 						// aiming sprites
 						if (i == 4)
 						{
-							app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
+							//app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
+							e_rect = { 0, 50, 400, 50 };
+							app->render->DrawTexture(app->tex->whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 						}
 						else
 						{
@@ -813,7 +858,9 @@ bool Combat_Menu::PostUpdate()
 						// fire sprites
 						if (i == 4)
 						{
-							app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
+							//app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
+							e_rect = { 0, 100, 400, 50 };
+							app->render->DrawTexture(app->tex->whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 						}
 						else
 						{
@@ -823,12 +870,24 @@ bool Combat_Menu::PostUpdate()
 					}
 					else if (enemies_buttons[i].state == 0 && i == 4)
 					{
-						app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						//app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						switch (skill_prepared.element)
+						{
+						case 0: e_rect = { 0, 0, 400, 50 };
+							  break;
+						case 1: e_rect = { 0, 150, 400, 50 };
+							  break;
+						case 2: e_rect = { 0, 250, 400, 50 };
+							  break;
+						case 3: e_rect = { 0, 200, 400, 50 };
+							  break;
+						}
+						app->render->DrawTexture(app->tex->whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 					}
 
 					if (i == 4)
 					{
-						app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 15, textFont, skill_prepared.skill_name);
+						app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, textFont, skill_prepared.skill_name);
 					}
 				}
 			}
@@ -837,12 +896,15 @@ bool Combat_Menu::PostUpdate()
 			{
 				for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
 				{
+					SDL_Rect a_rect;
 					if (allies_buttons[i].state == 1)
 					{
 						// aiming sprites
 						if (i == 4)
 						{
-							app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
+							//app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
+							a_rect = { 0, 50, 400, 50 };
+							app->render->DrawTexture(app->tex->whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 						}
 						else
 						{
@@ -855,7 +917,9 @@ bool Combat_Menu::PostUpdate()
 						// fire sprites
 						if (i == 4)
 						{
-							app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
+							//app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
+							a_rect = { 0, 100, 400, 50 };
+							app->render->DrawTexture(app->tex->whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 						}
 						else
 						{
@@ -865,7 +929,19 @@ bool Combat_Menu::PostUpdate()
 					}
 					else if (allies_buttons[i].state == 0 && i == 4)
 					{
-						app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						//app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						switch (skill_prepared.element)
+						{
+						case 0: a_rect = { 0, 0, 400, 50 };
+							  break;
+						case 1: a_rect = { 0, 150, 400, 50 };
+							  break;
+						case 2: a_rect = { 0, 250, 400, 50 };
+							  break;
+						case 3: a_rect = { 0, 200, 400, 50 };
+							  break;
+						}
+						app->render->DrawTexture(app->tex->whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 					}
 
 					if (i == 4)
