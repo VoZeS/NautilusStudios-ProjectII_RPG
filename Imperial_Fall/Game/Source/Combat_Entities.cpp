@@ -2,25 +2,87 @@
 #include "Defs.h"
 #include "Log.h"
 
-Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int owner)
+Combat_Entities::Combat_Entities(int owner)
 {
-	actual_health = health;
-	max_health = health;
-	actual_mana = mana;
-	max_mana = mana;
-	this->speed = speed;
-	this->power = power;
-	shield = 0;
-	shield_turns = 0;
+	switch (owner)
+	{
+	case 0: // assassin
+		max_health = 70;
+		actual_health = max_health;
+		max_mana = 50;
+		actual_mana = max_mana;
+		this->speed = 50;
+		this->power = 65;
+		shield = 0;
+		shield_turns = 0;
 
-	alive = 1;
+		alive = 1;
 
-	entity_type = owner;
+		entity_type = owner;
 
-	skills[0] = SetSkill(entity_type, 0); // read from xml
-	skills[1] = SetSkill(entity_type, 1); // read from xml
-	skills[2] = SetSkill(entity_type, 2); // read from xml
-	skills[3] = SetSkill(entity_type, 3); // read from xml
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case 1: // healer
+		max_health = 100;
+		actual_health = max_health;
+		max_mana = 60;
+		actual_mana = max_mana;
+		this->speed = 30;
+		this->power = 50;
+		shield = 0;
+		shield_turns = 0;
+
+		alive = 1;
+
+		entity_type = owner;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case 2: // tank
+		max_health = 140;
+		actual_health = max_health;
+		max_mana = 50;
+		actual_mana = max_mana;
+		this->speed = 10;
+		this->power = 50;
+		shield = 0;
+		shield_turns = 0;
+
+		alive = 1;
+
+		entity_type = owner;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case 3: // wizard
+		max_health = 85;
+		actual_health = max_health;
+		max_mana = 70;
+		actual_mana = max_mana;
+		this->speed = 35;
+		this->power = 60;
+		shield = 0;
+		shield_turns = 0;
+
+		alive = 1;
+
+		entity_type = owner;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	}
 }
 
 Combat_Entities::Combat_Entities(ENEMIES enemy)

@@ -56,7 +56,7 @@ bool Combat_Menu::Awake()
 bool Combat_Menu::Start()
 {
 	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
-	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
+	textFont = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
 
 	r = { 0, 0, 1280, 720 };
 	currentAnimation = &idleAnim;
