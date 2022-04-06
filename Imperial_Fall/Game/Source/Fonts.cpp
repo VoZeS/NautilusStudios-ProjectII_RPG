@@ -158,7 +158,7 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 	}
 }
 
-void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom, int r, int g, int b, int max, int down, uint len)
+void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom, int r, int g, int b, int max, int down, uint len, int linea)
 {
 	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || fonts[font_id].texture == nullptr)
 	{
@@ -171,7 +171,15 @@ void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom
 	const Font* font = &fonts[font_id];
 	SDL_Rect spriteRect;
 
-	app->scene->limitLenght = strlen(text);
+
+	if (linea == 1)
+	{
+		app->scene->limitLenght = strlen(text);
+	}
+	else if (linea == 2)
+	{
+		app->scene->limitLenght2 = strlen(text);
+	}
 
 	spriteRect.w = 42;
 	spriteRect.h = 42;
