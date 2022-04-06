@@ -408,6 +408,11 @@ float App::GetDT()
 	return dt;
 }
 
+float App::GetFPS()
+{
+	return FPS;
+}
+
 void App::ToggleFPS()
 {
 	if (FPS == 16)

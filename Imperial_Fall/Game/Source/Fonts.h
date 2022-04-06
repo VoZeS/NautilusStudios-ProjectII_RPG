@@ -35,6 +35,8 @@ public:
 
 	void BlitText(int x, int y, int fontIndex, const char* text, int zoom = 1, int r = 255, int g = 255, int b = 255, int max = 1920, int down = 1) const;
 
+	void BlitTextLetter(int x, int y, int fontIndex, const char* text, int zoom = 1, int r = 255, int g = 255, int b = 255, int max = 1920, int down = 1, uint len = 0, int linea = 1);
+
 private:
 
 	Font fonts[MAX_FONTS];
