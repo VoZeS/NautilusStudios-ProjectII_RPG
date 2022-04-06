@@ -63,6 +63,27 @@ public:
 
 	iPoint GetEntityPosition(bool ally, int n);
 
+	void SetButtonsController(bool controller)
+	{
+		if (!in_items && !in_enemies && !in_allies)
+		{
+			general_buttons[0].state = controller;
+		}
+		else if (in_items && !in_enemies && !in_allies)
+		{
+			items_buttons[0].state = controller;
+		}
+		else if (!in_items && in_enemies && !in_allies)
+		{
+			enemies_buttons[0].state = controller;
+		}
+		else if (!in_items && !in_enemies && in_allies)
+		{
+			allies_buttons[0].state = controller;
+		}
+		chosed = 0;
+	}
+
 private:
 
 	bool in_combat = false;
@@ -121,6 +142,8 @@ private:
 	iPoint objective_pos;
 
 	int textFont = -1;
+
+	bool controller = false;
 
 };
 
