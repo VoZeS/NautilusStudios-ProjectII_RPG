@@ -206,9 +206,9 @@ bool Render::Update(float dt)
 	{
 		camera.x = -0;
 	}
-	else if (camera.x < -200)
+	else if (camera.x < -830)
 	{
-		camera.x = -200;
+		camera.x = -830;
 	}
 
 	if (camera.y > 0)

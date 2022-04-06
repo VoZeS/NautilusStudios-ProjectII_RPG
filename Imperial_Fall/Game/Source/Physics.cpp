@@ -265,6 +265,8 @@ void Physics::BeginContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
+	LOG("%d, %d", fixtureUserDataA, fixtureUserDataB);
+
 	if ((int)fixtureUserDataA == 4)
 	{
 		if ((int)fixtureUserDataB == 4)
