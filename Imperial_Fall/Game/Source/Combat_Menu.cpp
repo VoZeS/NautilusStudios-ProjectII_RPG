@@ -22,6 +22,14 @@ Combat_Menu::Combat_Menu() : Module()
 	idleAnim.PushBack({ 65, 164, 50, 72 });
 	idleAnim.speed = 0.03f;
 
+	templarAnim.PushBack({ 0, 0, 100, 102 });
+	templarAnim.PushBack({ 100, 0, 100, 102 });
+	templarAnim.PushBack({ 200, 0, 100, 102 });
+	templarAnim.PushBack({ 300, 0, 100, 102 });
+	templarAnim.PushBack({ 400, 0, 100, 102 });
+	templarAnim.PushBack({ 500, 0, 100, 102 });
+	templarAnim.speed = 0.06f;
+
 	mushroomAnim.PushBack({ 0, 0, 100, 125 });
 	mushroomAnim.PushBack({ 100, 0, 100, 125 });
 	mushroomAnim.PushBack({ 200, 0, 100, 125 });
@@ -166,6 +174,12 @@ bool Combat_Menu::PreUpdate()
 			{
 				switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 				{
+				case 4:
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &templarAnim)
+					{
+						app->combat_manager->GetEnemyByNumber(i)->current_anim = &templarAnim;
+					}
+					break;
 				case 5:
 					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &mushroomAnim)
 					{
@@ -713,6 +727,11 @@ bool Combat_Menu::PostUpdate()
 				{
 					switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 					{
+					case 4:
+						texture = app->tex->white_templar;
+						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 10, &r);
+						break;
 					case 5:
 						texture = app->tex->mushroom;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
@@ -1011,14 +1030,20 @@ bool Combat_Menu::PostUpdate()
 				{
 					for (size_t i = 0; i < 4; i++)
 					{
-						app->particles->PlayParticle(skill_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+						if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+						{
+							app->particles->PlayParticle(skill_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+						}
 					}
 				}
 				else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 				{
 					for (size_t i = 0; i < 4; i++)
 					{
-						app->particles->PlayParticle(skill_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+						if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+						{
+							app->particles->PlayParticle(skill_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+						}
 					}
 				}
 				else

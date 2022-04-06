@@ -56,6 +56,8 @@ bool Textures::Start()
 	goblin = Load("Assets/textures/goblin.png");
 	skeleton = Load("Assets/textures/skeleton.png");
 	mushroom = Load("Assets/textures/mushroom.png");
+	white_templar = Load("Assets/textures/white_templar.png");
+	red_templar = Load("Assets/textures/red_templar.png");
 	heroes_icons = Load("Assets/textures/heroes_icons.png");
 	enemies_icons = Load("Assets/textures/enemies_icons.png");
 	turn_icon = Load("Assets/textures/turn_icon.png");

@@ -33,6 +33,7 @@ public:
 	Combat_Entities();
 	~Combat_Entities();
 
+	// 0 --> dead, 1 --> alive, 2 --> no exist
 	int GetEntityState()
 	{
 		return alive;

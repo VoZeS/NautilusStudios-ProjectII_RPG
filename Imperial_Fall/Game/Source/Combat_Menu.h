@@ -104,6 +104,7 @@ private:
 	Animation* currentAnimation = NULL;
 
 	Animation idleAnim;
+	Animation templarAnim;
 	Animation mushroomAnim;
 	Animation goblinAnim;
 	Animation skeletonAnim;
