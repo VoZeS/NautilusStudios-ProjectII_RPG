@@ -6,7 +6,7 @@
 
 
 #define NUM_PAUSE_BUTTONS 4
-#define NUM_MENU_BUTTONS 4
+#define NUM_MENU_BUTTONS 6
 #define NUM_DEAD_BUTTONS 2
 #define NUM_SETTINGS_BUTTONS 4
 
@@ -57,6 +57,11 @@ public:
 
 	SDL_Texture* space_boton = NULL;
 
+	SDL_Texture* menu_in_game = NULL;
+
+
+	SDL_Texture* menu_play = NULL;
+
 
 	SDL_Rect PauseMenuHUD;
 	SDL_Rect r;
@@ -68,10 +73,15 @@ public:
 	bool credits;
 
 	int seguir;
+
+
+	bool subplaymenu = false;
 	
 	bool stop = false;
 	bool desMenu = false;
-	float c_x_menu;
+	float c_x_menu=200.0f;
+
+	bool menu = false;
 
 	bool started = false;
 private:
@@ -89,8 +99,12 @@ private:
 	Animation smook_big_fire_anim;
 	Animation space_boton_anim;
 
-	int xbarra = 135;
-	int xbarra2 = 135;
+	Animation menu_play_anim;
+
+
+
+	int xbarra = 115;
+	int xbarra2 = 115;
 	bool slider;
 	bool slider2;
 
