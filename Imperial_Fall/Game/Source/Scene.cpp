@@ -257,9 +257,16 @@ bool Scene::Update(float dt)
 
 	letter_cd += dt;
 
+	float speedlet = 0.05f;
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	{
+		speedlet = 0.01f;
+	}
+
 	if (app->GetFPS() == 16)//60 fps
 	{
-		if (letter_cd >= 60 * dt * 0.1f && inDialog == true && letlengh <= limitLenght)
+		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
 			letlengh++;
 
@@ -268,7 +275,7 @@ bool Scene::Update(float dt)
 	}
 	else //30 fps
 	{
-		if (letter_cd >= 120 * dt * 0.1f && inDialog == true && letlengh <= limitLenght)
+		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
 			letlengh++;
 			
@@ -278,7 +285,7 @@ bool Scene::Update(float dt)
 	
 	if (app->GetFPS() == 16)//60 fps
 	{
-		if (letter_cd >= 60 * dt * 0.1f && inDialog == true && letlengh2 <= limitLenght2)
+		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
 			letlengh2++;
 
@@ -287,7 +294,7 @@ bool Scene::Update(float dt)
 	}
 	else //30 fps
 	{
-		if (letter_cd >= 120 * dt * 0.1f && inDialog == true && letlengh2 <= limitLenght2)
+		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
 			letlengh2++;
 
