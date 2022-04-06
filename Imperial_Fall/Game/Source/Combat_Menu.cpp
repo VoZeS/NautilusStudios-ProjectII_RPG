@@ -316,7 +316,7 @@ bool Combat_Menu::PreUpdate()
 				if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && enemies_buttons[i].state == 1 
 					&& skill_prepared.enemy_objective != ENEMY_OBJECTIVE::ALL_ENEMY)
 				{
-					enemies_buttons[i].state = 0;
+					enemies_buttons[i].state = 3;
 				}
 			}
 		}
@@ -912,6 +912,12 @@ bool Combat_Menu::PostUpdate()
 							SDL_Rect rect = { 64, 0, 64, 64 };
 							app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 						}
+					}
+					else if (enemies_buttons[i].state == 3)
+					{
+						// no selectable sprites
+						SDL_Rect rect = { 256, 0, 64, 64 };
+						app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 					}
 					else if (enemies_buttons[i].state == 0 && i == 4)
 					{
