@@ -425,6 +425,7 @@ void Combat_Entities::UpdateDamageDebuffs()
 
 	// burn
 	b.debuff_type = DEBUFF_TYPE::BURN;
+	LOG("%d", FindDebuff(b));
 	if (FindDebuff(b) != -1)
 	{
 		DamageEntity(max_health / 10, SKILL_BONUS::NOTHING);

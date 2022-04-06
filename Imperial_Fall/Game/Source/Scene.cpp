@@ -83,10 +83,6 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
-	
-	LOG("%s", linea1String_Renato);
-	
-
 	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
 		PassLevel(1);

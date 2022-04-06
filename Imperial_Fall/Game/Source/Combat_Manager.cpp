@@ -470,11 +470,23 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		{
 			for (size_t i = 0; i < 4; i++)
 			{
-				enemies[i]->DamageEntity(damage, skill.skill_bonus);
-				if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+				if (user->GetType() < 4) // allies
 				{
-					enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+					enemies[i]->DamageEntity(damage, skill.skill_bonus);
+					if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+					{
+						enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+					}
 				}
+				else // enemies
+				{
+					allies[i]->DamageEntity(damage, skill.skill_bonus);
+					if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+					{
+						allies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+					}
+				}
+				
 			}
 		}
 
@@ -506,30 +518,71 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		{
 			if (skill.support_type == SUPPORT_TYPE::SHIELD)
 			{
-				for (size_t i = 0; i < 4; i++)
+				if (user->GetType() < 4) // allies
 				{
-					allies[i]->ShieldEntity(support * 5, skill.buff_turns);
+					for (size_t i = 0; i < 4; i++)
+					{
+						allies[i]->ShieldEntity(support * 5, skill.buff_turns);
+					}
 				}
+				else // enemies
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						enemies[i]->ShieldEntity(support * 5, skill.buff_turns);
+					}
+				}
+				
 			}
 			else if (skill.support_type == SUPPORT_TYPE::HEAL)
 			{
-				for (size_t i = 0; i < 4; i++)
+				if (user->GetType() < 4) // allies
 				{
-					allies[i]->HealEntity(support * 2);
+					for (size_t i = 0; i < 4; i++)
+					{
+						allies[i]->HealEntity(support * 2);
+					}
+				}
+				else // enemies
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						enemies[i]->HealEntity(support * 2);
+					}
 				}
 			}
 			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
 			{
-				for (size_t i = 0; i < 4; i++)
+				if (user->GetType() < 4) // allies
 				{
-					allies[i]->CleanEntity();
+					for (size_t i = 0; i < 4; i++)
+					{
+						allies[i]->CleanEntity();
+					}
+				}
+				else // enemies
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						enemies[i]->CleanEntity();
+					}
 				}
 			}
 			else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 			{
-				for (size_t i = 0; i < 4; i++)
+				if (user->GetType() < 4) // allies
 				{
-					allies[i]->ReloadMana(support * 5);
+					for (size_t i = 0; i < 4; i++)
+					{
+						allies[i]->ReloadMana(support * 5);
+					}
+				}
+				else // enemies
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						enemies[i]->ReloadMana(support * 5);
+					}
 				}
 			}
 		}
@@ -570,9 +623,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 void Combat_Manager::UpdateBuffs()
 {
 	GetActualEntity()->UpdateBuffs();
+	GetActualEntity()->UpdateDamageDebuffs();
 	GetActualEntity()->UpdateDebuffs();
 	GetActualEntity()->UpdateShield();
-	GetActualEntity()->UpdateDamageDebuffs();
 }
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
