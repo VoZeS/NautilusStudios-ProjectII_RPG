@@ -1217,9 +1217,9 @@ bool Combat_Menu::PreUpdate()
 				}
 				else
 				{
-					if (app->allies_buttons->GetAllyByNumber(2)->GetEntityState() == 1)
+					if (app->combat_manager->GetAllyByNumber(2)->GetEntityState() == 1)
 					{
-						enemies_buttons[2].state = 1;
+						allies_buttons[2].state = 1;
 						chosed = 2;
 					}
 				}

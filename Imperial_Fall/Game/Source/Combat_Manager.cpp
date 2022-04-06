@@ -36,6 +36,7 @@ bool Combat_Manager::Awake()
 // Called before the first frame
 bool Combat_Manager::Start()
 {
+	LoadHeroesStats();
 
 	return true;
 }
@@ -58,10 +59,15 @@ bool Combat_Manager::PreUpdate()
 		if (!combat_init)
 		{
 			//init allies
-			allies[0] = new Combat_Entities(0); // assassin
-			allies[1] = new Combat_Entities(1); // healer
-			allies[2] = new Combat_Entities(2); // tank
-			allies[3] = new Combat_Entities(3); // wizard
+			int health, mana, speed, power;
+			HeroesStats(health, mana, speed, power, 0); // assassin
+			allies[0] = new Combat_Entities(health, mana, speed, power, 0);
+			HeroesStats(health, mana, speed, power, 1); // healer
+			allies[1] = new Combat_Entities(health, mana, speed, power, 1);
+			HeroesStats(health, mana, speed, power, 2); // tank
+			allies[2] = new Combat_Entities(health, mana, speed, power, 2);
+			HeroesStats(health, mana, speed, power, 3); // wizard
+			allies[3] = new Combat_Entities(health, mana, speed, power, 3);
 
 			//init enemies
 			for (size_t i = 0; i < 4; i++)
@@ -686,6 +692,46 @@ int Combat_Manager::CheckCombatState()
 	else if (enemies_alive == 0)
 	{
 		ret = 1;
+	}
+
+	return ret;
+}
+
+void Combat_Manager::HeroesStats(int& health, int& mana, int& speed, int& power, int owner)
+{
+	pugi::xml_node hero;
+	switch (owner)
+	{
+	case 0: hero = heroes_stats.child("assassin");
+		break;
+	case 1:  hero = heroes_stats.child("healer");
+		break;
+	case 2: hero = heroes_stats.child("tank");
+		break;
+	case 3: hero = heroes_stats.child("wizard");
+		break;
+	}
+
+	health = hero.child("basic_stats").attribute("health").as_int();
+	mana = hero.child("basic_stats").attribute("mana").as_int();
+	speed = hero.child("basic_stats").attribute("speed").as_int();
+	power = hero.child("basic_stats").attribute("power").as_int();
+}
+
+bool Combat_Manager::LoadHeroesStats()
+{
+	bool ret = true;
+
+	pugi::xml_parse_result result = heroes_statsFile.load_file(HEROES_STATS_FILENAME);
+
+	if (result == NULL)
+	{
+		LOG("Could not load xml file heroes_stats.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		heroes_stats = heroes_statsFile.child("heroes_stats");
 	}
 
 	return ret;

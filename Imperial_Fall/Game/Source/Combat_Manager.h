@@ -74,6 +74,8 @@ public:
 	// 0 --> normal, 1 --> win, 2 --> lose
 	int CheckCombatState();
 
+	void HeroesStats(int& health, int& mana, int& speed, int& power, int owner);
+
 private:
 	bool in_combat = false;
 	bool in_action = false;
@@ -90,6 +92,11 @@ private:
 
 	int animation_cd = 0;
 	int in_animation = 0; // 0 --> no, 1 --> starting, 2 --> in
+
+	// xml
+	bool LoadHeroesStats();
+	pugi::xml_document heroes_statsFile;
+	pugi::xml_node heroes_stats;
 };
 
 #endif
