@@ -75,8 +75,8 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((-app->render->camera.x < pos.x + 1400 && -app->render->camera.x > pos.x - 1400) &&
-							(-app->render->camera.y < pos.y + 800 && -app->render->camera.y > pos.y - 800))
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50 ) &&
+							(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
 						{
 							app->render->DrawTexture(tileset->texture,
 								pos.x,
@@ -96,6 +96,26 @@ void Map::Draw()
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
 							
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
+						{
+							// Renato
+							app->entities->CreateEntity(ENTITY_TYPE::RENATO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 6)
+						{
+							// Curandero
+							app->entities->CreateEntity(ENTITY_TYPE::CURANDERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 7)
+						{
+							// Herrero
+							app->entities->CreateEntity(ENTITY_TYPE::HERRERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
+						{
+							// Granjero
+							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)

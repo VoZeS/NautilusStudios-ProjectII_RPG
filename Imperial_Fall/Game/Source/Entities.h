@@ -11,6 +11,11 @@
 enum class ENTITY_TYPE
 {
 	PLAYER = 0,
+	RENATO,
+	CURANDERO,
+	HERRERO,
+	GRANJERO,
+	COMPANION,
 	GROUND_ENEMY,
 	STATIC_ENEMY, // create one for each diferent enemy
 	COIN,
@@ -25,7 +30,7 @@ public:
 
 	void Init(ENTITY_TYPE type, fPoint p);
 
-	virtual void InitCustomEntity();
+	virtual void InitCustomEntity(int npc = 0);
 	virtual bool PreUpdate();
 	virtual void HandleInput(float dt);
 	virtual bool Update(float dt);
@@ -39,6 +44,21 @@ public:
 	// custom fuctions
 	virtual fPoint GetPlayerPosition();
 	virtual void SetPlayerPosition(int new_x, int new_y);
+	virtual void SetPlayerLookDir(int lookDir);
+
+	virtual fPoint GetCompanion0Position();
+	virtual fPoint GetCompanion1Position();
+	virtual fPoint GetCompanion2Position();
+
+	virtual void SetCompanion0Position(int new_x, int new_y);
+	virtual void SetCompanion1Position(int new_x, int new_y);
+	virtual void SetCompanion2Position(int new_x, int new_y);
+
+	virtual void SetCompanion0LookDir(int lookDir);
+	virtual void SetCompanion1LookDir(int lookDir);
+	virtual void SetCompanion2LookDir(int lookDir);
+
+	virtual bool IsPlayerEnabled();
 	virtual void ImpulsePlayer();
 	virtual void PlayerDeath();
 	virtual void SwitchDirection();

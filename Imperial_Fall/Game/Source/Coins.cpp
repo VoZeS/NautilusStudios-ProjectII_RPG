@@ -94,7 +94,7 @@ bool Coins::DeleteEntity()
 
 bool Coins::Load(pugi::xml_node& data)
 {
-	std::string p = "position";
+	/*std::string p = "position";
 	std::string s = std::to_string(p_in_array);
 	std::string t = p + s;
 	const char* c = t.c_str();
@@ -110,14 +110,14 @@ bool Coins::Load(pugi::xml_node& data)
 	else
 	{
 		picked = true;
-	}
+	}*/
 
 	return true;
 }
 
 bool Coins::Save(pugi::xml_node& data)
 {
-	std::string p = "position";
+	/*std::string p = "position";
 	std::string s = std::to_string(p_in_array);
 	std::string t = p + s;
 	const char* c = t.c_str();
@@ -129,7 +129,7 @@ bool Coins::Save(pugi::xml_node& data)
 	else
 	{
 		data.child("coins").child(c).attribute("state").set_value("1");
-	}
+	}*/
 
 	return true;
 }

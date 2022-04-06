@@ -65,7 +65,6 @@ bool Physics::PreUpdate()
 	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
-
 	}
 	else
 	{
@@ -132,17 +131,12 @@ bool Physics::PostUpdate()
 					
 					switch ((int)userData)
 					{
-					case 0:
-						c_r = 0;
-						c_g = 0;
-						c_b = 255;
-						break;
-					case 1:
+					case 1: // player
 						c_r = 255;
 						c_g = 128;
 						c_b = 0;
 						break;
-					case 2:
+					case 2: // npc interaction
 						c_r = 128;
 						c_g = 0;
 						c_b = 255;
@@ -188,9 +182,9 @@ bool Physics::PostUpdate()
 						c_b = 100;
 						break;
 					default:
-						c_r = 0;
-						c_g = 0;
-						c_b = 255;
+						c_r = 100;
+						c_g = 100;
+						c_b = 100;
 						break;
 					}
 					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), c_r, c_g, c_b);
@@ -271,6 +265,8 @@ void Physics::BeginContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
+	LOG("%d, %d", fixtureUserDataA, fixtureUserDataB);
+
 	if ((int)fixtureUserDataA == 4)
 	{
 		if ((int)fixtureUserDataB == 4)
@@ -290,15 +286,13 @@ void Physics::BeginContact(b2Contact* contact)
 			}
 		}
 	}
-	else if ((int)fixtureUserDataA == 2)
-	{
-		if ((int)fixtureUserDataB == 3)
-		{
-			on_collosion++;
-		}
-	}
 	else if ((int)fixtureUserDataA == 1)
 	{
+		if ((int)fixtureUserDataB == 2)
+		{
+			// npc contact
+			app->frontground->SetPressE_Hide(false);
+		}
 		if ((int)fixtureUserDataB == 4 && !app->scene->godmode)
 		{
 			// player death
@@ -474,15 +468,14 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataB == 2)
+	
+	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 3)
+		if ((int)fixtureUserDataA == 2)
 		{
-			on_collosion++;
+			// npc contact
+			app->frontground->SetPressE_Hide(false);
 		}
-	}
-	else if ((int)fixtureUserDataB == 1)
-	{
 		if ((int)fixtureUserDataA == 4 && !app->scene->godmode)
 		{
 			// player death
@@ -524,7 +517,7 @@ void Physics::BeginContact(b2Contact* contact)
 			app->entities->PickHeart(entity->GetPlayerPosition());
 		}
 		// --------------------------------------------------------------- PASS LEVELS
-		else if ((int)fixtureUserDataB == 12)
+		else if ((int)fixtureUserDataA == 12)
 		{
 			// town_1 --> town_2
 			app->frontground->town1_to_town2 = true;
@@ -538,7 +531,7 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(2);
 		}
-		else if ((int)fixtureUserDataB == 21)
+		else if ((int)fixtureUserDataA == 21)
 		{
 			// town_2 --> town_1
 			app->frontground->town1_to_town2 = false;
@@ -552,12 +545,12 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(1);
 		}
-		else if ((int)fixtureUserDataB == 23)
+		else if ((int)fixtureUserDataA == 23)
 		{
 			// town_2 --> forest
 			app->scene->PassLevel(3);
 		}
-		else if ((int)fixtureUserDataB == 32)
+		else if ((int)fixtureUserDataA == 32)
 		{
 			// forest --> town_2
 			app->frontground->town1_to_town2 = false;
@@ -571,12 +564,12 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(2);
 		}
-		else if ((int)fixtureUserDataB == 24)
+		else if ((int)fixtureUserDataA == 24)
 		{
 			// town_2 --> battlefield
 			app->scene->PassLevel(4);
 		}
-		else if ((int)fixtureUserDataB == 42)
+		else if ((int)fixtureUserDataA == 42)
 		{
 			// battlefield --> town_2
 			app->frontground->town1_to_town2 = false;
@@ -590,12 +583,12 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(2);
 		}
-		else if ((int)fixtureUserDataB == 25)
+		else if ((int)fixtureUserDataA == 25)
 		{
 			// town_2 --> dungeon
 			app->scene->PassLevel(5);
 		}
-		else if ((int)fixtureUserDataB == 52)
+		else if ((int)fixtureUserDataA == 52)
 		{
 			// dungeon --> town_2
 			app->frontground->town1_to_town2 = false;
@@ -609,7 +602,7 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(2);
 		}
-		else if ((int)fixtureUserDataB == 16)
+		else if ((int)fixtureUserDataA == 16)
 		{
 			// town_1 --> outside_castle
 			app->frontground->town1_to_town2 = false;
@@ -623,7 +616,7 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(6);
 		}
-		else if ((int)fixtureUserDataB == 61)
+		else if ((int)fixtureUserDataA == 61)
 		{
 			// outside_castle -->  town_1
 			app->frontground->town1_to_town2 = false;
@@ -637,12 +630,12 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->scene->PassLevel(1);
 		}
-		else if ((int)fixtureUserDataB == 67)
+		else if ((int)fixtureUserDataA == 67)
 		{
 			// outside_castle --> inside_castle
 			app->scene->PassLevel(7);
 		}
-		else if ((int)fixtureUserDataB == 76)
+		else if ((int)fixtureUserDataA == 76)
 		{
 			// inside_castle -->  outside_castle
 			app->frontground->town1_to_town2 = false;
@@ -664,15 +657,13 @@ void Physics::EndContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
-	if ((int)fixtureUserDataA == 2)
+	if ((int)fixtureUserDataA == 1)
 	{
-		if ((int)fixtureUserDataB == 3)
+		if ((int)fixtureUserDataB == 2)
 		{
-			on_collosion--;
+			// npc contact
+			app->frontground->SetPressE_Hide(true);
 		}
-	}
-	else if ((int)fixtureUserDataA == 1)
-	{
 		if ((int)fixtureUserDataB == 5)
 		{
 			// hide save level
@@ -693,15 +684,13 @@ void Physics::EndContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataB == 2)
+	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 3)
+		if ((int)fixtureUserDataA == 2)
 		{
-			on_collosion--;
+			// npc contact
+			app->frontground->SetPressE_Hide(true);
 		}
-	}
-	else if ((int)fixtureUserDataB == 1)
-	{
 		if ((int)fixtureUserDataA == 5)
 		{
 			// hide save level

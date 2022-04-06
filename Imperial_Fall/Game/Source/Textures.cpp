@@ -46,6 +46,29 @@ bool Textures::Start()
 	tank_texture = Load("Assets/textures/Tanque.png");
 	healer_texture = Load("Assets/textures/Healer.png");
 	wizard_texture = Load("Assets/textures/Mago.png");
+	renato_bueno = Load("Assets/textures/renato_bueno.png");
+	curandero = Load("Assets/textures/curandero.png");
+	herrero = Load("Assets/textures/herrero.png");
+	granjero = Load("Assets/textures/granjero.png");
+	start_menu = Load("Assets/textures/Start_screen.png");
+	target = Load("Assets/textures/target.png");
+	skull = Load("Assets/textures/skull.png");
+	goblin = Load("Assets/textures/goblin.png");
+	skeleton = Load("Assets/textures/skeleton.png");
+	mushroom = Load("Assets/textures/mushroom.png");
+	white_templar = Load("Assets/textures/white_templar.png");
+	red_templar = Load("Assets/textures/red_templar.png");
+	heroes_icons = Load("Assets/textures/heroes_icons.png");
+	enemies_icons = Load("Assets/textures/enemies_icons.png");
+	turn_icon = Load("Assets/textures/turn_icon.png");
+	dead_icon = Load("Assets/textures/dead_icon.png");
+	whitemark_64x64 = Load("Assets/textures/64x64_whitemark.png");
+	whitemark_400x50 = Load("Assets/textures/400x50_whitemark.png");
+	whitemark_110x110 = Load("Assets/textures/110x110_whitemark.png");
+	whitemark_128x128 = Load("Assets/textures/128x128_whitemark.png");
+	particles_texture = Load("Assets/textures/particlesBig.png");
+
+
 	hab_tex = Load("Assets/textures/HabilityMack.png");
 	slime_textureR = Load("Assets/textures/SlimeR.png");
 	slime_textureL = Load("Assets/textures/SlimeL.png");
