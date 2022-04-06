@@ -221,7 +221,7 @@ bool Combat_Menu::PreUpdate()
 				SDL_Rect rect = general_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					if (app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost && i < 4)
+					if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 					{
 						general_buttons[i].state = 3;
 					}
@@ -233,7 +233,7 @@ bool Combat_Menu::PreUpdate()
 				}
 				else
 				{
-					if (app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost && i < 4)
+					if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 					{
 						general_buttons[i].state = 3;
 					}
