@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Audio.h"
 #include "Input.h"
+#include "Fonts.h"
 #include "Scene.h"
 #include "Frontground.h"
 #include "Menu.h"
@@ -31,9 +32,14 @@ bool Menu::Awake()
 bool Menu::Start()
 {
 	r = { 0, 0, 1280, 720 };
+
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
+
 	paused = false;
 	settings = false;
 	dead = false;
+	win = false;
 	lose = false;
 	slider = false;
 	slider2 = false;
@@ -75,8 +81,16 @@ bool Menu::Start()
 		settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1);
 	}
 
-	lose_button.rect.x = (int)win_w / 2;
-	lose_button.rect.y = (int)win_h / 2;
+	win_button.rect.w = 600;
+	win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
+	win_button.rect.y = (int)win_h / 2 + 200;
+
+	lose_buttons[0].rect.w = 500;
+	lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) - 600;
+	lose_buttons[0].rect.y = (int)win_h / 2 + 200;
+	lose_buttons[1].rect.w = 500;
+	lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 600;
+	lose_buttons[1].rect.y = (int)win_h / 2 + 200;
 
 	pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
 	pause_buttons[1].tex = app->tex->Load("Assets/textures/Settings.png"); // Settings
@@ -102,10 +116,12 @@ bool Menu::Start()
 	settings_buttons[3].tex = app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync
 	settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync
 
-	lose_button.tex = app->tex->Load("Assets/textures/Exit.png"); // Exit
+	win_button.tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
+	lose_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Try again
+	lose_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
 
-	gameOver = app->tex->Load("Assets/textures/Game_Over.png"); 
-	cat = app->tex->Load("Assets/textures/Dead_Image.png"); 
+	combat_win = app->tex->Load("Assets/textures/Game_Over.png"); 
+	combat_lose = app->tex->Load("Assets/textures/Dead_Image.png");
 
 	return true;
 }
@@ -136,7 +152,7 @@ bool Menu::PreUpdate()
 		{
 			if (paused)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			pause_buttons[i].state = 1;
@@ -154,7 +170,7 @@ bool Menu::PreUpdate()
 		{
 			if (intro)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			menu_buttons[i].state = 1;
@@ -172,7 +188,7 @@ bool Menu::PreUpdate()
 		{
 			if (settings)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			settings_buttons[i].state = 1;
@@ -190,7 +206,7 @@ bool Menu::PreUpdate()
 		{
 			if (dead)
 			{
-				app->audio->PlayFx(hover_sound);
+				//app->audio->PlayFx(hover_sound);
 			}
 			chosed = i;
 			dead_buttons[i].state = 1;
@@ -201,18 +217,28 @@ bool Menu::PreUpdate()
 		}
 	}
 
-	SDL_Rect rect = lose_button.rect;
+	SDL_Rect rect = win_button.rect;
 	if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 	{
-		if (lose)
-		{
-			app->audio->PlayFx(hover_sound);
-		}
-		lose_button.state = 1;
+		win_button.state = 1;
 	}
 	else
 	{
-		lose_button.state = 0;
+		win_button.state = 0;
+	}
+
+	for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
+	{
+		SDL_Rect rect = lose_buttons[i].rect;
+		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+		{
+			chosed = i;
+			lose_buttons[i].state = 1;
+		}
+		else
+		{
+			lose_buttons[i].state = 0;
+		}
 	}
 
 	return true;
@@ -380,14 +406,34 @@ bool Menu::Update(float dt)
 	}
 
 
-	//lose
-	if (lose && !loading)
+	// win
+	if (win)
 	{
-		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && lose_button.state == 1)
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && win_button.state == 1)
 		{
 			app->audio->PlayFx(click_sound);
-			lose_button.state = 2;
-			return false;
+			app->frontground->ReturnToField();
+			win_button.state = 2;
+		}
+	}
+	else if (lose)
+	{
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && lose_buttons[chosed].state == 1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (chosed)
+			{
+			case 0:
+				// restart combat
+				app->frontground->ResetCombat();
+				break;
+			case 1:
+				// return field
+				app->frontground->ReturnToField();
+				break;
+			}
+
+			lose_buttons[chosed].state = 2;
 		}
 	}
 
@@ -562,7 +608,7 @@ bool Menu::PostUpdate()
 		}
 	}
 
-	if (dead)
+	/*if (dead)
 	{
 		app->render->DrawRectangle(r, 0, 0, 0, 200);
 
@@ -588,33 +634,63 @@ bool Menu::PostUpdate()
 
 			app->render->DrawTexture(dead_buttons[i].tex, dead_buttons[i].rect.x + 10, dead_buttons[i].rect.y + 10);
 		}
-	}
+	}*/
 
+
+	if (win)
+	{
+		app->render->DrawRectangle(r, 0, 0, 0, 200);
+
+		//app->render->DrawTexture(combat_win, c_x, c_y);
+
+		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x;
+		win_button.rect.y = (int)win_h / 2 + 200 + c_y;
+		
+		if (win_button.state == 0)
+		{
+			app->render->DrawRectangle(win_button.rect, idleColorR, idleColorG, idleColorB);
+		}
+		else if (win_button.state == 1)
+		{
+			app->render->DrawRectangle(win_button.rect, inColorR, inColorG, inColorB);
+		}
+		else if (win_button.state == 2)
+		{
+			app->render->DrawRectangle(win_button.rect, pColorR, pColorG, pColorB);
+		}
+
+		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, textFont, "return to field");
+	}
 
 	if (lose)
 	{
 		app->render->DrawRectangle(r, 0, 0, 0, 200);
 
-		app->render->DrawTexture(gameOver, 0 + c_x, 75);
-		app->render->DrawTexture(cat, 950 + c_x, 800);
+		//app->render->DrawTexture(combat_lose, c_x, c_y);
 
-		lose_button.rect.x = ((int)win_w / 2) - (lose_button.rect.w / 2) + c_x;
-		
-		if (lose_button.state == 0)
-		{
-			app->render->DrawRectangle(lose_button.rect, idleColorR, idleColorG, idleColorB);
-		}
-		else if (lose_button.state == 1)
-		{
-			app->render->DrawRectangle(lose_button.rect, inColorR, inColorG, inColorB);
-		}
-		else if (lose_button.state == 2)
-		{
-			app->render->DrawRectangle(lose_button.rect, pColorR, pColorG, pColorB);
-		}
+		lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) - 300 + c_x;
+		lose_buttons[0].rect.y = (int)win_h / 2 + 200 + c_y;
+		lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 300 + c_x;
+		lose_buttons[1].rect.y = (int)win_h / 2 + 200 + c_y;
 
-		app->render->DrawTexture(lose_button.tex, lose_button.rect.x + 10, lose_button.rect.y + 10);
+		for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
+		{
+			if (lose_buttons[i].state == 0)
+			{
+				app->render->DrawRectangle(lose_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+			}
+			else if (lose_buttons[i].state == 1)
+			{
+				app->render->DrawRectangle(lose_buttons[i].rect, inColorR, inColorG, inColorB);
+			}
+			else if (lose_buttons[i].state == 2)
+			{
+				app->render->DrawRectangle(lose_buttons[i].rect, pColorR, pColorG, pColorB);
+			}
+		}
 		
+		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, textFont, "restart battle");
+		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, textFont, "return to field");
 	}
 
 	return true;

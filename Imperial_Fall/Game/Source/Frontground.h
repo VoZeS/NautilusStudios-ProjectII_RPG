@@ -3,6 +3,8 @@
 
 #include "Module.h"
 
+enum class ENEMIES;
+
 class Frontground : public Module
 {
 public:
@@ -36,22 +38,31 @@ public:
 
 	bool FadeFromBlack(int dest_level); // if -1 --> no level change
 
-	bool FadeInCombat(); // start combat
+	bool FadeInCombat(ENEMIES enemies[]); // start combat
+
+
+	ENEMIES enemies_to_fight[4];
 
 	bool FadeOutCombat();
 
+	ENEMIES GetEnemiesToFight(int n)
+	{
+		return enemies_to_fight[n];
+	}
+
 	bool ReturnToField(); // end combat
+
+	bool ResetCombat();
 
 	void SetPressE_Hide(bool hide)
 	{
 		press_e_hide = hide;
 	}
 
-	bool GetCombatState()
+	int GetCombatState()
 	{
 		return in_combat;
 	}
-
 
 	bool town1_to_town2 = false,
 		town2_to_town1 = false,
@@ -75,8 +86,8 @@ private:
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
 
-	bool in_combat = false;
-
+	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat, 4 --> restart combat
+	int  restart = 0; // 0 --> desactivado, 1 --> activado, 2 --> proceso
 };
 
 #endif

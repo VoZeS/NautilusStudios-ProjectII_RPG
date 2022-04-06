@@ -10,6 +10,7 @@
 #include "Pathfinding.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Combat_Entities.h"
 #include "Player.h"
 #include "Coins.h"
 #include "Hearts.h"
@@ -182,7 +183,12 @@ bool Scene::Update(float dt)
 	{
 		if (!app->frontground->GetCombatState())
 		{
-			app->frontground->FadeInCombat();
+			ENEMIES enemies[4];
+			enemies[0] = ENEMIES::MUSHROOM;
+			enemies[1] = ENEMIES::TEMPLAR;
+			enemies[2] = ENEMIES::SKELETON;
+			enemies[3] = ENEMIES::GOBLIN;
+			app->frontground->FadeInCombat(enemies);
 		}
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)

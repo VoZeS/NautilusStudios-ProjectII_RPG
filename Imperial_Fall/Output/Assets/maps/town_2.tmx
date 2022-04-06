@@ -305364,7 +305364,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="30" name="Curandero" width="100" height="113" visible="0">
+ <layer id="30" name="Curandero" width="100" height="113">
   <properties>
    <property name="Collision" type="int" value="6"/>
    <property name="Draw" type="int" value="0"/>
@@ -305449,7 +305449,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3547"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -316674,7 +316674,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="31" name="Herrero" width="100" height="113" visible="0">
+ <layer id="31" name="Herrero" width="100" height="113">
   <properties>
    <property name="Collision" type="int" value="7"/>
    <property name="Draw" type="int" value="0"/>
@@ -316759,7 +316759,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3547"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -328069,7 +328069,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3547"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

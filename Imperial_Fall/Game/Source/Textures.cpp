@@ -51,6 +51,20 @@ bool Textures::Start()
 	herrero = Load("Assets/textures/herrero.png");
 	granjero = Load("Assets/textures/granjero.png");
 	start_menu = Load("Assets/textures/Start_screen.png");
+	target = Load("Assets/textures/target.png");
+	skull = Load("Assets/textures/skull.png");
+	goblin = Load("Assets/textures/goblin.png");
+	skeleton = Load("Assets/textures/skeleton.png");
+	mushroom = Load("Assets/textures/mushroom.png");
+	heroes_icons = Load("Assets/textures/heroes_icons.png");
+	enemies_icons = Load("Assets/textures/enemies_icons.png");
+	turn_icon = Load("Assets/textures/turn_icon.png");
+	dead_icon = Load("Assets/textures/dead_icon.png");
+	whitemark_64x64 = Load("Assets/textures/64x64_whitemark.png");
+	whitemark_400x50 = Load("Assets/textures/400x50_whitemark.png");
+	whitemark_110x110 = Load("Assets/textures/110x110_whitemark.png");
+	whitemark_128x128 = Load("Assets/textures/128x128_whitemark.png");
+	particles_texture = Load("Assets/textures/particlesBig.png");
 
 
 	hab_tex = Load("Assets/textures/HabilityMack.png");

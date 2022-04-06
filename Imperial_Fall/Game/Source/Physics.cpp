@@ -65,7 +65,6 @@ bool Physics::PreUpdate()
 	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
-
 	}
 	else
 	{

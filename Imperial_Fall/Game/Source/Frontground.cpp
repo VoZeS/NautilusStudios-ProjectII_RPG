@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Player.h"
+#include "Menu.h"
 #include "Frontground.h"
 
 #include "Defs.h"
@@ -74,9 +75,33 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		if (in_combat)
+		if (in_combat == 0 && restart == 2)
+		{
+			restart = 0;
+			return_black = true;
+			app->SaveGameRequest();
+			in_combat = 2;
+		}
+		else if (in_combat == 1 || in_combat == 2)
 		{
 			FadeOutCombat();
+		}
+		else if (in_combat == 3)
+		{
+			if (restart == 0)
+			{
+				// return field
+				in_combat = 0;
+				app->menu->SetWinLose(-1); // both false
+				FadeFromBlack(destination_level);
+			}
+			else if (restart == 1)
+			{
+				// restart
+				in_combat = 0;
+				app->menu->SetWinLose(-1); // both false
+				restart = 2;
+			}
 		}
 		else
 		{
@@ -322,10 +347,15 @@ bool Frontground::FadeFromBlack(int dest_level)
 	return true;
 }
 
-bool Frontground::FadeInCombat()
+bool Frontground::FadeInCombat(ENEMIES enemies[])
 {
 	go_black = true;
-	in_combat = true;
+	in_combat = 1;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		enemies_to_fight[i] = enemies[i];
+	}
 
 	return true;
 }
@@ -344,14 +374,24 @@ bool Frontground::FadeOutCombat()
 	app->map->Load("outside_castle.tmx");
 
 	app->entities->GetPlayer()->DeleteEntity();
+	in_combat = 2;
 
 	return true;
 }
 
 bool Frontground::ReturnToField()
 {
-	in_combat = false;
+	in_combat = 3;
 	app->scene->PassLevel(app->scene->current_level);
+
+	return true;
+}
+
+bool Frontground::ResetCombat()
+{
+	go_black = true;
+	in_combat = 3;
+	restart = 1;
 
 	return true;
 }
