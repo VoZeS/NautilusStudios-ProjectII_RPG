@@ -52,7 +52,7 @@ bool Textures::Start()
 	granjero = Load("Assets/textures/granjero.png");
 	start_menu = Load("Assets/textures/Start_screen.png");
 	target = Load("Assets/textures/target.png");
-	skull = Load("Assets/textures/skull.png");
+	tombstone = Load("Assets/textures/tombstone.png");
 	goblin = Load("Assets/textures/goblin.png");
 	skeleton = Load("Assets/textures/skeleton.png");
 	mushroom = Load("Assets/textures/mushroom.png");

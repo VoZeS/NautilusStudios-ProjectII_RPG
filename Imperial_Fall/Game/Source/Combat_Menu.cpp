@@ -1541,7 +1541,7 @@ bool Combat_Menu::PostUpdate()
 				}
 				else if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 0)
 				{
-					texture = app->tex->skull;
+					texture = app->tex->tombstone;
 					r = { 64, 0, 64, 64 };
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
 				}
@@ -1574,7 +1574,7 @@ bool Combat_Menu::PostUpdate()
 				}
 				else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 0)
 				{
-					texture = app->tex->skull;
+					texture = app->tex->tombstone;
 					r = { 0, 0, 64, 64 };
 					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y + 5, &r);
 				}
