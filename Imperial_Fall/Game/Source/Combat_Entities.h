@@ -8,7 +8,8 @@
 
 enum class ENEMIES
 {
-	TEMPLAR = 0,
+	NOTHING = -1,
+	TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
 	SKELETON
@@ -32,12 +33,12 @@ public:
 	Combat_Entities();
 	~Combat_Entities();
 
-	bool GetEntityState()
+	int GetEntityState()
 	{
 		return alive;
 	}
 
-	bool DamageEntity(int amount);
+	bool DamageEntity(int amount, SKILL_BONUS bonus);
 	void ReloadMana(int amount = 0);
 	void ShieldEntity(int amount, int turns);
 	void HealEntity(int amount);
@@ -117,6 +118,7 @@ public:
 	{
 		return debuffs;
 	}
+	void UpdateDamageDebuffs();
 
 	Animation* current_anim = NULL;
 	iPoint position = { 0, 0 };
@@ -133,7 +135,7 @@ private:
 	int shield;
 	int shield_turns;
 
-	bool alive;
+	int alive; // 0 --> dead, 1 --> alive, 2 --> no exist
 	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> Templar, 5 --> EnemyHealer, 6 --> Goblin
 
 	Skill skills[4];

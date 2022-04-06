@@ -88,7 +88,7 @@ bool Combat_Menu::Start()
 	enemy_pos[1] = { 966.0f, 280.0f };
 	enemy_pos[2] = { 866.0f, 380.0f };
 	enemy_pos[3] = { 966.0f, 480.0f };
-	enemy_pos[4] = { 415.0f, 60.0f };
+	enemy_pos[4] = { 415.0f, 660.0f };
 
 	ally_pos[0] = { 350.0f, 180.0f };
 	ally_pos[1] = { 250.0f, 280.0f };
@@ -162,7 +162,7 @@ bool Combat_Menu::PreUpdate()
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
+			if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1) // alive
 			{
 				switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 				{
@@ -197,7 +197,7 @@ bool Combat_Menu::PreUpdate()
 				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
 				{
 					app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
-				}//////////////////////////////////////////
+				}
 			}
 		}
 	}
@@ -279,10 +279,10 @@ bool Combat_Menu::PreUpdate()
 			}
 			if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 			{
-				if ((enemies_buttons[0].state == 1 && app->combat_manager->GetEnemyByNumber(0)->GetEntityState()) || 
-					(enemies_buttons[1].state == 1 && app->combat_manager->GetEnemyByNumber(1)->GetEntityState()) ||
-					(enemies_buttons[2].state == 1 && app->combat_manager->GetEnemyByNumber(2)->GetEntityState()) ||
-					(enemies_buttons[3].state == 1 && app->combat_manager->GetEnemyByNumber(3)->GetEntityState()))
+				if ((enemies_buttons[0].state == 1 && app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1) || 
+					(enemies_buttons[1].state == 1 && app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1) ||
+					(enemies_buttons[2].state == 1 && app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1) ||
+					(enemies_buttons[3].state == 1 && app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1))
 				{
 					for (size_t i = 0; i < 4; i++)
 					{
@@ -293,7 +293,7 @@ bool Combat_Menu::PreUpdate()
 			for (size_t i = 0; i < 4; i++)
 			{
 				// if enemy dead
-				if (!app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
+				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() != 1)
 				{
 					enemies_buttons[i].state = 0;
 				}
@@ -358,7 +358,7 @@ bool Combat_Menu::PreUpdate()
 			}
 			for (size_t i = 0; i < 4; i++)
 			{
-				if (!app->combat_manager->GetAllyByNumber(i)->GetEntityState() && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
+				if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() != 1 && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
 				{
 					allies_buttons[i].state = 0;
 				}
@@ -709,7 +709,7 @@ bool Combat_Menu::PostUpdate()
 
 			if (i != 4)
 			{
-				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState())
+				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
 				{
 					switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 					{
@@ -735,7 +735,7 @@ bool Combat_Menu::PostUpdate()
 						break;
 					}
 				}
-				else
+				else if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 0)
 				{
 					texture = app->tex->skull;
 					r = { 64, 0, 64, 64 };
@@ -752,7 +752,7 @@ bool Combat_Menu::PostUpdate()
 
 			if (i != 4)
 			{
-				if (app->combat_manager->GetAllyByNumber(i)->GetEntityState())
+				if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
 				{
 					switch (i)
 					{
@@ -768,11 +768,11 @@ bool Combat_Menu::PostUpdate()
 
 					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
 				}
-				else
+				else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 0)
 				{
 					texture = app->tex->skull;
 					r = { 0, 0, 64, 64 };
-					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
+					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y + 5, &r);
 				}
 			}
 		}

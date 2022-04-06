@@ -55,6 +55,13 @@ enum class DEBUFF_TYPE
 	DEF_REDUCC
 };
 
+enum class SKILL_BONUS
+{
+	NOTHING = 0,
+	IGNORE_SHIELD,
+	DESTROY_SHIELD
+};
+
 struct Skill
 {
 public:
@@ -82,6 +89,8 @@ public:
 	BUFF_TYPE buff_type = BUFF_TYPE::NOTHING;
 	DEBUFF_TYPE debuff_type = DEBUFF_TYPE::NOTHING;
 	int buff_turns = 0; // used with shield too
+	// skill bonus
+	SKILL_BONUS skill_bonus = SKILL_BONUS::NOTHING;
 };
 
 #endif

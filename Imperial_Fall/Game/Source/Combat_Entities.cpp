@@ -13,7 +13,7 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 	shield = 0;
 	shield_turns = 0;
 
-	alive = true;
+	alive = 1;
 
 	entity_type = owner;
 
@@ -27,6 +27,11 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 {
 	switch (enemy)
 	{
+	case ENEMIES::NOTHING:
+		this->speed = 0;
+		
+		alive = 2;
+		break;
 	case ENEMIES::TEMPLAR:
 		max_health = 100;
 		actual_health = max_health;
@@ -37,7 +42,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		shield = 0;
 		shield_turns = 0;
 
-		alive = true;
+		alive = 1;
 
 		entity_type = 4;
 
@@ -56,7 +61,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		shield = 0;
 		shield_turns = 0;
 
-		alive = true;
+		alive = 1;
 
 		entity_type = 5;
 
@@ -75,7 +80,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		shield = 0;
 		shield_turns = 0;
 
-		alive = true;
+		alive = 1;
 
 		entity_type = 6;
 
@@ -94,7 +99,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		shield = 0;
 		shield_turns = 0;
 
-		alive = true;
+		alive = 1;
 
 		entity_type = 7;
 
@@ -119,20 +124,33 @@ Combat_Entities::~Combat_Entities()
 
 }
 
-bool Combat_Entities::DamageEntity(int amount)
+bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 {
 	if (shield > 0)
 	{
-		shield -= amount;
+		if (bonus == SKILL_BONUS::NOTHING)
+		{
+			shield -= amount;
 
-		if (shield > 0)
-		{
-			return true;
+			if (shield > 0)
+			{
+				return true;
+			}
+			else
+			{
+				actual_health += shield;
+			}
 		}
-		else
+		else if (bonus == SKILL_BONUS::DESTROY_SHIELD)
 		{
-			actual_health += shield;
+			shield = 0;
+			actual_health -= amount;
 		}
+		else if (bonus == SKILL_BONUS::IGNORE_SHIELD)
+		{
+			actual_health -= amount;
+		}
+		
 	}
 	else
 	{
@@ -142,7 +160,7 @@ bool Combat_Entities::DamageEntity(int amount)
 	if (actual_health <= 0)
 	{
 		actual_health = 0;
-		alive = false;
+		alive = 0;
 	}
 
 	return true;
@@ -339,6 +357,18 @@ void Combat_Entities::RemoveAllDebuffs()
 	}
 }
 
+void Combat_Entities::UpdateDamageDebuffs()
+{
+	DEBUFF b;
+
+	// burn
+	b.debuff_type = DEBUFF_TYPE::BURN;
+	if (FindDebuff(b) != -1)
+	{
+		DamageEntity(max_health / 10, SKILL_BONUS::NOTHING);
+	}
+}
+
 Skill Combat_Entities::SetSkill(int owner, int skill_number)
 {
 	Skill skill;
@@ -516,6 +546,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 0;
+			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
 			break;
 		}
 	}
