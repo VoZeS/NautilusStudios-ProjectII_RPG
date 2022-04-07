@@ -28,7 +28,7 @@ public:
 
 	void AddParticle(const Particle& particle, int x, int y, uint delay = 0);
 
-	void PlayParticle(ANIM_EFFECT effect, int x, int y);
+	void PlayParticle(ATT_EFFECT att_effect, SUPP_EFFECT supp_effect, int x, int y);
 
 private:
 	SDL_Texture* texture = nullptr;

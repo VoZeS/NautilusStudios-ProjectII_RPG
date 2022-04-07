@@ -86,6 +86,11 @@ public:
 		return shield;
 	}
 
+	int GetWeakness()
+	{
+		return weak_to;
+	}
+
 	void UpdateShield();
 
 	int GetType()
@@ -123,6 +128,12 @@ public:
 
 	Animation* current_anim = NULL;
 	iPoint position = { 0, 0 };
+	bool prepared_to_die = false;
+	void KillEntity()
+	{
+		alive = 0;
+		prepared_to_die = false;
+	}
 
 private:
 	Skill SetSkill(int owner, int skill_number);
@@ -135,6 +146,9 @@ private:
 	int power;
 	int shield;
 	int shield_turns;
+
+	// -1 --> nothing, 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water
+	int weak_to = -1;
 
 	int alive; // 0 --> dead, 1 --> alive, 2 --> no exist
 	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> Templar, 5 --> EnemyHealer, 6 --> Goblin

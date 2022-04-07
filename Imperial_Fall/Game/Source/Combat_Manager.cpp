@@ -100,6 +100,9 @@ bool Combat_Manager::PreUpdate()
 					} while (turn_order[turn]->GetEntityState() != 1);
 					UpdateBuffs();
 					pass_turn = false;
+					BUFF b;
+					b.buff_type = BUFF_TYPE::STEALTH;
+					LOG("%d", enemies[2]->FindBuff(b));
 				}
 			}
 			else if (CheckCombatState() == 1)
@@ -128,6 +131,7 @@ bool Combat_Manager::Update(float dt)
 		else // enemies
 		{
 			// AI
+			enemies_loops = 0;
 			EnemyTurn(turn_order[turn]);
 		}
 	}
@@ -142,6 +146,7 @@ bool Combat_Manager::Update(float dt)
 
 			in_animation = 0;
 			animation_cd = 0;
+			KillPreparedEntities();
 		}
 	}
 	
@@ -446,183 +451,491 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 
 		switch (skill.att_strenght)
 		{
-		case 0: damage = 0.2f * user->GetPower();
+		case 0: damage = 0.3f * user->GetPower();
 			break;
 		case 1: damage = 0.4f * user->GetPower();
 			break;
-		case 2: damage = 0.6f * user->GetPower();
+		case 2: damage = 0.5f * user->GetPower();
 			break;
 		}
 
 		switch (skill.supp_strenght)
 		{
-		case 0: support = 0.2f * user->GetPower();
+		case 0: support = 0.6f * user->GetPower();
 			break;
-		case 1: support = 0.4f * user->GetPower();
+		case 1: support = 0.8f * user->GetPower();
 			break;
-		case 2: support = 0.6f * user->GetPower();
+		case 2: support = 1.0f * user->GetPower();
 			break;
 		}
+
+		
 
 		// lauch attack skill
 		if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 		{
+			DEBUFF b;
+			b.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			if (objective->GetWeakness() == skill.element)
+			{
+				damage *= 1.5f;
+			}
+			else if (objective->FindDebuff(b) != -1 && skill.element == 0)
+			{
+				damage *= 1.5f;
+			}
+
 			objective->DamageEntity(damage, skill.skill_bonus);
+
 			if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
 			{
 				objective->AddDebuff(skill.debuff_type, skill.buff_turns);
 			}
+
+			if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+			{
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->ShieldEntity(support * 2, skill.buff_turns);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->ShieldEntity(support * 2, skill.buff_turns);
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->HealEntity(support);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->HealEntity(support);
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->CleanEntity();
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->CleanEntity();
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->ReloadMana(support * 2);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->ReloadMana(support * 2);
+							}
+						}
+					}
+				}
+			}
+			if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
+			{
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
+				{
+					user->ShieldEntity(support * 2, skill.buff_turns);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
+				{
+					user->HealEntity(support);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				{
+					user->CleanEntity();
+				}
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
+				{
+					user->ReloadMana(support * 2);
+				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					user->AddBuff(skill.buff_type, skill.buff_turns);
+				}
+			}
 		}
 		else if (skill.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 		{
+			DEBUFF b;
+			b.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			for (size_t i = 0; i < 4; i++)
 			{
 				if (user->GetType() < 4) // allies
 				{
-					enemies[i]->DamageEntity(damage, skill.skill_bonus);
-					if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+					if (enemies[i]->GetWeakness() == skill.element)
 					{
-						enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+						damage *= 1.5f;
+					}
+					else if (enemies[i]->FindDebuff(b) != -1 && skill.element == 0)
+					{
+						damage *= 1.5f;
+					}
+
+					if (enemies[i]->GetEntityState())
+					{
+						enemies[i]->DamageEntity(damage, skill.skill_bonus);
+
+						if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+						{
+							enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+						}
 					}
 				}
 				else // enemies
 				{
-					allies[i]->DamageEntity(damage, skill.skill_bonus);
-					if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+					if (allies[i]->GetWeakness() == skill.element)
 					{
-						allies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+						damage *= 1.5f;
+					}
+					else if (allies[i]->FindDebuff(b) != -1 && skill.element == 0)
+					{
+						damage *= 1.5f;
+					}
+
+					if (allies[i]->GetEntityState())
+					{
+						allies[i]->DamageEntity(damage, skill.skill_bonus);
+
+						if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+						{
+							allies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+						}
 					}
 				}
-				
+			}
+
+			if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+			{
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->ShieldEntity(support * 2, skill.buff_turns);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->ShieldEntity(support * 2, skill.buff_turns);
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->HealEntity(support);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->HealEntity(support);
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->CleanEntity();
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->CleanEntity();
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->ReloadMana(support * 2);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->ReloadMana(support * 2);
+							}
+						}
+					}
+				}
+			}
+			if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
+			{
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
+				{
+					user->ShieldEntity(support * 2, skill.buff_turns);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
+				{
+					user->HealEntity(support);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				{
+					user->CleanEntity();
+				}
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
+				{
+					user->ReloadMana(support * 2);
+				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					user->AddBuff(skill.buff_type, skill.buff_turns);
+				}
 			}
 		}
 
 		// lauch support skill
-		if (skill.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+		if (skill.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
 		{
-			if (skill.support_type == SUPPORT_TYPE::SHIELD)
+			if (skill.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
 			{
-				objective->ShieldEntity(support * 5, skill.buff_turns);
-			}
-			else if (skill.support_type == SUPPORT_TYPE::HEAL)
-			{
-				objective->HealEntity(support * 2);
-			}
-			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
-			{
-				objective->CleanEntity();
-			}
-			else if (skill.support_type == SUPPORT_TYPE::RELOAD)
-			{
-				objective->ReloadMana(support * 5);
-			}
-			else if (skill.support_type == SUPPORT_TYPE::REVIVE)
-			{
-				// revive
-			}
-		}
-		else if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
-		{
-			if (skill.support_type == SUPPORT_TYPE::SHIELD)
-			{
-				if (user->GetType() < 4) // allies
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
 				{
-					for (size_t i = 0; i < 4; i++)
-					{
-						allies[i]->ShieldEntity(support * 5, skill.buff_turns);
-					}
+					objective->ShieldEntity(support * 2, skill.buff_turns);
 				}
-				else // enemies
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
 				{
-					for (size_t i = 0; i < 4; i++)
-					{
-						enemies[i]->ShieldEntity(support * 5, skill.buff_turns);
-					}
+					objective->HealEntity(support);
 				}
-				
-			}
-			else if (skill.support_type == SUPPORT_TYPE::HEAL)
-			{
-				if (user->GetType() < 4) // allies
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
 				{
-					for (size_t i = 0; i < 4; i++)
-					{
-						allies[i]->HealEntity(support * 2);
-					}
+					objective->CleanEntity();
 				}
-				else // enemies
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
-					for (size_t i = 0; i < 4; i++)
-					{
-						enemies[i]->HealEntity(support * 2);
-					}
+					objective->ReloadMana(support * 2);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::REVIVE)
+				{
+					// revive
 				}
 			}
-			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+			else if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
 			{
-				if (user->GetType() < 4) // allies
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
 				{
-					for (size_t i = 0; i < 4; i++)
+					if (user->GetType() < 4) // allies
 					{
-						allies[i]->CleanEntity();
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->ShieldEntity(support * 2, skill.buff_turns);
+							}
+						}
 					}
-				}
-				else // enemies
-				{
-					for (size_t i = 0; i < 4; i++)
+					else // enemies
 					{
-						enemies[i]->CleanEntity();
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->ShieldEntity(support * 2, skill.buff_turns);
+							}
+						}
 					}
-				}
-			}
-			else if (skill.support_type == SUPPORT_TYPE::RELOAD)
-			{
-				if (user->GetType() < 4) // allies
-				{
-					for (size_t i = 0; i < 4; i++)
-					{
-						allies[i]->ReloadMana(support * 5);
-					}
-				}
-				else // enemies
-				{
-					for (size_t i = 0; i < 4; i++)
-					{
-						enemies[i]->ReloadMana(support * 5);
-					}
-				}
-			}
-		}
-		else if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
-		{
-			if (skill.support_type == SUPPORT_TYPE::SHIELD)
-			{
-				user->ShieldEntity(support * 5, skill.buff_turns);
-			}
-			else if (skill.support_type == SUPPORT_TYPE::HEAL)
-			{
-				user->HealEntity(support * 2);
-			}
-			else if (skill.support_type == SUPPORT_TYPE::CLEAN)
-			{
-				user->CleanEntity();
-			}
-			else if (skill.support_type == SUPPORT_TYPE::RELOAD)
-			{
-				user->ReloadMana(support * 5);
-			}
 
-			if (skill.buff_type != BUFF_TYPE::NOTHING)
+				}
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->HealEntity(support);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->HealEntity(support);
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->CleanEntity();
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->CleanEntity();
+							}
+						}
+					}
+				}
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->ReloadMana(support * 2);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->ReloadMana(support * 2);
+							}
+						}
+					}
+				}
+			}
+			else if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
 			{
-				user->AddBuff(skill.buff_type, skill.buff_turns);
+				if (skill.support_type == SUPPORT_TYPE::SHIELD)
+				{
+					user->ShieldEntity(support * 2, skill.buff_turns);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::HEAL)
+				{
+					user->HealEntity(support);
+				}
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				{
+					user->CleanEntity();
+				}
+				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
+				{
+					user->ReloadMana(support * 2);
+				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					user->AddBuff(skill.buff_type, skill.buff_turns);
+				}
 			}
 		}
 
 		in_animation = 1;
 
-		if (skill.anim_effect != ANIM_EFFECT::EMPTY)
+		if (skill.att_effect != ATT_EFFECT::EMPTY || skill.supp_effect != SUPP_EFFECT::EMPTY)
 		{
-			app->combat_menu->SetSkillAnimation(skill.anim_effect, objective->position.x, objective->position.y);
+			app->combat_menu->SetSkillAnimation(skill.att_effect, skill.supp_effect, objective->position.x, objective->position.y);
 		}
 	}
 }
@@ -637,9 +950,15 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int r;
+	int objective, skill, rounds = 0;
 
-	if (user->GetActualMana() < user->GetSkill(0).mana_cost)
+	do
+	{
+		skill = rand() % 4;
+		rounds++;
+	} while (user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10);
+	
+	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{
 		user->ReloadMana();
 		Skill reload;
@@ -649,12 +968,122 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 	}
 	else
 	{
-		do
+		if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 		{
-			r = rand() % 4;
-		} while (!allies[r]->GetEntityState());
-		app->combat_menu->SetSkillPrepared(user->GetSkill(0));
-		UseSkill(user, user->GetSkill(0), allies[r]);
+			do
+			{
+				objective = rand() % 4;
+			} while (!allies[objective]->GetEntityState());
+			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+			UseSkill(user, user->GetSkill(skill), allies[objective]);
+		}
+		else if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+		{
+			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+			UseSkill(user, user->GetSkill(skill), allies[0]);
+		}
+		else if (user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+		{
+			if (user->GetSkill(skill).support_type == SUPPORT_TYPE::HEAL)
+			{
+				rounds = 0;
+				do
+				{
+					objective = rand() % 4;
+					rounds++;
+				} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualHealth() > enemies[objective]->GetMaxHealth() - 20)) && rounds < 10);
+
+				if (rounds == 10)
+				{
+					// restart AI
+					enemies_loops++;
+					EnemyTurn(user);
+				}
+				else
+				{
+					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+					UseSkill(user, user->GetSkill(skill), enemies[objective]);
+				}
+			}
+			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::SHIELD)
+			{
+				do
+				{
+					objective = rand() % 4;
+				} while (!enemies[objective]->GetEntityState());
+
+				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+				UseSkill(user, user->GetSkill(skill), enemies[objective]);
+			}
+			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::CLEAN)
+			{
+				rounds = 0;
+				do
+				{
+					objective = rand() % 4;
+					rounds++;
+				} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetDebuffList().Count() > 0)) && rounds < 10);
+
+				if (rounds == 10)
+				{
+					// restart AI
+					enemies_loops++;
+					EnemyTurn(user);
+				}
+				else
+				{
+					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+					UseSkill(user, user->GetSkill(skill), enemies[objective]);
+				}
+			}
+			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::RELOAD)
+			{
+				rounds = 0;
+				do
+				{
+					objective = rand() % 4;
+					rounds++;
+				} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualMana() < (enemies[objective]->GetMaxMana() / 2))) && rounds < 10);
+
+				if (rounds == 10)
+				{
+					// restart AI
+					enemies_loops++;
+					EnemyTurn(user);
+				}
+				else
+				{
+					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+					UseSkill(user, user->GetSkill(skill), enemies[objective]);
+				}
+			}
+			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::REVIVE)
+			{
+				rounds = 0;
+				do
+				{
+					objective = rand() % 4;
+					rounds++;
+				} while (enemies[objective]->GetEntityState() && rounds < 10);
+
+				if (rounds == 10)
+				{
+					// restart AI
+					enemies_loops++;
+					EnemyTurn(user);
+				}
+				else
+				{
+					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+					UseSkill(user, user->GetSkill(skill), enemies[objective]);
+				}
+			}
+		}
+		else if (user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::ALL_ALLY || user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::SELF)
+		{
+			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+			UseSkill(user, user->GetSkill(skill), user);
+		}
 	}
 }
 
@@ -696,6 +1125,25 @@ int Combat_Manager::CheckCombatState()
 	}
 
 	return ret;
+}
+
+void Combat_Manager::KillPreparedEntities()
+{
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (allies[i]->prepared_to_die == true)
+		{
+			allies[i]->KillEntity();
+			allies[i]->RemoveAllBuffs();
+			allies[i]->RemoveAllDebuffs();
+		}
+		if (enemies[i]->prepared_to_die == true)
+		{
+			enemies[i]->KillEntity();
+			enemies[i]->RemoveAllBuffs();
+			enemies[i]->RemoveAllDebuffs();
+		}
+	}
 }
 
 void Combat_Manager::HeroesStats(int& health, int& mana, int& speed, int& power, int owner)

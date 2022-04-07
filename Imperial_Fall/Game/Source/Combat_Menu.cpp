@@ -320,7 +320,7 @@ bool Combat_Menu::PreUpdate()
 					BUFF b;
 					// if one enemy taunt
 					b.buff_type = BUFF_TYPE::TAUNT;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1)
+					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 					{
 						for (size_t j = 0; j < 4; j++)
 						{
@@ -831,7 +831,7 @@ bool Combat_Menu::PreUpdate()
 					BUFF b;
 					// if one enemy taunt
 					b.buff_type = BUFF_TYPE::TAUNT;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1)
+					if (chosed < 4 && app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 					{
 						for (size_t j = 0; j < 4; j++)
 						{
@@ -1253,7 +1253,6 @@ bool Combat_Menu::Update(float dt)
 		// general buttons
 		if (!in_items && !in_enemies && !in_allies)
 		{
-			LOG("%d", chosed);
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && general_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
@@ -1809,35 +1808,72 @@ bool Combat_Menu::PostUpdate()
 		else if (app->combat_manager->GetInAnimation() == 2)
 		{
 			app->fonts->BlitText(500 + c_x, 100 + c_y, textFont, skill_prepared.skill_name);
-			if (skill_effect != ANIM_EFFECT::EMPTY)
+			if (skill_att_effect != ATT_EFFECT::EMPTY)
 			{
-				if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+				if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 				{
-					for (size_t i = 0; i < 4; i++)
+					if (skill_prepared.owner < 4)
 					{
-						if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+						for (size_t i = 0; i < 4; i++)
 						{
-							app->particles->PlayParticle(skill_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+							if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+							{
+								app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+							}
 						}
 					}
-				}
-				else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
-				{
-					for (size_t i = 0; i < 4; i++)
+					else
 					{
-						if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+						for (size_t i = 0; i < 4; i++)
 						{
-							app->particles->PlayParticle(skill_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+							if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+							{
+								app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+							}
 						}
 					}
 				}
 				else
 				{
-					app->particles->PlayParticle(skill_effect, objective_pos.x - 32, objective_pos.y - 32);
+					app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, objective_pos.x - 32, objective_pos.y - 32);
 				}
-
-				SetSkillAnimation(ANIM_EFFECT::EMPTY, 0, 0);
 			}
+			if (skill_supp_effect != SUPP_EFFECT::EMPTY)
+			{
+				if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+				{
+					if (skill_prepared.owner < 4)
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+							{
+								app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+							}
+						}
+					}
+					else
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+							{
+								app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+							}
+						}
+					}
+				}
+				else if (skill_prepared.enemy_objective != ENEMY_OBJECTIVE::NOTHING && skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
+				{
+					app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, app->combat_manager->GetActualEntity()->position.x - 32, app->combat_manager->GetActualEntity()->position.y - 32);
+				}
+				else
+				{
+					app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, objective_pos.x - 32, objective_pos.y - 32);
+				}
+			}
+
+			SetSkillAnimation(ATT_EFFECT::EMPTY, SUPP_EFFECT::EMPTY, 0, 0);
 		}
 		app->combat_manager->UpdateHUD();
 	}
