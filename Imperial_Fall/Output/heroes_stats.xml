@@ -1,6 +1,6 @@
 <heroes_stats>
 	<assassin>
-		<basic_stats health="70" mana="50" speed="50" power="65"/>
+		<basic_stats health="70" mana="50" speed="50" power="650"/>
 	</assassin>
 	<healer>
 		<basic_stats health="100" mana="60" speed="30" power="50"/>

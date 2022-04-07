@@ -100,9 +100,6 @@ bool Combat_Manager::PreUpdate()
 					} while (turn_order[turn]->GetEntityState() != 1);
 					UpdateBuffs();
 					pass_turn = false;
-					BUFF b;
-					b.buff_type = BUFF_TYPE::STEALTH;
-					LOG("%d", enemies[2]->FindBuff(b));
 				}
 			}
 			else if (CheckCombatState() == 1)
