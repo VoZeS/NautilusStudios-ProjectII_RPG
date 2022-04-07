@@ -326,7 +326,7 @@ void Player::HandleInput(float dt)
 				fixture.friction = 0.0f;
 				bodyFixture = body->CreateFixture(&fixture);
 				bodyFixture->SetSensor(true);
-				bodyFixture->SetUserData((void*)2); // player without collision
+				bodyFixture->SetUserData((void*)1); // player without collision
 
 				collision_active = false;
 			}

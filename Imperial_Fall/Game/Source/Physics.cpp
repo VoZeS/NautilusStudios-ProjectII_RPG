@@ -51,9 +51,6 @@ bool Physics::Start()
 	on_collosion = 0;
 
 	save_sound = app->audio->LoadFx("Assets/audio/fx/save_sound.wav");;
-	water_well_sound = app->audio->LoadFx("Assets/audio/fx/water_well_sound.wav");;
-	level_complete_sound = app->audio->LoadFx("Assets/audio/fx/level_complete_sound.wav");
-	death_sound = app->audio->LoadFx("Assets/audio/fx/death_sound.wav");
 
 	return true;
 }
@@ -80,28 +77,6 @@ bool Physics::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		debug = !debug;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	{
-		if (inScareCrow)
-		{
-			app->SaveGameRequest();
-			app->audio->PlayFx(save_sound);
-		}
-		else if (inStatue)
-		{
-			app->scene->PassLevel(app->scene->current_level + 1);
-			app->frontground->SetPressE_Hide(true);
-			app->audio->PlayFx(level_complete_sound);
-			inStatue = false;
-		}
-		else if (inWaterWell)
-		{
-			app->audio->PlayFx(water_well_sound);
-			app->frontground->SetPressE_Hide(true);
-			inWaterWell = false;
-		}
 	}
 
 	return true;
@@ -136,22 +111,22 @@ bool Physics::PostUpdate()
 						c_g = 128;
 						c_b = 0;
 						break;
-					case 2: // npc interaction
+					case 2: // renato interaction
 						c_r = 128;
 						c_g = 0;
 						c_b = 255;
 						break;
-					case 3:
+					case 3: // curandero interaction
 						c_r = 0;
 						c_g = 255;
 						c_b = 0;
 						break;
-					case 4:
+					case 4: // herrero interaction
 						c_r = 255;
 						c_g = 0;
 						c_b = 0;
 						break;
-					case 5:
+					case 5: // granjero interaction
 						c_r = 255;
 						c_g = 200;
 						c_b = 0;
@@ -249,7 +224,7 @@ bool Physics::CleanMapBoxes()
 	{
 		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 		{
-			if ((int)f->GetUserData() >= 3)
+			if ((int)f->GetUserData() >= 2)
 			{
 				b->DestroyFixture(f);
 				world->DestroyBody(b);
@@ -264,8 +239,6 @@ void Physics::BeginContact(b2Contact* contact)
 {
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
-
-	LOG("%d, %d", fixtureUserDataA, fixtureUserDataB);
 
 	if ((int)fixtureUserDataA == 4)
 	{
@@ -290,42 +263,27 @@ void Physics::BeginContact(b2Contact* contact)
 	{
 		if ((int)fixtureUserDataB == 2)
 		{
-			// npc contact
+			// renato contact
 			app->frontground->SetPressE_Hide(false);
+			inRenato = true;
 		}
-		if ((int)fixtureUserDataB == 4 && !app->scene->godmode)
+		else if ((int)fixtureUserDataB == 3)
 		{
-			// player death
-			Entity* entity = app->entities->GetPlayer();
-			entity->PlayerDeath();
-			app->audio->PlayFx(death_sound);
+			// curandero contact
+			app->frontground->SetPressE_Hide(false);
+			inCurandero = true;
+		}
+		else if ((int)fixtureUserDataB == 4)
+		{
+			// herrero contact
+			app->frontground->SetPressE_Hide(false);
+			inHerrero = true;
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
-			// save level
+			// granjero contact
 			app->frontground->SetPressE_Hide(false);
-			inScareCrow = true;
-		}
-		else if ((int)fixtureUserDataB == 6)
-		{
-			// complete level
-			if (!statueUsed)
-			{
-				app->frontground->SetPressE_Hide(false);
-				inStatue = true;
-			}
-		}
-		else if ((int)fixtureUserDataB == 7)
-		{
-			// water well
-			app->frontground->SetPressE_Hide(false);
-			inWaterWell = true;
-		}
-		else if ((int)fixtureUserDataB == 8)
-		{
-			// coin
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickCoin(entity->GetPlayerPosition());
+			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataB == 10)
 		{
@@ -473,42 +431,27 @@ void Physics::BeginContact(b2Contact* contact)
 	{
 		if ((int)fixtureUserDataA == 2)
 		{
-			// npc contact
+			// renato contact
 			app->frontground->SetPressE_Hide(false);
+			inRenato = true;
 		}
-		if ((int)fixtureUserDataA == 4 && !app->scene->godmode)
+		else if ((int)fixtureUserDataA == 3)
 		{
-			// player death
-			Entity* entity = app->entities->GetPlayer();
-			entity->PlayerDeath();
-			app->audio->PlayFx(death_sound);
+			// curandero contact
+			app->frontground->SetPressE_Hide(false);
+			inCurandero = true;
+		}
+		else if ((int)fixtureUserDataA == 4)
+		{
+			// herrero contact
+			app->frontground->SetPressE_Hide(false);
+			inHerrero = true;
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
-			// save level
+			// granjero contact
 			app->frontground->SetPressE_Hide(false);
-			inScareCrow = true;
-		}
-		else if ((int)fixtureUserDataA == 6)
-		{
-			// complete level
-			if (!statueUsed)
-			{
-				app->frontground->SetPressE_Hide(false);
-				inStatue = true;
-			}
-		}
-		else if ((int)fixtureUserDataA == 7)
-		{
-			// water well
-			app->frontground->SetPressE_Hide(false);
-			inWaterWell = true;
-		}
-		else if ((int)fixtureUserDataA == 8)
-		{
-			// coin
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickCoin(entity->GetPlayerPosition());
+			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataA == 10)
 		{
@@ -661,26 +604,27 @@ void Physics::EndContact(b2Contact* contact)
 	{
 		if ((int)fixtureUserDataB == 2)
 		{
-			// npc contact
+			// renato contact
 			app->frontground->SetPressE_Hide(true);
+			inRenato = false;
 		}
-		if ((int)fixtureUserDataB == 5)
+		else if ((int)fixtureUserDataB == 3)
 		{
-			// hide save level
+			// curandero contact
 			app->frontground->SetPressE_Hide(true);
-			inScareCrow = false;
+			inCurandero = false;
 		}
-		else if ((int)fixtureUserDataB == 6)
+		else if ((int)fixtureUserDataB == 4)
 		{
-			//  hide complete level
+			// herrero contact
 			app->frontground->SetPressE_Hide(true);
-			inStatue = false;
+			inHerrero = false;
 		}
-		else if ((int)fixtureUserDataB == 7)
+		else if ((int)fixtureUserDataB == 5)
 		{
-			// hide water well
+			// granjero contact
 			app->frontground->SetPressE_Hide(true);
-			inWaterWell = false;
+			inGranjero = false;
 		}
 	}
 
@@ -688,26 +632,27 @@ void Physics::EndContact(b2Contact* contact)
 	{
 		if ((int)fixtureUserDataA == 2)
 		{
-			// npc contact
-			app->frontground->SetPressE_Hide(true);
+			// renato contact
+			app->frontground->SetPressE_Hide(false);
+			inRenato = false;
 		}
-		if ((int)fixtureUserDataA == 5)
+		else if ((int)fixtureUserDataA == 3)
 		{
-			// hide save level
-			app->frontground->SetPressE_Hide(true);
-			inScareCrow = false;
+			// curandero contact
+			app->frontground->SetPressE_Hide(false);
+			inCurandero = false;
 		}
-		else if ((int)fixtureUserDataA == 6)
+		else if ((int)fixtureUserDataA == 4)
 		{
-			// hide complete level
-			app->frontground->SetPressE_Hide(true);
-			inStatue = false;
+			// herrero contact
+			app->frontground->SetPressE_Hide(false);
+			inHerrero = false;
 		}
-		else if ((int)fixtureUserDataA == 7)
+		else if ((int)fixtureUserDataA == 5)
 		{
-			// hide water well
-			app->frontground->SetPressE_Hide(true);
-			inWaterWell = false;
+			// granjero contact
+			app->frontground->SetPressE_Hide(false);
+			inGranjero = false;
 		}
 	}
 }

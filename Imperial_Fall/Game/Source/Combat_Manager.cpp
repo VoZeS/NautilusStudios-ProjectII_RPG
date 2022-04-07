@@ -230,7 +230,7 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx, 8 + cy, &rect);
 	app->render->DrawRectangle({ 75 + cx, 8 + cy, allies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx, 9 + cy, allies[0]->GetActualHealth(), 28 }, 255, 0, 0);
-	app->render->DrawRectangle({ 76 + cx + allies[0]->GetActualHealth(), 9 + cy, allies[0]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 76 + cx + allies[0]->GetActualHealth(), 9 + cy, allies[0]->GetShield(), 28 }, 120, 120, 120, 200);
 	app->render->DrawRectangle({ 75 + cx, 8 + cy + 34, allies[0]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 76 + cx, 9 + cy + 34, allies[0]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[0]->GetEntityState())
@@ -248,7 +248,7 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx, 8 + cy + 67, &rect);
 	app->render->DrawRectangle({ 75 + cx, 8 + cy + 67, allies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx, 9 + cy + 67, allies[1]->GetActualHealth(), 28 }, 255, 0, 0);
-	app->render->DrawRectangle({ 76 + cx + allies[1]->GetActualHealth(), 9 + cy + 67, allies[1]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 76 + cx + allies[1]->GetActualHealth(), 9 + cy + 67, allies[1]->GetShield(), 28 }, 120, 120, 120, 200);
 	app->render->DrawRectangle({ 75 + cx, 8 + cy + 34 + 67, allies[1]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 76 + cx, 9 + cy + 34 + 67, allies[1]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[1]->GetEntityState())
@@ -267,7 +267,7 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx + 250, 8 + cy, &rect);
 	app->render->DrawRectangle({ 75 + cx + 250, 8 + cy, allies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy, allies[2]->GetActualHealth(), 28 }, 255, 0, 0);
-	app->render->DrawRectangle({ 76 + cx + allies[2]->GetActualHealth() + 250, 9 + cy, allies[2]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 76 + cx + allies[2]->GetActualHealth() + 250, 9 + cy, allies[2]->GetShield(), 28 }, 120, 120, 120, 200);
 	app->render->DrawRectangle({ 75 + cx + 250, 8 + cy + 34, allies[2]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy + 34, allies[2]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[2]->GetEntityState())
@@ -285,7 +285,7 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx + 250, 8 + cy + 67, &rect);
 	app->render->DrawRectangle({ 75 + cx + 250, 8 + cy + 67, allies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy + 67, allies[3]->GetActualHealth(), 28 }, 255, 0, 0);
-	app->render->DrawRectangle({ 76 + cx + allies[3]->GetActualHealth() + 250, 9 + cy + 67, allies[3]->GetShield(), 28 }, 120, 120, 120);
+	app->render->DrawRectangle({ 76 + cx + allies[3]->GetActualHealth() + 250, 9 + cy + 67, allies[3]->GetShield(), 28 }, 120, 120, 120, 200);
 	app->render->DrawRectangle({ 75 + cx + 250, 8 + cy + 34 + 67, allies[3]->GetMaxMana(), 30 }, 0, 0, 70);
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy + 34 + 67, allies[3]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[3]->GetEntityState())
@@ -317,7 +317,7 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 800, 8 + cy, &rect);
 		app->render->DrawRectangle({ 75 + cx + 800, 8 + cy, enemies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy, enemies[0]->GetActualHealth(), 28 }, 255, 0, 0);
-		app->render->DrawRectangle({ 76 + cx + enemies[0]->GetActualHealth() + 800, 9 + cy, enemies[0]->GetShield(), 28 }, 120, 120, 120);
+		app->render->DrawRectangle({ 76 + cx + enemies[0]->GetActualHealth() + 800, 9 + cy, enemies[0]->GetShield(), 28 }, 120, 120, 120, 200);
 		app->render->DrawRectangle({ 75 + cx + 800, 8 + cy + 34, enemies[0]->GetMaxMana(), 30 }, 0, 0, 70);
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy + 34, enemies[0]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[0]->GetEntityState() == 0)
@@ -350,7 +350,7 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 800, 8 + cy + 67, &rect);
 		app->render->DrawRectangle({ 75 + cx + 800, 8 + cy + 67, enemies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy + 67, enemies[1]->GetActualHealth(), 28 }, 255, 0, 0);
-		app->render->DrawRectangle({ 76 + cx + enemies[1]->GetActualHealth() + 800, 9 + cy + 67, enemies[1]->GetShield(), 28 }, 120, 120, 120);
+		app->render->DrawRectangle({ 76 + cx + enemies[1]->GetActualHealth() + 800, 9 + cy + 67, enemies[1]->GetShield(), 28 }, 120, 120, 120, 200);
 		app->render->DrawRectangle({ 75 + cx + 800, 8 + cy + 34 + 67, enemies[1]->GetMaxMana(), 30 }, 0, 0, 70);
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy + 34 + 67, enemies[1]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[1]->GetEntityState() == 0)
@@ -383,7 +383,7 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 250 + 800, 8 + cy, &rect);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy, enemies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy, enemies[2]->GetActualHealth(), 28 }, 255, 0, 0);
-		app->render->DrawRectangle({ 76 + cx + enemies[2]->GetActualHealth() + 250 + 800, 9 + cy, enemies[2]->GetShield(), 28 }, 120, 120, 120);
+		app->render->DrawRectangle({ 76 + cx + enemies[2]->GetActualHealth() + 250 + 800, 9 + cy, enemies[2]->GetShield(), 28 }, 120, 120, 120, 200);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy + 34, enemies[2]->GetMaxMana(), 30 }, 0, 0, 70);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 34, enemies[2]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[2]->GetEntityState() == 0)
@@ -416,7 +416,7 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 250 + 800, 8 + cy + 67, &rect);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy + 67, enemies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 67, enemies[3]->GetActualHealth(), 28 }, 255, 0, 0);
-		app->render->DrawRectangle({ 76 + cx + enemies[3]->GetActualHealth() + 250 + 800, 9 + cy + 67, enemies[3]->GetShield(), 28 }, 120, 120, 120);
+		app->render->DrawRectangle({ 76 + cx + enemies[3]->GetActualHealth() + 250 + 800, 9 + cy + 67, enemies[3]->GetShield(), 28 }, 120, 120, 120, 200);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy + 34 + 67, enemies[3]->GetMaxMana(), 30 }, 0, 0, 70);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 34 + 67, enemies[3]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[3]->GetEntityState() == 0)

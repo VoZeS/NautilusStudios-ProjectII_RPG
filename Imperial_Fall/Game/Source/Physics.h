@@ -48,15 +48,27 @@ public:
 
 	int on_collosion;
 
-	bool inScareCrow = false;
-	bool inWaterWell = false;
-	bool inStatue = false;
-	bool statueUsed = false;
+	bool inRenato = false;
+	bool inCurandero = false;
+	bool inHerrero = false;
+	bool inGranjero = false;
+
+	bool GetInNPC(int npc)
+	{
+		bool ret;
+
+		switch (npc)
+		{
+		case 1: ret = inRenato; break;
+		case 2: ret = inCurandero; break;
+		case 3: ret = inHerrero; break;
+		case 4: ret = inGranjero; break;
+		}
+
+		return ret;
+	}
 
 	uint save_sound;
-	uint water_well_sound;
-	uint level_complete_sound;
-	uint death_sound;
 
 };
 

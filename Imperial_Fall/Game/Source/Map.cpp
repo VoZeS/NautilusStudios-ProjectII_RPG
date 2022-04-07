@@ -92,10 +92,8 @@ void Map::Draw()
 						
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
-							
 							// collision ground
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
-							
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
 						{

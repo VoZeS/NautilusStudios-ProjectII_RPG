@@ -66,7 +66,7 @@ void NPC::InitCustomEntity(int npc)
 	box.SetAsBox(PIXELS_TO_METERS((w * 3)), PIXELS_TO_METERS(h * 3), b2Vec2(0, 0), 0);
 	fixture.isSensor = true;
 	b2Fixture* sensorFixture = body->CreateFixture(&fixture);
-	sensorFixture->SetUserData((void*)2); // NPC sensor
+	sensorFixture->SetUserData((void*)(npc_type + 1)); // NPC sensor
 }
 
 // Called each loop iteration

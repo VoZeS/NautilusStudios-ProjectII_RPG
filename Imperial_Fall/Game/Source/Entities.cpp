@@ -180,7 +180,6 @@ bool Entities::PostUpdate()
 	return ret;
 }
 
-// Called before quitting
 bool Entities::CleanUp()
 {
 	ListItem<Entity*>* item;
@@ -192,7 +191,7 @@ bool Entities::CleanUp()
 
 		if (entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO || entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
 		{
-			app->physics->world->DestroyBody(entity->body);
+			//app->physics->world->DestroyBody(entity->body);
 			entities.Del(item);
 		}
 	}
@@ -282,12 +281,6 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(g_enemy, ENTITY_TYPE::GROUND_ENEMY, p);
 	}
 		break;
-	/*case ENTITY_TYPE::AIR_ENEMY:
-	{
-		Air_Enemies* a_enemy = new Air_Enemies();
-		AddEntity(a_enemy, ENTITY_TYPE::AIR_ENEMY, p);
-	}
-		break;*/
 	case ENTITY_TYPE::COIN:
 	{
 		Coins* coin = new Coins();
@@ -305,22 +298,37 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 	}
 }
 
-void Entities::PickCoin(fPoint pos)
+int Entities::FindNPC()
 {
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
+
+	float max = 9999;
+	int ret = -1;
 
 	for (item = entities.start; item != NULL; item = item->next)
 	{
 		entity = item->data;
 
-		if (pos.x + 1.5f > entity->position.x && pos.x - 1.5f < entity->position.x && pos.y + 2.0f > entity->position.y && pos.y - 2.0f < entity->position.y && entity->entity_type == ENTITY_TYPE::COIN)
+		if (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max)
 		{
-			entity->DeleteEntity();
+			switch (entity->entity_type)
+			{
+			case ENTITY_TYPE::RENATO: ret = 1;
+				break;
+			case ENTITY_TYPE::CURANDERO: ret = 2;
+				break;
+			case ENTITY_TYPE::HERRERO: ret = 3;
+				break;
+			case ENTITY_TYPE::GRANJERO: ret = 4;
+				break;
+			}
 
-			break;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
 		}
 	}
+
+	return ret;
 }
 
 void Entities::PickHeart(fPoint pos)
@@ -378,10 +386,6 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 		p_in_array = app->entities->ground_lenght;
 		app->entities->ground_lenght++;
 		break;
-	/*case ENTITY_TYPE::AIR_ENEMY:
-		p_in_array = app->entities->air_lenght;
-		app->entities->air_lenght++;
-		break;*/
 	case ENTITY_TYPE::COIN:
 		p_in_array = app->entities->coins_lenght;
 		app->entities->coins_lenght++;

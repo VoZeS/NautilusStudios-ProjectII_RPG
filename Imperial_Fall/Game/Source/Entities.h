@@ -110,7 +110,7 @@ public:
 	int air_lenght = 0;
 	int coins_lenght = 0;
 
-	void PickCoin(fPoint pos);
+	int FindNPC();
 	void PickHeart(fPoint pos);
 
 	Entity* GetPlayer();

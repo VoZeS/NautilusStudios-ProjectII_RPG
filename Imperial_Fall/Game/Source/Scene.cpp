@@ -197,32 +197,43 @@ bool Scene::Update(float dt)
 	{
 		app->ToggleFPS();
 	}
-	else if(app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !inDialogAlly && !inDialogEnemy)
+	
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
+		if (app->physics->GetInNPC(1))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
 
-		letlengh = 0;
-		letlengh2 = 0;
+			inDialog = !inDialog;
+			inDialogRenato = !inDialogRenato;
+			app->frontground->SetPressE_Hide(true);
+		}
+		else if (app->physics->GetInNPC(2))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
 
-		inDialog = !inDialog;
-		inDialogRenato = !inDialogRenato;
-	}
-	else if(app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && !inDialogRenato && !inDialogEnemy)
-	{
+			inDialog = !inDialog;
+			inDialogAlly = !inDialogAlly;
+			app->frontground->SetPressE_Hide(true);
+		}
+		else if (app->physics->GetInNPC(3))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
 
-		letlengh = 0;
-		letlengh2 = 0;
-
-		inDialog = !inDialog;
-		inDialogAlly = !inDialogAlly;
-	}
-	else if(app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !inDialogAlly && !inDialogRenato)
-	{
-
-		letlengh = 0;
-		letlengh2 = 0;
-
-		inDialog = !inDialog;
-		inDialogEnemy = !inDialogEnemy;
+			inDialog = !inDialog;
+			inDialogEnemy = !inDialogEnemy;
+			app->frontground->SetPressE_Hide(true);
+		}
+		else
+		{
+			inDialog = false;
+			inDialogRenato = false;
+			inDialogAlly = false;
+			inDialogEnemy = false;
+		}
 	}
 
 	// Draw map
@@ -317,16 +328,48 @@ bool Scene::PostUpdate()
 	{
 		app->map->Draw();
 
-		// RENATO TALKING
-		if(inDialog && inDialogRenato && !inDialogAlly && !inDialogEnemy)
+		if (inDialog)
 		{
-			
+			if (inDialogRenato) // RENATO TALKING
+			{
+				app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 255, 0, 100); // Green
+				app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
+				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "RENATO:");
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			}
+			else if (inDialogAlly) // ALLY TALKING
+			{
+				app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 0, 255, 100); // Blue
+				app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
+				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ALLY:");
+				//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenos dias, por ahora no", 1,255, 255, 255, 1920, 1, letlengh);
+				//app->fonts->BlitTextLetter(c_x + 50,c_y + 640, textFontDialog, "tenemos nada disponible.", 1,255, 255, 255, 1920, 1, letlengh);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			}
+			else if (inDialogEnemy) // ENEMIES TALKING
+			{
+				app->render->DrawRectangle({ c_x + 30,c_y + 480, 300, 80 }, 255, 0, 0, 100); //Red
+				app->render->DrawRectangle({ c_x + 30,c_y + 560, 1200, 140 }, 255, 255, 255, 100); //White
+				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ENEMY:");
+				//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenas, soy un enemigo.", 1,255, 255, 255, 1920, 1, letlengh);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			}
+		}
+		else
+		{
+			letlengh = 0;
+		}
+		/*
+		// RENATO TALKING
+		if (inDialog && inDialogRenato && !inDialogAlly && !inDialogEnemy)
+		{
 			app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 255, 0, 100); // Green
 			app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
 			app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "RENATO:");
 			app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, linea1Char_Renato, 1,255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
-			
 		}
 		else if (!inDialog)
 		{
@@ -334,7 +377,7 @@ bool Scene::PostUpdate()
 		}
 		
 		// ALLY TALKING
-		if(inDialog && inDialogAlly && !inDialogRenato && !inDialogEnemy)
+		if (inDialog && inDialogAlly && !inDialogRenato && !inDialogEnemy)
 		{
 			app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 0, 255, 100); // Blue
 			app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
@@ -362,7 +405,7 @@ bool Scene::PostUpdate()
 		else  if (!inDialog)
 		{
 			letlengh = 0;
-		}
+		}*/
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
