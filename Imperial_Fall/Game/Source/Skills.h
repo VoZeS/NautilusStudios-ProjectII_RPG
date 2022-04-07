@@ -4,16 +4,21 @@
 #include <string>
 using namespace std;
 
-enum class ANIM_EFFECT
+enum class ATT_EFFECT
 {
 	EMPTY = -1,
 	PHYSIC,
 	FIRE,
 	LIGHTNING,
 	WATER,
-	HEAL,
-	BUFF,
 	ANTI_HEAL
+};
+
+enum class SUPP_EFFECT
+{
+	EMPTY = -1,
+	HEAL,
+	BUFF
 };
 
 enum class ENEMY_OBJECTIVE
@@ -68,7 +73,8 @@ public:
 	int owner; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
 
 	const char* skill_name = "name";
-	ANIM_EFFECT anim_effect = ANIM_EFFECT::EMPTY;
+	ATT_EFFECT att_effect = ATT_EFFECT::EMPTY;
+	SUPP_EFFECT supp_effect = SUPP_EFFECT::EMPTY;
 	int mana_cost = 0;
 	// enemy objective
 	ENEMY_OBJECTIVE enemy_objective = ENEMY_OBJECTIVE::NOTHING;

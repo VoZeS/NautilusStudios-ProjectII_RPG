@@ -93,6 +93,8 @@ private:
 	int animation_cd = 0;
 	int in_animation = 0; // 0 --> no, 1 --> starting, 2 --> in
 
+	int enemies_loops = 0;
+
 	// xml
 	bool LoadHeroesStats();
 	pugi::xml_document heroes_statsFile;

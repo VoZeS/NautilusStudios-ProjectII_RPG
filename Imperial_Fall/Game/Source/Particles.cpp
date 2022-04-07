@@ -174,32 +174,40 @@ void Particles::AddParticle(const Particle& particle, int x, int y, uint delay)
 	}
 }
 
-void Particles::PlayParticle(ANIM_EFFECT effect, int x, int y)
+void Particles::PlayParticle(ATT_EFFECT att_effect, SUPP_EFFECT supp_effect, int x, int y)
 {
-	switch (effect)
+	if (att_effect != ATT_EFFECT::EMPTY)
 	{
-	case ANIM_EFFECT::EMPTY:
-		break;
-	case ANIM_EFFECT::PHYSIC:
-		AddParticle(physic, x, y);
-		break;
-	case ANIM_EFFECT::FIRE:
-		AddParticle(fire, x, y);
-		break;
-	case ANIM_EFFECT::LIGHTNING:
-		AddParticle(lightning, x, y);
-		break;
-	case ANIM_EFFECT::WATER:
-		AddParticle(water, x, y);
-		break;
-	case ANIM_EFFECT::HEAL:
-		AddParticle(heal, x, y);
-		break;
-	case ANIM_EFFECT::BUFF:
-		AddParticle(buff, x, y);
-		break;
-	case ANIM_EFFECT::ANTI_HEAL:
-		AddParticle(anti_heal, x, y);
-		break;
+		switch (att_effect)
+		{
+		case ATT_EFFECT::PHYSIC:
+			AddParticle(physic, x, y);
+			break;
+		case ATT_EFFECT::FIRE:
+			AddParticle(fire, x, y);
+			break;
+		case ATT_EFFECT::LIGHTNING:
+			AddParticle(lightning, x, y);
+			break;
+		case ATT_EFFECT::WATER:
+			AddParticle(water, x, y);
+			break;
+		case ATT_EFFECT::ANTI_HEAL:
+			AddParticle(anti_heal, x, y);
+			break;
+		}
 	}
+	else if (supp_effect != SUPP_EFFECT::EMPTY)
+	{
+		switch (supp_effect)
+		{
+		case SUPP_EFFECT::HEAL:
+			AddParticle(heal, x, y);
+			break;
+		case SUPP_EFFECT::BUFF:
+			AddParticle(buff, x, y);
+			break;
+		}
+	}
+	
 }

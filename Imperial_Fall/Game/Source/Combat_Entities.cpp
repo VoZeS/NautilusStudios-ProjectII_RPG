@@ -380,7 +380,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "HP Potion";
-			skill.anim_effect = ANIM_EFFECT::HEAL;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
@@ -390,7 +390,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "MP Potion";
-			skill.anim_effect = ANIM_EFFECT::HEAL;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
@@ -400,7 +400,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Fire Granade";
-			skill.anim_effect = ANIM_EFFECT::FIRE;
+			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 1;
@@ -411,7 +411,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Lightning Knife";
-			skill.anim_effect = ANIM_EFFECT::LIGHTNING;
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 2;
@@ -426,7 +426,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Stab";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -435,7 +435,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Strong Stab";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -444,7 +444,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Bomb";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;
@@ -453,7 +453,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Stealth";
-			skill.anim_effect = ANIM_EFFECT::BUFF;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
@@ -469,7 +469,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Staff Blow";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -478,7 +478,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Shield";
-			skill.anim_effect = ANIM_EFFECT::BUFF;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
@@ -489,7 +489,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Heal";
-			skill.anim_effect = ANIM_EFFECT::HEAL;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 15;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
@@ -499,7 +499,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Clean";
-			skill.anim_effect = ANIM_EFFECT::HEAL;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
@@ -514,7 +514,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Slash";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -523,7 +523,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Heavy Slash";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -532,7 +532,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Taunt";
-			skill.anim_effect = ANIM_EFFECT::BUFF;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
@@ -542,7 +542,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Pierce Slash";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -558,7 +558,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Stone";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -567,7 +567,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Rock";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -576,7 +576,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Fire Ball";
-			skill.anim_effect = ANIM_EFFECT::FIRE;
+			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 1;
@@ -585,7 +585,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Water Jet";
-			skill.anim_effect = ANIM_EFFECT::WATER;
+			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 3;
@@ -600,7 +600,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Lunge";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -609,7 +609,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Block"; // Bloqueo de escudo (puede bloquear y evitar un ataque a sus compañeros)
-			skill.anim_effect = ANIM_EFFECT::BUFF;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
@@ -619,7 +619,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Templar Scream"; // +5 de daño en todos SUS ataques
-			skill.anim_effect = ANIM_EFFECT::BUFF;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
@@ -628,7 +628,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Fire Edge"; // Daño medio con fuego
-			skill.anim_effect = ANIM_EFFECT::FIRE;
+			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 1;
@@ -636,14 +636,14 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		}
 	}
-	else if (owner == 5) // EnemyHealer (ENEMY)
+	else if (owner == 5) // Mushroom (ENEMY)
 	{
 		switch (skill_number)
 		{
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Punch";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -652,21 +652,25 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Heal"; // Cura +15 de vida a quien menos vida tenga
-			skill.anim_effect = ANIM_EFFECT::HEAL;
-			skill.mana_cost = 30;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "HeartBreaker"; // Roba +5 de vida a los PROTAGONISTAS y se los pone a los ENEMIGOS
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
-			skill.mana_cost = 20;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 40;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.att_strenght = 0;
 			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
 		}
 	}
@@ -677,7 +681,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Scratch";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -685,8 +689,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 1:
 			skill.owner = owner;
-			skill.skill_name = "Multiple Scratch"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque******Ruben: Todos por favor, no 3*****DAVID: HAHHAHAH VALE TODOS
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.skill_name = "Great Circle"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque******Ruben: Todos por favor, no 3*****DAVID: HAHHAHAH VALE TODOS
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 35;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;
@@ -695,7 +699,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Reap";
-			skill.anim_effect = ANIM_EFFECT::PHYSIC;
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
@@ -710,7 +714,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	case 0:
 		skill.owner = owner;
 		skill.skill_name = "Silence Slash";
-		skill.anim_effect = ANIM_EFFECT::PHYSIC;
+		skill.att_effect = ATT_EFFECT::PHYSIC;
 		skill.mana_cost = 15;
 		skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 		skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -722,7 +726,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	case 1:
 		skill.owner = owner;
 		skill.skill_name = "Auto-Shield";
-		skill.anim_effect = ANIM_EFFECT::BUFF;
+		skill.supp_effect = SUPP_EFFECT::BUFF;
 		skill.mana_cost = 10;
 		skill.ally_objective = ALLY_OBJECTIVE::SELF;
 		skill.element = 0;
@@ -733,13 +737,15 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	case 2:
 		skill.owner = owner;
 		skill.skill_name = "Steal Life";
-		skill.anim_effect = ANIM_EFFECT::PHYSIC;
+		skill.att_effect = ATT_EFFECT::PHYSIC;
+		skill.supp_effect = SUPP_EFFECT::HEAL;
 		skill.mana_cost = 20;
 		skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 		skill.ally_objective = ALLY_OBJECTIVE::SELF;
 		skill.element = 0;
 		skill.att_strenght = 0;
 		skill.supp_strenght = 0;
+		skill.support_type = SUPPORT_TYPE::HEAL;
 		break;
 	}
 	}
