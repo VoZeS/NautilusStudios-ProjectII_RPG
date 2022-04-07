@@ -75,7 +75,7 @@ public:
 	int seguir;
 
 
-	bool subplaymenu = false;
+	bool subplaymenu;
 	
 	bool stop = false;
 	bool desMenu = false;
