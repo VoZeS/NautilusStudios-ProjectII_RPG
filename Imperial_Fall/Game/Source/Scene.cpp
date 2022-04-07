@@ -332,28 +332,26 @@ bool Scene::PostUpdate()
 		{
 			if (inDialogRenato) // RENATO TALKING
 			{
-				app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 255, 0, 100); // Green
-				app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
+				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
+				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
 				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "RENATO:");
 				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 			}
 			else if (inDialogAlly) // ALLY TALKING
 			{
-				app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 0, 255, 100); // Blue
-				app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
+				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
+				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
 				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ALLY:");
-				//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenos dias, por ahora no", 1,255, 255, 255, 1920, 1, letlengh);
-				//app->fonts->BlitTextLetter(c_x + 50,c_y + 640, textFontDialog, "tenemos nada disponible.", 1,255, 255, 255, 1920, 1, letlengh);
+				
 				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 			}
 			else if (inDialogEnemy) // ENEMIES TALKING
 			{
-				app->render->DrawRectangle({ c_x + 30,c_y + 480, 300, 80 }, 255, 0, 0, 100); //Red
-				app->render->DrawRectangle({ c_x + 30,c_y + 560, 1200, 140 }, 255, 255, 255, 100); //White
+				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
+				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
 				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ENEMY:");
-				//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenas, soy un enemigo.", 1,255, 255, 255, 1920, 1, letlengh);
 				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			}
 		}

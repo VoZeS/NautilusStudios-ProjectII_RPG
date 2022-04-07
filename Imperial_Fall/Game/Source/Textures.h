@@ -61,6 +61,8 @@ public:
 	SDL_Texture* whitemark_400x50 = NULL;
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;
+	SDL_Texture* whitemark_1200x140 = NULL;
+	SDL_Texture* whitemark_300x80 = NULL;
 	SDL_Texture* particles_texture = NULL;
 
 
