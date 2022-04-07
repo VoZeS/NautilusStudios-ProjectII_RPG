@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Scene.h"
 #include "Entities.h"
+#include "Combat_Manager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -72,11 +73,16 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->entities->entities.start)
+	if (app->entities->entities.start && !app->combat_manager->in_combat)
 	{
 		Entity* entity = app->entities->GetPlayer();
 		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
 		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
+	}
+	else if (app->combat_manager->in_combat)
+	{
+		camera.x = 0;
+		camera.y = 0;
 	}
 
 	if (app->scene->current_level == 1)

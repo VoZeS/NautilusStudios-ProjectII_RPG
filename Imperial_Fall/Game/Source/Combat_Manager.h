@@ -76,8 +76,9 @@ public:
 
 	void HeroesStats(int& health, int& mana, int& speed, int& power, int owner);
 
-private:
 	bool in_combat = false;
+
+private:
 	bool in_action = false;
 	bool combat_init = false;
 
