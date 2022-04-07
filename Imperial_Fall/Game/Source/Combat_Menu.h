@@ -42,9 +42,10 @@ public:
 		skill_prepared = skill;
 	}
 
-	void SetSkillAnimation(ANIM_EFFECT effect, int pos_x, int pos_y)
+	void SetSkillAnimation(ATT_EFFECT att_effect, SUPP_EFFECT supp_effect, int pos_x, int pos_y)
 	{
-		skill_effect = effect;
+		skill_att_effect = att_effect;
+		skill_supp_effect = supp_effect;
 		objective_pos.x = pos_x;
 		objective_pos.y = pos_y;
 	}
@@ -138,7 +139,8 @@ private:
 
 	// combat manager
 	Skill skill_prepared;
-	ANIM_EFFECT skill_effect;
+	ATT_EFFECT skill_att_effect;
+	SUPP_EFFECT skill_supp_effect;
 	iPoint objective_pos;
 
 	int textFont = -1;
