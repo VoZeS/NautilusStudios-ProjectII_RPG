@@ -320,7 +320,7 @@ bool Combat_Menu::PreUpdate()
 					BUFF b;
 					// if one enemy taunt
 					b.buff_type = BUFF_TYPE::TAUNT;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1)
+					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 					{
 						for (size_t j = 0; j < 4; j++)
 						{
@@ -831,7 +831,7 @@ bool Combat_Menu::PreUpdate()
 					BUFF b;
 					// if one enemy taunt
 					b.buff_type = BUFF_TYPE::TAUNT;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1)
+					if (chosed < 4 && app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 					{
 						for (size_t j = 0; j < 4; j++)
 						{
@@ -1253,7 +1253,6 @@ bool Combat_Menu::Update(float dt)
 		// general buttons
 		if (!in_items && !in_enemies && !in_allies)
 		{
-			LOG("%d", chosed);
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && general_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
