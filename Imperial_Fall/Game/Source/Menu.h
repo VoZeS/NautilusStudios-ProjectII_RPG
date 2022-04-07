@@ -74,7 +74,7 @@ public:
 
 	int seguir;
 
-
+	bool firstime = true;
 	bool subplaymenu;
 	
 	bool stop = false;

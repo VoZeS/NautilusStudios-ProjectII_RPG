@@ -45,7 +45,7 @@ bool Scene::Start()
 	app->SaveGameRequest();
 	
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
-	settings_screen = app->tex->Load("Assets/textures/Settings_BackGroundGB.png");
+	settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 

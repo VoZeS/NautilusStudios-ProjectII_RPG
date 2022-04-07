@@ -74,9 +74,9 @@ Menu::Menu() : Module()
 
 
 
-	menu_play_anim.PushBack({ 28,0,213,371 });
-	menu_play_anim.PushBack({ 292,0,216,371 });
-	menu_play_anim.PushBack({ 564,0,213,371 });
+	menu_play_anim.PushBack({ 31,0,286,597 });
+	menu_play_anim.PushBack({ 345,0,290,597 });
+	menu_play_anim.PushBack({ 681,0,286,597 });
 	menu_play_anim.speed = 0.2f;
 	menu_play_anim.loop = false;
 }
@@ -176,12 +176,12 @@ bool Menu::Start()
 	menu_buttons[3].tex = app->tex->Load("Assets/textures/ExitDarkSprite.png"); // Exit
 
 
-	menu_buttons[4].alt_tex = app->tex->Load("Assets/textures/CreditsSprite.png"); // Credits
-	menu_buttons[4].tex = app->tex->Load("Assets/textures/CreditsDarkSprite.png"); // Credits
+	menu_buttons[4].tex = app->tex->Load("Assets/textures/ContinueBlackSprite.png"); // Credits
+	menu_buttons[4].alt_tex = app->tex->Load("Assets/textures/ContinueSprite.png"); // Credits
 
 
-	menu_buttons[5].alt_tex = app->tex->Load("Assets/textures/CreditsSprite.png"); // Credits
-	menu_buttons[5].tex = app->tex->Load("Assets/textures/CreditsDarkSprite.png"); // Credits
+	menu_buttons[5].tex = app->tex->Load("Assets/textures/NewGameBlackSprite.png"); // Credits
+	menu_buttons[5].alt_tex = app->tex->Load("Assets/textures/NewGameSprite.png"); // Credits
 	//----------------------------------------------------------------
 
 	settings_buttons[0].alt_tex = settings_buttons[1].alt_tex = app->tex->Load("Assets/textures/Slider.png"); // Slider
@@ -242,7 +242,7 @@ bool Menu::PreUpdate()
 	{
 		subplaymenu = false;
 		settings = false;
-		app->scene->opciones = false;
+
 	}
 
 	if (app->scene->esc == true) {
@@ -436,7 +436,7 @@ bool Menu::Update(float dt)
 				//PLAY AND CONTINUE
 			case 4:
 
-				if (!started)
+				if (!started && !firstime)
 				{
 
 
@@ -453,13 +453,10 @@ bool Menu::Update(float dt)
 					intro = false;
 					paused = false;
 					started = true;
+					subplaymenu = false;
 
 				}
-				else
-				{
-					app->scene->QuitStartScreen();
-					app->LoadGameRequest();
-				}
+				
 
 				break;
 
@@ -467,7 +464,7 @@ bool Menu::Update(float dt)
            //NEW GAME
 			case 5:
 
-				if (!started)
+				if (!started && firstime)
 				{
 
 					app->scene->PassLevel(1);
@@ -483,13 +480,11 @@ bool Menu::Update(float dt)
 					intro = false;
 					paused = false;
 					started = true;
+					firstime = false;
+					subplaymenu = false;
 
 				}
-				else
-				{
-					app->scene->QuitStartScreen();
-					app->LoadGameRequest();
-				}
+				
 				break;
 			}
 
@@ -743,7 +738,7 @@ bool Menu::PostUpdate()
 			{
 				app->render->DrawRectangle(r, 0, 0, 0, 200);
 				menu_play_anim.Update();
-				app->render->DrawTexture(menu_play, PauseMenuHUD.x-30, PauseMenuHUD.y+50, &(menu_play_anim.GetCurrentFrame()));
+				app->render->DrawTexture(menu_play, PauseMenuHUD.x-50, PauseMenuHUD.y-45, &(menu_play_anim.GetCurrentFrame()));
 		
 				menu_buttons[4].rect.x = c_x + 70;
 				menu_buttons[4].rect.y = c_y + 150;
