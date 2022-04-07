@@ -167,7 +167,7 @@ bool Frontground::FadeFromBlack(int dest_level)
 		app->physics->CleanMapBoxes();
 		app->map->collision_loaded = false;
 		app->entities->CleanUp();
-
+		
 		switch (dest_level)
 		{
 		case 0:

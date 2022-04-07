@@ -68,7 +68,7 @@ bool Combat_Manager::PreUpdate()
 			allies[2] = new Combat_Entities(health, mana, speed, power, 2);
 			HeroesStats(health, mana, speed, power, 3); // wizard
 			allies[3] = new Combat_Entities(health, mana, speed, power, 3);
-
+			
 			//init enemies
 			for (size_t i = 0; i < 4; i++)
 			{
@@ -159,11 +159,6 @@ bool Combat_Manager::PostUpdate()
 		if (!combat_init)
 		{
 			combat_init = true;
-		}
-		else
-		{
-			//UpdateHUD();
-			//It is updated in "Combat_Menu" to set the drawing order right (HUD in front, characters in back)
 		}
 	}
 
