@@ -1515,22 +1515,22 @@ bool Combat_Menu::PostUpdate()
 					case 4:
 						texture = app->tex->white_templar;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 10, &r);
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 40, &r);
 						break;
 					case 5:
 						texture = app->tex->mushroom;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x -20, enemies_buttons[i].rect.y - 20, &r);
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 50, &r);
 						break;
 					case 6: 
 						texture = app->tex->goblin;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y - 10, &r);
 						break;
 					case 7:
 						texture = app->tex->skeleton;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 50, &r);
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 110, &r);
 						break;
 					default: 
 						texture = app->tex->assassin_texture;
@@ -1839,6 +1839,7 @@ bool Combat_Menu::PostUpdate()
 				SetSkillAnimation(ANIM_EFFECT::EMPTY, 0, 0);
 			}
 		}
+		app->combat_manager->UpdateHUD();
 	}
 
 	return true;

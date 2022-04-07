@@ -160,7 +160,8 @@ bool Combat_Manager::PostUpdate()
 		}
 		else
 		{
-			UpdateHUD();
+			//UpdateHUD();
+			//It is updated in "Combat_Menu" to set the drawing order right (HUD in front, characters in back)
 		}
 	}
 

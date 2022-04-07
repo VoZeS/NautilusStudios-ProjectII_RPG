@@ -71,6 +71,7 @@ bool Frontground::PreUpdate()
 // Called each loop iteration
 bool Frontground::Update(float dt)
 {
+
 	if (a >= 255)
 	{
 		go_black = false;
@@ -371,7 +372,7 @@ bool Frontground::FadeOutCombat()
 
 	app->SaveGameRequest();
 
-	app->map->Load("outside_castle.tmx");
+	app->map->Load("combat.tmx");
 
 	app->entities->GetPlayer()->DeleteEntity();
 	in_combat = 2;
