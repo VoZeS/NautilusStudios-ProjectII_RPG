@@ -58,11 +58,13 @@ public:
 
 	SDL_Texture* space_boton = NULL;
 
+	//Textura del menu in game que sale dandole a ESC
 	SDL_Texture* menu_in_game = NULL;
 
-
+	//Textura que sale dandole a Play
 	SDL_Texture* menu_play = NULL;
 
+	//Foto de nuestro gran equipo
 	SDL_Texture* team_photo = NULL;
 
 
@@ -77,12 +79,12 @@ public:
 
 	int seguir;
 
-	bool firstime = true;
-	bool subplaymenu;
+	bool firstime = true; //Mira si es la primera vez que juegas al juego
+	bool subplaymenu; //Menu que sale cuando le das a Play
 	
 	bool stop = false;
-	bool desMenu = false;
-	float c_x_menu=200.0f;
+	bool desMenu = false; //Menu in game que aparece cuando le das a ESC
+	float c_x_menu=200.0f; //Posicion del menu in game.
 
 	bool menu = false;
 

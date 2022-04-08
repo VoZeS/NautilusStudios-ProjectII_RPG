@@ -185,7 +185,7 @@ bool Menu::Start()
 
 	menu_buttons[4].tex = app->tex->Load("Assets/textures/ContinueBlackSprite.png"); // Credits
 	menu_buttons[4].alt_tex = app->tex->Load("Assets/textures/ContinueSprite.png"); // Credits
-
+	menu_buttons[4].alt_tex2 = app->tex->Load("Assets/textures/Fx.png");
 
 	menu_buttons[5].tex = app->tex->Load("Assets/textures/NewGameBlackSprite.png"); // Credits
 	menu_buttons[5].alt_tex = app->tex->Load("Assets/textures/NewGameSprite.png"); // Credits
@@ -785,8 +785,10 @@ bool Menu::PostUpdate()
 				menu_buttons[5].rect.x = c_x + 70;
 				menu_buttons[5].rect.y = c_y + 250;
 
+				if(menu_buttons[4].state == 0 && subplaymenu && firstime)
+					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
-				if (menu_buttons[4].state == 0 && subplaymenu)
+				if (menu_buttons[4].state == 0 && subplaymenu && !firstime)
 					app->render->DrawTexture(menu_buttons[4].tex, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
 				if (menu_buttons[5].state == 0 && subplaymenu)
@@ -794,7 +796,12 @@ bool Menu::PostUpdate()
 
 
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu)
+				if (menu_buttons[4].state == 1 && subplaymenu && firstime)
+				{
+					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
+				}
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[4].state == 1 && subplaymenu && !firstime)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex, menu_buttons[4].rect.x, menu_buttons[4].rect.y - 20);
 				}
