@@ -90,7 +90,7 @@ bool Scene::PreUpdate()
 		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-		app->entities->GetPlayer()->SetPlayerLookDir(1);
+		app->entities->GetPlayer()->SetPlayerLookDir(0);
 	}
 	else
 	{

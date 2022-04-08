@@ -98,7 +98,7 @@ bool Menu::Start()
 {
 	r = { 0, 0, 1280, 720 };
 
-	PauseMenuHUD = { 100,500,400,720 }; //Cuadro Menu Pause
+	PauseMenuHUD = { 100, 500, 400, 720 }; //Cuadro Menu Pause
 
 	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
 	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
@@ -472,7 +472,6 @@ bool Menu::Update(float dt)
 					if (!started && !firstime)
 					{
 						app->scene->PassLevel(1);
-						app->entities->GetPlayer()->SetPlayerLookDir(1);
 						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
@@ -490,7 +489,6 @@ bool Menu::Update(float dt)
 					{
 
 						app->scene->PassLevel(1);
-						app->entities->GetPlayer()->SetPlayerLookDir(0);
 						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));

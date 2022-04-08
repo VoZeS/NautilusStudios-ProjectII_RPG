@@ -631,27 +631,25 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		}
 		else if (skill.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 		{
-			DEBUFF b;
-			b.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			DEBUFF v;
+			v.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			for (size_t i = 0; i < 4; i++)
 			{
 				if (user->GetType() < 4) // allies
 				{
-					if (enemies[i]->GetWeakness() == skill.element)
-					{
-						damage *= 1.5f;
-					}
-					else if (enemies[i]->FindDebuff(b) != -1 && skill.element == 0)
-					{
-						damage *= 1.5f;
-					}
-
-
 					BUFF b;
 					b.buff_type = BUFF_TYPE::DODGE;
 					if (enemies[i]->GetEntityState() && enemies[i]->FindBuff(b) == -1)
 					{
-						enemies[i]->DamageEntity(damage, skill.skill_bonus);
+						if ((enemies[i]->GetWeakness() == skill.element) || (enemies[i]->FindDebuff(v) != -1 && skill.element == 0))
+						{
+							enemies[i]->DamageEntity(damage * 1.5f, skill.skill_bonus);
+						}
+						else
+						{
+							enemies[i]->DamageEntity(damage, skill.skill_bonus);
+						}
+						
 
 						if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
 						{
@@ -661,20 +659,18 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else // enemies
 				{
-					if (allies[i]->GetWeakness() == skill.element)
-					{
-						damage *= 1.5f;
-					}
-					else if (allies[i]->FindDebuff(b) != -1 && skill.element == 0)
-					{
-						damage *= 1.5f;
-					}
-
 					BUFF b;
 					b.buff_type = BUFF_TYPE::DODGE;
 					if (allies[i]->GetEntityState() && allies[i]->FindBuff(b) == -1)
 					{
-						allies[i]->DamageEntity(damage, skill.skill_bonus);
+						if ((allies[i]->GetWeakness() == skill.element) || (allies[i]->FindDebuff(v) != -1 && skill.element == 0))
+						{
+							allies[i]->DamageEntity(damage * 1.5f, skill.skill_bonus);
+						}
+						else
+						{
+							allies[i]->DamageEntity(damage, skill.skill_bonus);
+						}
 
 						if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
 						{
@@ -974,7 +970,7 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int objective, skill = 1, rounds = 0;
+	int objective, skill, rounds = 0;
 
 	DEBUFF b;
 	b.debuff_type = DEBUFF_TYPE::STUN;
@@ -988,11 +984,11 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 	}
 
 
-	/*do
+	do
 	{
 		skill = rand() % 4;
 		rounds++;
-	} while (user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10);*/
+	} while (user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10);
 	
 	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{
