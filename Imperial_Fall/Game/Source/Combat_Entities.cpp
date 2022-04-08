@@ -1092,6 +1092,136 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 3;
 			skill.att_strenght = 0;
 			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Lightning";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 10;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 0;
+			break;
+		case 5: // level 2 skills
+			skill.owner = owner;
+			skill.skill_name = "Armor Break";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 25;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Burning Fire Ball";
+			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::BURN;
+			skill.buff_turns = 1;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Slow Down Water Jet";
+			skill.att_effect = ATT_EFFECT::WATER;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
+			skill.buff_turns = 1;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Great Lightning";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 10;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 1;
+			break;
+		case 9: // level 3 up root skills
+			skill.owner = owner;
+			skill.skill_name = "Compact Rock";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 60;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 2;
+			break;
+		case 10:
+			skill.owner = owner;
+			skill.skill_name = "Burning Fire Circle";
+			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.mana_cost = 30;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::BURN;
+			skill.buff_turns = 1;
+			break;
+		case 11:
+			skill.owner = owner;
+			skill.skill_name = "Water Splash";
+			skill.att_effect = ATT_EFFECT::WATER;
+			skill.mana_cost = 10;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 3;
+			skill.att_strenght = 0;
+			break;
+		case 12:
+			skill.owner = owner;
+			skill.skill_name = "Paralyzing Bolt";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 60;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 2;
+			skill.debuff_type = DEBUFF_TYPE::STUN;
+			skill.buff_turns = 1;
+			break;
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Giant Rock";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 14:
+			skill.owner = owner;
+			skill.skill_name = "Magma Orb";
+			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::BURN;
+			skill.buff_turns = 3;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Slow Down Water Splash";
+			skill.att_effect = ATT_EFFECT::WATER;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
+			skill.buff_turns = 1;
+			break;
+		case 16:
+			skill.owner = owner;
+			skill.skill_name = "Divine Lightning";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 1;
+			break;
 		}
 	}
 	else if (owner == 4) // Templar (ENEMY)

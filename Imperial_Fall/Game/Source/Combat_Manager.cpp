@@ -457,7 +457,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			break;
 		case 1: damage = 0.4f * user->GetPower();
 			break;
-		case 2: damage = 0.5f * user->GetPower();
+		case 2: damage = 0.7f * user->GetPower();
 			break;
 		}
 
@@ -469,7 +469,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			break;
 		case 1: support = 0.8f * user->GetPower();
 			break;
-		case 2: support = 1.0f * user->GetPower();
+		case 2: support = 1.4f * user->GetPower();
 			break;
 		}
 
