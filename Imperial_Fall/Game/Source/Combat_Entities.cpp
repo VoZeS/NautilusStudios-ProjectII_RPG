@@ -2,7 +2,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int owner)
+Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int owner, int skill1, int skill2, int skill3, int skill4)
 {
 	max_health = health;
 	actual_health = max_health;
@@ -17,10 +17,10 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 
 	entity_type = owner;
 
-	skills[0] = SetSkill(entity_type, 0); // read from xml
-	skills[1] = SetSkill(entity_type, 1); // read from xml
-	skills[2] = SetSkill(entity_type, 2); // read from xml
-	skills[3] = SetSkill(entity_type, 3); // read from xml
+	skills[0] = SetSkill(entity_type, skill1); // read from xml
+	skills[1] = SetSkill(entity_type, skill2); // read from xml
+	skills[2] = SetSkill(entity_type, skill3); // read from xml
+	skills[3] = SetSkill(entity_type, skill4); // read from xml
 }
 
 Combat_Entities::Combat_Entities(ENEMIES enemy)
@@ -252,6 +252,16 @@ void Combat_Entities::AddBuff(BUFF_TYPE type, int turns)
 	{
 		new_buff.turns = turns;
 		buffs.Add(new_buff);
+
+		// stat buffs
+		if (type == BUFF_TYPE::QUICK)
+		{
+			SetSpeed(0);
+		}
+		else if (type == BUFF_TYPE::STRONG)
+		{
+			SetPower(0);
+		}
 	}
 	else
 	{
@@ -282,6 +292,17 @@ void Combat_Entities::UpdateBuffs()
 		item->data.turns--;
 		if (item->data.turns == 0)
 		{
+			// stat buffs
+			if (item->data.buff_type == BUFF_TYPE::QUICK)
+			{
+				SetSpeed(1);
+			}
+			else if (item->data.buff_type == BUFF_TYPE::STRONG)
+			{
+				SetPower(1);
+			}
+
+
 			buffs.Del(item);
 		}
 	}
@@ -433,7 +454,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	{
 		switch (skill_number)
 		{
-		case 0:
+		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Stab";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
@@ -469,6 +490,58 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::STEALTH;
 			skill.buff_turns = 1;
+			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Quick";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 10;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 2;
+			break;
+		case 5: // level 2 skills
+			skill.owner = owner;
+			skill.skill_name = "Fast Stab";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 1;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Great Bomb";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 30;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Dodge";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DODGE;
+			skill.buff_turns = 1;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Rise";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 15;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
 			break;
 		}
 	}
@@ -633,6 +706,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 1;
 			// buff
 			break;
 		case 3:
@@ -788,5 +863,11 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		}
 	}
+
+	if (skill.buff_type == BUFF_TYPE::QUICK || skill.buff_type == BUFF_TYPE::STRONG || skill.debuff_type == DEBUFF_TYPE::STUN)
+	{
+		skill.buff_turns++;
+	}
+
 	return skill;
 }

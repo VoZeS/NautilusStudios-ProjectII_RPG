@@ -28,7 +28,7 @@ struct DEBUFF {
 class Combat_Entities
 {
 public:
-	Combat_Entities(int health, int mana, int speed, int power, int owner);
+	Combat_Entities(int health, int mana, int speed, int power, int owner, int skill1, int skill2, int skill3, int skill4);
 	Combat_Entities(ENEMIES enemy);
 	Combat_Entities();
 	~Combat_Entities();
@@ -76,14 +76,45 @@ public:
 		return speed;
 	}
 
+	// n == 0 --> more speed, n == 1 --> less speed
+	void SetSpeed(int n)
+	{
+		if (n == 0)
+		{
+			speed *= 2;
+		}
+		else
+		{
+			speed /= 2;
+		}
+	}
+
 	int GetPower()
 	{
 		return power;
 	}
 
+	// n == 0 --> more power, n == 1 --> less power
+	void SetPower(int n)
+	{
+		if (n == 0)
+		{
+			power *= 1.5f;
+		}
+		else
+		{
+			power /= 1.5f;
+		}
+	}
+
 	int GetShield()
 	{
 		return shield;
+	}
+
+	void DestroyShield()
+	{
+		shield = 0;
 	}
 
 	int GetWeakness()

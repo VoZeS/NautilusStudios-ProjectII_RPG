@@ -324,7 +324,7 @@ bool Combat_Menu::PreUpdate()
 					{
 						for (size_t j = 0; j < 4; j++)
 						{
-							if (j != i)
+							if (j != i && app->combat_manager->GetEnemyByNumber(j)->FindBuff(b) == -1)
 							{
 								enemies_buttons[j].state = 0;
 							}
@@ -1315,6 +1315,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->GetActualEntity()->ReloadMana();
 					skill_prepared.skill_name = "reload";
 					app->combat_manager->SetInAnimation(1);
+					SetSkillAnimation(ATT_EFFECT::EMPTY, SUPP_EFFECT::EMPTY, 0, 0);
 					break;
 				case 5:
 					//open item menu
@@ -1805,7 +1806,7 @@ bool Combat_Menu::PostUpdate()
 				}
 			}
 		}
-		else if (app->combat_manager->GetInAnimation() == 2)
+		else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 		{
 			app->fonts->BlitText(500 + c_x, 100 + c_y, textFont, skill_prepared.skill_name);
 			if (skill_att_effect != ATT_EFFECT::EMPTY)

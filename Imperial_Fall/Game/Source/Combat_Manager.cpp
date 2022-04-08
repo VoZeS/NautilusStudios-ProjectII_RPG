@@ -59,15 +59,15 @@ bool Combat_Manager::PreUpdate()
 		if (!combat_init)
 		{
 			//init allies
-			int health, mana, speed, power;
-			HeroesStats(health, mana, speed, power, 0); // assassin
-			allies[0] = new Combat_Entities(health, mana, speed, power, 0);
-			HeroesStats(health, mana, speed, power, 1); // healer
-			allies[1] = new Combat_Entities(health, mana, speed, power, 1);
-			HeroesStats(health, mana, speed, power, 2); // tank
-			allies[2] = new Combat_Entities(health, mana, speed, power, 2);
-			HeroesStats(health, mana, speed, power, 3); // wizard
-			allies[3] = new Combat_Entities(health, mana, speed, power, 3);
+			int health, mana, speed, power, skill1, skill2, skill3, skill4;
+			HeroesStats(health, mana, speed, power, 0, skill1, skill2, skill3, skill4); // assassin
+			allies[0] = new Combat_Entities(health, mana, speed, power, 0, skill1, skill2, skill3, skill4);
+			HeroesStats(health, mana, speed, power, 1, skill1, skill2, skill3, skill4); // healer
+			allies[1] = new Combat_Entities(health, mana, speed, power, 1, skill1, skill2, skill3, skill4);
+			HeroesStats(health, mana, speed, power, 2, skill1, skill2, skill3, skill4); // tank
+			allies[2] = new Combat_Entities(health, mana, speed, power, 2, skill1, skill2, skill3, skill4);
+			HeroesStats(health, mana, speed, power, 3, skill1, skill2, skill3, skill4); // wizard
+			allies[3] = new Combat_Entities(health, mana, speed, power, 3, skill1, skill2, skill3, skill4);
 			
 			//init enemies
 			for (size_t i = 0; i < 4; i++)
@@ -96,6 +96,7 @@ bool Combat_Manager::PreUpdate()
 						if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
 						{
 							turn = 0;
+							SetOrder();
 						}
 					} while (turn_order[turn]->GetEntityState() != 1);
 					UpdateBuffs();
@@ -124,6 +125,14 @@ bool Combat_Manager::Update(float dt)
 		if (turn_order[turn]->GetType() == 0 || turn_order[turn]->GetType() == 1 || turn_order[turn]->GetType() == 2 || turn_order[turn]->GetType() == 3) // allies
 		{
 			app->combat_menu->SetAlliesTurn(true);
+
+			// control debuffs
+			DEBUFF b;
+			b.debuff_type = DEBUFF_TYPE::STUN;
+			if (turn_order[turn]->FindDebuff(b) != -1)
+			{
+				in_animation = 1;
+			}
 		}
 		else // enemies
 		{
@@ -146,7 +155,6 @@ bool Combat_Manager::Update(float dt)
 			KillPreparedEntities();
 		}
 	}
-	
 
 	return true;
 }
@@ -443,6 +451,8 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 
 		switch (skill.att_strenght)
 		{
+		case -1: damage = 0.0f * user->GetPower();
+			break;
 		case 0: damage = 0.3f * user->GetPower();
 			break;
 		case 1: damage = 0.4f * user->GetPower();
@@ -453,6 +463,8 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 
 		switch (skill.supp_strenght)
 		{
+		case -1: support = 0.0f * user->GetPower();
+			break;
 		case 0: support = 0.6f * user->GetPower();
 			break;
 		case 1: support = 0.8f * user->GetPower();
@@ -621,7 +633,10 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						damage *= 1.5f;
 					}
 
-					if (enemies[i]->GetEntityState())
+
+					BUFF b;
+					b.buff_type = BUFF_TYPE::DODGE;
+					if (enemies[i]->GetEntityState() && enemies[i]->FindBuff(b) == -1)
 					{
 						enemies[i]->DamageEntity(damage, skill.skill_bonus);
 
@@ -642,7 +657,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						damage *= 1.5f;
 					}
 
-					if (allies[i]->GetEntityState())
+					BUFF b;
+					b.buff_type = BUFF_TYPE::DODGE;
+					if (allies[i]->GetEntityState() && allies[i]->FindBuff(b) == -1)
 					{
 						allies[i]->DamageEntity(damage, skill.skill_bonus);
 
@@ -942,13 +959,25 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int objective, skill, rounds = 0;
+	int objective, skill = 1, rounds = 0;
 
-	do
+	DEBUFF b;
+	b.debuff_type = DEBUFF_TYPE::STUN;
+	if (user->FindDebuff(b) != -1)
+	{
+		Skill null;
+		null.skill_name = "null";
+		app->combat_menu->SetSkillPrepared(null);
+		in_animation = 1;
+		return;
+	}
+
+
+	/*do
 	{
 		skill = rand() % 4;
 		rounds++;
-	} while (user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10);
+	} while (user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10);*/
 	
 	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{
@@ -1128,17 +1157,19 @@ void Combat_Manager::KillPreparedEntities()
 			allies[i]->KillEntity();
 			allies[i]->RemoveAllBuffs();
 			allies[i]->RemoveAllDebuffs();
+			allies[i]->DestroyShield();
 		}
 		if (enemies[i]->prepared_to_die == true)
 		{
 			enemies[i]->KillEntity();
 			enemies[i]->RemoveAllBuffs();
 			enemies[i]->RemoveAllDebuffs();
+			enemies[i]->DestroyShield();
 		}
 	}
 }
 
-void Combat_Manager::HeroesStats(int& health, int& mana, int& speed, int& power, int owner)
+void Combat_Manager::HeroesStats(int& health, int& mana, int& speed, int& power, int owner, int &skill1, int &skill2, int &skill3, int &skill4)
 {
 	pugi::xml_node hero;
 	switch (owner)
@@ -1157,6 +1188,10 @@ void Combat_Manager::HeroesStats(int& health, int& mana, int& speed, int& power,
 	mana = hero.child("basic_stats").attribute("mana").as_int();
 	speed = hero.child("basic_stats").attribute("speed").as_int();
 	power = hero.child("basic_stats").attribute("power").as_int();
+	skill1 = hero.child("equiped_skills").attribute("skill1").as_int();
+	skill2 = hero.child("equiped_skills").attribute("skill2").as_int();
+	skill3 = hero.child("equiped_skills").attribute("skill3").as_int();
+	skill4 = hero.child("equiped_skills").attribute("skill4").as_int();
 }
 
 bool Combat_Manager::LoadHeroesStats()

@@ -74,7 +74,7 @@ public:
 	// 0 --> normal, 1 --> win, 2 --> lose
 	int CheckCombatState();
 
-	void HeroesStats(int& health, int& mana, int& speed, int& power, int owner);
+	void HeroesStats(int& health, int& mana, int& speed, int& power, int owner, int& skill1, int& skill2, int& skill3, int& skill4);
 
 	bool in_combat = false;
 

@@ -50,14 +50,18 @@ enum class BUFF_TYPE // self
 {
 	NOTHING = 0,
 	STEALTH,
-	TAUNT
+	DODGE,
+	TAUNT,
+	QUICK,
+	STRONG
 };
 
 enum class DEBUFF_TYPE
 {
 	NOTHING = 0,
 	BURN,
-	DEF_REDUCC
+	DEF_REDUCC,
+	STUN
 };
 
 enum class SKILL_BONUS
@@ -83,9 +87,9 @@ public:
 	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water
 	int element = 0;
 	// 0 --> low damage, 1 --> mid damage, 2 --> high damage
-	int att_strenght = 0;
+	int att_strenght = -1;
 	// 0 --> low damage, 1 --> mid damage, 2 --> high damage
-	int supp_strenght = 0;
+	int supp_strenght = -1;
 
 	// specific
 
