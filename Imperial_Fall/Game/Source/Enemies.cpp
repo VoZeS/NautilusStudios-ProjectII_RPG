@@ -16,40 +16,40 @@
 
 #include <time.h>
 
-// GROUND ENEMY
+// ENEMY
 Enemies::Enemies(int en1, int en2, int en3, int en4) : Entity()
 {
 	switch (en1)
 	{
-	case 0: combat_enemies[0] = ENEMIES::NOTHING;
-	case 1: combat_enemies[0] = ENEMIES::W_TEMPLAR;
-	case 2: combat_enemies[0] = ENEMIES::MUSHROOM;
-	case 3: combat_enemies[0] = ENEMIES::GOBLIN;
-	case 4: combat_enemies[0] = ENEMIES::SKELETON;
+	case 0: combat_enemies[0] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[0] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[0] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[0] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[0] = ENEMIES::SKELETON; break;
 	}
 	switch (en2)
 	{
-	case 0: combat_enemies[1] = ENEMIES::NOTHING;
-	case 1: combat_enemies[1] = ENEMIES::W_TEMPLAR;
-	case 2: combat_enemies[1] = ENEMIES::MUSHROOM;
-	case 3: combat_enemies[1] = ENEMIES::GOBLIN;
-	case 4: combat_enemies[1] = ENEMIES::SKELETON;
+	case 0: combat_enemies[1] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[1] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[1] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[1] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[1] = ENEMIES::SKELETON; break;
 	}
 	switch (en3)
 	{
-	case 0: combat_enemies[2] = ENEMIES::NOTHING;
-	case 1: combat_enemies[2] = ENEMIES::W_TEMPLAR;
-	case 2: combat_enemies[2] = ENEMIES::MUSHROOM;
-	case 3: combat_enemies[2] = ENEMIES::GOBLIN;
-	case 4: combat_enemies[2] = ENEMIES::SKELETON;
+	case 0: combat_enemies[2] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[2] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[2] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[2] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[2] = ENEMIES::SKELETON; break;
 	}
 	switch (en4)
 	{
-	case 0: combat_enemies[3] = ENEMIES::NOTHING;
-	case 1: combat_enemies[3] = ENEMIES::W_TEMPLAR;
-	case 2: combat_enemies[3] = ENEMIES::MUSHROOM;
-	case 3: combat_enemies[3] = ENEMIES::GOBLIN;
-	case 4: combat_enemies[3] = ENEMIES::SKELETON;
+	case 0: combat_enemies[3] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[3] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[3] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
 	}
 
 	// animations
@@ -66,7 +66,9 @@ Enemies::~Enemies()
 
 void Enemies::InitCustomEntity(int enemy)
 {
-	switch (enemy)
+	enemy_type = enemy;
+
+	switch (enemy_type)
 	{
 	case 1: currentAnimation = &mushroomAnim; break;
 	case 2: currentAnimation = &mushroomAnim; break;
@@ -76,12 +78,13 @@ void Enemies::InitCustomEntity(int enemy)
 	}
 
 	// body
-	b2BodyDef e_body;
-	e_body.type = b2_dynamicBody;
-	e_body.fixedRotation = true;
-	e_body.position.Set(position.x, position.y);
+	b2BodyDef p_body;
+	p_body.type = b2_kinematicBody;
+	p_body.fixedRotation = true;
+	p_body.position.Set(position.x, position.y);
 
-	body = app->physics->world->CreateBody(&e_body);
+	body = app->physics->world->CreateBody(&p_body);
+	body->SetBullet(true);
 	body->SetFixedRotation(true);
 
 	b2PolygonShape box;
@@ -93,7 +96,13 @@ void Enemies::InitCustomEntity(int enemy)
 	fixture.friction = 0.0f;
 	b2Fixture* bodyFixture = body->CreateFixture(&fixture);
 	bodyFixture->SetSensor(false);
-	bodyFixture->SetUserData((void*)4); // enemy body collision
+	bodyFixture->SetUserData((void*)0);
+
+	// contact sensor
+	box.SetAsBox(PIXELS_TO_METERS((w * 5)), PIXELS_TO_METERS(h * 5), b2Vec2(0, 0), 0);
+	fixture.isSensor = true;
+	b2Fixture* sensorFixture = body->CreateFixture(&fixture);
+	sensorFixture->SetUserData((void*)6); // enemy sensor
 }
 
 // Called each loop iteration
@@ -159,7 +168,21 @@ bool Enemies::Draw()
 	
 	if (state != ENEMY_STATE::DEATH)
 	{
-		
+		switch (enemy_type)
+		{
+		case 1: 
+			app->render->DrawTexture(app->tex->white_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 2:
+			app->render->DrawTexture(app->tex->mushroom, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 3:
+			app->render->DrawTexture(app->tex->goblin, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 4:
+			app->render->DrawTexture(app->tex->skeleton, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		}
 	}
 	else
 	{

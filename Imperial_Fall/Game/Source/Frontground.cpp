@@ -384,6 +384,7 @@ bool Frontground::ReturnToField()
 {
 	in_combat = 3;
 	app->scene->PassLevel(app->scene->current_level);
+	app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 7, app->entities->GetPlayer()->GetPlayerPosition().y);
 
 	return true;
 }

@@ -49,13 +49,15 @@ private:
 	}
 
 public:
-	int w = 16, h = 16;
+	int w = 32, h = 32;
 
 	Animation* currentAnimation = NULL;
 
 	Animation mushroomAnim;
 
 	ENEMY_STATE state;
+
+	int enemy_type = 0; // 1 --> white templar, 2 --> mushroom, 3 --> goblin, 3 --> skeleton
 
 	bool plan_to_delete = false;
 

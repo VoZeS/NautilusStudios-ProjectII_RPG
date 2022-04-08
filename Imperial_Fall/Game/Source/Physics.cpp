@@ -129,7 +129,7 @@ bool Physics::PostUpdate()
 						c_g = 200;
 						c_b = 0;
 						break;
-					case 6:
+					case 6: // enemies interaction
 						c_r = 200;
 						c_g = 200;
 						c_b = 200;
@@ -263,6 +263,11 @@ void Physics::BeginContact(b2Contact* contact)
 			// granjero contact
 			app->frontground->SetPressE_Hide(false);
 			inGranjero = true;
+		}
+		else if ((int)fixtureUserDataB == 6)
+		{
+			// enemy contact
+			app->entities->StartCombat();
 		}
 
 		// --------------------------------------------------------------- PASS LEVELS
@@ -425,6 +430,11 @@ void Physics::BeginContact(b2Contact* contact)
 			// granjero contact
 			app->frontground->SetPressE_Hide(false);
 			inGranjero = true;
+		}
+		else if ((int)fixtureUserDataA == 6)
+		{
+			// enemy contact
+			app->entities->StartCombat();
 		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)

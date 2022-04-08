@@ -109,6 +109,8 @@ public:
 	int enemies_lenght = 0;
 
 	int FindNPC();
+	void StartCombat();
+	void KillEnemy();
 
 	Entity* GetPlayer();
 	
