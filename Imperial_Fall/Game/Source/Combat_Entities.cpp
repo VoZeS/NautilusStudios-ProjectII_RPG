@@ -158,7 +158,35 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		{
 			actual_health -= amount;
 		}
-		
+		else if (bonus == SKILL_BONUS::CRITICAL)
+		{
+			if (actual_health <= max_health / 2)
+			{
+				shield -= amount * 2;
+
+				if (shield > 0)
+				{
+					return true;
+				}
+				else
+				{
+					actual_health += shield;
+				}
+			}
+			else
+			{
+				shield -= amount * 0.5;
+
+				if (shield > 0)
+				{
+					return true;
+				}
+				else
+				{
+					actual_health += shield;
+				}
+			}
+		}
 	}
 	else
 	{
@@ -341,6 +369,16 @@ void Combat_Entities::AddDebuff(DEBUFF_TYPE type, int turns)
 	{
 		new_debuff.turns = turns;
 		debuffs.Add(new_debuff);
+
+		// stat debuffs
+		if (type == DEBUFF_TYPE::ANTI_QUICK)
+		{
+			SetSpeed(1);
+		}
+		else if (type == DEBUFF_TYPE::ANTI_STRONG)
+		{
+			SetPower(1);
+		}
 	}
 	else
 	{
@@ -371,6 +409,16 @@ void Combat_Entities::UpdateDebuffs()
 		item->data.turns--;
 		if (item->data.turns == 0)
 		{
+			// stat debuffs
+			if (item->data.debuff_type == DEBUFF_TYPE::ANTI_QUICK)
+			{
+				SetSpeed(0);
+			}
+			else if (item->data.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+			{
+				SetPower(0);
+			}
+
 			debuffs.Del(item);
 		}
 	}
@@ -542,6 +590,88 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::STRONG;
 			skill.buff_turns = 2;
+			break;
+		case 9: // level 3 up root skills
+			skill.owner = owner;
+			skill.skill_name = "Pierce Strong Stab";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
+			break;
+		case 10:
+			skill.owner = owner;
+			skill.skill_name = "Great Fire Bomb";
+			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::BURN;
+			skill.buff_turns = 3;
+			break;
+		case 11:
+			skill.owner = owner;
+			skill.skill_name = "Extended Stealth";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STEALTH;
+			skill.buff_turns = 2;
+			break;
+		case 12:
+			skill.owner = owner;
+			skill.skill_name = "Exausting Bomb";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Tactic Stab";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.skill_bonus = SKILL_BONUS::CRITICAL;
+			break;
+		case 14:
+			skill.owner = owner;
+			skill.skill_name = "Spike Trap";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
+			skill.buff_turns = 2;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Ghost";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 30;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
+			skill.buff_turns = 1;
+			break;
+		case 16:
+			skill.owner = owner;
+			skill.skill_name = "Lightning Strong Stab";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 20;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 1;
 			break;
 		}
 	}
@@ -864,7 +994,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		}
 	}
 
-	if (skill.buff_type == BUFF_TYPE::QUICK || skill.buff_type == BUFF_TYPE::STRONG || skill.debuff_type == DEBUFF_TYPE::STUN)
+	if (skill.buff_type == BUFF_TYPE::QUICK || skill.buff_type == BUFF_TYPE::STRONG || skill.debuff_type == DEBUFF_TYPE::STUN
+		|| skill.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
 	{
 		skill.buff_turns++;
 	}

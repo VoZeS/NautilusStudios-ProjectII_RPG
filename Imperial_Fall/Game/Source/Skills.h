@@ -51,6 +51,7 @@ enum class BUFF_TYPE // self
 	NOTHING = 0,
 	STEALTH,
 	DODGE,
+	DAMAGE_INMUNITY,
 	TAUNT,
 	QUICK,
 	STRONG
@@ -61,14 +62,17 @@ enum class DEBUFF_TYPE
 	NOTHING = 0,
 	BURN,
 	DEF_REDUCC,
-	STUN
+	STUN,
+	ANTI_QUICK,
+	ANTI_STRONG
 };
 
 enum class SKILL_BONUS
 {
 	NOTHING = 0,
 	IGNORE_SHIELD,
-	DESTROY_SHIELD
+	DESTROY_SHIELD,
+	CRITICAL // if objective have more than his half health the attack hit half, else hit double
 };
 
 struct Skill

@@ -473,6 +473,13 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			break;
 		}
 
+		// damage inmunity
+		BUFF b;
+		b.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
+		if (objective->FindBuff(b) != -1)
+		{
+			damage = 0;
+		}
 		
 
 		// lauch attack skill
