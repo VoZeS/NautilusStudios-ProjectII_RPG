@@ -238,26 +238,7 @@ void Physics::BeginContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
-	if ((int)fixtureUserDataA == 4)
-	{
-		if ((int)fixtureUserDataB == 4)
-		{
-			ListItem<Entity*>* item;
-			Entity* entity = NULL;
-			Ground_Enemies* g = NULL;
-
-			for (item = app->entities->entities.start; item != NULL; item = item->next)
-			{
-				entity = item->data;
-
-				if (entity->entity_type == ENTITY_TYPE::GROUND_ENEMY)
-				{
-					entity->SwitchDirection();
-				}
-			}
-		}
-	}
-	else if ((int)fixtureUserDataA == 1)
+	if ((int)fixtureUserDataA == 1)
 	{
 		if ((int)fixtureUserDataB == 2)
 		{

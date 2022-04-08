@@ -9,7 +9,7 @@
 enum class ENEMIES
 {
 	NOTHING = -1,
-	TEMPLAR,
+	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
 	SKELETON

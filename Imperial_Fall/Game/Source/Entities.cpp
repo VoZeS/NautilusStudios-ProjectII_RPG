@@ -39,7 +39,7 @@ bool Entities::Awake()
 bool Entities::Start()
 {
 	bool ret = true;
-	ListItem<Entity*>* item;
+	/*ListItem<Entity*>* item;
 	item = entities.start;
 
 	while (item != NULL && ret == true)
@@ -63,7 +63,7 @@ bool Entities::Start()
 			break;
 		}
 		item = item->next;
-	}
+	}*/
 
 	app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
 
@@ -100,6 +100,18 @@ bool Entities::PreUpdate()
 				entity->InitCustomEntity(3);
 				break;
 			case ENTITY_TYPE::GRANJERO:
+				entity->InitCustomEntity(4);
+				break;
+			case ENTITY_TYPE::W_TEMPLAR:
+				entity->InitCustomEntity(1);
+				break;
+			case ENTITY_TYPE::MUSHROOM:
+				entity->InitCustomEntity(2);
+				break;
+			case ENTITY_TYPE::GOBLIN:
+				entity->InitCustomEntity(3);
+				break;
+			case ENTITY_TYPE::SKELETON:
 				entity->InitCustomEntity(4);
 				break;
 			default:
@@ -234,7 +246,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
+void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int en1, int en2, int en3, int en4)
 {
 	fPoint p = { x, y };
 
@@ -270,10 +282,25 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
-	case ENTITY_TYPE::GROUND_ENEMY:
+	case ENTITY_TYPE::W_TEMPLAR:
 	{
-		Ground_Enemies* g_enemy = new Ground_Enemies();
-		AddEntity(g_enemy, ENTITY_TYPE::GROUND_ENEMY, p);
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::W_TEMPLAR, p);
+	}
+	case ENTITY_TYPE::MUSHROOM:
+	{
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::MUSHROOM, p);
+	}
+	case ENTITY_TYPE::GOBLIN:
+	{
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::GOBLIN, p);
+	}
+	case ENTITY_TYPE::SKELETON:
+	{
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::SKELETON, p);
 	}
 		break;
 	default:
@@ -345,14 +372,10 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 
 	init = false;
 
-	switch (type)
+	if (type == ENTITY_TYPE::W_TEMPLAR || type == ENTITY_TYPE::MUSHROOM || type == ENTITY_TYPE::GOBLIN || type == ENTITY_TYPE::SKELETON)
 	{
-	case ENTITY_TYPE::GROUND_ENEMY:
-		p_in_array = app->entities->ground_lenght;
-		app->entities->ground_lenght++;
-		break;
-	default:
-		break;
+		p_in_array = app->entities->enemies_lenght;
+		app->entities->enemies_lenght++;
 	}
 }
 
@@ -449,11 +472,6 @@ void Entity::SetCompanion2LookDir(int lookDir)
 {
 }
 
-void Entity::PlayerDeath()
-{
-
-}
-
 bool Entity::IsPlayerEnabled()
 {
 	return true;
@@ -464,7 +482,7 @@ void Entity::ImpulsePlayer()
 
 }
 
-void Entity::SwitchDirection()
+ENEMIES Entity::GetCombatEnemy(int n)
 {
-
+	return ENEMIES::NOTHING;
 }

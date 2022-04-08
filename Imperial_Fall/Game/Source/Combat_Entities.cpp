@@ -32,7 +32,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		
 		alive = 2;
 		break;
-	case ENEMIES::TEMPLAR:
+	case ENEMIES::W_TEMPLAR:
 		max_health = 100;
 		actual_health = max_health;
 		max_mana = 40;

@@ -52,7 +52,7 @@ bool Map::Awake(pugi::xml_node& config)
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
+	
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
 
@@ -113,6 +113,42 @@ void Map::Draw()
 							// Granjero
 							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
 						}
+						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
+						{
+							// White templar
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, en1, en2, en3, en4);
+						}*/
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
+						{
+							// Mushroom
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, en1, en2, en3, en4);
+						}
+						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
+						{
+							// Goblin
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, en1, en2, en3, en4);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 13)
+						{
+							// Skeleton
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, en1, en2, en3, en4);
+						}*/
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
 						{

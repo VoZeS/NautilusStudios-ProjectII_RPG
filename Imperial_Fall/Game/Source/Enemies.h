@@ -10,20 +10,20 @@
 enum class ENEMY_STATE
 {
 	IDLE,
-	HUNT,
-	RETURN,
+	//HUNT,
+	//RETURN,
 	DEATH
 };
 
-class Ground_Enemies : public Entity
+class Enemies : public Entity
 {
 public:
-	Ground_Enemies();
+	Enemies(int en1, int en2, int, int en4);
 
-	virtual ~Ground_Enemies();
+	virtual ~Enemies();
 
 private:
-	void InitCustomEntity();
+	void InitCustomEntity(int enemy);
 
 	bool PreUpdate();
 
@@ -31,11 +31,11 @@ private:
 
 	bool Draw();
 
-	void MoveGroundEnemy(float dt);
+	/*void MoveGroundEnemy(float dt);
 	void CheckPlayer();
 
 	void EnemyHunting(float dt);
-	void EnemyReturning(float dt);
+	void EnemyReturning(float dt);*/
 
 	bool DeleteEntity();
 
@@ -43,30 +43,25 @@ private:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
 
-	void SwitchDirection();
+	ENEMIES GetCombatEnemy(int n)
+	{
+		return combat_enemies[n];
+	}
 
 public:
-	float origin_x, origin_y;
 	int w = 16, h = 16;
-	float speed;
 
 	Animation* currentAnimation = NULL;
 
-	float detectionRange;
-	bool enemy_spoted;
+	Animation mushroomAnim;
 
 	ENEMY_STATE state;
 
-	bool lookLeft;
-	float idleOb_x;
-	bool obLeft;
-
 	bool plan_to_delete = false;
 
-	PathFinding* path_save = NULL;
+	ENEMIES combat_enemies[4];
 
-	Animation slime_walkAnimR;
-	Animation slime_walkAnimL;
+	//PathFinding* path_save = NULL;
 };
 
 #endif
