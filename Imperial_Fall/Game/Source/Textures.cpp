@@ -70,14 +70,7 @@ bool Textures::Start()
 	whitemark_300x80 = Load("Assets/textures/300x80_whitemark.png");
 	particles_texture = Load("Assets/textures/particles.png");
 
-
-	hab_tex = Load("Assets/textures/HabilityMack.png");
-	slime_textureR = Load("Assets/textures/SlimeR.png");
-	slime_textureL = Load("Assets/textures/SlimeL.png");
-	floper_texture = Load("Assets/textures/Floper.png");
 	tileX = Load("Assets/textures/x.png");
-	coin_texture = Load("Assets/textures/Coin.png");
-	heart_texture = Load("Assets/textures/Heart.png");
 
 	return ret;
 }

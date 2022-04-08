@@ -432,7 +432,7 @@ bool Menu::Update(float dt)
 				app->frontground->ReturnToField();
 				break;
 			}
-
+			
 			lose_buttons[chosed].state = 2;
 		}
 	}

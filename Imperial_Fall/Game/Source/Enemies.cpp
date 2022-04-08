@@ -16,39 +16,75 @@
 
 #include <time.h>
 
-// GROUND ENEMY
-Ground_Enemies::Ground_Enemies() : Entity()
+// ENEMY
+Enemies::Enemies(int en1, int en2, int en3, int en4) : Entity()
 {
-	
+	switch (en1)
+	{
+	case 0: combat_enemies[0] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[0] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[0] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[0] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[0] = ENEMIES::SKELETON; break;
+	}
+	switch (en2)
+	{
+	case 0: combat_enemies[1] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[1] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[1] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[1] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[1] = ENEMIES::SKELETON; break;
+	}
+	switch (en3)
+	{
+	case 0: combat_enemies[2] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[2] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[2] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[2] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[2] = ENEMIES::SKELETON; break;
+	}
+	switch (en4)
+	{
+	case 0: combat_enemies[3] = ENEMIES::NOTHING; break;
+	case 1: combat_enemies[3] = ENEMIES::W_TEMPLAR; break;
+	case 2: combat_enemies[3] = ENEMIES::MUSHROOM; break;
+	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
+	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
+	}
+
+	// animations
+	mushroomAnim.PushBack({ 0, 0, 100, 125 });
+	mushroomAnim.PushBack({ 100, 0, 100, 125 });
+	mushroomAnim.PushBack({ 200, 0, 100, 125 });
+	mushroomAnim.PushBack({ 300, 0, 100, 125 });
+	mushroomAnim.speed = 0.03f;
 }
 
 // Destructor
-Ground_Enemies::~Ground_Enemies()
+Enemies::~Enemies()
 {}
 
-void Ground_Enemies::InitCustomEntity()
+void Enemies::InitCustomEntity(int enemy)
 {
-	origin_x = position.x;
-	origin_y = position.y;
-	speed = 0.05f;
+	enemy_type = enemy;
 
-	currentAnimation = &slime_walkAnimR;
-
-	lookLeft = true;
-
-	detectionRange = 5.0f;
-	enemy_spoted = false;
-
-	state = ENEMY_STATE::IDLE;
-	obLeft = false;
+	switch (enemy_type)
+	{
+	case 1: currentAnimation = &mushroomAnim; break;
+	case 2: currentAnimation = &mushroomAnim; break;
+	case 3: currentAnimation = &mushroomAnim; break;
+	case 4: currentAnimation = &mushroomAnim; break;
+	case 5: currentAnimation = &mushroomAnim; break;
+	}
 
 	// body
-	b2BodyDef e_body;
-	e_body.type = b2_dynamicBody;
-	e_body.fixedRotation = true;
-	e_body.position.Set(position.x, position.y);
+	b2BodyDef p_body;
+	p_body.type = b2_kinematicBody;
+	p_body.fixedRotation = true;
+	p_body.position.Set(position.x, position.y);
 
-	body = app->physics->world->CreateBody(&e_body);
+	body = app->physics->world->CreateBody(&p_body);
+	body->SetBullet(true);
 	body->SetFixedRotation(true);
 
 	b2PolygonShape box;
@@ -60,39 +96,34 @@ void Ground_Enemies::InitCustomEntity()
 	fixture.friction = 0.0f;
 	b2Fixture* bodyFixture = body->CreateFixture(&fixture);
 	bodyFixture->SetSensor(false);
-	bodyFixture->SetUserData((void*)4); // enemy body collision
+	bodyFixture->SetUserData((void*)0);
+
+	// contact sensor
+	box.SetAsBox(PIXELS_TO_METERS((w * 5)), PIXELS_TO_METERS(h * 5), b2Vec2(0, 0), 0);
+	fixture.isSensor = true;
+	b2Fixture* sensorFixture = body->CreateFixture(&fixture);
+	sensorFixture->SetUserData((void*)6); // enemy sensor
 }
 
 // Called each loop iteration
-bool Ground_Enemies::PreUpdate()
+bool Enemies::PreUpdate()
 {
 	if (state != ENEMY_STATE::DEATH)
 	{
 		position.x = body->GetPosition().x;
 		position.y = body->GetPosition().y;
-
-
-		//path without spot the player
-		if (obLeft)
-		{
-			idleOb_x = origin_x - PIXELS_TO_METERS(32 * 5);
-		}
-		else
-		{
-			idleOb_x = origin_x + PIXELS_TO_METERS(32 * 5);
-		}
 	}
 	
 	return true;
 }
 
 // Called each loop iteration
-bool Ground_Enemies::Update(float dt)
+bool Enemies::Update(float dt)
 {
 	currentAnimation->Update();
 
 	// update path
-	switch (state)
+	/*switch (state)
 	{
 	case ENEMY_STATE::IDLE:
 		MoveGroundEnemy(dt);
@@ -119,13 +150,13 @@ bool Ground_Enemies::Update(float dt)
 	if (state != ENEMY_STATE::DEATH)
 	{
 		CheckPlayer();
-	}
+	}*/
 
 	return true;
 }
 
 // Called each loop iteration
-bool Ground_Enemies::Draw()
+bool Enemies::Draw()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
@@ -137,21 +168,20 @@ bool Ground_Enemies::Draw()
 	
 	if (state != ENEMY_STATE::DEATH)
 	{
-		if (lookLeft)
+		switch (enemy_type)
 		{
-			app->render->DrawTexture(app->tex->slime_textureL, METERS_TO_PIXELS(position.x - (40)), METERS_TO_PIXELS(position.y - (45)), &rect);
-		}
-		else
-		{
-			app->render->DrawTexture(app->tex->slime_textureR, METERS_TO_PIXELS(position.x - (40)), METERS_TO_PIXELS(position.y - (45)), &rect);
-		}
-
-		if (state == ENEMY_STATE::HUNT || state == ENEMY_STATE::RETURN)
-		{
-			if (app->physics->debug && path_save)
-			{
-				app->pathfinding->DrawPath(path_save, position);
-			}
+		case 1: 
+			app->render->DrawTexture(app->tex->white_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 2:
+			app->render->DrawTexture(app->tex->mushroom, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 3:
+			app->render->DrawTexture(app->tex->goblin, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 4:
+			app->render->DrawTexture(app->tex->skeleton, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
 		}
 	}
 	else
@@ -162,7 +192,7 @@ bool Ground_Enemies::Draw()
 	return true;
 }
 
-void Ground_Enemies::MoveGroundEnemy(float dt)
+/*void Enemies::MoveGroundEnemy(float dt)
 {
 	if (!obLeft)
 	{
@@ -189,7 +219,7 @@ void Ground_Enemies::MoveGroundEnemy(float dt)
 	}
 }
 
-void Ground_Enemies::CheckPlayer()
+void Enemies::CheckPlayer()
 {
 	Entity* player = app->entities->GetPlayer();
 
@@ -210,7 +240,7 @@ void Ground_Enemies::CheckPlayer()
 	}
 }
 
-void Ground_Enemies::EnemyHunting(float dt)
+void Enemies::EnemyHunting(float dt)
 {
 	PathFinding* path = new PathFinding();
 	float dist;
@@ -232,7 +262,7 @@ void Ground_Enemies::EnemyHunting(float dt)
 	path_save = path;
 }
 
-void Ground_Enemies::EnemyReturning(float dt)
+void Enemies::EnemyReturning(float dt)
 {
 	PathFinding* path = new PathFinding();
 	
@@ -253,9 +283,9 @@ void Ground_Enemies::EnemyReturning(float dt)
 	}
 
 	path_save = path;
-}
+}*/
 
-bool Ground_Enemies::DeleteEntity()
+bool Enemies::DeleteEntity()
 {
 	state = ENEMY_STATE::DEATH;
 	plan_to_delete = true;
@@ -264,9 +294,9 @@ bool Ground_Enemies::DeleteEntity()
 	return true;
 }
 
-bool Ground_Enemies::Load(pugi::xml_node& data)
+bool Enemies::Load(pugi::xml_node& data)
 {
-	std::string p = "ground";
+	/*std::string p = "ground";
 	std::string s = std::to_string(p_in_array);
 	std::string t = p + s;
 	const char* c = t.c_str();
@@ -287,14 +317,14 @@ bool Ground_Enemies::Load(pugi::xml_node& data)
 	else
 	{
 		state = ENEMY_STATE::DEATH;
-	}
+	}*/
 
 	return true;
 }
 
-bool Ground_Enemies::Save(pugi::xml_node& data)
+bool Enemies::Save(pugi::xml_node& data)
 {
-	std::string p = "ground";
+	/*std::string p = "ground";
 	std::string s = std::to_string(p_in_array);
 	std::string t = p + s;
 	const char* c = t.c_str();
@@ -309,12 +339,7 @@ bool Ground_Enemies::Save(pugi::xml_node& data)
 	else
 	{
 		data.child("enemies").child(c).attribute("state").set_value("1");
-	}
+	}*/
 
 	return true;
-}
-
-void Ground_Enemies::SwitchDirection()
-{
-	obLeft = !obLeft;
 }

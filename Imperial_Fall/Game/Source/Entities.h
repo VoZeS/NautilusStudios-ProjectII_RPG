@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Physics.h"
 #include "Animation.h"
+#include "Combat_Entities.h"
 #include "DynArray.h"
 #include "Point.h"
 #include "List.h"
@@ -15,11 +16,10 @@ enum class ENTITY_TYPE
 	CURANDERO,
 	HERRERO,
 	GRANJERO,
-	COMPANION,
-	GROUND_ENEMY,
-	STATIC_ENEMY, // create one for each diferent enemy
-	COIN,
-	HEART
+	W_TEMPLAR,
+	MUSHROOM,
+	GOBLIN,
+	SKELETON
 };
 
 class Entity
@@ -60,8 +60,8 @@ public:
 
 	virtual bool IsPlayerEnabled();
 	virtual void ImpulsePlayer();
-	virtual void PlayerDeath();
-	virtual void SwitchDirection();
+	
+	virtual ENEMIES GetCombatEnemy(int n);
 
 public:
 	ENTITY_TYPE entity_type;
@@ -102,25 +102,17 @@ public:
 	bool SaveState(pugi::xml_node&);
 
 public:
-	void CreateEntity(ENTITY_TYPE entity_type, float x, float y);
+	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
 
 	List<Entity*> entities;
 
-	int ground_lenght = 0;
-	int air_lenght = 0;
-	int coins_lenght = 0;
+	int enemies_lenght = 0;
 
 	int FindNPC();
-	void PickHeart(fPoint pos);
+	void StartCombat();
+	void KillEnemy();
 
 	Entity* GetPlayer();
-
-	//HUD
-	int ncoins = 0;
-	char numCoins[4] = { "\0" };
-
-	int nlifes = 2;
-	char numLifes[3] = { "\0" };
 	
 };
 

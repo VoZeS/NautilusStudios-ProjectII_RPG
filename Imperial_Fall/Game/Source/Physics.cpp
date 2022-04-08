@@ -10,8 +10,6 @@
 #include "Entities.h"
 #include "Player.h"
 #include "Enemies.h"
-#include "Coins.h"
-#include "Hearts.h"
 #include "Menu.h"
 #include "Frontground.h"
 
@@ -131,7 +129,7 @@ bool Physics::PostUpdate()
 						c_g = 200;
 						c_b = 0;
 						break;
-					case 6:
+					case 6: // enemies interaction
 						c_r = 200;
 						c_g = 200;
 						c_b = 200;
@@ -240,26 +238,7 @@ void Physics::BeginContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
-	if ((int)fixtureUserDataA == 4)
-	{
-		if ((int)fixtureUserDataB == 4)
-		{
-			ListItem<Entity*>* item;
-			Entity* entity = NULL;
-			Ground_Enemies* g = NULL;
-
-			for (item = app->entities->entities.start; item != NULL; item = item->next)
-			{
-				entity = item->data;
-
-				if (entity->entity_type == ENTITY_TYPE::GROUND_ENEMY)
-				{
-					entity->SwitchDirection();
-				}
-			}
-		}
-	}
-	else if ((int)fixtureUserDataA == 1)
+	if ((int)fixtureUserDataA == 1)
 	{
 		if ((int)fixtureUserDataB == 2)
 		{
@@ -285,11 +264,10 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->SetPressE_Hide(false);
 			inGranjero = true;
 		}
-		else if ((int)fixtureUserDataB == 10)
+		else if ((int)fixtureUserDataB == 6)
 		{
-			// hearts
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickHeart(entity->GetPlayerPosition());
+			// enemy contact
+			app->entities->StartCombat();
 		}
 
 		// --------------------------------------------------------------- PASS LEVELS
@@ -453,11 +431,10 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->SetPressE_Hide(false);
 			inGranjero = true;
 		}
-		else if ((int)fixtureUserDataA == 10)
+		else if ((int)fixtureUserDataA == 6)
 		{
-			// hearts
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickHeart(entity->GetPlayerPosition());
+			// enemy contact
+			app->entities->StartCombat();
 		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)

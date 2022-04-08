@@ -8,7 +8,6 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
-#include "Hearts.h"
 #include "Pathfinding.h"
 #include "Menu.h"
 
@@ -955,8 +954,8 @@ bool Player::DeleteEntity()
 
 void Player::ImpulsePlayer()
 {
-	body->SetLinearVelocity({ body->GetLinearVelocity().x , 0 });
-	body->ApplyForceToCenter({ 0, -25.0f * app->GetDT() }, true);
+	body->SetLinearVelocity({ 0, 0 });
+	body->ApplyForceToCenter({ -250.0f * app->GetDT(), 0 }, true);
 }
 
 int Player::GetCharControl()

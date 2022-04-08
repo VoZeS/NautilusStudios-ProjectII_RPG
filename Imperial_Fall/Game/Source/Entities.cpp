@@ -2,12 +2,11 @@
 #include "Textures.h"
 #include "Entities.h"
 #include "Scene.h"
+#include "Frontground.h"
 
 #include "Player.h"
 #include "Enemies.h"
 #include "NPC.h"
-#include "Coins.h"
-#include "Hearts.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -41,7 +40,7 @@ bool Entities::Awake()
 bool Entities::Start()
 {
 	bool ret = true;
-	ListItem<Entity*>* item;
+	/*ListItem<Entity*>* item;
 	item = entities.start;
 
 	while (item != NULL && ret == true)
@@ -65,7 +64,7 @@ bool Entities::Start()
 			break;
 		}
 		item = item->next;
-	}
+	}*/
 
 	app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
 
@@ -102,6 +101,18 @@ bool Entities::PreUpdate()
 				entity->InitCustomEntity(3);
 				break;
 			case ENTITY_TYPE::GRANJERO:
+				entity->InitCustomEntity(4);
+				break;
+			case ENTITY_TYPE::W_TEMPLAR:
+				entity->InitCustomEntity(1);
+				break;
+			case ENTITY_TYPE::MUSHROOM:
+				entity->InitCustomEntity(2);
+				break;
+			case ENTITY_TYPE::GOBLIN:
+				entity->InitCustomEntity(3);
+				break;
+			case ENTITY_TYPE::SKELETON:
 				entity->InitCustomEntity(4);
 				break;
 			default:
@@ -172,9 +183,6 @@ bool Entities::PostUpdate()
 				ret = item->data->Draw();
 			}
 		}
-
-		sprintf_s(numCoins, 4, "%03d", ncoins);
-		sprintf_s(numLifes, 4, "%03d", nlifes);
 	}
 
 	return ret;
@@ -189,7 +197,7 @@ bool Entities::CleanUp()
 	{
 		entity = item->data;
 
-		if (entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO || entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+		if (entity->entity_type != ENTITY_TYPE::PLAYER)
 		{
 			//app->physics->world->DestroyBody(entity->body);
 			entities.Del(item);
@@ -239,7 +247,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
+void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int en1, int en2, int en3, int en4)
 {
 	fPoint p = { x, y };
 
@@ -275,22 +283,28 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
-	case ENTITY_TYPE::GROUND_ENEMY:
+	case ENTITY_TYPE::W_TEMPLAR:
 	{
-		Ground_Enemies* g_enemy = new Ground_Enemies();
-		AddEntity(g_enemy, ENTITY_TYPE::GROUND_ENEMY, p);
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::W_TEMPLAR, p);
 	}
 		break;
-	case ENTITY_TYPE::COIN:
+	case ENTITY_TYPE::MUSHROOM:
 	{
-		Coins* coin = new Coins();
-		AddEntity(coin, ENTITY_TYPE::COIN, p);
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::MUSHROOM, p);
 	}
 		break;
-	case ENTITY_TYPE::HEART:
+	case ENTITY_TYPE::GOBLIN:
 	{
-		Hearts* heart = new Hearts();
-		AddEntity(heart, ENTITY_TYPE::HEART, p);
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::GOBLIN, p);
+	}
+		break;
+	case ENTITY_TYPE::SKELETON:
+	{
+		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::SKELETON, p);
 	}
 		break;
 	default:
@@ -310,7 +324,9 @@ int Entities::FindNPC()
 	{
 		entity = item->data;
 
-		if (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max)
+		if ((entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO
+			|| entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			switch (entity->entity_type)
 			{
@@ -331,21 +347,62 @@ int Entities::FindNPC()
 	return ret;
 }
 
-void Entities::PickHeart(fPoint pos)
+void Entities::StartCombat()
 {
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
+
+	float max = 9999;
+	Entity* combat_entity = NULL;
 
 	for (item = entities.start; item != NULL; item = item->next)
 	{
 		entity = item->data;
 
-		if (pos.x + 1.5f > entity->position.x && pos.x - 1.5f < entity->position.x && pos.y + 2.0f > entity->position.y && pos.y - 2.0f < entity->position.y && entity->entity_type == ENTITY_TYPE::HEART)
+		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
-			entity->DeleteEntity();
-
-			break;
+			combat_entity = entity;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
 		}
+	}
+
+	if (combat_entity != NULL)
+	{
+		ENEMIES enemies[4];
+		enemies[0] = combat_entity->GetCombatEnemy(0);
+		enemies[1] = combat_entity->GetCombatEnemy(1);
+		enemies[2] = combat_entity->GetCombatEnemy(2);
+		enemies[3] = combat_entity->GetCombatEnemy(3);
+		app->frontground->FadeInCombat(enemies);
+	}
+}
+
+void Entities::KillEnemy()
+{
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	float max = 9999;
+	Entity* combat_entity = NULL;
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		entity = item->data;
+
+		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
+		{
+			combat_entity = entity;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
+		}
+	}
+
+	if (combat_entity != NULL)
+	{
+		combat_entity->alive = false;
 	}
 }
 
@@ -380,20 +437,10 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 
 	init = false;
 
-	switch (type)
+	if (type == ENTITY_TYPE::W_TEMPLAR || type == ENTITY_TYPE::MUSHROOM || type == ENTITY_TYPE::GOBLIN || type == ENTITY_TYPE::SKELETON)
 	{
-	case ENTITY_TYPE::GROUND_ENEMY:
-		p_in_array = app->entities->ground_lenght;
-		app->entities->ground_lenght++;
-		break;
-	case ENTITY_TYPE::COIN:
-		p_in_array = app->entities->coins_lenght;
-		app->entities->coins_lenght++;
-		break;
-	case ENTITY_TYPE::HEART:
-		break;
-	default:
-		break;
+		p_in_array = app->entities->enemies_lenght;
+		app->entities->enemies_lenght++;
 	}
 }
 
@@ -490,11 +537,6 @@ void Entity::SetCompanion2LookDir(int lookDir)
 {
 }
 
-void Entity::PlayerDeath()
-{
-
-}
-
 bool Entity::IsPlayerEnabled()
 {
 	return true;
@@ -505,7 +547,7 @@ void Entity::ImpulsePlayer()
 
 }
 
-void Entity::SwitchDirection()
+ENEMIES Entity::GetCombatEnemy(int n)
 {
-
+	return ENEMIES::NOTHING;
 }
