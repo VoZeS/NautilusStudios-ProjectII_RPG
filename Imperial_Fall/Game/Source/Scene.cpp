@@ -38,13 +38,13 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	
-	c_y_menu = -app->render->camera.y +140; //Posicion de la camara en el inicio del juego
+	c_y_menu = -app->render->camera.y + 140; // Posicion de la camara en el inicio del juego
 
 	app->SaveGameRequest();
 	
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 	settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
+
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
@@ -76,7 +76,6 @@ bool Scene::Start()
 	linea1String_Enemy = dialog.child("enemy").child("text1").attribute("linea1").as_string();
 	
 	linea1Char_Enemy = linea1String_Enemy.c_str();
-	
 
 	return true;
 }
@@ -273,7 +272,7 @@ bool Scene::Update(float dt)
 		speedlet = 0.01f;
 	}
 
-	if (app->GetFPS() == 16)//60 fps
+	if (app->GetFPS() == 16) // 60 fps
 	{
 		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
@@ -282,7 +281,7 @@ bool Scene::Update(float dt)
 			letter_cd = 0;
 		}
 	}
-	else //30 fps
+	else // 30 fps
 	{
 		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
@@ -292,7 +291,7 @@ bool Scene::Update(float dt)
 		}
 	}
 	
-	if (app->GetFPS() == 16)//60 fps
+	if (app->GetFPS() == 16) // 60 fps
 	{
 		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
@@ -301,7 +300,7 @@ bool Scene::Update(float dt)
 			letter_cd = 0;
 		}
 	}
-	else //30 fps
+	else // 30 fps
 	{
 		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
@@ -441,7 +440,7 @@ bool Scene::PostUpdate()
 	//----------------------------------------------------------------------
 
 	 if(app->menu->started)
-	{
+	 {
 		app->map->Draw();
 
 		if (inDialog)
@@ -521,7 +520,7 @@ bool Scene::PostUpdate()
 			letlengh = 0;
 		}*/
 
-	}
+	 }
 	
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		ret = false;

@@ -21,7 +21,7 @@ struct Button {
 	SDL_Texture* alt_tex_selec = NULL;
 
 
-	int state = 0; // 0->idle, 1->above, 2->pressed
+	int state = 0; // 0 --> idle, 1 --> above, 2 --> pressed
 };
 
 class Menu : public Module
@@ -91,7 +91,7 @@ public:
 		}
 	}
 
-private:
+public:
 
 	SDL_Rect r;
 	bool intro;
@@ -129,8 +129,6 @@ private:
 	Animation space_boton_anim;
 
 	Animation menu_play_anim;
-
-
 
 	int xbarra = 145;
 	int xbarra2 = 145;
@@ -172,7 +170,6 @@ private:
 	uint hover_sound;
 
 	int textFont = -1;
-
 
 };
 
