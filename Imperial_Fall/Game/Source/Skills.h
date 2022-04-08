@@ -52,9 +52,11 @@ enum class BUFF_TYPE // self
 	STEALTH,
 	DODGE,
 	DAMAGE_INMUNITY,
+	DEBUFF_INMUNITY,
 	TAUNT,
 	QUICK,
-	STRONG
+	STRONG,
+	RELAX // progresive heal
 };
 
 enum class DEBUFF_TYPE

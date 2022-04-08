@@ -481,6 +481,12 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			damage = 0;
 		}
 		
+		b.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
+		if (objective->FindBuff(b) != -1)
+		{
+			skill.debuff_type = DEBUFF_TYPE::NOTHING;
+		}
+		
 
 		// lauch attack skill
 		if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
@@ -959,6 +965,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 void Combat_Manager::UpdateBuffs()
 {
 	GetActualEntity()->UpdateBuffs();
+	GetActualEntity()->UpdateHealBuffs();
 	GetActualEntity()->UpdateDamageDebuffs();
 	GetActualEntity()->UpdateDebuffs();
 	GetActualEntity()->UpdateShield();

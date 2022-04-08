@@ -144,6 +144,7 @@ public:
 	{
 		return buffs;
 	}
+	void UpdateHealBuffs();
 
 	// Debuffs
 	int FindDebuff(DEBUFF debuff); // return turns remaning or -1 if entity don't have that buff

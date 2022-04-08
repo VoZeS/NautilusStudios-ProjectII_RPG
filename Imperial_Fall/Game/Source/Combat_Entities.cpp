@@ -346,6 +346,19 @@ void Combat_Entities::RemoveAllBuffs()
 	}
 }
 
+void Combat_Entities::UpdateHealBuffs()
+{
+	BUFF b;
+
+	// realx
+	b.buff_type = BUFF_TYPE::RELAX;
+
+	if (FindBuff(b) != -1)
+	{
+		HealEntity(max_health / 4);
+	}
+}
+
 int Combat_Entities::FindDebuff(DEBUFF debuff)
 {
 	ListItem<DEBUFF>* item;
@@ -679,7 +692,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	{
 		switch (skill_number)
 		{
-		case 0:
+		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Staff Blow";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
@@ -717,6 +730,137 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.support_type = SUPPORT_TYPE::CLEAN;
+			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Attack Boost";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 15;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 5: // level 2 skills
+			skill.owner = owner;
+			skill.skill_name = "Great Shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 30;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Field Heal";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 15;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Prevent Debuffs";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
+			skill.buff_turns = 2;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Speed Boost";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 15;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 2;
+			break;
+		case 9: // level 3 up root skills
+			skill.owner = owner;
+			skill.skill_name = "Give Inmortality";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 120;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
+			skill.buff_turns = 2;
+			break;
+		case 10:
+			skill.owner = owner;
+			skill.skill_name = "Great Heal";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 24;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			break;
+		case 11:
+			skill.owner = owner;
+			skill.skill_name = "Field Clean";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 10;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.support_type = SUPPORT_TYPE::CLEAN;
+			break;
+		case 12:
+			skill.owner = owner;
+			skill.skill_name = "Field Attack Boost";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 60;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Field Shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 30;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
+			break;
+		case 14:
+			skill.owner = owner;
+			skill.skill_name = "Relax";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 35;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::RELAX;
+			skill.buff_turns = 3;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Field Prevent Debuffs";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 50;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
+			skill.buff_turns = 2;
+			break;
+		case 16:
+			skill.owner = owner;
+			skill.skill_name = "Mana Source";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 100;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::RELOAD;
 			break;
 		}
 	}
