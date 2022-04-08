@@ -14,7 +14,8 @@ struct Button {
 	SDL_Rect rect = { 0, 0, 220, 70 };
 	SDL_Texture* tex = NULL;
 	SDL_Texture* alt_tex = NULL;
-	
+	SDL_Texture* alt_tex2 = NULL;
+	SDL_Texture* alt_tex_selec = NULL;
 
 
 	int state = 0; // 0->idle, 1->above, 2->pressed
@@ -105,8 +106,8 @@ private:
 
 
 
-	int xbarra = 115;
-	int xbarra2 = 115;
+	int xbarra = 145;
+	int xbarra2 = 145;
 	bool slider;
 	bool slider2;
 

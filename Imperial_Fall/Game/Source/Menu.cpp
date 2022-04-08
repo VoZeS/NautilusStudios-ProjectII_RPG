@@ -67,8 +67,8 @@ Menu::Menu() : Module()
 	smook_big_fire_anim.loop = true;
 
 
-	space_boton_anim.PushBack({ 3,0,189,80 });
-	space_boton_anim.PushBack({ 196,0,199,80 });
+	space_boton_anim.PushBack({ 10,0,195,121 });
+	space_boton_anim.PushBack({ 226,0,201,121 });
 	space_boton_anim.speed = 0.06f;
 	space_boton_anim.loop = true;
 
@@ -149,10 +149,17 @@ bool Menu::Start()
 	lose_button.rect.x = (int)win_w / 2;
 	lose_button.rect.y = (int)win_h / 2;
 
-	pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
-	pause_buttons[1].tex = app->tex->Load("Assets/textures/Settings.png"); // Settings
-	pause_buttons[2].tex = app->tex->Load("Assets/textures/Back.png"); // Back to Menu
-	pause_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Exit
+	pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue_In_game.png"); // Continue
+	pause_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+	pause_buttons[1].tex = app->tex->Load("Assets/textures/Settings_In_game.png"); // Settings
+	pause_buttons[1].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+	pause_buttons[2].tex = app->tex->Load("Assets/textures/Back_In_game.png"); // Back to Menu
+	pause_buttons[2].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+	pause_buttons[3].tex = app->tex->Load("Assets/textures/Exit_In_game.png"); // Exit
+	pause_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 	
 
 	dead_buttons[0].tex = app->tex->Load("Assets/textures/Load.png"); // Load
@@ -185,12 +192,23 @@ bool Menu::Start()
 	//----------------------------------------------------------------
 
 	settings_buttons[0].alt_tex = settings_buttons[1].alt_tex = app->tex->Load("Assets/textures/Slider.png"); // Slider
+
 	settings_buttons[0].tex = app->tex->Load("Assets/textures/Sound.png"); // Audio
+	settings_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+	settings_buttons[0].alt_tex2 = app->tex->Load("Assets/textures/SoundSprite.png");
+
 	settings_buttons[1].tex = app->tex->Load("Assets/textures/Fx.png"); // Fx slider
-	settings_buttons[2].tex = app->tex->Load("Assets/textures/Fullscreen_no.png"); // Fullscreen
-	settings_buttons[2].alt_tex = app->tex->Load("Assets/textures/Fullscreen_si.png"); // Fullscreen
-	settings_buttons[3].tex = app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync
-	settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync
+	settings_buttons[1].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+	settings_buttons[1].alt_tex2 = app->tex->Load("Assets/textures/FxSprite.png");
+
+	settings_buttons[2].tex = app->tex->Load("Assets/textures/Fullscreen_no.png"); // Fullscreen No
+	settings_buttons[2].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png"); // Fullscreen No Selec
+	settings_buttons[2].alt_tex = app->tex->Load("Assets/textures/Fullscreen_si.png"); // Fullscreen Si
+	
+
+	settings_buttons[3].tex = app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync No
+	settings_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+	settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync Si
 
 	lose_button.tex = app->tex->Load("Assets/textures/Exit.png"); // Exit
 
@@ -640,7 +658,7 @@ bool Menu::PostUpdate()
 
 		//Boton que sale en la primera pantalla para pasarla
 		if(app->scene->space_boton)
-		app->render->DrawTexture(space_boton, c_x+500 , c_y + seguir+630, &(space_boton_anim.GetCurrentFrame()));
+		app->render->DrawTexture(space_boton, c_x+500 , c_y + seguir+595, &(space_boton_anim.GetCurrentFrame()));
 		
 	}
 	
@@ -654,17 +672,15 @@ bool Menu::PostUpdate()
 
 
 		//Hace que el menu se quite
-		if (!paused &&!settings )
+		if (!paused &&!settings)
 		{
-			if (c_x_menu >= 100 && stop == false)
+			if (c_x_menu >= 90 )
 			{
 				c_x_menu -= 35.0f;
 
-				if (c_x_menu >= -200)
-				{
-					stop = false;
-				}
+				
 			}
+		
 			
 		}
 
@@ -676,15 +692,14 @@ bool Menu::PostUpdate()
 
 		if(started)
 		//Cuando pausas se pone un fondo verde (Substituir en un futuro por un HUD creado)
-		app->render->DrawTexture(menu_in_game, PauseMenuHUD.x-440 , PauseMenuHUD.y + 150);
+		app->render->DrawTexture(menu_in_game, PauseMenuHUD.x-475 , PauseMenuHUD.y + 40);
 
 
 		//Hace que el menu aparezca
 		if (paused && !intro && !settings)
 		{
-			
 		
-			if (desMenu == true && c_x_menu <= 400)
+			if (desMenu == true && c_x_menu <= 470)
 			{
 				c_x_menu += 15.0f;
 			}
@@ -703,20 +718,20 @@ bool Menu::PostUpdate()
 			for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 			{
 				//Boton Continuar
-				pause_buttons[0].rect.x = c_x+ c_x_menu -400;
-				pause_buttons[0].rect.y = c_y+200;
+				pause_buttons[0].rect.x = c_x+ c_x_menu -460;
+				pause_buttons[0].rect.y = c_y+170;
 
 				//Boton Opciones
-				pause_buttons[1].rect.x = c_x + c_x_menu - 400;
-				pause_buttons[1].rect.y = c_y+300;
+				pause_buttons[1].rect.x = c_x + c_x_menu - 460;
+				pause_buttons[1].rect.y = c_y+270;
 
-				//Boton Creditos
-				pause_buttons[2].rect.x = c_x + c_x_menu - 400;
-				pause_buttons[2].rect.y = c_y+400;
+				//Boton Back to menu
+				pause_buttons[2].rect.x = c_x + c_x_menu - 460;
+				pause_buttons[2].rect.y = c_y+370;
 
 				//Boton Salir
-				pause_buttons[3].rect.x = c_x + c_x_menu - 400;
-				pause_buttons[3].rect.y = c_y +500;
+				pause_buttons[3].rect.x = c_x + c_x_menu - 460;
+				pause_buttons[3].rect.y = c_y +470;
 				
 				//Recuadro en Botones permanente
 				if (pause_buttons[i].state == 0)
@@ -724,9 +739,21 @@ bool Menu::PostUpdate()
 					
 				}
 				//Recuadro en Botones Si pasas por encima
-				else if (pause_buttons[i].state == 1)
+				else if (pause_buttons[0].state == 1)
 				{
-					app->render->DrawRectangle(pause_buttons[i].rect, inColorR, inColorG, inColorB);
+					app->render->DrawTexture(pause_buttons[0].alt_tex_selec, pause_buttons[0].rect.x, pause_buttons[0].rect.y+10 );
+				}
+				else if (pause_buttons[1].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[1].alt_tex_selec, pause_buttons[1].rect.x, pause_buttons[1].rect.y+10);
+				}
+				else if (pause_buttons[2].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[2].alt_tex_selec, pause_buttons[2].rect.x, pause_buttons[2].rect.y+20);
+				}
+				else if (pause_buttons[3].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[3].alt_tex_selec, pause_buttons[3].rect.x, pause_buttons[3].rect.y+10);
 				}
 
 				//Recuadro en Botones cuando haces click Izquiero
@@ -749,7 +776,7 @@ bool Menu::PostUpdate()
 			{
 				app->render->DrawRectangle(r, 0, 0, 0, 200);
 				menu_play_anim.Update();
-				app->render->DrawTexture(menu_play, PauseMenuHUD.x-50, PauseMenuHUD.y-45, &(menu_play_anim.GetCurrentFrame()));
+				app->render->DrawTexture(menu_play, c_x + c_x_menu-10, c_y, &(menu_play_anim.GetCurrentFrame()));
 		
 				menu_buttons[4].rect.x = c_x + 70;
 				menu_buttons[4].rect.y = c_y + 150;
@@ -903,70 +930,81 @@ bool Menu::PostUpdate()
 			{
 				
 				
-				settings_buttons[0].rect.x = c_x;
+				settings_buttons[0].rect.x = c_x+20;
 				settings_buttons[0].rect.y = c_y + 200;
 
-				settings_buttons[1].rect.x = c_x;
-				settings_buttons[1].rect.y = c_y + 300;
+				settings_buttons[1].rect.x = c_x + 20;
+				settings_buttons[1].rect.y = c_y + 320;
 
-				settings_buttons[2].rect.x = c_x;
+				settings_buttons[2].rect.x = c_x + 20;
 				settings_buttons[2].rect.y = c_y + 400;
 
-				settings_buttons[3].rect.x = c_x;
+				settings_buttons[3].rect.x = c_x + 20;
 				settings_buttons[3].rect.y = c_y + 500;
 
+				app->render->DrawTexture(settings_buttons[0].alt_tex2, settings_buttons[0].rect.x + 10, settings_buttons[0].rect.y-40);
+				app->render->DrawTexture(settings_buttons[1].alt_tex2, settings_buttons[1].rect.x + 10, settings_buttons[1].rect.y-40);
 
 				if (settings_buttons[i].state == 0)
 				{
 					
 				}
-				else if (settings_buttons[i].state == 1)
+				 else if (settings_buttons[0].state == 1)
+					 app->render->DrawTexture(settings_buttons[0].alt_tex_selec, settings_buttons[0].rect.x + 10, settings_buttons[0].rect.y-67 );
+
+				 else if (settings_buttons[1].state == 1)
+					app->render->DrawTexture(settings_buttons[1].alt_tex_selec, settings_buttons[1].rect.x + 10, settings_buttons[1].rect.y -60);
+
+				 else if (settings_buttons[2].state == 1)
+					app->render->DrawTexture(settings_buttons[2].alt_tex_selec, settings_buttons[2].rect.x + 10, settings_buttons[2].rect.y + 15);
+
+				 else if (settings_buttons[3].state == 1)
+					app->render->DrawTexture(settings_buttons[3].alt_tex_selec, settings_buttons[3].rect.x + 10, settings_buttons[3].rect.y + 5);
+
+
+			     else if (settings_buttons[i].state == 2)
 				{
-					app->render->DrawRectangle(settings_buttons[i].rect, inColorR, inColorG, inColorB);
-				}
-				else if (settings_buttons[i].state == 2)
-				{
-					app->render->DrawRectangle(settings_buttons[i].rect, pColorR, pColorG, pColorB);
+		
 				}
 
 				if (slider)
 				{
-					if (z < 10)
+					if (z < 25)
 					{
-						z = 10;
+						z = 25;
 					}
-					else if (z > 200)
+					else if (z > 215)
 					{
-						z = 200;
+						z = 215;
 					}
 					xbarra = z;
-					app->render->DrawTexture(settings_buttons[0].alt_tex, z + c_x, settings_buttons[0].rect.y + 10);
+					app->render->DrawTexture(settings_buttons[0].alt_tex, z + c_x, settings_buttons[0].rect.y );
 					app->audio->SetMusic((z - 0) / 2);
 				}
 				else
 
 				{
-					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x, settings_buttons[0].rect.y + 10);
+					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x, settings_buttons[0].rect.y );
 				}
 
 				if (slider2)
 				{
 					xbarra2 = z;
-					if (z < 10)
+					if (z < 30)
 					{
-						z = 10;
+						z = 30;
 					}
-					else if (z > 200)
+					else if (z > 220)
 					{
-						z = 200;
+						z = 220;
 					}
 					
-					app->render->DrawTexture(settings_buttons[1].alt_tex, z + c_x, settings_buttons[1].rect.y + 10);
+					app->render->DrawTexture(settings_buttons[1].alt_tex, z + c_x, settings_buttons[1].rect.y );
 					app->audio->SetFX((z - 100) / 2);
 				}
 				else
 				{
-					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x, settings_buttons[1].rect.y + 10);
+					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x, settings_buttons[1].rect.y );
 				}
 
 				if (vsync && i == 3)
