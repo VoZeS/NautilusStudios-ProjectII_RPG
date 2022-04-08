@@ -8,7 +8,6 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
-#include "Hearts.h"
 #include "Pathfinding.h"
 #include "Menu.h"
 

@@ -10,8 +10,6 @@
 #include "Entities.h"
 #include "Player.h"
 #include "Enemies.h"
-#include "Coins.h"
-#include "Hearts.h"
 #include "Menu.h"
 #include "Frontground.h"
 
@@ -285,12 +283,6 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->SetPressE_Hide(false);
 			inGranjero = true;
 		}
-		else if ((int)fixtureUserDataB == 10)
-		{
-			// hearts
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickHeart(entity->GetPlayerPosition());
-		}
 
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataB == 12)
@@ -452,12 +444,6 @@ void Physics::BeginContact(b2Contact* contact)
 			// granjero contact
 			app->frontground->SetPressE_Hide(false);
 			inGranjero = true;
-		}
-		else if ((int)fixtureUserDataA == 10)
-		{
-			// hearts
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickHeart(entity->GetPlayerPosition());
 		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)

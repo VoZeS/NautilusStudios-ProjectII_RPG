@@ -17,9 +17,7 @@ enum class ENTITY_TYPE
 	GRANJERO,
 	COMPANION,
 	GROUND_ENEMY,
-	STATIC_ENEMY, // create one for each diferent enemy
-	COIN,
-	HEART
+	STATIC_ENEMY
 };
 
 class Entity
@@ -108,19 +106,10 @@ public:
 
 	int ground_lenght = 0;
 	int air_lenght = 0;
-	int coins_lenght = 0;
 
 	int FindNPC();
-	void PickHeart(fPoint pos);
 
 	Entity* GetPlayer();
-
-	//HUD
-	int ncoins = 0;
-	char numCoins[4] = { "\0" };
-
-	int nlifes = 2;
-	char numLifes[3] = { "\0" };
 	
 };
 

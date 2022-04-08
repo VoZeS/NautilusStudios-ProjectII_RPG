@@ -137,22 +137,7 @@ bool Ground_Enemies::Draw()
 	
 	if (state != ENEMY_STATE::DEATH)
 	{
-		if (lookLeft)
-		{
-			app->render->DrawTexture(app->tex->slime_textureL, METERS_TO_PIXELS(position.x - (40)), METERS_TO_PIXELS(position.y - (45)), &rect);
-		}
-		else
-		{
-			app->render->DrawTexture(app->tex->slime_textureR, METERS_TO_PIXELS(position.x - (40)), METERS_TO_PIXELS(position.y - (45)), &rect);
-		}
-
-		if (state == ENEMY_STATE::HUNT || state == ENEMY_STATE::RETURN)
-		{
-			if (app->physics->debug && path_save)
-			{
-				app->pathfinding->DrawPath(path_save, position);
-			}
-		}
+		
 	}
 	else
 	{

@@ -12,8 +12,6 @@
 #include "Frontground.h"
 #include "Combat_Entities.h"
 #include "Player.h"
-#include "Coins.h"
-#include "Hearts.h"
 
 #include "Defs.h"
 #include "Log.h"

@@ -23,10 +23,8 @@
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
-    <ClCompile Include="Source\Coins.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
-    <ClCompile Include="Source\Hearts.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
     <ClCompile Include="Source\NPC.cpp" />
     <ClCompile Include="Source\Combat_Menu.cpp" />
@@ -82,10 +80,8 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\Pathfinding.h" />
-    <ClInclude Include="Source\Coins.h" />
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Enemies.h" />
-    <ClInclude Include="Source\Hearts.h" />
     <ClInclude Include="Source\Entities.h" />
     <ClInclude Include="Source\NPC.h" />
     <ClInclude Include="Source\Combat_Menu.h" />

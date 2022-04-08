@@ -6,8 +6,6 @@
 #include "Player.h"
 #include "Enemies.h"
 #include "NPC.h"
-#include "Coins.h"
-#include "Hearts.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -172,9 +170,6 @@ bool Entities::PostUpdate()
 				ret = item->data->Draw();
 			}
 		}
-
-		sprintf_s(numCoins, 4, "%03d", ncoins);
-		sprintf_s(numLifes, 4, "%03d", nlifes);
 	}
 
 	return ret;
@@ -281,18 +276,6 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(g_enemy, ENTITY_TYPE::GROUND_ENEMY, p);
 	}
 		break;
-	case ENTITY_TYPE::COIN:
-	{
-		Coins* coin = new Coins();
-		AddEntity(coin, ENTITY_TYPE::COIN, p);
-	}
-		break;
-	case ENTITY_TYPE::HEART:
-	{
-		Hearts* heart = new Hearts();
-		AddEntity(heart, ENTITY_TYPE::HEART, p);
-	}
-		break;
 	default:
 		break;
 	}
@@ -331,24 +314,6 @@ int Entities::FindNPC()
 	return ret;
 }
 
-void Entities::PickHeart(fPoint pos)
-{
-	ListItem<Entity*>* item;
-	Entity* entity = NULL;
-
-	for (item = entities.start; item != NULL; item = item->next)
-	{
-		entity = item->data;
-
-		if (pos.x + 1.5f > entity->position.x && pos.x - 1.5f < entity->position.x && pos.y + 2.0f > entity->position.y && pos.y - 2.0f < entity->position.y && entity->entity_type == ENTITY_TYPE::HEART)
-		{
-			entity->DeleteEntity();
-
-			break;
-		}
-	}
-}
-
 Entity* Entities::GetPlayer()
 {
 	ListItem<Entity*>* item;
@@ -385,12 +350,6 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	case ENTITY_TYPE::GROUND_ENEMY:
 		p_in_array = app->entities->ground_lenght;
 		app->entities->ground_lenght++;
-		break;
-	case ENTITY_TYPE::COIN:
-		p_in_array = app->entities->coins_lenght;
-		app->entities->coins_lenght++;
-		break;
-	case ENTITY_TYPE::HEART:
 		break;
 	default:
 		break;

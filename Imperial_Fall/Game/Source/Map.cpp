@@ -3,8 +3,6 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Physics.h"
-#include "Coins.h"
-#include "Hearts.h"
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
@@ -196,11 +194,6 @@ void Map::Draw()
 							// collision water wells
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 7);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 6)
-						{
-							// coins
-							app->entities->CreateEntity(ENTITY_TYPE::COIN, pos.x, pos.y);
-						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 7)
 						{
 							// ground enemies
@@ -210,11 +203,6 @@ void Map::Draw()
 						{
 							// air enemies
 							app->entities->CreateEntity(ENTITY_TYPE::AIR_ENEMY, pos.x, pos.y);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
-						{
-							// hearts
-							app->entities->CreateEntity(ENTITY_TYPE::HEART, pos.x, pos.y);
 						}*/
 					}
 				}
