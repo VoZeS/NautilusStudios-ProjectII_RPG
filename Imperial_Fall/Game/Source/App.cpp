@@ -10,9 +10,11 @@
 #include "Physics.h"
 #include "Entities.h"
 #include "Fonts.h"
+#include "Combat_Manager.h"
+#include "Combat_Menu.h"
 #include "Menu.h"
+#include "Particles.h"
 #include "Frontground.h"
-
 
 #include "Defs.h"
 #include "Log.h"
@@ -34,7 +36,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	physics = new Physics();
 	entities = new Entities();
 	fonts = new Fonts();
+	combat_manager = new Combat_Manager();
+	combat_menu = new Combat_Menu();
 	menu = new Menu();
+	particles = new Particles();
 	frontground = new Frontground();
 
 
@@ -50,7 +55,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(entities);
 	AddModule(fonts);
+	AddModule(combat_manager);
+	AddModule(combat_menu);
 	AddModule(menu);
+	AddModule(particles);
 	AddModule(frontground);
 
 	// Render last to swap buffer
@@ -228,7 +236,7 @@ bool App::PreUpdate()
 		if(pModule->active == false) {
 			continue;
 		}
-
+		
 		ret = item->data->PreUpdate();
 	}
 
@@ -398,6 +406,11 @@ bool App::SaveGame()
 float App::GetDT()
 {
 	return dt;
+}
+
+float App::GetFPS()
+{
+	return FPS;
 }
 
 void App::ToggleFPS()

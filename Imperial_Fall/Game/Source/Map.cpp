@@ -3,8 +3,6 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Physics.h"
-#include "Coins.h"
-#include "Hearts.h"
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
@@ -54,7 +52,7 @@ bool Map::Awake(pugi::xml_node& config)
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
+	
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
 
@@ -92,10 +90,64 @@ void Map::Draw()
 						
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
-							
 							// collision ground
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 3);
-							
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
+						{
+							// Renato
+							app->entities->CreateEntity(ENTITY_TYPE::RENATO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 6)
+						{
+							// Curandero
+							app->entities->CreateEntity(ENTITY_TYPE::CURANDERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 7)
+						{
+							// Herrero
+							app->entities->CreateEntity(ENTITY_TYPE::HERRERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
+						{
+							// Granjero
+							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
+						{
+							// White templar
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, en1, en2, en3, en4);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
+						{
+							// Mushroom
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, en1, en2, en3, en4);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
+						{
+							// Goblin
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, en1, en2, en3, en4);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 13)
+						{
+							// Skeleton
+							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+							app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, en1, en2, en3, en4);
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
@@ -158,46 +210,6 @@ void Map::Draw()
 							// inside_castle-> outside_castle
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 76);
 						}
-						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 2)
-						{
-							// collision death
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), (pos.y + ((r.h * height) / 2)) + (r.h / 2), (r.w * width) / 2, (r.h * height) / 2, 4);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 3)
-						{
-							// collision saves
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 5);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 4)
-						{
-							// collision complete
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 6);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
-						{
-							// collision water wells
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 7);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 6)
-						{
-							// coins
-							app->entities->CreateEntity(ENTITY_TYPE::COIN, pos.x, pos.y);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 7)
-						{
-							// ground enemies
-							app->entities->CreateEntity(ENTITY_TYPE::GROUND_ENEMY, pos.x, pos.y);
-						}
-						/*else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
-						{
-							// air enemies
-							app->entities->CreateEntity(ENTITY_TYPE::AIR_ENEMY, pos.x, pos.y);
-						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
-						{
-							// hearts
-							app->entities->CreateEntity(ENTITY_TYPE::HEART, pos.x, pos.y);
-						}*/
 					}
 				}
 			}

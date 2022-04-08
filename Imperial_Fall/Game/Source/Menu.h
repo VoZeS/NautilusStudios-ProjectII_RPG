@@ -7,6 +7,9 @@
 
 #define NUM_PAUSE_BUTTONS 4
 #define NUM_MENU_BUTTONS 6
+#define NUM_WIN_BUTTONS 1
+#define NUM_LOSE_BUTTONS 2
+
 #define NUM_DEAD_BUTTONS 2
 #define NUM_SETTINGS_BUTTONS 4
 
@@ -43,8 +46,9 @@ public:
 	bool GetGameState();
 
 	bool dead;
-
+	bool win;
 	bool lose;
+
 
 	SDL_Texture* torch_fire = NULL;
 	SDL_Texture* light_fire1 = NULL;
@@ -69,6 +73,26 @@ public:
 
 
 	SDL_Rect PauseMenuHUD;
+
+	void SetWinLose(int n)
+	{
+		if (n == 0)
+		{
+			win = true;
+		}
+		else if (n == 1)
+		{
+			lose = true;
+		}
+		else
+		{
+			win = false;
+			lose = false;
+		}
+	}
+
+private:
+
 	SDL_Rect r;
 	bool intro;
 	bool paused;
@@ -118,10 +142,11 @@ private:
 	Button menu_buttons[NUM_MENU_BUTTONS];
 	Button dead_buttons[NUM_DEAD_BUTTONS];
 	Button settings_buttons[NUM_SETTINGS_BUTTONS];
-	Button lose_button;
+	Button win_button;
+	Button lose_buttons[NUM_LOSE_BUTTONS];
 
-	SDL_Texture* gameOver = NULL;
-	SDL_Texture* cat = NULL;
+	SDL_Texture* combat_win = NULL;
+	SDL_Texture* combat_lose = NULL;
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;
@@ -145,6 +170,8 @@ private:
 	// sound
 	uint click_sound;
 	uint hover_sound;
+
+	int textFont = -1;
 
 
 };

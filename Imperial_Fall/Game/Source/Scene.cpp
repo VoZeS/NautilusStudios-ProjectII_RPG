@@ -10,9 +10,8 @@
 #include "Pathfinding.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Combat_Entities.h"
 #include "Player.h"
-#include "Coins.h"
-#include "Hearts.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -31,7 +30,7 @@ Scene::~Scene()
 bool Scene::Awake()
 {
 	LOG("Loading Scene");
-	bool ret = true;
+	bool ret = LoadDialog();
 
 	return ret;
 }
@@ -49,9 +48,35 @@ bool Scene::Start()
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
+	LoadDialog();
 
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ ������a��������a��������" };
-	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	textFont = app->fonts->Load("Assets/textures/Tipografia_Dialogos.png", lookupTableChars, 8);
+
+	char lookupTableCharsDialogs[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	textFontDialog = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableCharsDialogs, 8);
+
+	//DIALOGO RENATO VERTICAL SLICE
+
+	//Text 1
+	linea1String_Renato = dialog.child("renato").child("text1").attribute("linea1").as_string();
+	linea2String_Renato = dialog.child("renato").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Renato = linea1String_Renato.c_str();
+	linea2Char_Renato = linea2String_Renato.c_str();
+
+
+	linea1String_Ally = dialog.child("ally").child("text1").attribute("linea1").as_string();
+	linea2String_Ally = dialog.child("ally").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Ally = linea1String_Ally.c_str();
+	linea2Char_Ally = linea2String_Ally.c_str();
+
+
+	linea1String_Enemy = dialog.child("enemy").child("text1").attribute("linea1").as_string();
+	
+	linea1Char_Enemy = linea1String_Enemy.c_str();
+	
 
 	return true;
 }
@@ -59,20 +84,14 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
-
-	
 	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
 	{
-	
-		app->entities->GetPlayer()->SetPlayerLookDir(0);
 		PassLevel(1);
 		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-		app->entities->GetPlayer()->SetCompanion0LookDir(0);
-		app->entities->GetPlayer()->SetCompanion1LookDir(0);
-		app->entities->GetPlayer()->SetCompanion2LookDir(0);
+		app->entities->GetPlayer()->SetPlayerLookDir(1);
 	}
 	else
 	{
@@ -105,15 +124,12 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
-		app->entities->GetPlayer()->SetPlayerLookDir(0);
 		PassLevel(1);
 		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(1000));
 		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
 		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
 		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
-		app->entities->GetPlayer()->SetCompanion0LookDir(0);
-		app->entities->GetPlayer()->SetCompanion1LookDir(0);
-		app->entities->GetPlayer()->SetCompanion2LookDir(0);
+		app->entities->GetPlayer()->SetPlayerLookDir(1);
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
@@ -183,12 +199,116 @@ bool Scene::Update(float dt)
 	{
 		app->ToggleFPS();
 	}
+	
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		if (app->physics->GetInNPC(1))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
+
+			inDialog = !inDialog;
+			inDialogRenato = !inDialogRenato;
+			app->frontground->SetPressE_Hide(true);
+		}
+		else if (app->physics->GetInNPC(2))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
+
+			inDialog = !inDialog;
+			inDialogAlly = !inDialogAlly;
+			app->frontground->SetPressE_Hide(true);
+		}
+		else if (app->physics->GetInNPC(3))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
+
+			inDialog = !inDialog;
+			inDialogEnemy = !inDialogEnemy;
+			app->frontground->SetPressE_Hide(true);
+		}
+		else
+		{
+			inDialog = false;
+			inDialogRenato = false;
+			inDialogAlly = false;
+			inDialogEnemy = false;
+		}
+	}
 
 	// Draw map
 	if (start_screen != NULL)
 	{
 		app->map->Draw();
-		
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		if (!app->frontground->GetCombatState())
+		{
+			ENEMIES enemies[4];
+			enemies[0] = ENEMIES::MUSHROOM;
+			enemies[1] = ENEMIES::W_TEMPLAR;
+			enemies[2] = ENEMIES::SKELETON;
+			enemies[3] = ENEMIES::GOBLIN;
+			app->frontground->FadeInCombat(enemies);
+		}
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		if (app->frontground->GetCombatState())
+		{
+			app->frontground->ReturnToField();
+		}
+	}
+
+	letter_cd += dt;
+
+	float speedlet = 0.05f;
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	{
+		speedlet = 0.01f;
+	}
+
+	if (app->GetFPS() == 16)//60 fps
+	{
+		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
+		{
+			letlengh++;
+
+			letter_cd = 0;
+		}
+	}
+	else //30 fps
+	{
+		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
+		{
+			letlengh++;
+			
+			letter_cd = 0;
+		}
+	}
+	
+	if (app->GetFPS() == 16)//60 fps
+	{
+		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
+		{
+			letlengh2++;
+
+			letter_cd = 0;
+		}
+	}
+	else //30 fps
+	{
+		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
+		{
+			letlengh2++;
+
+			letter_cd = 0;
+		}
 	}
 
 	return true;
@@ -201,6 +321,7 @@ bool Scene::PostUpdate()
 	bool ret = true;
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+
 	SDL_Rect prueba;
 	SDL_Rect fondoNegro;
 	zom_w;
@@ -212,6 +333,7 @@ bool Scene::PostUpdate()
 	
 	
 	//--------------------------------------MENU----------------------------
+
 
 	//Desplazamiento del fondo al inicio del juego
 	//Una vez pulses el Espacio entrara el menu de opciones
@@ -322,10 +444,83 @@ bool Scene::PostUpdate()
 	{
 		app->map->Draw();
 
-		app->fonts->BlitText(c_x + 30, c_y + 5, textFont, "MONEDAS: ");
-		app->fonts->BlitText(c_x + 330, c_y + 5, textFont, app->entities->numCoins);
-		app->fonts->BlitText(c_x + 30, c_y + 45, textFont, "VIDAS: ");
-		app->fonts->BlitText(c_x + 250, c_y + 45, textFont, app->entities->numLifes);
+		if (inDialog)
+		{
+			if (inDialogRenato) // RENATO TALKING
+			{
+				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
+				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
+				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "RENATO:");
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			}
+			else if (inDialogAlly) // ALLY TALKING
+			{
+				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
+				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
+				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ALLY:");
+				
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			}
+			else if (inDialogEnemy) // ENEMIES TALKING
+			{
+				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
+				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
+				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ENEMY:");
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			}
+		}
+		else
+		{
+			letlengh = 0;
+		}
+		/*
+		// RENATO TALKING
+		if (inDialog && inDialogRenato && !inDialogAlly && !inDialogEnemy)
+		{
+			app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 255, 0, 100); // Green
+			app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
+			app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "RENATO:");
+			app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, linea1Char_Renato, 1,255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		}
+		else if (!inDialog)
+		{
+			letlengh = 0;
+		}
+		
+		// ALLY TALKING
+		if (inDialog && inDialogAlly && !inDialogRenato && !inDialogEnemy)
+		{
+			app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 0, 255, 100); // Blue
+			app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
+			app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "ALLY:");
+			//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenos dias, por ahora no", 1,255, 255, 255, 1920, 1, letlengh);
+			//app->fonts->BlitTextLetter(c_x + 50,c_y + 640, textFontDialog, "tenemos nada disponible.", 1,255, 255, 255, 1920, 1, letlengh);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+
+		}
+		else if (!inDialog)
+		{
+			letlengh = 0;
+		}
+
+		// ENEMIES TALKING
+		if(inDialog && inDialogEnemy && !inDialogAlly && !inDialogRenato)
+		{
+			app->render->DrawRectangle({ c_x + 30,c_y + 480, 300, 80 }, 255, 0, 0, 100); //Red
+			app->render->DrawRectangle({ c_x + 30,c_y + 560, 1200, 140 }, 255, 255, 255, 100); //White
+			app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "ENEMY:");
+			//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenas, soy un enemigo.", 1,255, 255, 255, 1920, 1, letlengh);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else  if (!inDialog)
+		{
+			letlengh = 0;
+		}*/
+
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -360,13 +555,12 @@ bool Scene::PassLevel(int dest_level)
 	{
 		app->frontground->SetA_Black();
 		app->frontground->FadeFromBlack(dest_level);
+		start_screen = NULL;
 	}
 	else
 	{
 		app->frontground->FadeToBlack(dest_level);
 	}
-
-	start_screen = NULL;
 
 	return true;
 }
@@ -384,4 +578,23 @@ bool Scene::ReturnStartScreen()
 	app->menu->started = false;
 	app->frontground->SetA_Black();
 	return true;
+}
+
+bool Scene::LoadDialog()
+{
+	bool ret = true;
+
+	pugi::xml_parse_result result = dialogFile.load_file(DIALOG_FILENAME);
+
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		dialog = dialogFile.child("dialog");
+	}
+
+	return ret;
 }

@@ -6,7 +6,7 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="-160" y="-500" />
+		<camera x="-731" y="-500" />
 	</renderer>
 	<entities>
 		<player>
@@ -16,57 +16,12 @@
 			<comp2 x="12.5790863" y="19.9113445" />
 		</player>
 		<enemies>
-			<ground0 x="32.0005074" y="22.3999996" state="0" />
-			<ground1 x="48.6405067" y="9.59999943" state="0" />
-			<ground2 x="65.9204865" y="26.2399998" state="0" />
-			<ground3 x="70.4004898" y="16" state="0" />
+			<ground0 x="31.9988213" y="22.3999996" state="0" />
+			<ground1 x="48.6388206" y="9.59999943" state="0" />
+			<ground2 x="65.9188461" y="26.2399998" state="0" />
+			<ground3 x="70.3988495" y="16" state="0" />
 			<air0 x="14.7199993" y="8.70753574" state="0" />
 			<air1 x="99.1999969" y="11.9075365" state="0" />
 		</enemies>
-		<coins>
-			<position0 state="0" />
-			<position1 state="0" />
-			<position2 state="0" />
-			<position3 state="0" />
-			<position4 state="0" />
-			<position5 state="0" />
-			<position6 state="0" />
-			<position7 state="0" />
-			<position8 state="0" />
-			<position9 state="0" />
-			<position10 state="0" />
-			<position11 state="0" />
-			<position12 state="0" />
-			<position13 state="0" />
-			<position14 state="0" />
-			<position15 state="0" />
-			<position16 state="0" />
-			<position17 state="0" />
-			<position18 state="0" />
-			<position19 state="0" />
-			<position20 state="0" />
-			<position21 state="0" />
-			<position22 state="0" />
-			<position23 state="0" />
-			<position24 state="0" />
-			<position25 state="0" />
-			<position26 state="0" />
-			<position27 state="0" />
-			<position28 state="0" />
-			<position29 state="0" />
-			<position30 state="0" />
-			<position31 state="0" />
-			<position32 state="0" />
-			<position33 state="0" />
-			<position34 state="0" />
-			<position35 state="0" />
-			<position36 state="0" />
-			<position37 state="0" />
-			<position38 state="0" />
-			<position39 state="0" />
-			<position40 state="0" />
-			<position41 state="0" />
-			<position42 state="0" />
-		</coins>
 	</entities>
 </game_state>

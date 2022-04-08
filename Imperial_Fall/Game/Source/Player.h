@@ -23,7 +23,7 @@ public:
 	virtual ~Player();
 
 private:
-	void InitCustomEntity();
+	void InitCustomEntity(int npc);
 
 	bool PreUpdate();
 
@@ -53,6 +53,11 @@ private:
 	void SetCompanion1LookDir(int lookDir);
 	void SetCompanion2LookDir(int lookDir);
 
+	bool DeleteEntity();
+	bool IsPlayerEnabled()
+	{
+		return player_enabled;
+	}
 
 	void ImpulsePlayer();
 
@@ -69,6 +74,9 @@ private:
 	float speed = 0.3f;
 	bool collision_active;
 	b2Fixture* bodyFixture;
+
+	bool player_enabled = true;
+	bool plan_to_delete = false;
 
 public:
 	Animation* currentAnimation = NULL;

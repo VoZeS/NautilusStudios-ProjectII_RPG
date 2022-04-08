@@ -89,18 +89,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Coins.cpp" />
+    <ClCompile Include="Source\Combat_Entities.cpp" />
+    <ClCompile Include="Source\Combat_Manager.cpp" />
+    <ClCompile Include="Source\Combat_Menu.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
     <ClCompile Include="Source\Frontground.cpp" />
-    <ClCompile Include="Source\Hearts.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Menu.cpp" />
+    <ClCompile Include="Source\NPC.cpp" />
+    <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\Particles.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
@@ -111,14 +115,18 @@
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
-    <ClInclude Include="Source\Coins.h" />
+    <ClInclude Include="Source\Combat_Entities.h" />
+    <ClInclude Include="Source\Combat_Manager.h" />
+    <ClInclude Include="Source\Combat_Menu.h" />
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\Entities.h" />
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Frontground.h" />
-    <ClInclude Include="Source\Hearts.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Menu.h" />
+    <ClInclude Include="Source\NPC.h" />
+    <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\Particles.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Physics.h" />
@@ -130,6 +138,7 @@
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Render.h" />
+    <ClInclude Include="Source\Skills.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Window.h" />
