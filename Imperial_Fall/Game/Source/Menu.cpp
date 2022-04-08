@@ -15,6 +15,71 @@
 Menu::Menu() : Module()
 {
 	name.Create("menu");
+
+	torch_selection_anim.PushBack({ 0,0,33,49 });
+	torch_selection_anim.PushBack({ 35,0,33,49 });
+	torch_selection_anim.PushBack({ 70,0,33,49 });
+	torch_selection_anim.speed = 0.1f;
+	torch_selection_anim.loop = true;
+
+    torch_light_1_anim.PushBack({ 0,0,460,240 });
+	torch_light_1_anim.PushBack({ 490,0,460,240 });
+	torch_light_1_anim.PushBack({ 1000,0,460,240 });
+	torch_light_1_anim.speed = 0.165f;
+	torch_light_1_anim.loop = true;
+
+	torch_light_2_anim.PushBack({ 0,0,570,182 });
+	torch_light_2_anim.PushBack({ 566,0,570,182 });
+	torch_light_2_anim.PushBack({ 1140,0,570,182 });
+	torch_light_2_anim.speed = 0.165f;
+	torch_light_2_anim.loop = true;
+
+	torch_light_3_anim.PushBack({ 0,0,520,182 });
+	torch_light_3_anim.PushBack({ 522,0,520,182 });
+	torch_light_3_anim.PushBack({ 1023,0,520,182 });
+	torch_light_3_anim.speed = 0.165f;
+	torch_light_3_anim.loop = true;
+
+	torch_light_4_anim.PushBack({ 0,0,318,167 });
+	torch_light_4_anim.PushBack({ 318,0,318,167 });
+	torch_light_4_anim.PushBack({ 660,0,318,167 });
+	torch_light_4_anim.speed = 0.165f;
+	torch_light_4_anim.loop = true;
+
+
+	big_fire_anim.PushBack({ 244,0,231,720 });
+	big_fire_anim.PushBack({ 475,0,400,720 });
+	big_fire_anim.PushBack({ 0,0,244,720 });
+	
+	big_fire_anim.speed = 0.1f;
+	big_fire_anim.loop = true;
+
+	light_big_fire_anim.PushBack({ 4,0,518,405 });
+	light_big_fire_anim.PushBack({ 533,0,563,405 });
+	light_big_fire_anim.PushBack({ 1106,0,494,405 });
+	light_big_fire_anim.speed = 0.165f;
+	light_big_fire_anim.loop = true;
+
+
+	smook_big_fire_anim.PushBack({ 0,0,226,490 });
+	smook_big_fire_anim.PushBack({ 460,0,225,490 });
+	smook_big_fire_anim.PushBack({ 238,0,217,490 });
+	smook_big_fire_anim.speed = 0.06f;
+	smook_big_fire_anim.loop = true;
+
+
+	space_boton_anim.PushBack({ 10,0,195,121 });
+	space_boton_anim.PushBack({ 226,0,201,121 });
+	space_boton_anim.speed = 0.06f;
+	space_boton_anim.loop = true;
+
+
+
+	menu_play_anim.PushBack({ 31,0,286,597 });
+	menu_play_anim.PushBack({ 345,0,290,597 });
+	menu_play_anim.PushBack({ 681,0,286,597 });
+	menu_play_anim.speed = 0.2f;
+	menu_play_anim.loop = false;
 }
 
 // Destructor
@@ -33,8 +98,10 @@ bool Menu::Start()
 {
 	r = { 0, 0, 1280, 720 };
 
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	PauseMenuHUD = { 100,500,400,720 }; //Cuadro Menu Pause
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ Ã§Ã¼Ã©Ã¢Ã¤Ã aÃ§ÃªÃ«Ã¨Ã¯Ã®Ã¬Ã¤aÃ©Ã†Ã¦Ã´Ã¶Ã²Ã»Ã¹" };
 	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
+
 
 	paused = false;
 	settings = false;
@@ -46,6 +113,8 @@ bool Menu::Start()
 	fullscreen = false;
 	vsync = false;
 	credits = false;
+	intro = false;
+	subplaymenu = false;
 
 	pause_buttons[0].state = 1;
 	menu_buttons[0].state = 1;
@@ -92,29 +161,66 @@ bool Menu::Start()
 	lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 600;
 	lose_buttons[1].rect.y = (int)win_h / 2 + 200;
 
-	pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
-	pause_buttons[1].tex = app->tex->Load("Assets/textures/Settings.png"); // Settings
-	pause_buttons[2].tex = app->tex->Load("Assets/textures/Back.png"); // Back to Menu
-	pause_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Exit
+	pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue_In_game.png"); // Continue
+	pause_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+	pause_buttons[1].tex = app->tex->Load("Assets/textures/Settings_In_game.png"); // Settings
+	pause_buttons[1].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+	pause_buttons[2].tex = app->tex->Load("Assets/textures/Back_In_game.png"); // Back to Menu
+	pause_buttons[2].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+	pause_buttons[3].tex = app->tex->Load("Assets/textures/Exit_In_game.png"); // Exit
+	pause_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 	
 
 	dead_buttons[0].tex = app->tex->Load("Assets/textures/Load.png"); // Load
 	dead_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); //Exit
 
-	menu_buttons[0].tex = app->tex->Load("Assets/textures/Play.png"); // Play
-	menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
-	menu_buttons[1].tex = app->tex->Load("Assets/textures/Settings.png"); // Settings
-	menu_buttons[2].tex = app->tex->Load("Assets/textures/Credits.png"); // Credits
-	menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsImage.png"); // Credits
-	menu_buttons[3].tex = app->tex->Load("Assets/textures/Exit.png"); // Exit
+	//----------------------------------------------------------------MENU INICIO BOTONES------------------------
+	menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/PlaySprite.png"); // Play
+	menu_buttons[0].tex = app->tex->Load("Assets/textures/PlayDarkSprite.png"); // Play
+
+	//menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
+
+	menu_buttons[1].alt_tex = app->tex->Load("Assets/textures/SettingsSprite.png"); // Settings
+	menu_buttons[1].tex = app->tex->Load("Assets/textures/SettingsDarkSprite.png"); // Settings
+
+	menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsSprite.png"); // Credits
+	menu_buttons[2].tex = app->tex->Load("Assets/textures/CreditsDarkSprite.png"); // Credits
+
+	//menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsImage.png"); // Credits
+
+	menu_buttons[3].alt_tex = app->tex->Load("Assets/textures/ExitSprite.png"); // Exit
+	menu_buttons[3].tex = app->tex->Load("Assets/textures/ExitDarkSprite.png"); // Exit
+
+
+	menu_buttons[4].tex = app->tex->Load("Assets/textures/ContinueBlackSprite.png"); // Credits
+	menu_buttons[4].alt_tex = app->tex->Load("Assets/textures/ContinueSprite.png"); // Credits
+	menu_buttons[4].alt_tex2 = app->tex->Load("Assets/textures/Fx.png");
+
+	menu_buttons[5].tex = app->tex->Load("Assets/textures/NewGameBlackSprite.png"); // Credits
+	menu_buttons[5].alt_tex = app->tex->Load("Assets/textures/NewGameSprite.png"); // Credits
+	//----------------------------------------------------------------
 
 	settings_buttons[0].alt_tex = settings_buttons[1].alt_tex = app->tex->Load("Assets/textures/Slider.png"); // Slider
+
 	settings_buttons[0].tex = app->tex->Load("Assets/textures/Sound.png"); // Audio
+	settings_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+	settings_buttons[0].alt_tex2 = app->tex->Load("Assets/textures/SoundSprite.png");
+
 	settings_buttons[1].tex = app->tex->Load("Assets/textures/Fx.png"); // Fx slider
-	settings_buttons[2].tex = app->tex->Load("Assets/textures/Fullscreen_no.png"); // Fullscreen
-	settings_buttons[2].alt_tex = app->tex->Load("Assets/textures/Fullscreen_si.png"); // Fullscreen
-	settings_buttons[3].tex = app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync
-	settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync
+	settings_buttons[1].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+	settings_buttons[1].alt_tex2 = app->tex->Load("Assets/textures/FxSprite.png");
+
+	settings_buttons[2].tex = app->tex->Load("Assets/textures/Fullscreen_no.png"); // Fullscreen No
+	settings_buttons[2].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png"); // Fullscreen No Selec
+	settings_buttons[2].alt_tex = app->tex->Load("Assets/textures/Fullscreen_si.png"); // Fullscreen Si
+	
+
+	settings_buttons[3].tex = app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync No
+	settings_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+	settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync Si
 
 	win_button.tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
 	lose_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Try again
@@ -123,81 +229,131 @@ bool Menu::Start()
 	combat_win = app->tex->Load("Assets/textures/Game_Over.png"); 
 	combat_lose = app->tex->Load("Assets/textures/Dead_Image.png");
 
+
+	torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
+	light_fire1 = app->tex->Load("Assets/textures/Torch1_light.png");
+	light_fire2 = app->tex->Load("Assets/textures/Torch2_light.png");
+	light_fire3 = app->tex->Load("Assets/textures/Torch3_light.png");
+	light_fire4 = app->tex->Load("Assets/textures/Torch4_light.png");
+
+	big_fire = app->tex->Load("Assets/textures/Big_Fire.png");
+	big_fire_light = app->tex->Load("Assets/textures/Big_Fire_Light.png");
+	smook_big_fire = app->tex->Load("Assets/textures/Smoke.png");
+
+	space_boton = app->tex->Load("Assets/textures/Space_Boton_Anim.png");
+
+
+	menu_in_game = app->tex->Load("Assets/textures/OpcionesInGame.png");
+	
+
+	menu_play = app->tex->Load("Assets/textures/Menu_Play.png");
+
+
+	team_photo = app->tex->Load("Assets/textures/TeamPhoto.png");
+
+	
+
 	return true;
 }
 
 // Called each loop iteration
 bool Menu::PreUpdate()
 {
+
+	LOG("%d", chosed);
+
 	intro = app->scene->GetStartScreenState();
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN  && !dead && intro == false)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
 	{
 		paused = !paused;
+	
 	}
+
+	if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		subplaymenu = false;
+
+	if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		credits = false;
 
 	if (settings && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
+		subplaymenu = false;
 		settings = false;
+		
+
 	}
-	
+
+	if (app->scene->esc == true) {
+
 	int x, y;
 	app->input->GetMousePosition(x, y);
+
 	float cx = -app->render->camera.x;
 	float cy = -app->render->camera.y;
-	for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
-	{
-		SDL_Rect rect = pause_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-		{
-			if (paused)
-			{
-				//app->audio->PlayFx(hover_sound);
-			}
-			chosed = i;
-			pause_buttons[i].state = 1;
-		}
-		else 
-		{
-			pause_buttons[i].state = 0;
-		}
-	}
 
-	for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
+	if (paused)
 	{
-		SDL_Rect rect = menu_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
-			if (intro)
+			SDL_Rect rect = pause_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				//app->audio->PlayFx(hover_sound);
+				if (paused)
+				{
+					app->audio->PlayFx(hover_sound);
+				}
+				chosed = i;
+				pause_buttons[i].state = 1;
 			}
-			chosed = i;
-			menu_buttons[i].state = 1;
-		}
-		else
-		{
-			menu_buttons[i].state = 0;
+			else
+			{
+				pause_buttons[i].state = 0;
+			}
 		}
 	}
-
-	for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+	else if (intro && !settings)
 	{
-		SDL_Rect rect = settings_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+		for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 		{
-			if (settings)
+			SDL_Rect rect = menu_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				//app->audio->PlayFx(hover_sound);
+				if (intro && !settings &&!subplaymenu && !credits)
+				{
+					app->audio->PlayFx(hover_sound);
+				}
+				chosed = i;
+				menu_buttons[i].state = 1;
 			}
-			chosed = i;
-			settings_buttons[i].state = 1;
-		}
-		else
-		{
-			settings_buttons[i].state = 0;
+			else
+			{
+				menu_buttons[i].state = 0;
+			}
 		}
 	}
+	
+	if (settings) 
+	{
+		for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+		{
+			SDL_Rect rect = settings_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			{
+				if (settings)
+				{
+					app->audio->PlayFx(hover_sound);
+				}
+				chosed = i;
+				settings_buttons[i].state = 1;
+			}
+			else
+			{
+				settings_buttons[i].state = 0;
+			}
+		}
+	}
+	
 
 	for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
 	{
@@ -240,13 +396,30 @@ bool Menu::PreUpdate()
 			lose_buttons[i].state = 0;
 		}
 	}
-
+}
 	return true;
 }
 
 // Called each loop iteration
 bool Menu::Update(float dt)
 {
+	// ------------------------------------- Anims Update
+	torch_selection_anim.Update();
+	torch_light_1_anim.Update();
+	torch_light_2_anim.Update();
+	torch_light_3_anim.Update();
+	torch_light_4_anim.Update();
+
+
+	big_fire_anim.Update();
+	light_big_fire_anim.Update();
+	smook_big_fire_anim.Update();
+	space_boton_anim.Update();
+
+
+	
+
+	if (app->scene->esc == true) {
 	// pause buttons
 	if (paused && !intro && !settings)
 	{
@@ -255,36 +428,71 @@ bool Menu::Update(float dt)
 			app->audio->PlayFx(click_sound);
 			switch (chosed)
 			{
-			case 0: 
+			case 0:
 				paused = false;
+				started = true;
 				break;
 			case 1:
 				settings = true;
+				paused = true;
+				started = true;
+
+			
+				//app->scene->opciones = true;
 				break;
 			case 2:
 				app->scene->ReturnStartScreen();
+				
 				paused = false;
 				break;
 			case 3:
 				return false;
 				break;
 			}
-			
+
 			pause_buttons[chosed].state = 2;
 		}
 	}
 
 	//menu buttons
-	if (intro && !settings)
+	if (intro && !settings && !credits)
 	{
+		
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && menu_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
 			switch (chosed)
 			{
 			case 0:
-				if (!started)
+
+				subplaymenu = true;
+
+
+				break;
+			case 1:
+				if(!subplaymenu)
+				settings = true;
+				//app->scene->daleZom1 = true;
+					break;
+			case 2:
+				if (!subplaymenu)
 				{
+					credits = !credits;
+					settings = false;
+				}
+				
+				break;
+			case 3:
+				return false;
+				break;
+
+				//PLAY AND CONTINUE
+			case 4:
+
+				if (!started && !firstime)
+				{
+
+
 					app->scene->PassLevel(1);
 					app->entities->GetPlayer()->SetPlayerLookDir(1);
 					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
@@ -295,20 +503,38 @@ bool Menu::Update(float dt)
 					intro = false;
 					paused = false;
 					started = true;
+					subplaymenu = false;
+
 				}
-				else
+				
+
+				break;
+
+
+           //NEW GAME
+			case 5:
+
+				if (!started && firstime)
 				{
-					app->scene->QuitStartScreen();
-					app->LoadGameRequest();
+
+					app->scene->PassLevel(1);
+					app->entities->GetPlayer()->SetPlayerLookDir(0);
+					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
+					app->entities->GetPlayer()->SetCompanion0LookDir(0);
+					app->entities->GetPlayer()->SetCompanion1LookDir(0);
+					app->entities->GetPlayer()->SetCompanion2LookDir(0);
+					saving = false;
+					intro = false;
+					paused = false;
+					started = true;
+					firstime = false;
+					subplaymenu = false;
+
 				}
-				break;
-			case 1:
-				settings = true;
-			case 2:
-				credits = !credits;
-				break;
-			case 3:
-				return false;
+				
 				break;
 			}
 
@@ -319,49 +545,51 @@ bool Menu::Update(float dt)
 	//settings buttons
 	if (settings)
 	{
+		subplaymenu = false;
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && settings_buttons[chosed].state == 1)
 		{
-			app->audio->PlayFx(click_sound);
-			switch (chosed)
-			{
-			case 0:
-				slider = !slider;
-				break;
-			case 1:
-				slider2 = !slider2;
-				break;
-			case 2:
-				fullscreen = !fullscreen;
-				if (fullscreen)
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
 				{
-					SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				case 0:
+					slider = !slider;
+					break;
+				case 1:
+					slider2 = !slider2;
+					break;
+				case 2:
+					fullscreen = !fullscreen;
+					if (fullscreen)
+					{
+						SDL_SetWindowFullscreen(app->win->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+					}
+					else
+					{
+						SDL_SetWindowFullscreen(app->win->window, 0);
+					}
+					break;
+				case 3:
+					vsync = !vsync;
+					if (vsync)
+					{
+						// 1 to activate, 0 to deactivate
+						SDL_GL_SetSwapInterval(1);
+					}
+					else
+					{
+						SDL_GL_SetSwapInterval(0);
+					}
+					break;
 				}
-				else
-				{
-					SDL_SetWindowFullscreen(app->win->window, 0);
-				}
-				break;
-			case 3:
-				vsync = !vsync;
-				if (vsync)
-				{
-					// 1 to activate, 0 to deactivate
-					SDL_GL_SetSwapInterval(1);
-				}
-				else
-				{
-					SDL_GL_SetSwapInterval(0);
-				}
-				break;
-			}
-
-			settings_buttons[chosed].state = 2;
+				settings_buttons[chosed].state = 2;
 		}
+	
 	}
 
 	// fade at load
 	if (loading)
 	{
+		subplaymenu = false;
 		load_cd--;
 		if (load_cd <= 0)
 		{
@@ -374,6 +602,7 @@ bool Menu::Update(float dt)
 
 	if (saving)
 	{
+		subplaymenu = false;
 		save_cd--;
 		if (save_cd <= 0)
 		{
@@ -383,10 +612,11 @@ bool Menu::Update(float dt)
 			paused = false;
 		}
 	}
-	
+
 	// dead buttons
 	if (dead && !loading)
 	{
+		subplaymenu = false;
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && dead_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
@@ -418,6 +648,8 @@ bool Menu::Update(float dt)
 	}
 	else if (lose)
 	{
+		subplaymenu = false;
+
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && lose_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
@@ -437,6 +669,8 @@ bool Menu::Update(float dt)
 		}
 	}
 
+	
+}
 	return true;
 }
 
@@ -445,197 +679,397 @@ bool Menu::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+	
 	r.x = c_x;
 	r.y = c_y;
 
-	if (app->scene->GetStartScreenState() != NULL)
-	{
-		app->render->DrawTexture(app->tex->start_menu, 0 + c_x, 0 + c_y);
+	if (app->scene->fuegoSeguir == true ) {
+		seguir-=10;
+	
 	}
-
-	if (paused && !intro && !settings)
+	if (seguir <= 900 )
 	{
-		if (intro == false)
+		app->scene->fuegoSeguir = false;
+	}
+	if (settings==false && !started) {
+
+	
+		app->render->DrawTexture(big_fire_light, c_x + 752, c_y + seguir + 930, &(light_big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(big_fire, c_x + 897, c_y + seguir +585, &(big_fire_anim.GetCurrentFrame()));
+		app->render->DrawTexture(smook_big_fire, c_x + 960, c_y + seguir + 300, &(smook_big_fire_anim.GetCurrentFrame()));
+
+		//Boton que sale en la primera pantalla para pasarla
+		if(app->scene->space_boton)
+		app->render->DrawTexture(space_boton, c_x+500 , c_y + seguir+595, &(space_boton_anim.GetCurrentFrame()));
+		
+	}
+	
+	
+	//---------------------------------------------------------HUD PAUSE---------------------------------------------
+	//Dimensiones Hud Pause
+	PauseMenuHUD.x = c_x+ c_x_menu;
+	PauseMenuHUD.y = c_y;
+
+	if (app->scene->esc == true ) {
+
+
+		//Hace que el menu se quite
+		if (!paused &&!settings)
+		{
+			if (c_x_menu >= 90 )
+			{
+				c_x_menu -= 35.0f;
+
+				
+			}
+		
+			
+		}
+
+		//Fondo Negro transparente que sale cuando pausas
+		if (paused)
 		{
 			app->render->DrawRectangle(r, 0, 0, 0, 200);
 		}
 
-		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
+		if(started)
+		//Cuando pausas se pone un fondo verde (Substituir en un futuro por un HUD creado)
+		app->render->DrawTexture(menu_in_game, PauseMenuHUD.x-475 , PauseMenuHUD.y + 40);
+
+
+		//Hace que el menu aparezca
+		if (paused && !intro && !settings)
 		{
-			pause_buttons[i].rect.x = ((int)win_w / 2) - (pause_buttons[i].rect.w / 2) + c_x -300;
-			pause_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1) + c_y;
-
-			if (pause_buttons[i].state == 0)
+		
+			if (desMenu == true && c_x_menu <= 470)
 			{
-				app->render->DrawRectangle(pause_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-			}
-			else if(pause_buttons[i].state == 1)
-			{
-				app->render->DrawRectangle(pause_buttons[i].rect, inColorR, inColorG, inColorB);
-			}
-			else if (pause_buttons[i].state == 2)
-			{
-				app->render->DrawRectangle(pause_buttons[i].rect, pColorR, pColorG, pColorB);
+				c_x_menu += 15.0f;
 			}
 
-			app->render->DrawTexture(pause_buttons[i].tex, pause_buttons[i].rect.x + 10, pause_buttons[i].rect.y + 10);
-		}
-	}
-
-	if (intro && !settings)
-	{
-		for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
-		{
-			menu_buttons[i].rect.x = ((int)win_w / 2) - (menu_buttons[i].rect.w / 2) + c_x - 300;
-			menu_buttons[i].rect.y = ((int)win_h / (NUM_MENU_BUTTONS + 1)) * (i + 1) + c_y;
-
-			if (menu_buttons[i].state == 0)
+			if (c_x_menu >= -50)
 			{
-				app->render->DrawRectangle(menu_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-			}
-			else if (menu_buttons[i].state == 1)
-			{
-				app->render->DrawRectangle(menu_buttons[i].rect, inColorR, inColorG, inColorB);
-			}
-			else if (menu_buttons[i].state == 2)
-			{
-				app->render->DrawRectangle(menu_buttons[i].rect, pColorR, pColorG, pColorB);
+				desMenu = false;
 			}
 
-			if (credits)
+			if (paused)
 			{
-				app->render->DrawTexture(menu_buttons[i].alt_tex, 1000, 500);
+				desMenu = true;	
 			}
 
-			if (i == 0)
+	 //--------------------BOTONES MENU SCAPE IN GAME
+			for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 			{
-				if (started)
+				//Boton Continuar
+				pause_buttons[0].rect.x = c_x+ c_x_menu -460;
+				pause_buttons[0].rect.y = c_y+170;
+
+				//Boton Opciones
+				pause_buttons[1].rect.x = c_x + c_x_menu - 460;
+				pause_buttons[1].rect.y = c_y+270;
+
+				//Boton Back to menu
+				pause_buttons[2].rect.x = c_x + c_x_menu - 460;
+				pause_buttons[2].rect.y = c_y+370;
+
+				//Boton Salir
+				pause_buttons[3].rect.x = c_x + c_x_menu - 460;
+				pause_buttons[3].rect.y = c_y +470;
+				
+				//Recuadro en Botones permanente
+				if (pause_buttons[i].state == 0)
 				{
-					app->render->DrawTexture(menu_buttons[i].alt_tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y + 10);
+					
+				}
+				//Recuadro en Botones Si pasas por encima
+				else if (pause_buttons[0].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[0].alt_tex_selec, pause_buttons[0].rect.x, pause_buttons[0].rect.y+10 );
+				}
+				else if (pause_buttons[1].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[1].alt_tex_selec, pause_buttons[1].rect.x, pause_buttons[1].rect.y+10);
+				}
+				else if (pause_buttons[2].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[2].alt_tex_selec, pause_buttons[2].rect.x, pause_buttons[2].rect.y+20);
+				}
+				else if (pause_buttons[3].state == 1)
+				{
+					app->render->DrawTexture(pause_buttons[3].alt_tex_selec, pause_buttons[3].rect.x, pause_buttons[3].rect.y+10);
+				}
+
+				//Recuadro en Botones cuando haces click Izquiero
+				else if (pause_buttons[i].state == 2)
+				{
+					app->render->DrawRectangle(pause_buttons[i].rect, pColorR, pColorG, pColorB);
+				}
+
+				//Imprime las imagenes de los botones
+				app->render->DrawTexture(pause_buttons[i].tex, pause_buttons[i].rect.x + 10, pause_buttons[i].rect.y + 10);
+			}
+		}
+	//------------------------------------------------------
+	
+
+		//----------------------------------------------------HUD INICIO------------------------------------------
+		if (intro && !settings)
+		{
+			if (subplaymenu)
+			{
+				app->render->DrawRectangle(r, 0, 0, 0, 200);
+				menu_play_anim.Update();
+				app->render->DrawTexture(menu_play, c_x + c_x_menu-10, c_y, &(menu_play_anim.GetCurrentFrame()));
+		
+				menu_buttons[4].rect.x = c_x + 70;
+				menu_buttons[4].rect.y = c_y + 150;
+
+
+				menu_buttons[5].rect.x = c_x + 70;
+				menu_buttons[5].rect.y = c_y + 250;
+
+				if(menu_buttons[4].state == 0 && subplaymenu && firstime)
+					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
+
+				if (menu_buttons[4].state == 0 && subplaymenu && !firstime)
+					app->render->DrawTexture(menu_buttons[4].tex, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
+
+				if (menu_buttons[5].state == 0 && subplaymenu)
+					app->render->DrawTexture(menu_buttons[5].tex, menu_buttons[5].rect.x + 10, menu_buttons[5].rect.y - 5);
+
+
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[4].state == 1 && subplaymenu && firstime)
+				{
+					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
+				}
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[4].state == 1 && subplaymenu && !firstime)
+				{
+					app->render->DrawTexture(menu_buttons[4].alt_tex, menu_buttons[4].rect.x, menu_buttons[4].rect.y - 20);
+				}
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[5].state == 1 && subplaymenu)
+				{
+					app->render->DrawTexture(menu_buttons[5].alt_tex, menu_buttons[5].rect.x, menu_buttons[5].rect.y - 20);
+				}
+
+			}
+	
+				//Boton Jugar
+				menu_buttons[0].rect.x =c_x + 70 ;
+				menu_buttons[0].rect.y = c_y +150;
+
+				///Boton Opciones
+				menu_buttons[1].rect.x = c_x + 50;
+				menu_buttons[1].rect.y = c_y + 385;
+
+				//Boton Creditos
+				menu_buttons[2].rect.x = c_x + 65;
+				menu_buttons[2].rect.y = c_y + 590;
+
+				//Boton Salir
+				menu_buttons[3].rect.x = c_x + 525;
+				menu_buttons[3].rect.y = c_y+ 590;
+
+				
+
+				if (!subplaymenu)
+				{
+					menu_buttons[4].rect.x = c_x + 7000;
+					menu_buttons[4].rect.y = c_y + 1500;
+					menu_buttons[5].rect.x = c_x + 7000;
+					menu_buttons[5].rect.y = c_y + 2500;
+					menu_play_anim.Reset();
+				}
+				
+
+				//Recuadro en Botones permanente
+				if (menu_buttons[0].state == 0 && !subplaymenu)
+					app->render->DrawTexture(menu_buttons[0].tex, menu_buttons[0].rect.x + 10, menu_buttons[0].rect.y - 5);
+
+				if (menu_buttons[1].state == 0 && !subplaymenu)
+					app->render->DrawTexture(menu_buttons[1].tex, menu_buttons[1].rect.x + 10, menu_buttons[1].rect.y - 5);
+
+				if (menu_buttons[2].state == 0 && !subplaymenu)
+					app->render->DrawTexture(menu_buttons[2].tex, menu_buttons[2].rect.x + 10, menu_buttons[2].rect.y - 5);
+
+				if (menu_buttons[3].state == 0 && !subplaymenu)
+					app->render->DrawTexture(menu_buttons[3].tex, menu_buttons[3].rect.x + 10, menu_buttons[3].rect.y - 5);
+
+
+				
+				
+
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[0].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(menu_buttons[0].alt_tex, menu_buttons[0].rect.x, menu_buttons[0].rect.y - 20);
+				}
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[1].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(menu_buttons[1].alt_tex, menu_buttons[1].rect.x, menu_buttons[1].rect.y - 20);
+				}
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[2].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(menu_buttons[2].alt_tex, menu_buttons[2].rect.x, menu_buttons[2].rect.y - 20);
+				}
+				//Se iluminan las letras cuando pasas por encima
+				if (menu_buttons[3].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(menu_buttons[3].alt_tex, menu_buttons[3].rect.x, menu_buttons[3].rect.y - 20);
+				}
+				
+				
+
+				//Recuadro en Botones Si pasas por encima
+				//Boton Jugar Antorcha
+				 if (menu_buttons[0].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(light_fire1, menu_buttons[0].rect.x-142, menu_buttons[0].rect.y - 87, &(torch_light_1_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[0].rect.x + 280, menu_buttons[0].rect.y+20, &(torch_selection_anim.GetCurrentFrame()));
+					
+				}
+				//Boton Opciones Antorcha
+				else if (menu_buttons[1].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(light_fire2, menu_buttons[1].rect.x - 90, menu_buttons[1].rect.y - 80, &(torch_light_2_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[1].rect.x +348, menu_buttons[1].rect.y-10, &(torch_selection_anim.GetCurrentFrame()));
+
+				}
+				//Boton Creditos Antorcha
+				else if (menu_buttons[2].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(light_fire3, menu_buttons[2].rect.x - 140, menu_buttons[2].rect.y - 80, &(torch_light_3_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[2].rect.x - 38, menu_buttons[2].rect.y+20, &(torch_selection_anim.GetCurrentFrame()));
+
+				}
+				//Boton Salir Antorcha
+				else if (menu_buttons[3].state == 1 && !subplaymenu)
+				{
+					app->render->DrawTexture(light_fire4, menu_buttons[3].rect.x - 65, menu_buttons[3].rect.y-67, &(torch_light_4_anim.GetCurrentFrame()));
+					app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 164, menu_buttons[3].rect.y-25, &(torch_selection_anim.GetCurrentFrame()));
+				
+				}
+
+				//Recuadro en Botones cuando haces click Izquiero
+				else if (menu_buttons[0].state == 2)
+				{
+
+				}
+
+				if (credits)
+				{
+					app->render->DrawTexture(team_photo, PauseMenuHUD.x-100, PauseMenuHUD.y);
+				}
+			
+
+		}
+		
+		//---------------------------------------------------------HUD PAUSE---------------------------------------------
+		if (settings )//&& app->scene->opciones==true)
+		{
+		
+			int z, w;
+			app->input->GetMousePosition(z, w);
+			
+
+			for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+			{
+				
+				
+				settings_buttons[0].rect.x = c_x+20;
+				settings_buttons[0].rect.y = c_y + 200;
+
+				settings_buttons[1].rect.x = c_x + 20;
+				settings_buttons[1].rect.y = c_y + 320;
+
+				settings_buttons[2].rect.x = c_x + 20;
+				settings_buttons[2].rect.y = c_y + 400;
+
+				settings_buttons[3].rect.x = c_x + 20;
+				settings_buttons[3].rect.y = c_y + 500;
+
+				app->render->DrawTexture(settings_buttons[0].alt_tex2, settings_buttons[0].rect.x + 10, settings_buttons[0].rect.y-40);
+				app->render->DrawTexture(settings_buttons[1].alt_tex2, settings_buttons[1].rect.x + 10, settings_buttons[1].rect.y-40);
+
+				if (settings_buttons[i].state == 0)
+				{
+					
+				}
+				 else if (settings_buttons[0].state == 1)
+					 app->render->DrawTexture(settings_buttons[0].alt_tex_selec, settings_buttons[0].rect.x + 10, settings_buttons[0].rect.y-67 );
+
+				 else if (settings_buttons[1].state == 1)
+					app->render->DrawTexture(settings_buttons[1].alt_tex_selec, settings_buttons[1].rect.x + 10, settings_buttons[1].rect.y -60);
+
+				 else if (settings_buttons[2].state == 1)
+					app->render->DrawTexture(settings_buttons[2].alt_tex_selec, settings_buttons[2].rect.x + 10, settings_buttons[2].rect.y + 15);
+
+				 else if (settings_buttons[3].state == 1)
+					app->render->DrawTexture(settings_buttons[3].alt_tex_selec, settings_buttons[3].rect.x + 10, settings_buttons[3].rect.y + 5);
+
+
+			  else if (settings_buttons[i].state == 2)
+				{
+		
+				}
+
+				if (slider)
+				{
+					if (z < 25)
+					{
+						z = 25;
+					}
+					else if (z > 215)
+					{
+						z = 215;
+					}
+					xbarra = z;
+					app->render->DrawTexture(settings_buttons[0].alt_tex, z + c_x, settings_buttons[0].rect.y );
+					app->audio->SetMusic((z - 0) / 2);
+				}
+				else
+
+				{
+					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x, settings_buttons[0].rect.y );
+				}
+
+				if (slider2)
+				{
+					xbarra2 = z;
+					if (z < 30)
+					{
+						z = 30;
+					}
+					else if (z > 220)
+					{
+						z = 220;
+					}
+					
+					app->render->DrawTexture(settings_buttons[1].alt_tex, z + c_x, settings_buttons[1].rect.y );
+					app->audio->SetFX((z - 100) / 2);
 				}
 				else
 				{
-					app->render->DrawTexture(menu_buttons[i].tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y + 10);
+					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x, settings_buttons[1].rect.y );
 				}
-				
-			}
-			else
-			{
-				app->render->DrawTexture(menu_buttons[i].tex, menu_buttons[i].rect.x + 10, menu_buttons[i].rect.y + 10);
+
+				if (vsync && i == 3)
+				{
+					app->render->DrawTexture(settings_buttons[i].alt_tex, settings_buttons[i].rect.x + 10, settings_buttons[i].rect.y + 10);
+				}
+
+				if (fullscreen && i == 2)
+				{
+					app->render->DrawTexture(settings_buttons[i].alt_tex, settings_buttons[i].rect.x + 10, settings_buttons[i].rect.y + 10);
+				}
+
+				app->render->DrawTexture(settings_buttons[i].tex, settings_buttons[i].rect.x + 10, settings_buttons[i].rect.y + 10);
+
 			}
 		}
-	}
-
-	if (settings)
-	{
-		
-		int z, w;
-		app->input->GetMousePosition(z, w);
-
-		if (intro == false)
-		{
-			app->render->DrawRectangle(r, 0, 0, 0, 200);
-		}
-
-		for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
-		{
-			settings_buttons[i].rect.x = ((int)win_w / 2) - (settings_buttons[i].rect.w / 2) + c_x;
-			settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1) + c_y;
-
-			if (settings_buttons[i].state == 0)
-			{
-				app->render->DrawRectangle(settings_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-			}
-			else if (settings_buttons[i].state == 1)
-			{
-				app->render->DrawRectangle(settings_buttons[i].rect, inColorR, inColorG, inColorB);
-			}
-			else if (settings_buttons[i].state == 2)
-			{
-				app->render->DrawRectangle(settings_buttons[i].rect, pColorR, pColorG, pColorB);
-			}
-
-			if (slider)
-			{
-				if (z < 540)
-				{
-					z = 540;
-				}
-				else if (z > 729)
-				{
-					z = 729;
-				}
-				xbarra = z;
-				app->render->DrawTexture(settings_buttons[0].alt_tex, z + c_x, settings_buttons[0].rect.y + 10);
-				app->audio->SetMusic((z - 540) / 2);
-			}
-			else
-			{
-				app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x, settings_buttons[0].rect.y + 10);
-			}
-
-			if (slider2)
-			{
-				if (z < 540)
-				{
-					z = 540;
-				}
-				else if (z > 729)
-				{
-					z = 729;
-				}
-				xbarra2 = z;
-				app->render->DrawTexture(settings_buttons[1].alt_tex, z + c_x, settings_buttons[1].rect.y + 10);
-				app->audio->SetFX((z - 540) / 2);
-			}
-			else
-			{
-				app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x, settings_buttons[1].rect.y + 10);
-			}
-
-			if (vsync && i == 3)
-			{
-				app->render->DrawTexture(settings_buttons[i].alt_tex, settings_buttons[i].rect.x + 10, settings_buttons[i].rect.y + 10);
-			}
-
-			if (fullscreen && i == 2)
-			{
-				app->render->DrawTexture(settings_buttons[i].alt_tex, settings_buttons[i].rect.x + 10, settings_buttons[i].rect.y + 10);
-			}
-			
-			app->render->DrawTexture(settings_buttons[i].tex, settings_buttons[i].rect.x + 10, settings_buttons[i].rect.y + 10);
-			
-		}
-	}
-
-	/*if (dead)
-	{
-		app->render->DrawRectangle(r, 0, 0, 0, 200);
-
-		app->render->DrawTexture(gameOver, 0 + c_x, 75);
-		app->render->DrawTexture(cat, 950 + c_x, 800);
-
-		for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
-		{
-			dead_buttons[i].rect.x = ((int)win_w / 2) - (dead_buttons[i].rect.w / 2) + c_x;
-
-			if (dead_buttons[i].state == 0)
-			{
-				app->render->DrawRectangle(dead_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-			}
-			else if(dead_buttons[i].state == 1)
-			{
-				app->render->DrawRectangle(dead_buttons[i].rect, inColorR, inColorG, inColorB);
-			}
-			else if (dead_buttons[i].state == 2)
-			{
-				app->render->DrawRectangle(dead_buttons[i].rect, pColorR, pColorG, pColorB);
-			}
-
-			app->render->DrawTexture(dead_buttons[i].tex, dead_buttons[i].rect.x + 10, dead_buttons[i].rect.y + 10);
-		}
-	}*/
-
 
 	if (win)
 	{
@@ -692,7 +1126,6 @@ bool Menu::PostUpdate()
 		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, textFont, "restart battle");
 		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, textFont, "return to field");
 	}
-
 	return true;
 }
 

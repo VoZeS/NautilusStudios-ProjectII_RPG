@@ -38,19 +38,22 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	app->SaveGameRequest();
-
-	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
 	
+	c_y_menu = -app->render->camera.y +140; //Posicion de la camara en el inicio del juego
+
+	app->SaveGameRequest();
+	
+	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
+	settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 	LoadDialog();
 
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ Ã§Ã¼Ã©Ã¢Ã¤Ã aÃ§ÃªÃ«Ã¨Ã¯Ã®Ã¬Ã¤aÃ©Ã†Ã¦Ã´Ã¶Ã²Ã»Ã¹" };
 	textFont = app->fonts->Load("Assets/textures/Tipografia_Dialogos.png", lookupTableChars, 8);
 
-	char lookupTableCharsDialogs[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	char lookupTableCharsDialogs[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ Ã§Ã¼Ã©Ã¢Ã¤Ã aÃ§ÃªÃ«Ã¨Ã¯Ã®Ã¬Ã¤aÃ©Ã†Ã¦Ã´Ã¶Ã²Ã»Ã¹" };
 	textFontDialog = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableCharsDialogs, 8);
 
 	//DIALOGO RENATO VERTICAL SLICE
@@ -118,6 +121,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		PassLevel(1);
@@ -313,16 +317,130 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	
 	bool ret = true;
-
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
 
-	if (start_screen != NULL) 
+	SDL_Rect prueba;
+	SDL_Rect fondoNegro;
+	zom_w;
+	zom_h;
+	zom_x;
+	zom_y;
+	prueba = { zom_x,zom_y,zom_w,zom_h };
+	fondoNegro = { c_x,c_y,1280,720 };
+	
+	
+	//--------------------------------------MENU----------------------------
+
+
+	//Desplazamiento del fondo al inicio del juego
+	//Una vez pulses el Espacio entrara el menu de opciones
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || desMenu==true)
 	{
-		app->render->DrawTexture(start_screen, 0, 0);
+		space_boton = false;
+		desMenu = true;
+		c_y_menu -= 10.0f;
+		fuegoSeguir = true;
+
 	}
-	else
+
+	//Limite de donde la camara llegara al principio del juego
+	if (c_y_menu <= -555)
+	{
+		esc = true;
+		desMenu = false;
+		fuegoSeguir = false;
+    }
+
+	 //Primera pantalla menu
+	if (esc == false && app->menu->settings == false)
+	{
+
+		app->render->DrawTexture(start_screen, c_x, c_y_menu);
+		
+	}
+
+
+
+	//zoom prueba------------------------------------
+	/*
+	* 	if (daleZom1 == true ) {
+
+	
+		app->render->DrawRectangle(fondoNegro , 0, 0, 0);
+		zom_x += 25;
+		zom_y += 15;
+
+		zom_w -= 25*2;
+		zom_h -= 15*2;
+		app->render->DrawTexture(start_screen, c_x+zom_x, c_y+zom_y, &prueba);
+
+		if (zom_w <= 0 || zom_h <= 0)
+		{
+			daleZom1 = false;
+			daleZom2 = true;
+
+		}
+	
+	}
+
+	if ( daleZom2 == true) {
+	
+		app->render->DrawRectangle(fondoNegro, 0, 0, 0);
+
+		zom_x -= 25;
+		zom_y -= 15;
+
+	
+		zom_w += 25*2;
+		zom_h += 15*2;
+		app->render->DrawTexture(settings_screen, c_x + zom_x , c_y + zom_y, &prueba);
+		
+		if (zom_w >= 1280 || zom_h >= 720) {
+			daleZom2 = false;
+			opciones = true;
+		}
+	}
+
+	if ( opciones == true)
+	{
+	
+		app->render->DrawTexture(settings_screen, c_x, c_y);		
+	}
+	*/
+
+
+	
+
+	//----------------------------------------------------
+	
+	 //-------------------Settings
+	if (app->menu->settings == true)
+	{
+		
+		app->render->DrawTexture(settings_screen, c_x, c_y);
+	}
+	
+
+
+	
+
+	
+	//Segunda Pantalla Menu
+	if (start_screen != NULL && esc == true && app->menu->settings == false)
+	{
+		
+
+		app->render->DrawTexture(start_screen, c_x, c_y-700);
+		
+
+	}
+
+	//----------------------------------------------------------------------
+
+	 if(app->menu->started)
 	{
 		app->map->Draw();
 
@@ -402,6 +520,7 @@ bool Scene::PostUpdate()
 		{
 			letlengh = 0;
 		}*/
+
 	}
 	
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -455,8 +574,9 @@ bool Scene::QuitStartScreen()
 
 bool Scene::ReturnStartScreen()
 {
-	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
-
+	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
+	app->menu->started = false;
+	app->frontground->SetA_Black();
 	return true;
 }
 
