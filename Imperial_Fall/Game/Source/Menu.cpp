@@ -216,6 +216,9 @@ bool Menu::Start()
 
 	menu_play = app->tex->Load("Assets/textures/Menu_Play.png");
 
+
+	team_photo = app->tex->Load("Assets/textures/TeamPhoto.png");
+
 	
 
 	return true;
@@ -232,16 +235,20 @@ bool Menu::PreUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
 	{
 		paused = !paused;
-		
+	
 	}
 
 	if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		subplaymenu = false;
 
+	if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		credits = false;
+
 	if (settings && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		subplaymenu = false;
 		settings = false;
+		
 
 	}
 
@@ -280,7 +287,7 @@ bool Menu::PreUpdate()
 			SDL_Rect rect = menu_buttons[i].rect;
 			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				if (intro && !settings &&!subplaymenu)
+				if (intro && !settings &&!subplaymenu && !credits)
 				{
 					app->audio->PlayFx(hover_sound);
 				}
@@ -406,7 +413,7 @@ bool Menu::Update(float dt)
 	}
 
 	//menu buttons
-	if (intro && !settings)
+	if (intro && !settings && !credits)
 	{
 		
 		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && menu_buttons[chosed].state == 1)
@@ -427,7 +434,11 @@ bool Menu::Update(float dt)
 					break;
 			case 2:
 				if (!subplaymenu)
-				credits = !credits;
+				{
+					credits = !credits;
+					settings = false;
+				}
+				
 				break;
 			case 3:
 				return false;
@@ -874,7 +885,7 @@ bool Menu::PostUpdate()
 
 				if (credits)
 				{
-			
+					app->render->DrawTexture(team_photo, PauseMenuHUD.x-100, PauseMenuHUD.y);
 				}
 			
 

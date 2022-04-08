@@ -62,6 +62,8 @@ public:
 
 	SDL_Texture* menu_play = NULL;
 
+	SDL_Texture* team_photo = NULL;
+
 
 	SDL_Rect PauseMenuHUD;
 	SDL_Rect r;
