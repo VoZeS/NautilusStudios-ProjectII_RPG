@@ -509,7 +509,7 @@ void Player::HandleInput(float dt)
 
 
 		// Charge character
-		if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		/*if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			char_control = 0;
 		}
@@ -524,7 +524,7 @@ void Player::HandleInput(float dt)
 		else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 		{
 			char_control = 3;
-		}
+		}*/
 	}
 }
 
