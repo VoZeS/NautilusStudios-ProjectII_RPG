@@ -828,7 +828,8 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else if (skill.support_type == SUPPORT_TYPE::REVIVE)
 				{
-					// revive
+					objective->HealEntity(support);
+					objective->Revive();
 				}
 			}
 			else if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)

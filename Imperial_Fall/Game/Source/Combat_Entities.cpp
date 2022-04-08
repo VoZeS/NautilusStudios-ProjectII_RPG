@@ -868,7 +868,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	{
 		switch (skill_number)
 		{
-		case 0:
+		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Slash";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
@@ -905,6 +905,150 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.att_strenght = 0;
 			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
+			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Auto-Shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 10;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
+			break;
+		case 5: // level 2 skills
+			skill.owner = owner;
+			skill.skill_name = "Defensive Slash";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Taunt Insurance";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_type = BUFF_TYPE::TAUNT;
+			skill.buff_turns = 1;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Heavy Pierce Slash";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 25;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Great Auto-Shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 15;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
+			break;
+		case 9: // level 3 up root skills
+			skill.owner = owner;
+			skill.skill_name = "Heavy Defensive Slash";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 30;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 1;
+			break;
+		case 10:
+			skill.owner = owner;
+			skill.skill_name = "Extended Taunt";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::TAUNT;
+			skill.buff_turns = 2;
+			break;
+		case 11:
+			skill.owner = owner;
+			skill.skill_name = "Destructive Slash";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.skill_bonus = SKILL_BONUS::DESTROY_SHIELD;
+			break;
+		case 12:
+			skill.owner = owner;
+			skill.skill_name = "Extended Great Auto-Shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 25;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_turns = 2;
+			break;
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Spinning Slash";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 30;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			break;
+		case 14:
+			skill.owner = owner;
+			skill.skill_name = "Statue";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 50;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_type = BUFF_TYPE::TAUNT;
+			skill.buff_turns = 1;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Spinning Pierce Slash";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
+			break;
+		case 16:
+			skill.owner = owner;
+			skill.skill_name = "Revive";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 80;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::REVIVE;
 			break;
 		}
 	}

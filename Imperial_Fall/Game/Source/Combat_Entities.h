@@ -122,6 +122,11 @@ public:
 		return weak_to;
 	}
 
+	void Revive()
+	{
+		alive = 1;
+	}
+
 	void UpdateShield();
 
 	int GetType()
