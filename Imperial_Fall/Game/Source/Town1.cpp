@@ -44,7 +44,7 @@ bool Town1::Start()
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-
+		app->audio->PlayMusic("Assets/audio/music/gameplay.ogg");
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();

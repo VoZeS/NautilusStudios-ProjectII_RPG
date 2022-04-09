@@ -128,6 +128,8 @@ bool Menu::Start()
 	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 	hover_sound = app->audio->LoadFx("Assets/audio/fx/water.wav");
 
+	menu_music = app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+
 	for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 	{
 		pause_buttons[i].rect.x = ((int)win_w / 2) - (pause_buttons[i].rect.w / 2);
@@ -514,6 +516,7 @@ bool Menu::Update(float dt)
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && settings_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
+
 				switch (chosed)
 				{
 				case 0:

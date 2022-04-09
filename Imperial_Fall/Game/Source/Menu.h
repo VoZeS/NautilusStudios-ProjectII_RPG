@@ -150,6 +150,8 @@ private:
 	uint click_sound;
 	uint hover_sound;
 
+	uint menu_music;
+
 	void DisableAll();
 
 };
