@@ -27,6 +27,7 @@ void Entities::AddEntity(Entity* entity, ENTITY_TYPE type, fPoint p)
 {
 	entity->Init(type, p);
 	entities.Add(entity);
+	entities_state.Insert(true, )
 }
 
 // Called before render is available
@@ -156,7 +157,6 @@ bool Entities::PostUpdate()
 				{
 					app->physics->world->DestroyBody(entity->body);
 					entity->plan_to_delete = false;
-					app->SaveGameRequest();
 				}
 				continue;
 			}
@@ -231,7 +231,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int en1, int en2, int en3, int en4)
+void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index, int en1, int en2, int en3, int en4)
 {
 	fPoint p = { x, y };
 
@@ -269,25 +269,25 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int en1, 
 		break;
 	case ENTITY_TYPE::W_TEMPLAR:
 	{
-		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
 		AddEntity(enemy, ENTITY_TYPE::W_TEMPLAR, p);
 	}
 		break;
 	case ENTITY_TYPE::MUSHROOM:
 	{
-		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
 		AddEntity(enemy, ENTITY_TYPE::MUSHROOM, p);
 	}
 		break;
 	case ENTITY_TYPE::GOBLIN:
 	{
-		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
 		AddEntity(enemy, ENTITY_TYPE::GOBLIN, p);
 	}
 		break;
 	case ENTITY_TYPE::SKELETON:
 	{
-		Enemies* enemy = new Enemies(en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
 		AddEntity(enemy, ENTITY_TYPE::SKELETON, p);
 	}
 		break;
@@ -388,6 +388,7 @@ void Entities::KillEnemy()
 	{
 		combat_entity->alive = false;
 		combat_entity->plan_to_delete = true;
+		combat_entity->SaveSingleEnemy();
 		app->menu->kill_enemy = false;
 	}
 }
@@ -424,11 +425,11 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 
 	init = false;
 
-	if (type == ENTITY_TYPE::W_TEMPLAR || type == ENTITY_TYPE::MUSHROOM || type == ENTITY_TYPE::GOBLIN || type == ENTITY_TYPE::SKELETON)
+	/*if (type == ENTITY_TYPE::W_TEMPLAR || type == ENTITY_TYPE::MUSHROOM || type == ENTITY_TYPE::GOBLIN || type == ENTITY_TYPE::SKELETON)
 	{
 		p_in_array = app->entities->enemies_lenght;
 		app->entities->enemies_lenght++;
-	}
+	}*/
 }
 
 void Entity::InitCustomEntity(int npc)
@@ -537,4 +538,15 @@ void Entity::ImpulsePlayer()
 ENEMIES Entity::GetCombatEnemy(int n)
 {
 	return ENEMIES::NOTHING;
+}
+
+bool Entity::SaveSingleEnemy()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+
+	Save(saveGame.child("game_state").child("entities"));
+	saveGame.save_file(SAVE_STATE_FILENAME);
+
+	return result;
 }

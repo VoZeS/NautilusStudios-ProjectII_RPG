@@ -127,7 +127,7 @@ private:
 	pugi::xml_node configApp;
 
 	mutable bool saveGameRequested;
-	bool loadGameRequested;
+	
 
 	pugi::xml_document originSaveGame;
 	pugi::xml_document saveGame;
@@ -157,7 +157,7 @@ public:
 	float GetFPS();
 
 	void ToggleFPS();
-
+	bool loadGameRequested;
 };
 
 extern App* app;

@@ -17,7 +17,7 @@
 #include <time.h>
 
 // ENEMY
-Enemies::Enemies(int en1, int en2, int en3, int en4) : Entity()
+Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 {
 	switch (en1)
 	{
@@ -51,6 +51,8 @@ Enemies::Enemies(int en1, int en2, int en3, int en4) : Entity()
 	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
 	}
+
+	p_in_array = index;
 
 	// animations
 	mushroomAnim.PushBack({ 0, 0, 100, 125 });

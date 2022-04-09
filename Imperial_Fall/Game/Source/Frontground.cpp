@@ -80,7 +80,6 @@ bool Frontground::Update(float dt)
 		{
 			restart = 0;
 			return_black = true;
-			app->SaveGameRequest();
 			in_combat = 2;
 		}
 		else if (in_combat == 1 || in_combat == 2)
@@ -112,6 +111,7 @@ bool Frontground::Update(float dt)
 	else if (a <= 0)
 	{
 		return_black = false;
+		//app->new_game = false;
 	}
 
 	return true;
@@ -343,6 +343,11 @@ bool Frontground::FadeFromBlack(int dest_level)
 			app->scene->current_level = 7;
 			break;
 		}
+
+		/*if (!app->loadGameRequested)
+		{
+			app->LoadGameRequest(false);
+		}*/
 	}
 
 	return true;
@@ -370,8 +375,6 @@ bool Frontground::FadeOutCombat()
 	app->map->collision_loaded = false;
 	app->entities->CleanUp();
 
-	app->SaveGameRequest();
-
 	app->map->Load("combat.tmx");
 
 	app->entities->GetPlayer()->DeleteEntity();
@@ -385,6 +388,7 @@ bool Frontground::ReturnToField()
 	in_combat = 3;
 	app->scene->PassLevel(app->scene->current_level);
 	app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 7, app->entities->GetPlayer()->GetPlayerPosition().y);
+	app->SaveGameRequest();
 
 	return true;
 }
@@ -396,4 +400,16 @@ bool Frontground::ResetCombat()
 	restart = 1;
 
 	return true;
+}
+
+void Frontground::ReturnStartScreen()
+{
+	SetA_Black();
+
+	app->map->CleanMaps();
+	app->physics->CleanMapBoxes();
+	app->map->collision_loaded = false;
+	app->entities->CleanUp();
+
+	in_combat = 0;
 }

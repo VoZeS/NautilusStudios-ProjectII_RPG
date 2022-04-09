@@ -18,7 +18,7 @@ enum class ENEMY_STATE
 class Enemies : public Entity
 {
 public:
-	Enemies(int en1, int en2, int, int en4);
+	Enemies(int index, int en1, int en2, int, int en4);
 
 	virtual ~Enemies();
 

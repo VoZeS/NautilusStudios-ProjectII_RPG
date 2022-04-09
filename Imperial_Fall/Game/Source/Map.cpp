@@ -129,7 +129,8 @@ void Map::Draw()
 							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-							app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, en1, en2, en3, en4);
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
 						{

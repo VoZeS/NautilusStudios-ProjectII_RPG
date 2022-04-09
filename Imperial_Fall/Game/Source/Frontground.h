@@ -64,6 +64,8 @@ public:
 		return in_combat;
 	}
 
+	void ReturnStartScreen();
+
 	bool town1_to_town2 = false,
 		town2_to_town1 = false,
 		forest_to_town2 = false,

@@ -576,6 +576,7 @@ bool Scene::ReturnStartScreen()
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 	app->menu->started = false;
 	app->frontground->SetA_Black();
+
 	return true;
 }
 

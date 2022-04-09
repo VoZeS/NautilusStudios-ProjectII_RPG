@@ -230236,6 +230236,7 @@
    <property name="Enemy3" type="int" value="3"/>
    <property name="Enemy4" type="int" value="4"/>
    <property name="Height" type="int" value="1"/>
+   <property name="Index" type="int" value="0"/>
    <property name="Width" type="int" value="1"/>
   </properties>
   <data>
@@ -240250,6 +240251,7 @@
    <property name="Enemy3" type="int" value="1"/>
    <property name="Enemy4" type="int" value="2"/>
    <property name="Height" type="int" value="1"/>
+   <property name="Index" type="int" value="1"/>
    <property name="Width" type="int" value="1"/>
   </properties>
   <data>

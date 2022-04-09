@@ -259,6 +259,7 @@ bool Menu::PreUpdate()
 	if (kill_enemy)
 	{
 		app->entities->KillEnemy();
+		app->LoadGameRequest(false);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
@@ -483,6 +484,7 @@ bool Menu::Update(float dt)
 				case 4: // PLAY AND CONTINUE
 					if (!started && !firstime)
 					{
+						app->LoadGameRequest(false);
 						app->scene->PassLevel(1);
 						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
@@ -497,7 +499,7 @@ bool Menu::Update(float dt)
 					break;
 
 				case 5: // NEW GAME
-					if (!started && firstime)
+					if (!started)// && firstime)
 					{
 						app->LoadGameRequest(true);
 						app->scene->PassLevel(1);
@@ -514,7 +516,7 @@ bool Menu::Update(float dt)
 						started = true;
 						firstime = false;
 						subplaymenu = false;
-
+						
 					}
 					break;
 				}

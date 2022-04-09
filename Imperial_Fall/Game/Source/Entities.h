@@ -63,6 +63,8 @@ public:
 	
 	virtual ENEMIES GetCombatEnemy(int n);
 
+	bool SaveSingleEnemy();
+
 public:
 	ENTITY_TYPE entity_type;
 
@@ -103,9 +105,10 @@ public:
 	bool SaveState(pugi::xml_node&);
 
 public:
-	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
+	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
 
 	List<Entity*> entities;
+	DynArray<bool> entities_state;
 
 	int enemies_lenght = 0;
 
