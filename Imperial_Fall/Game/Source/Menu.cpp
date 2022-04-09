@@ -4,8 +4,8 @@
 #include "Window.h"
 #include "Audio.h"
 #include "Input.h"
-#include "Fonts.h"
 #include "Scene.h"
+#include "Fonts.h"
 #include "Frontground.h"
 #include "Menu.h"
 #include "Player.h"
@@ -100,12 +100,8 @@ bool Menu::Start()
 
 	PauseMenuHUD = { 100, 500, 400, 720 }; //Cuadro Menu Pause
 
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
-	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
-
 	paused = false;
 	settings = false;
-	dead = false;
 	win = false;
 	lose = false;
 	slider = false;
@@ -118,7 +114,6 @@ bool Menu::Start()
 
 	pause_buttons[0].state = 1;
 	menu_buttons[0].state = 1;
-	dead_buttons[0].state = 1;
 	settings_buttons[0].state = 1;
 	chosed = 0;
 	app->win->GetWindowSize(win_w, win_h);
@@ -136,12 +131,6 @@ bool Menu::Start()
 	{
 		menu_buttons[i].rect.x = ((int)win_w / 2) - (menu_buttons[i].rect.w / 2);
 		menu_buttons[i].rect.y = ((int)win_h / (NUM_MENU_BUTTONS + 1)) * (i + 1);
-	}
-
-	for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
-	{
-		dead_buttons[i].rect.x = ((int)win_w / 2) - (dead_buttons[i].rect.w / 2);
-		dead_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 3)) * (i + 2.5f);
 	}
 
 	for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
@@ -172,10 +161,6 @@ bool Menu::Start()
 
 	pause_buttons[3].tex = app->tex->Load("Assets/textures/Exit_In_game.png"); // Exit
 	pause_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
-	
-
-	dead_buttons[0].tex = app->tex->Load("Assets/textures/Load.png"); // Load
-	dead_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); //Exit
 
 	//----------------------------------------------------------------MENU INICIO BOTONES------------------------
 	menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/PlaySprite.png"); // Play
@@ -262,7 +247,7 @@ bool Menu::PreUpdate()
 		app->LoadGameRequest(false);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && intro == false )
 	{
 		paused = !paused;
 	}
@@ -347,25 +332,6 @@ bool Menu::PreUpdate()
 				{
 					settings_buttons[i].state = 0;
 				}
-			}
-		}
-
-
-		for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
-		{
-			SDL_Rect rect = dead_buttons[i].rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-			{
-				if (dead)
-				{
-					//app->audio->PlayFx(hover_sound);
-				}
-				chosed = i;
-				dead_buttons[i].state = 1;
-			}
-			else
-			{
-				dead_buttons[i].state = 0;
 			}
 		}
 
@@ -516,7 +482,6 @@ bool Menu::Update(float dt)
 						started = true;
 						firstime = false;
 						subplaymenu = false;
-						
 					}
 					break;
 				}
@@ -592,28 +557,6 @@ bool Menu::Update(float dt)
 				save_cd = 50;
 				saving = false;
 				paused = false;
-			}
-		}
-
-		// dead buttons
-		if (dead && !loading)
-		{
-			subplaymenu = false;
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && dead_buttons[chosed].state == 1)
-			{
-				app->audio->PlayFx(click_sound);
-				switch (chosed)
-				{
-				case 0:
-					app->frontground->FadeToBlack(-1);
-					loading = true;
-					break;
-				case 1:
-					return false;
-					break;
-				}
-
-				dead_buttons[chosed].state = 2;
 			}
 		}
 
@@ -1050,7 +993,7 @@ bool Menu::PostUpdate()
 			app->render->DrawRectangle(win_button.rect, pColorR, pColorG, pColorB);
 		}
 
-		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, textFont, "return to field");
+		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (lose)
@@ -1080,8 +1023,8 @@ bool Menu::PostUpdate()
 			}
 		}
 		
-		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, textFont, "restart battle");
-		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, textFont, "return to field");
+		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
+		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 	return true;
 }

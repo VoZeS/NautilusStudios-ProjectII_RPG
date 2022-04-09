@@ -143,8 +143,6 @@ private:
 	SUPP_EFFECT skill_supp_effect;
 	iPoint objective_pos;
 
-	int textFont = -1;
-
 	bool controller = false;
 
 };

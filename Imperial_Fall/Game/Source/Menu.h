@@ -10,7 +10,6 @@
 #define NUM_WIN_BUTTONS 1
 #define NUM_LOSE_BUTTONS 2
 
-#define NUM_DEAD_BUTTONS 2
 #define NUM_SETTINGS_BUTTONS 4
 
 struct Button {
@@ -45,7 +44,6 @@ public:
 
 	bool GetGameState();
 
-	bool dead;
 	bool win;
 	bool lose;
 	bool kill_enemy = false;
@@ -71,7 +69,6 @@ public:
 
 	//Foto de nuestro gran equipo
 	SDL_Texture* team_photo = NULL;
-
 
 	SDL_Rect PauseMenuHUD;
 
@@ -107,8 +104,6 @@ private:
 	Animation torch_light_3_anim;
 	Animation torch_light_4_anim;
 
-
-
 	Animation big_fire_anim;
 	Animation light_big_fire_anim;
 	Animation smook_big_fire_anim;
@@ -124,7 +119,6 @@ private:
 	int chosed;
 	Button pause_buttons[NUM_PAUSE_BUTTONS];
 	Button menu_buttons[NUM_MENU_BUTTONS];
-	Button dead_buttons[NUM_DEAD_BUTTONS];
 	Button settings_buttons[NUM_SETTINGS_BUTTONS];
 	Button win_button;
 	Button lose_buttons[NUM_LOSE_BUTTONS];
@@ -147,15 +141,12 @@ private:
 
 	uint win_w, win_h;
 	
-	
 	int save_cd = 50;
 	bool saving = false;
 
 	// sound
 	uint click_sound;
 	uint hover_sound;
-
-	int textFont = -1;
 
 };
 

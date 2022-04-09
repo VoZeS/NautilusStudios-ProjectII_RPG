@@ -56,16 +56,12 @@ Combat_Menu::~Combat_Menu()
 bool Combat_Menu::Awake()
 {
 
-
 	return true;
 }
 
 // Called before the first frame
 bool Combat_Menu::Start()
 {
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
-	textFont = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
-
 	r = { 0, 0, 1280, 720 };
 	currentAnimation = &idleAnim;
 
@@ -1651,7 +1647,7 @@ bool Combat_Menu::PostUpdate()
 					general_buttons[i].rect.x = action_pos[i].x + c_x;
 					general_buttons[i].rect.y = action_pos[i].y + c_y;
 
-					app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, textFont, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
+					app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont1, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
 				}
 			}
 
@@ -1742,7 +1738,7 @@ bool Combat_Menu::PostUpdate()
 
 					if (i == 4)
 					{
-						app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, textFont, skill_prepared.skill_name);
+						app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, app->fonts->textFont1, skill_prepared.skill_name);
 					}
 				}
 			}
@@ -1801,14 +1797,14 @@ bool Combat_Menu::PostUpdate()
 
 					if (i == 4)
 					{
-						app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, textFont, skill_prepared.skill_name);
+						app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, app->fonts->textFont1, skill_prepared.skill_name);
 					}
 				}
 			}
 		}
 		else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 		{
-			app->fonts->BlitText(500 + c_x, 100 + c_y, textFont, skill_prepared.skill_name);
+			app->fonts->BlitText(500 + c_x, 100 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
 			if (skill_att_effect != ATT_EFFECT::EMPTY)
 			{
 				if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)

@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
+#include "Fonts.h"
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Player.h"
@@ -128,7 +129,7 @@ bool Frontground::PostUpdate()
 		app->render->DrawRectangle({ c_x + 540 , c_y + 650, 200, 50 }, 255, 255, 255, 150);
 		app->render->DrawTexture(press_e, c_x + 540, c_y + 650);
 	}
-
+	
 	r.x = c_x;
 	r.y = c_y;
 

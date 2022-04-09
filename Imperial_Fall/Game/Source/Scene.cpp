@@ -7,7 +7,6 @@
 #include "Scene.h"
 #include "Menu.h"
 #include "Map.h"
-#include "Pathfinding.h"
 #include "Fonts.h"
 #include "Frontground.h"
 #include "Combat_Entities.h"
@@ -50,11 +49,11 @@ bool Scene::Start()
 
 	LoadDialog();
 
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	/*char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
 	textFont = app->fonts->Load("Assets/textures/Tipografia_Dialogos.png", lookupTableChars, 8);
 
 	char lookupTableCharsDialogs[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
-	textFontDialog = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableCharsDialogs, 8);
+	textFontDialog = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableCharsDialogs, 8);*/
 
 	//DIALOGO RENATO VERTICAL SLICE
 
@@ -83,36 +82,6 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
-	if (start_screen != NULL && app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
-	{
-		PassLevel(1);
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
-		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-		app->entities->GetPlayer()->SetPlayerLookDir(0);
-	}
-	else
-	{
-		int mouseX, mouseY;
-		app->input->GetMousePosition(mouseX, mouseY);
-		iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-		p = app->map->WorldToMap(p.x, p.y);
-
-		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			if (originSelected == true)
-			{
-				app->pathfinding->CreatePath(origin, p);
-				originSelected = false;
-			}
-			else
-			{
-				origin = p;
-				originSelected = true;
-			}
-		}
-	}
 
 	return true;
 }
@@ -319,24 +288,14 @@ bool Scene::PostUpdate()
 	
 	bool ret = true;
 	int c_x = -app->render->camera.x;
-	int c_y = -app->render->camera.y;
-
-	SDL_Rect prueba;
-	SDL_Rect fondoNegro;
-	zom_w;
-	zom_h;
-	zom_x;
-	zom_y;
-	prueba = { zom_x,zom_y,zom_w,zom_h };
-	fondoNegro = { c_x,c_y,1280,720 };
-	
+	int c_y = -app->render->camera.y;	
 	
 	//--------------------------------------MENU----------------------------
 
 
 	//Desplazamiento del fondo al inicio del juego
 	//Una vez pulses el Espacio entrara el menu de opciones
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || desMenu==true)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || desMenu == true)
 	{
 		space_boton = false;
 		desMenu = true;
@@ -353,90 +312,24 @@ bool Scene::PostUpdate()
 		fuegoSeguir = false;
     }
 
-	 //Primera pantalla menu
+	//Primera pantalla menu
 	if (esc == false && app->menu->settings == false)
 	{
-
 		app->render->DrawTexture(start_screen, c_x, c_y_menu);
-		
-	}
-
-
-
-	//zoom prueba------------------------------------
-	/*
-	* 	if (daleZom1 == true ) {
-
-	
-		app->render->DrawRectangle(fondoNegro , 0, 0, 0);
-		zom_x += 25;
-		zom_y += 15;
-
-		zom_w -= 25*2;
-		zom_h -= 15*2;
-		app->render->DrawTexture(start_screen, c_x+zom_x, c_y+zom_y, &prueba);
-
-		if (zom_w <= 0 || zom_h <= 0)
-		{
-			daleZom1 = false;
-			daleZom2 = true;
-
-		}
-	
-	}
-
-	if ( daleZom2 == true) {
-	
-		app->render->DrawRectangle(fondoNegro, 0, 0, 0);
-
-		zom_x -= 25;
-		zom_y -= 15;
-
-	
-		zom_w += 25*2;
-		zom_h += 15*2;
-		app->render->DrawTexture(settings_screen, c_x + zom_x , c_y + zom_y, &prueba);
-		
-		if (zom_w >= 1280 || zom_h >= 720) {
-			daleZom2 = false;
-			opciones = true;
-		}
-	}
-
-	if ( opciones == true)
-	{
-	
-		app->render->DrawTexture(settings_screen, c_x, c_y);		
-	}
-	*/
-
-
-	
+	}	
 
 	//----------------------------------------------------
-	
-	 //-------------------Settings
+	//-------------------Settings
 	if (app->menu->settings == true)
 	{
-		
 		app->render->DrawTexture(settings_screen, c_x, c_y);
 	}
-	
-
-
-	
-
 	
 	//Segunda Pantalla Menu
 	if (start_screen != NULL && esc == true && app->menu->settings == false)
 	{
-		
-
-		app->render->DrawTexture(start_screen, c_x, c_y-700);
-		
-
+		app->render->DrawTexture(start_screen, c_x, c_y - 700);
 	}
-
 	//----------------------------------------------------------------------
 
 	 if(app->menu->started)
@@ -449,25 +342,25 @@ bool Scene::PostUpdate()
 			{
 				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
 				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
-				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "RENATO:");
-				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+				app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "RENATO:");
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 			}
 			else if (inDialogAlly) // ALLY TALKING
 			{
 				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
 				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
-				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ALLY:");
+				app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ALLY:");
 				
-				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 			}
 			else if (inDialogEnemy) // ENEMIES TALKING
 			{
 				app->render->DrawTexture(app->tex->whitemark_300x80, 30 + c_x, 480 + c_y);
 				app->render->DrawTexture(app->tex->whitemark_1200x140, 30 + c_x, 560 + c_y);
-				app->fonts->BlitText(c_x + 50, c_y + 500, textFontDialog, "ENEMY:");
-				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+				app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ENEMY:");
+				app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			}
 		}
 		else

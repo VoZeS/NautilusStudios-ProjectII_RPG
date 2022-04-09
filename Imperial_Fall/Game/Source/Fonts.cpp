@@ -23,6 +23,14 @@ Fonts::Fonts() : Module()
 Fonts::~Fonts()
 {}
 
+bool Fonts::Start()
+{
+	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+	textFont1 = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
+
+	return true;
+}
+
 int Fonts::Load(const char* texture_path, const char* characters, uint rows)
 {
 	int id = -1;
