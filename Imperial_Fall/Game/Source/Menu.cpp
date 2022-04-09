@@ -8,6 +8,7 @@
 #include "Fonts.h"
 #include "Frontground.h"
 #include "Menu.h"
+#include "Map.h"
 #include "Player.h"
 #include "Defs.h"
 #include "Log.h"
@@ -469,10 +470,6 @@ bool Menu::Update(float dt)
 						app->LoadGameRequest(false);
 						app->menu->DisableAll();
 						app->town1->Enable();
-						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						saving = true;
 						intro = false;
 						paused = false;
@@ -482,18 +479,11 @@ bool Menu::Update(float dt)
 					break;
 
 				case 5: // NEW GAME
-					if (!started)// && firstime)
+					if (!started)
 					{
 						app->LoadGame(true); // load now, not at frames end
 						app->menu->DisableAll();
 						app->town1->Enable();
-						/*app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-						app->entities->GetPlayer()->SetCompanion0LookDir(0);
-						app->entities->GetPlayer()->SetCompanion1LookDir(0);
-						app->entities->GetPlayer()->SetCompanion2LookDir(0);*/
 						app->frontground->scene_to_town1 = true;
 						saving = false;
 						intro = false;
@@ -501,6 +491,8 @@ bool Menu::Update(float dt)
 						started = true;
 						firstime = false;
 						subplaymenu = false;
+
+						app->entities->CreateEntity(ENTITY_TYPE::PLAYER, app->entities->GetPlayerSavedPos().x, app->entities->GetPlayerSavedPos().y);
 					}
 					break;
 				}
@@ -696,7 +688,6 @@ bool Menu::Update(float dt)
 			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(500));
 			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(400));
 		}
-
 		else if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
 			app->SaveGameRequest();
@@ -705,9 +696,9 @@ bool Menu::Update(float dt)
 		{
 			app->LoadGameRequest(false);
 		}
-		
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		app->frontground->godmode = !app->frontground->godmode;
 	}

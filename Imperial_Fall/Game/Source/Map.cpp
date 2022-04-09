@@ -48,6 +48,13 @@ bool Map::Awake(pugi::xml_node& config)
     return ret;
 }
 
+bool Map::Start()
+{
+	collision_loaded = false;
+
+	return true;
+}
+
 // Draw the map (all requried layers)
 void Map::Draw()
 {
@@ -339,7 +346,6 @@ bool Map::CleanUp()
 	mapData.layers.Clear();
 
 	app->physics->CleanMapBoxes();
-	collision_loaded = false;
 
     return true;
 }

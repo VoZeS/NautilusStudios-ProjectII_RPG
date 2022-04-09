@@ -162,9 +162,13 @@ bool Frontground::FadeFromBlack()
 {
 	return_black = true;
 
-	if (!app->entities->GetPlayer()->IsPlayerEnabled())
+	app->menu->DisableAll();
+
+	app->physics->CleanMapBoxes();
+
+	if (app->frontground->town1_to_town2)
 	{
-		app->entities->GetPlayer()->init = false;
+		app->town2->Enable();
 	}
 
 	return true;

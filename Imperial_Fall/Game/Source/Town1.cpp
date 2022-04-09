@@ -51,6 +51,7 @@ bool Town1::Start()
 	
 		if (app->frontground->town2_to_town1 == true)
 		{
+			app->SaveGameRequest();
 			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000));
 			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000));
 			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000));

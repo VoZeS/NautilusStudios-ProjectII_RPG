@@ -291,9 +291,9 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->inside_to_outside = false;
 			app->frontground->scene_to_town1 = false;
 
-			app->town1->Disable();
-			app->town2->Enable();
-			//app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
+			//app->town1->Disable();
+			//app->town2->Enable();
 		}
 		else if ((int)fixtureUserDataB == 21)
 		{

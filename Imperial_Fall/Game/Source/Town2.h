@@ -33,6 +33,7 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
 };
 
 #endif // __TOWN1_H__

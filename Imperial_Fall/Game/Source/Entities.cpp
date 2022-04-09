@@ -42,13 +42,19 @@ bool Entities::Start()
 
 	if (this->Enabled() && !this->Disabled())
 	{
+		assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
+		tank_texture = app->tex->Load("Assets/textures/Tanque.png");
+		healer_texture = app->tex->Load("Assets/textures/Healer.png");
+		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
+		curandero = app->tex->Load("Assets/textures/curandero.png");
+		herrero = app->tex->Load("Assets/textures/herrero.png");
+		granjero = app->tex->Load("Assets/textures/granjero.png");
+		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom.png");
 		goblin = app->tex->Load("Assets/textures/goblin.png");
 		skeleton = app->tex->Load("Assets/textures/skeleton.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar.png");
-
-		app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
 	}
 
 	return ret;
@@ -187,11 +193,11 @@ bool Entities::CleanUp()
 
 		if (entity->entity_type != ENTITY_TYPE::PLAYER)
 		{
-			//app->physics->world->DestroyBody(entity->body);
 			entities.Del(item);
 		}
 	}
-	enemies_lenght = 0;
+
+	app->tex->CleanUp();
 
 	return true;
 }
@@ -554,4 +560,29 @@ bool Entity::SaveSingleEnemy()
 	saveGame.save_file(SAVE_STATE_FILENAME);
 
 	return result;
+}
+
+fPoint Entities::GetPlayerSavedPos()
+{
+	pugi::xml_document saveGame;
+	saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node player = saveGame.child("game_state").child("entities").child("player");
+
+	fPoint p;
+	p.x = METERS_TO_PIXELS(player.child("position").attribute("x").as_int());
+	p.y = METERS_TO_PIXELS(player.child("position").attribute("y").as_int());
+
+	return p;
+}
+
+void Entities::SetPlayerSavedPos(float x, float y)
+{
+	pugi::xml_document saveGame;
+	saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node player = saveGame.child("game_state").child("entities").child("player");
+
+	player.child("position").attribute("x").set_value(x);
+	player.child("position").attribute("y").set_value(y);
+
+	saveGame.save_file(SAVE_STATE_FILENAME);
 }

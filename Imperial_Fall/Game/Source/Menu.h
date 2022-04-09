@@ -98,6 +98,8 @@ public:
 	bool menu = false;
 
 	bool started = false;
+
+	void DisableAll();
 private:
 	
 	Animation torch_selection_anim;
@@ -151,8 +153,6 @@ private:
 	uint hover_sound;
 
 	uint menu_music;
-
-	void DisableAll();
 
 };
 

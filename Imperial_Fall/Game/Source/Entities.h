@@ -104,6 +104,9 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
+	fPoint GetPlayerSavedPos();
+	void SetPlayerSavedPos(float x, float y);
+
 public:
 	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
 
@@ -118,6 +121,14 @@ public:
 
 	Entity* GetPlayer();
 
+	SDL_Texture* assassin_texture = NULL;
+	SDL_Texture* tank_texture = NULL;
+	SDL_Texture* healer_texture = NULL;
+	SDL_Texture* wizard_texture = NULL;
+	SDL_Texture* curandero = NULL;
+	SDL_Texture* herrero = NULL;
+	SDL_Texture* granjero = NULL;
+	SDL_Texture* renato_bueno = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* mushroom = NULL;
 	SDL_Texture* goblin = NULL;

@@ -126,10 +126,6 @@ public:
 
 	int look_dir; // 0 --> up, 1 --> down, 2 --> left, 3 --> right
 
-	SDL_Texture* assassin_texture = NULL;
-	SDL_Texture* tank_texture = NULL;
-	SDL_Texture* healer_texture = NULL;
-	SDL_Texture* wizard_texture = NULL;
 };
 
 #endif

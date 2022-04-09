@@ -45,18 +45,18 @@ bool Town2::Start()
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
-		//Enable Player & map
+		//Enable Player &
 		app->entities->Enable();
 		app->map->Enable();
+		
 
 		if (app->frontground->town1_to_town2 == true)
 		{
-			LOG("%d x, %d y", METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x), METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600));
 			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600));
 			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600));
 			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600));
 			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
-			LOG("%d x, %d y", METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().x), METERS_TO_PIXELS(app->entities->GetPlayer()->GetPlayerPosition().y));
 		}
 		else if (app->frontground->forest_to_town2 == true)
 		{
@@ -89,8 +89,6 @@ bool Town2::Start()
 
 		app->frontground->current_level = 2;
 	}
-
-
 
 	return true;
 }
