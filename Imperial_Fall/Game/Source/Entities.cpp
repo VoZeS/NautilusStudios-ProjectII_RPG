@@ -27,7 +27,6 @@ void Entities::AddEntity(Entity* entity, ENTITY_TYPE type, fPoint p)
 {
 	entity->Init(type, p);
 	entities.Add(entity);
-	entities_state.Insert(true, )
 }
 
 // Called before render is available

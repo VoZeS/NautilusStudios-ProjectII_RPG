@@ -170,6 +170,8 @@ public:
 
 	bool collision_loaded;
 
+	bool GetEnemyStateXml(int index);
+
 private:
 
     SString folder;

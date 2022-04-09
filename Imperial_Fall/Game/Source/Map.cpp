@@ -116,39 +116,54 @@ void Map::Draw()
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// White templar
-							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
-							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
-							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
-							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-							app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, en1, en2, en3, en4);
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index))
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
+							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
 						{
 							// Mushroom
-							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
-							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
-							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
-							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
+							if (GetEnemyStateXml(index))
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
+							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
 						{
 							// Goblin
-							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
-							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
-							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
-							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-							app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, en1, en2, en3, en4);
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index))
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4);
+							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 13)
 						{
 							// Skeleton
-							int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
-							int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
-							int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
-							int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-							app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, en1, en2, en3, en4);
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index))
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4);
+							}
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
@@ -621,6 +636,21 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 		break;
 	}
+
+	return ret;
+}
+
+bool Map::GetEnemyStateXml(int index)
+{
+	pugi::xml_document saveGame;
+	saveGame.load_file(SAVE_STATE_FILENAME);
+
+	std::string p = "enemy";
+	std::string s = std::to_string(index);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	bool ret = saveGame.child("game_state").child("entities").child("enemies").child(c).attribute("state").as_bool();
 
 	return ret;
 }

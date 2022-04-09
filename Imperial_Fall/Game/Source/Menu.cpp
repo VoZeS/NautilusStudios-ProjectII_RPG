@@ -501,7 +501,7 @@ bool Menu::Update(float dt)
 				case 5: // NEW GAME
 					if (!started)// && firstime)
 					{
-						app->LoadGameRequest(true);
+						app->LoadGame(true); // load now, not at frames end
 						app->scene->PassLevel(1);
 						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
