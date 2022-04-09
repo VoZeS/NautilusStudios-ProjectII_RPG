@@ -9,7 +9,7 @@
 
 #define MAX_KEYS 300
 
-Input::Input() : Module()
+Input::Input(bool enabled) : Module(enabled)
 {
 	name.Create("input");
 

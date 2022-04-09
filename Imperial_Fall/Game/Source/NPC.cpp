@@ -30,6 +30,12 @@ NPC::~NPC()
 
 void NPC::InitCustomEntity(int npc)
 {
+	curandero = app->tex->Load("Assets/textures/curandero.png");
+	herrero = app->tex->Load("Assets/textures/herrero.png");
+	granjero = app->tex->Load("Assets/textures/granjero.png");
+	renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
+
+
 	npc_type = npc;
 
 	if (npc_type == 1)
@@ -81,7 +87,7 @@ bool NPC::PreUpdate()
 // Called each loop iteration
 bool NPC::Update(float dt)
 {
-	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+	if (!app->menu->GetGameState())
 	{
 		currentAnimation->Update();
 	}
@@ -94,22 +100,21 @@ bool NPC::Draw()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	 
-	if (!app->scene->GetStartScreenState())
-	{
+	
 		switch (npc_type)
 		{
-		case 1: app->render->DrawTexture(app->tex->renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 40.0f), &rect);
+		case 1: app->render->DrawTexture(renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 40.0f), &rect);
 			break;
-		case 2: app->render->DrawTexture(app->tex->curandero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		case 2: app->render->DrawTexture(curandero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 			break;
-		case 3: app->render->DrawTexture(app->tex->herrero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		case 3: app->render->DrawTexture(herrero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 			break;
-		case 4: app->render->DrawTexture(app->tex->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		case 4: app->render->DrawTexture(granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 			break;
 		default:
 			break;
 		}
-	}
+	
 	
 	return true;
 }

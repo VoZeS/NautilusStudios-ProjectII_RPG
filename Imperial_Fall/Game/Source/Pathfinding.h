@@ -17,7 +17,7 @@ class PathFinding : public Module
 {
 public:
 
-	PathFinding();
+	PathFinding(bool enabled);
 
 	// Destructor
 	~PathFinding();
@@ -56,6 +56,8 @@ private:
 
 	// we store the created path here
 	DynArray<iPoint> lastPath;
+
+	SDL_Texture* tileX = NULL;
 };
 
 // forward declaration

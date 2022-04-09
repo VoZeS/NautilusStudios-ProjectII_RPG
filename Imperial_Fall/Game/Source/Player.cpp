@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Pathfinding.h"
 #include "Menu.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -175,6 +176,12 @@ Player::~Player()
 
 void Player::InitCustomEntity(int npc)
 {
+
+	assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
+	tank_texture = app->tex->Load("Assets/textures/Tanque.png");
+	healer_texture = app->tex->Load("Assets/textures/Healer.png");
+	wizard_texture = app->tex->Load("Assets/textures/Mago.png");
+
 	currentAnimation = &idleAnimD;
 	look_dir = 1;
 	collision_active = true;
@@ -311,7 +318,7 @@ void Player::HandleInput(float dt)
 
 		float fixedSpeed = speed * dt;
 
-		if (app->scene->godmode)
+		if (app->frontground->godmode)
 		{
 			fixedSpeed *= 2;
 			if (collision_active)
@@ -349,7 +356,7 @@ void Player::HandleInput(float dt)
 			}
 		}
 
-		if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+		if (!app->menu->GetGameState())
 		{
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 			{
@@ -800,36 +807,35 @@ bool Player::Draw()
 		SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
 		SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
 
-		if (!app->scene->GetStartScreenState())
-		{
+		
 			switch (char_control)
 			{
 			case 0:
-				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				app->render->DrawTexture(wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 				break;
 			case 1:
-				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				app->render->DrawTexture(wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 				break;
 			case 2:
-				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				app->render->DrawTexture(wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 				break;
 			case 3:
-				app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+				app->render->DrawTexture(assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+				app->render->DrawTexture(healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+				app->render->DrawTexture(tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+				app->render->DrawTexture(wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 				break;
 			}
-		}
+		
 	}
 	
 	return true;
@@ -837,7 +843,7 @@ bool Player::Draw()
 
 bool Player::Load(pugi::xml_node& data)
 {
-	position.x = data.child("player").child("position").attribute("x").as_int();
+	/*position.x = data.child("player").child("position").attribute("x").as_int();
 	position.y = data.child("player").child("position").attribute("y").as_int();
 	c0.position.x = data.child("player").child("comp0").attribute("x").as_int();
 	c0.position.y = data.child("player").child("comp0").attribute("y").as_int();
@@ -851,7 +857,7 @@ bool Player::Load(pugi::xml_node& data)
 	c1.body->SetTransform({ c1.position.x + PIXELS_TO_METERS(w), c1.position.y + PIXELS_TO_METERS(h) }, c1.body->GetAngle());
 	c2.body->SetTransform({ c2.position.x + PIXELS_TO_METERS(w), c2.position.y + PIXELS_TO_METERS(h) }, c2.body->GetAngle());
 
-	look_dir = 1;
+	look_dir = 1;*/
 
 	return true;
 }
@@ -1013,7 +1019,7 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 	}
 
 
-	PathFinding* path = new PathFinding();
+	PathFinding* path = new PathFinding(true);
 	float distx;
 	float disty;
 
@@ -1056,7 +1062,7 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 		}
 	}
 
-	if (app->scene->godmode)
+	if (app->frontground->godmode)
 	{
 		distx *= 2;
 		disty *= 2;

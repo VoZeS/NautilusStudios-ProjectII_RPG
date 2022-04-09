@@ -16,7 +16,7 @@ struct Button;
 class Combat_Menu : public Module
 {
 public:
-	Combat_Menu();
+	Combat_Menu(bool enabled);
 
 	virtual ~Combat_Menu();
 
@@ -144,6 +144,22 @@ private:
 	iPoint objective_pos;
 
 	bool controller = false;
+
+	// textures
+	SDL_Texture* assassin_texture = NULL;
+	SDL_Texture* tank_texture = NULL;
+	SDL_Texture* healer_texture = NULL;
+	SDL_Texture* wizard_texture = NULL;
+	SDL_Texture* target = NULL;
+	SDL_Texture* tombstone = NULL;
+	SDL_Texture* goblin = NULL;
+	SDL_Texture* skeleton = NULL;
+	SDL_Texture* mushroom = NULL;
+	SDL_Texture* white_templar = NULL;
+	SDL_Texture* red_templar = NULL;
+	SDL_Texture* whitemark_400x50 = NULL;
+	SDL_Texture* whitemark_110x110 = NULL;
+	SDL_Texture* whitemark_128x128 = NULL;
 
 };
 

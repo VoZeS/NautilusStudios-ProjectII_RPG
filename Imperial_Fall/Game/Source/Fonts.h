@@ -25,7 +25,7 @@ class Fonts : public Module
 {
 public:
 
-	Fonts();
+	Fonts(bool enabled);
 
 	~Fonts();
 

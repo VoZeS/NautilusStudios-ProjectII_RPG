@@ -12,6 +12,13 @@
 #include "Enemies.h"
 #include "Menu.h"
 #include "Frontground.h"
+#include "Town1.h"
+#include "Town2.h"
+#include "Forest.h"
+#include "Battlefield.h"
+#include "Dungeon.h"
+#include "Outside_Castle.h"
+#include "Inside_Castle.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -22,7 +29,7 @@
 #pragma comment( lib, "Source/External/Box2D/libx86/Release/Box2D.lib" )
 #endif
 
-Physics::Physics() : Module()
+Physics::Physics(bool enabled) : Module(enabled)
 {
 	name.Create("physics");
 	debug = false;
@@ -57,7 +64,7 @@ bool Physics::Start()
 bool Physics::PreUpdate()
 {
 	
-	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+	if (!app->menu->GetGameState())
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
 	}
@@ -282,8 +289,11 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->town1->Disable();
+			app->town2->Enable();
+			//app->scene->PassLevel(2);
 		}
 		else if ((int)fixtureUserDataB == 21)
 		{
@@ -296,13 +306,16 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(1);
+			app->town2->Disable();
+			app->town1->Enable();
 		}
 		else if ((int)fixtureUserDataB == 23)
 		{
 			// town_2 --> forest
-			app->scene->PassLevel(3);
+			app->town2->Disable();
+			app->forest->Enable();
 		}
 		else if ((int)fixtureUserDataB == 32)
 		{
@@ -315,13 +328,16 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->forest->Disable();
+			app->town2->Enable();
 		}
 		else if ((int)fixtureUserDataB == 24)
 		{
 			// town_2 --> battlefield
-			app->scene->PassLevel(4);
+			app->town2->Disable();
+			app->battlefield->Enable();
 		}
 		else if ((int)fixtureUserDataB == 42)
 		{
@@ -334,13 +350,16 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->battlefield->Disable();
+			app->town2->Enable();
 		}
 		else if ((int)fixtureUserDataB == 25)
 		{
 			// town_2 --> dungeon
-			app->scene->PassLevel(5);
+			app->town2->Disable();
+			app->dungeon->Enable();
 		}
 		else if ((int)fixtureUserDataB == 52)
 		{
@@ -353,8 +372,10 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->dungeon->Disable();
+			app->town2->Enable();
 		}
 		else if ((int)fixtureUserDataB == 16)
 		{
@@ -367,8 +388,10 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = true;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(6);
+			app->town1->Disable();
+			app->outside->Enable();
 		}
 		else if ((int)fixtureUserDataB == 61)
 		{
@@ -381,12 +404,16 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = true;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
-			app->scene->PassLevel(1);
+			app->frontground->scene_to_town1 = false;
+
+			app->outside->Disable();
+			app->town1->Enable();
 		}
 		else if ((int)fixtureUserDataB == 67)
 		{
 			// outside_castle --> inside_castle
-			app->scene->PassLevel(7);
+			app->outside->Disable();
+			app->inside->Enable();
 		}
 		else if ((int)fixtureUserDataB == 76)
 		{
@@ -399,8 +426,10 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = true;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(6);
+			app->inside->Disable();
+			app->outside->Enable();
 		}
 	}
 
@@ -437,7 +466,7 @@ void Physics::BeginContact(b2Contact* contact)
 			app->entities->StartCombat();
 		}
 		// --------------------------------------------------------------- PASS LEVELS
-		else if ((int)fixtureUserDataA == 12)
+		else if ((int)fixtureUserDataB == 12)
 		{
 			// town_1 --> town_2
 			app->frontground->town1_to_town2 = true;
@@ -448,10 +477,13 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->town1->Disable();
+			app->town2->Enable();
+			//app->scene->PassLevel(2);
 		}
-		else if ((int)fixtureUserDataA == 21)
+		else if ((int)fixtureUserDataB == 21)
 		{
 			// town_2 --> town_1
 			app->frontground->town1_to_town2 = false;
@@ -462,15 +494,18 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(1);
+			app->town2->Disable();
+			app->town1->Enable();
 		}
-		else if ((int)fixtureUserDataA == 23)
+		else if ((int)fixtureUserDataB == 23)
 		{
 			// town_2 --> forest
-			app->scene->PassLevel(3);
+			app->town2->Disable();
+			app->forest->Enable();
 		}
-		else if ((int)fixtureUserDataA == 32)
+		else if ((int)fixtureUserDataB == 32)
 		{
 			// forest --> town_2
 			app->frontground->town1_to_town2 = false;
@@ -481,15 +516,18 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->forest->Disable();
+			app->town2->Enable();
 		}
-		else if ((int)fixtureUserDataA == 24)
+		else if ((int)fixtureUserDataB == 24)
 		{
 			// town_2 --> battlefield
-			app->scene->PassLevel(4);
+			app->town2->Disable();
+			app->battlefield->Enable();
 		}
-		else if ((int)fixtureUserDataA == 42)
+		else if ((int)fixtureUserDataB == 42)
 		{
 			// battlefield --> town_2
 			app->frontground->town1_to_town2 = false;
@@ -500,15 +538,18 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->battlefield->Disable();
+			app->town2->Enable();
 		}
-		else if ((int)fixtureUserDataA == 25)
+		else if ((int)fixtureUserDataB == 25)
 		{
 			// town_2 --> dungeon
-			app->scene->PassLevel(5);
+			app->town2->Disable();
+			app->dungeon->Enable();
 		}
-		else if ((int)fixtureUserDataA == 52)
+		else if ((int)fixtureUserDataB == 52)
 		{
 			// dungeon --> town_2
 			app->frontground->town1_to_town2 = false;
@@ -519,10 +560,12 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(2);
+			app->dungeon->Disable();
+			app->town2->Enable();
 		}
-		else if ((int)fixtureUserDataA == 16)
+		else if ((int)fixtureUserDataB == 16)
 		{
 			// town_1 --> outside_castle
 			app->frontground->town1_to_town2 = false;
@@ -533,10 +576,12 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = true;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(6);
+			app->town1->Disable();
+			app->outside->Enable();
 		}
-		else if ((int)fixtureUserDataA == 61)
+		else if ((int)fixtureUserDataB == 61)
 		{
 			// outside_castle -->  town_1
 			app->frontground->town1_to_town2 = false;
@@ -547,15 +592,18 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = true;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = false;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(1);
+			app->outside->Disable();
+			app->town1->Enable();
 		}
-		else if ((int)fixtureUserDataA == 67)
+		else if ((int)fixtureUserDataB == 67)
 		{
 			// outside_castle --> inside_castle
-			app->scene->PassLevel(7);
+			app->outside->Disable();
+			app->inside->Enable();
 		}
-		else if ((int)fixtureUserDataA == 76)
+		else if ((int)fixtureUserDataB == 76)
 		{
 			// inside_castle -->  outside_castle
 			app->frontground->town1_to_town2 = false;
@@ -566,8 +614,10 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->outside_to_town1 = false;
 			app->frontground->town1_to_outside = false;
 			app->frontground->inside_to_outside = true;
+			app->frontground->scene_to_town1 = false;
 
-			app->scene->PassLevel(6);
+			app->inside->Disable();
+			app->outside->Enable();
 		}
 	}
 }

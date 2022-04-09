@@ -12,7 +12,7 @@ class Textures : public Module
 {
 public:
 
-	Textures();
+	Textures(bool enabled);
 
 	// Destructor
 	virtual ~Textures();
@@ -37,14 +37,8 @@ public:
 	List<SDL_Texture*> textures;
 
 	// textures
-	SDL_Texture* assassin_texture = NULL;
-	SDL_Texture* tank_texture = NULL;
-	SDL_Texture* healer_texture = NULL;
-	SDL_Texture* wizard_texture = NULL;
-	SDL_Texture* renato_bueno = NULL;
-	SDL_Texture* curandero = NULL;
-	SDL_Texture* herrero = NULL;
-	SDL_Texture* granjero = NULL;
+
+	/*
 	SDL_Texture* start_menu = NULL;
 	SDL_Texture* target = NULL;
 	SDL_Texture* tombstone = NULL;
@@ -65,7 +59,7 @@ public:
 	SDL_Texture* whitemark_300x80 = NULL;
 	SDL_Texture* particles_texture = NULL;
 
-	SDL_Texture* tileX = NULL;
+	SDL_Texture* tileX = NULL;*/
 };
 
 

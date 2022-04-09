@@ -12,7 +12,7 @@ class Combat_Entities;
 class Combat_Manager : public Module
 {
 public:
-	Combat_Manager();
+	Combat_Manager(bool enabled);
 
 	virtual ~Combat_Manager();
 
@@ -102,6 +102,13 @@ private:
 	bool LoadHeroesStats();
 	pugi::xml_document heroes_statsFile;
 	pugi::xml_node heroes_stats;
+
+	// textures
+	SDL_Texture* heroes_icons = NULL;
+	SDL_Texture* enemies_icons = NULL;
+	SDL_Texture* turn_icon = NULL;
+	SDL_Texture* dead_icon = NULL;
+	SDL_Texture* whitemark_64x64 = NULL;
 };
 
 #endif

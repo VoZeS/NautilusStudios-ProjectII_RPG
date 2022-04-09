@@ -31,6 +31,14 @@ class Combat_Menu;
 class Menu;
 class Particles;
 class Frontground;
+class Town1;
+class Town2;
+class Forest;
+class Battlefield;
+class Dungeon;
+class Outside_Castle;
+class Inside_Castle;
+class Dialog;
 
 
 
@@ -112,6 +120,15 @@ public:
 	Menu* menu;
 	Particles* particles;
 	Frontground* frontground;
+	Town1* town1;
+	Town2* town2;
+	Forest* forest;
+	Battlefield* battlefield;
+	Dungeon* dungeon;
+	Outside_Castle* outside;
+	Inside_Castle* inside;
+	Dialog* dialog;
+
 
 private:
 

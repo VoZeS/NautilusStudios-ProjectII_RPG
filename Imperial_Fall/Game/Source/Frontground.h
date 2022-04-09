@@ -8,7 +8,7 @@ enum class ENEMIES;
 class Frontground : public Module
 {
 public:
-	Frontground();
+	Frontground(bool enabled);
 
 	virtual ~Frontground();
 
@@ -34,9 +34,9 @@ public:
 		a = 0;
 	}
 
-	bool FadeToBlack(int dest_level); // if -1 --> no level change
+	bool FadeToBlack();
 
-	bool FadeFromBlack(int dest_level); // if -1 --> no level change
+	bool FadeFromBlack();
 
 	bool FadeInCombat(ENEMIES enemies[]); // start combat
 
@@ -66,7 +66,8 @@ public:
 
 	void ReturnStartScreen();
 
-	bool town1_to_town2 = false,
+	bool scene_to_town1 = false,
+		town1_to_town2 = false,
 		town2_to_town1 = false,
 		forest_to_town2 = false,
 		battlefield_to_town2 = false,
@@ -90,6 +91,12 @@ private:
 
 	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat, 4 --> restart combat
 	int restart = 0; // 0 --> desactivado, 1 --> activado, 2 --> proceso
+
+public:
+	// god mode
+	bool godmode;
+
+	int current_level = 0;
 };
 
 #endif

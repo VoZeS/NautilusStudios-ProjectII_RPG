@@ -14,7 +14,7 @@ struct SDL_Texture;
 class Particles : public Module
 {
 public:
-	Particles();
+	Particles(bool enabled);
 
 	virtual ~Particles();
 

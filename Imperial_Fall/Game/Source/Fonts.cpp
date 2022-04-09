@@ -8,13 +8,14 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Fonts.h"
+#include "Dialog.h"
 #include "Frontground.h"
 #include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-Fonts::Fonts() : Module()
+Fonts::Fonts(bool enabled) : Module(enabled)
 {
 	name.Create("fonts");
 	
@@ -182,11 +183,11 @@ void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom
 
 	if (linea == 1)
 	{
-		app->scene->limitLenght = strlen(text);
+		app->dialog->limitLenght = strlen(text);
 	}
 	else if (linea == 2)
 	{
-		app->scene->limitLenght2 = strlen(text);
+		app->dialog->limitLenght2 = strlen(text);
 	}
 
 	spriteRect.w = 42;

@@ -89,13 +89,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Battlefield.cpp" />
     <ClCompile Include="Source\Combat_Entities.cpp" />
     <ClCompile Include="Source\Combat_Manager.cpp" />
     <ClCompile Include="Source\Combat_Menu.cpp" />
+    <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\Dungeon.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
+    <ClCompile Include="Source\Forest.cpp" />
     <ClCompile Include="Source\Frontground.cpp" />
+    <ClCompile Include="Source\Inside_Castle.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
@@ -103,6 +108,7 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Menu.cpp" />
     <ClCompile Include="Source\NPC.cpp" />
+    <ClCompile Include="Source\Outside_Castle.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\Particles.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
@@ -113,18 +119,26 @@
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\Town1.cpp" />
+    <ClCompile Include="Source\Town2.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Battlefield.h" />
     <ClInclude Include="Source\Combat_Entities.h" />
     <ClInclude Include="Source\Combat_Manager.h" />
     <ClInclude Include="Source\Combat_Menu.h" />
+    <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\Dungeon.h" />
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\Entities.h" />
     <ClInclude Include="Source\Fonts.h" />
+    <ClInclude Include="Source\Forest.h" />
     <ClInclude Include="Source\Frontground.h" />
+    <ClInclude Include="Source\Inside_Castle.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Menu.h" />
     <ClInclude Include="Source\NPC.h" />
+    <ClInclude Include="Source\Outside_Castle.h" />
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\Particles.h" />
     <ClInclude Include="Source\Pathfinding.h" />
@@ -141,6 +155,8 @@
     <ClInclude Include="Source\Skills.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\Town1.h" />
+    <ClInclude Include="Source\Town2.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\List.h" />

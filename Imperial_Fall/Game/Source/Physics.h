@@ -19,7 +19,7 @@
 class Physics : public Module, public b2ContactListener
 {
 public:
-	Physics();
+	Physics(bool enabled);
 
 	virtual ~Physics();
 

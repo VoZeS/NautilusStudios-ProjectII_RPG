@@ -14,7 +14,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-Combat_Menu::Combat_Menu() : Module()
+Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 {
 	name.Create("combat_menu");
 
@@ -67,6 +67,22 @@ bool Combat_Menu::Start()
 
 	chosed = 0;
 	app->win->GetWindowSize(win_w, win_h);
+
+	// textures
+	assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
+	tank_texture = app->tex->Load("Assets/textures/Tanque.png");
+	healer_texture = app->tex->Load("Assets/textures/Healer.png");
+	wizard_texture = app->tex->Load("Assets/textures/Mago.png");
+	target = app->tex->Load("Assets/textures/target.png");
+	tombstone = app->tex->Load("Assets/textures/tombstone.png");
+	goblin = app->tex->Load("Assets/textures/goblin.png");
+	skeleton = app->tex->Load("Assets/textures/skeleton.png");
+	mushroom = app->tex->Load("Assets/textures/mushroom.png");
+	white_templar = app->tex->Load("Assets/textures/white_templar.png");
+	red_templar = app->tex->Load("Assets/textures/red_templar.png");
+	whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
+	whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
+	whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 
 	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 	hover_sound = app->audio->LoadFx("Assets/audio/fx/water.wav");
@@ -1509,27 +1525,27 @@ bool Combat_Menu::PostUpdate()
 					switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 					{
 					case 4:
-						texture = app->tex->white_templar;
+						texture = white_templar;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 40, &r);
 						break;
 					case 5:
-						texture = app->tex->mushroom;
+						texture = mushroom;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 50, &r);
 						break;
 					case 6: 
-						texture = app->tex->goblin;
+						texture = goblin;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y - 10, &r);
 						break;
 					case 7:
-						texture = app->tex->skeleton;
+						texture = skeleton;
 						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 110, &r);
 						break;
 					default: 
-						texture = app->tex->assassin_texture;
+						texture = assassin_texture;
 						r = currentAnimation->GetCurrentFrame();
 						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
 						break;
@@ -1537,7 +1553,7 @@ bool Combat_Menu::PostUpdate()
 				}
 				else if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 0)
 				{
-					texture = app->tex->tombstone;
+					texture = tombstone;
 					r = { 64, 0, 64, 64 };
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
 				}
@@ -1556,13 +1572,13 @@ bool Combat_Menu::PostUpdate()
 				{
 					switch (i)
 					{
-					case 0: texture = app->tex->assassin_texture;
+					case 0: texture = assassin_texture;
 						break;
-					case 1: texture = app->tex->healer_texture;
+					case 1: texture = healer_texture;
 						break;
-					case 2: texture = app->tex->tank_texture;
+					case 2: texture = tank_texture;
 						break;
-					case 3: texture = app->tex->wizard_texture;
+					case 3: texture = wizard_texture;
 						break;
 					}
 
@@ -1570,7 +1586,7 @@ bool Combat_Menu::PostUpdate()
 				}
 				else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 0)
 				{
-					texture = app->tex->tombstone;
+					texture = tombstone;
 					r = { 0, 0, 64, 64 };
 					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y + 5, &r);
 				}
@@ -1619,7 +1635,7 @@ bool Combat_Menu::PostUpdate()
 								  break;
 							}
 						}
-						texture = app->tex->whitemark_400x50;
+						texture = whitemark_400x50;
 					}
 					else
 					{
@@ -1637,7 +1653,7 @@ bool Combat_Menu::PostUpdate()
 						{
 							g_rect = { 0, 0, 110, 110 };
 						}
-						texture = app->tex->whitemark_110x110;
+						texture = whitemark_110x110;
 					}
 					app->render->DrawTexture(texture, general_buttons[i].rect.x, general_buttons[i].rect.y, &g_rect);
 				}
@@ -1674,7 +1690,7 @@ bool Combat_Menu::PostUpdate()
 						//app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
 						i_rect = { 0, 256, 128, 128 };
 					}
-					app->render->DrawTexture(app->tex->whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
+					app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
 				}
 			}
 
@@ -1690,12 +1706,12 @@ bool Combat_Menu::PostUpdate()
 						{
 							//app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
 							e_rect = { 0, 50, 400, 50 };
-							app->render->DrawTexture(app->tex->whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
+							app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 						}
 						else
 						{
 							SDL_Rect rect = { 0, 0, 64, 64 };
-							app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
+							app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 						}
 					}
 					else if (enemies_buttons[i].state == 2)
@@ -1705,19 +1721,19 @@ bool Combat_Menu::PostUpdate()
 						{
 							//app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
 							e_rect = { 0, 100, 400, 50 };
-							app->render->DrawTexture(app->tex->whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
+							app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 						}
 						else
 						{
 							SDL_Rect rect = { 64, 0, 64, 64 };
-							app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
+							app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 						}
 					}
 					else if (enemies_buttons[i].state == 3)
 					{
 						// no selectable sprites
 						SDL_Rect rect = { 256, 0, 64, 64 };
-						app->render->DrawTexture(app->tex->target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
+						app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 					}
 					else if (enemies_buttons[i].state == 0 && i == 4)
 					{
@@ -1733,7 +1749,7 @@ bool Combat_Menu::PostUpdate()
 						case 3: e_rect = { 0, 200, 400, 50 };
 							  break;
 						}
-						app->render->DrawTexture(app->tex->whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
+						app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 					}
 
 					if (i == 4)
@@ -1755,12 +1771,12 @@ bool Combat_Menu::PostUpdate()
 						{
 							//app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
 							a_rect = { 0, 50, 400, 50 };
-							app->render->DrawTexture(app->tex->whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
+							app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 						}
 						else
 						{
 							SDL_Rect rect = { 128, 0, 64, 64 };
-							app->render->DrawTexture(app->tex->target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
+							app->render->DrawTexture(target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
 						}
 					}
 					else if (allies_buttons[i].state == 2)
@@ -1770,12 +1786,12 @@ bool Combat_Menu::PostUpdate()
 						{
 							//app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
 							a_rect = { 0, 100, 400, 50 };
-							app->render->DrawTexture(app->tex->whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
+							app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 						}
 						else
 						{
 							SDL_Rect rect = { 192, 0, 64, 64 };
-							app->render->DrawTexture(app->tex->target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
+							app->render->DrawTexture(target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
 						}
 					}
 					else if (allies_buttons[i].state == 0 && i == 4)
@@ -1792,7 +1808,7 @@ bool Combat_Menu::PostUpdate()
 						case 3: a_rect = { 0, 200, 400, 50 };
 							  break;
 						}
-						app->render->DrawTexture(app->tex->whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
+						app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 					}
 
 					if (i == 4)

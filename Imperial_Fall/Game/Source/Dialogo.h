@@ -1,4 +1,4 @@
-#ifndef __MENU_H__
+#ifndef __DIALOG_H__
 #define __MENU_H__
 
 #include "Module.h"
@@ -74,8 +74,6 @@ public:
 
 	void SetWinLose(int n);
 
-	bool ReturnStartScreen();
-
 public:
 
 	SDL_Rect r;
@@ -149,8 +147,6 @@ private:
 	// sound
 	uint click_sound;
 	uint hover_sound;
-
-	void DisableAll();
 
 };
 

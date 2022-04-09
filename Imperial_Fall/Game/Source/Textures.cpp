@@ -8,7 +8,7 @@
 #include "SDL_image/include/SDL_image.h"
 //#pragma comment(lib, "../Game/Source/External/SDL_image/libx86/SDL2_image.lib")
 
-Textures::Textures() : Module()
+Textures::Textures(bool enabled) : Module(enabled)
 {
 	name.Create("textures");
 }
@@ -42,26 +42,14 @@ bool Textures::Start()
 	LOG("start textures");
 	bool ret = true;
 
-	assassin_texture = Load("Assets/textures/Asesino.png");
-	tank_texture = Load("Assets/textures/Tanque.png");
-	healer_texture = Load("Assets/textures/Healer.png");
-	wizard_texture = Load("Assets/textures/Mago.png");
-	renato_bueno = Load("Assets/textures/renato_bueno.png");
-	curandero = Load("Assets/textures/curandero.png");
-	herrero = Load("Assets/textures/herrero.png");
-	granjero = Load("Assets/textures/granjero.png");
-	start_menu = Load("Assets/textures/Start_screen.png");
-	target = Load("Assets/textures/target.png");
-	tombstone = Load("Assets/textures/tombstone.png");
+	
+	
+	/*start_menu = Load("Assets/textures/Start_screen.png");
 	goblin = Load("Assets/textures/goblin.png");
 	skeleton = Load("Assets/textures/skeleton.png");
 	mushroom = Load("Assets/textures/mushroom.png");
 	white_templar = Load("Assets/textures/white_templar.png");
 	red_templar = Load("Assets/textures/red_templar.png");
-	heroes_icons = Load("Assets/textures/heroes_icons.png");
-	enemies_icons = Load("Assets/textures/enemies_icons.png");
-	turn_icon = Load("Assets/textures/turn_icon.png");
-	dead_icon = Load("Assets/textures/dead_icon.png");
 	whitemark_64x64 = Load("Assets/textures/64x64_whitemark.png");
 	whitemark_400x50 = Load("Assets/textures/400x50_whitemark.png");
 	whitemark_110x110 = Load("Assets/textures/110x110_whitemark.png");
@@ -70,7 +58,7 @@ bool Textures::Start()
 	whitemark_300x80 = Load("Assets/textures/300x80_whitemark.png");
 	particles_texture = Load("Assets/textures/particles.png");
 
-	tileX = Load("Assets/textures/x.png");
+	tileX = Load("Assets/textures/x.png");*/
 
 	return ret;
 }

@@ -83,7 +83,7 @@ public:
 class Entities : public Module
 {
 public:
-	Entities();
+	Entities(bool enabled);
 
 	virtual ~Entities();
 
@@ -117,6 +117,12 @@ public:
 	void KillEnemy();
 
 	Entity* GetPlayer();
+
+	SDL_Texture* white_templar = NULL;
+	SDL_Texture* mushroom = NULL;
+	SDL_Texture* goblin = NULL;
+	SDL_Texture* skeleton = NULL;
+	SDL_Texture* red_templar = NULL;
 	
 };
 

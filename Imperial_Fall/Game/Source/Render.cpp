@@ -4,13 +4,14 @@
 #include "Scene.h"
 #include "Entities.h"
 #include "Combat_Manager.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #define VSYNC true
 
-Render::Render() : Module()
+Render::Render(bool enabled) : Module(enabled)
 {
 	name.Create("renderer");
 	background.r = 0;
@@ -85,7 +86,7 @@ bool Render::Update(float dt)
 		camera.y = 0;
 	}
 
-	if (app->scene->current_level == 1)
+	if (app->frontground->current_level == 1)
 	{
 		if (camera.x > 0)
 		{
@@ -105,7 +106,7 @@ bool Render::Update(float dt)
 			camera.y = -500;
 		}
 	}
-	else if (app->scene->current_level == 2)
+	else if (app->frontground->current_level == 2)
 	{
 		if (camera.x > 0)
 		{
@@ -126,7 +127,7 @@ bool Render::Update(float dt)
 		}
 
 	}
-	else if (app->scene->current_level == 3)
+	else if (app->frontground->current_level == 3)
 	{
 		if (camera.x > 0)
 		{
@@ -146,7 +147,7 @@ bool Render::Update(float dt)
 			camera.y = -2000;
 		}
 	}
-	else if (app->scene->current_level == 4)
+	else if (app->frontground->current_level == 4)
 	{
 		if (camera.x > -120)
 		{
@@ -166,7 +167,7 @@ bool Render::Update(float dt)
 			camera.y = -2400;
 		}
 	}
-	else if (app->scene->current_level == 5)
+	else if (app->frontground->current_level == 5)
 	{
 		if (camera.x > -0)
 		{
@@ -186,7 +187,7 @@ bool Render::Update(float dt)
 			camera.y = -1320;
 		}
 	}
-	else if (app->scene->current_level == 6)
+	else if (app->frontground->current_level == 6)
 	{
 	if (camera.x > -0)
 	{
@@ -206,7 +207,7 @@ bool Render::Update(float dt)
 		camera.y = -970;
 	}
 	}
-	else if (app->scene->current_level == 7)
+	else if (app->frontground->current_level == 7)
 	{
 	if (camera.x > -0)
 	{

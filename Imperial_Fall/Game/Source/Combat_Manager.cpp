@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-Combat_Manager::Combat_Manager() : Module()
+Combat_Manager::Combat_Manager(bool enabled) : Module(enabled)
 {
 	name.Create("combat_manager");
 }
@@ -37,6 +37,12 @@ bool Combat_Manager::Awake()
 bool Combat_Manager::Start()
 {
 	LoadHeroesStats();
+
+	heroes_icons = app->tex->Load("Assets/textures/heroes_icons.png");
+	enemies_icons = app->tex->Load("Assets/textures/enemies_icons.png");
+	turn_icon = app->tex->Load("Assets/textures/turn_icon.png");
+	dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
+	whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
 
 	return true;
 }
@@ -230,9 +236,9 @@ void Combat_Manager::UpdateHUD()
 	SDL_Rect rect;
 
 	// assassin
-	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx, 8 + cy);
+	app->render->DrawTexture(whitemark_64x64, 8 + cx, 8 + cy);
 	rect = { 0, 0, 64, 64 };
-	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx, 8 + cy, &rect);
+	app->render->DrawTexture(heroes_icons, 8 + cx, 8 + cy, &rect);
 	app->render->DrawRectangle({ 75 + cx, 8 + cy, allies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx, 9 + cy, allies[0]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + allies[0]->GetActualHealth(), 9 + cy, allies[0]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -240,17 +246,17 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 76 + cx, 9 + cy + 34, allies[0]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[0]->GetEntityState())
 	{
-		app->render->DrawTexture(app->tex->dead_icon, 8 + cx, 8 + cy);
+		app->render->DrawTexture(dead_icon, 8 + cx, 8 + cy);
 	}
 	else if (turn_order[turn] == allies[0])
 	{
-		app->render->DrawTexture(app->tex->turn_icon, 8 + cx, 8 + cy);
+		app->render->DrawTexture(turn_icon, 8 + cx, 8 + cy);
 	}
 
 	// healer
-	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx, 8 + cy + 67);
+	app->render->DrawTexture(whitemark_64x64, 8 + cx, 8 + cy + 67);
 	rect = { 64, 0, 64, 64 };
-	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx, 8 + cy + 67, &rect);
+	app->render->DrawTexture(heroes_icons, 8 + cx, 8 + cy + 67, &rect);
 	app->render->DrawRectangle({ 75 + cx, 8 + cy + 67, allies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx, 9 + cy + 67, allies[1]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + allies[1]->GetActualHealth(), 9 + cy + 67, allies[1]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -258,18 +264,18 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 76 + cx, 9 + cy + 34 + 67, allies[1]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[1]->GetEntityState())
 	{
-		app->render->DrawTexture(app->tex->dead_icon, 8 + cx, 8 + cy + 67);
+		app->render->DrawTexture(dead_icon, 8 + cx, 8 + cy + 67);
 	}
 	else if (turn_order[turn] == allies[1])
 	{
-		app->render->DrawTexture(app->tex->turn_icon, 8 + cx, 8 + cy + 67);
+		app->render->DrawTexture(turn_icon, 8 + cx, 8 + cy + 67);
 	}
 	
 
 	// tank
-	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 250, 8 + cy);
+	app->render->DrawTexture(whitemark_64x64, 8 + cx + 250, 8 + cy);
 	rect = { 128, 0, 64, 64 };
-	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx + 250, 8 + cy, &rect);
+	app->render->DrawTexture(heroes_icons, 8 + cx + 250, 8 + cy, &rect);
 	app->render->DrawRectangle({ 75 + cx + 250, 8 + cy, allies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy, allies[2]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + allies[2]->GetActualHealth() + 250, 9 + cy, allies[2]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -277,17 +283,17 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy + 34, allies[2]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[2]->GetEntityState())
 	{
-		app->render->DrawTexture(app->tex->dead_icon, 8 + cx + 250, 8 + cy);
+		app->render->DrawTexture(dead_icon, 8 + cx + 250, 8 + cy);
 	}
 	else if (turn_order[turn] == allies[2])
 	{
-		app->render->DrawTexture(app->tex->turn_icon, 8 + cx + 250, 8 + cy);
+		app->render->DrawTexture(turn_icon, 8 + cx + 250, 8 + cy);
 	}
 
 	// wizard
-	app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 250, 8 + cy + 67);
+	app->render->DrawTexture(whitemark_64x64, 8 + cx + 250, 8 + cy + 67);
 	rect = { 192, 0, 64, 64 };
-	app->render->DrawTexture(app->tex->heroes_icons, 8 + cx + 250, 8 + cy + 67, &rect);
+	app->render->DrawTexture(heroes_icons, 8 + cx + 250, 8 + cy + 67, &rect);
 	app->render->DrawRectangle({ 75 + cx + 250, 8 + cy + 67, allies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy + 67, allies[3]->GetActualHealth(), 28 }, 255, 0, 0);
 	app->render->DrawRectangle({ 76 + cx + allies[3]->GetActualHealth() + 250, 9 + cy + 67, allies[3]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -295,17 +301,17 @@ void Combat_Manager::UpdateHUD()
 	app->render->DrawRectangle({ 76 + cx + 250, 9 + cy + 34 + 67, allies[3]->GetActualMana(), 28 }, 0, 0, 255);
 	if (!allies[3]->GetEntityState())
 	{
-		app->render->DrawTexture(app->tex->dead_icon, 8 + cx + 250, 8 + cy + 67);
+		app->render->DrawTexture(dead_icon, 8 + cx + 250, 8 + cy + 67);
 	}
 	else if (turn_order[turn] == allies[3])
 	{
-		app->render->DrawTexture(app->tex->turn_icon, 8 + cx + 250, 8 + cy + 67);
+		app->render->DrawTexture(turn_icon, 8 + cx + 250, 8 + cy + 67);
 	}
 
 	// enemy 1
 	if (enemies[0]->GetEntityState() != 2)
 	{
-		app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 800, 8 + cy);
+		app->render->DrawTexture(whitemark_64x64, 8 + cx + 800, 8 + cy);
 		switch (enemies[0]->GetType())
 		{
 		case 4: rect = { 0, 0, 64, 64 };
@@ -319,7 +325,7 @@ void Combat_Manager::UpdateHUD()
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
-		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 800, 8 + cy, &rect);
+		app->render->DrawTexture(enemies_icons, 8 + cx + 800, 8 + cy, &rect);
 		app->render->DrawRectangle({ 75 + cx + 800, 8 + cy, enemies[0]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy, enemies[0]->GetActualHealth(), 28 }, 255, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + enemies[0]->GetActualHealth() + 800, 9 + cy, enemies[0]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -327,18 +333,18 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy + 34, enemies[0]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[0]->GetEntityState() == 0)
 		{
-			app->render->DrawTexture(app->tex->dead_icon, 8 + cx + 800, 8 + cy);
+			app->render->DrawTexture(dead_icon, 8 + cx + 800, 8 + cy);
 		}
 		else if (turn_order[turn] == enemies[0])
 		{
-			app->render->DrawTexture(app->tex->turn_icon, 8 + cx + 800, 8 + cy);
+			app->render->DrawTexture(turn_icon, 8 + cx + 800, 8 + cy);
 		}
 	}
 
 	// enemy 2
 	if (enemies[1]->GetEntityState() != 2)
 	{
-		app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 800, 8 + cy + 67);
+		app->render->DrawTexture(whitemark_64x64, 8 + cx + 800, 8 + cy + 67);
 		switch (enemies[1]->GetType())
 		{
 		case 4: rect = { 0, 0, 64, 64 };
@@ -352,7 +358,7 @@ void Combat_Manager::UpdateHUD()
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
-		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 800, 8 + cy + 67, &rect);
+		app->render->DrawTexture(enemies_icons, 8 + cx + 800, 8 + cy + 67, &rect);
 		app->render->DrawRectangle({ 75 + cx + 800, 8 + cy + 67, enemies[1]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy + 67, enemies[1]->GetActualHealth(), 28 }, 255, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + enemies[1]->GetActualHealth() + 800, 9 + cy + 67, enemies[1]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -360,18 +366,18 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawRectangle({ 76 + cx + 800, 9 + cy + 34 + 67, enemies[1]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[1]->GetEntityState() == 0)
 		{
-			app->render->DrawTexture(app->tex->dead_icon, 8 + cx + 800, 8 + cy + 67);
+			app->render->DrawTexture(dead_icon, 8 + cx + 800, 8 + cy + 67);
 		}
 		else if (turn_order[turn] == enemies[1])
 		{
-			app->render->DrawTexture(app->tex->turn_icon, 8 + cx + 800, 8 + cy + 67);
+			app->render->DrawTexture(turn_icon, 8 + cx + 800, 8 + cy + 67);
 		}
 	}
 
 	// enemy 3
 	if (enemies[2]->GetEntityState() != 2)
 	{
-		app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 250 + 800, 8 + cy);
+		app->render->DrawTexture(whitemark_64x64, 8 + cx + 250 + 800, 8 + cy);
 		switch (enemies[2]->GetType())
 		{
 		case 4: rect = { 0, 0, 64, 64 };
@@ -385,7 +391,7 @@ void Combat_Manager::UpdateHUD()
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
-		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 250 + 800, 8 + cy, &rect);
+		app->render->DrawTexture(enemies_icons, 8 + cx + 250 + 800, 8 + cy, &rect);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy, enemies[2]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy, enemies[2]->GetActualHealth(), 28 }, 255, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + enemies[2]->GetActualHealth() + 250 + 800, 9 + cy, enemies[2]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -393,18 +399,18 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 34, enemies[2]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[2]->GetEntityState() == 0)
 		{
-			app->render->DrawTexture(app->tex->dead_icon, 8 + cx + 250 + 800, 8 + cy);
+			app->render->DrawTexture(dead_icon, 8 + cx + 250 + 800, 8 + cy);
 		}
 		else if (turn_order[turn] == enemies[2])
 		{
-			app->render->DrawTexture(app->tex->turn_icon, 8 + cx + 250 + 800, 8 + cy);
+			app->render->DrawTexture(turn_icon, 8 + cx + 250 + 800, 8 + cy);
 		}
 	}
 
 	// enemy 4
 	if (enemies[3]->GetEntityState() != 2)
 	{
-		app->render->DrawTexture(app->tex->whitemark_64x64, 8 + cx + 250 + 800, 8 + cy + 67);
+		app->render->DrawTexture(whitemark_64x64, 8 + cx + 250 + 800, 8 + cy + 67);
 		switch (enemies[3]->GetType())
 		{
 		case 4: rect = { 0, 0, 64, 64 };
@@ -418,7 +424,7 @@ void Combat_Manager::UpdateHUD()
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
-		app->render->DrawTexture(app->tex->enemies_icons, 8 + cx + 250 + 800, 8 + cy + 67, &rect);
+		app->render->DrawTexture(enemies_icons, 8 + cx + 250 + 800, 8 + cy + 67, &rect);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy + 67, enemies[3]->GetMaxHealth(), 30 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 67, enemies[3]->GetActualHealth(), 28 }, 255, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + enemies[3]->GetActualHealth() + 250 + 800, 9 + cy + 67, enemies[3]->GetShield(), 28 }, 120, 120, 120, 200);
@@ -426,11 +432,11 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 34 + 67, enemies[3]->GetActualMana(), 28 }, 0, 0, 255);
 		if (enemies[3]->GetEntityState() == 0)
 		{
-			app->render->DrawTexture(app->tex->dead_icon, 8 + cx + 250 + 800, 8 + cy + 67);
+			app->render->DrawTexture(dead_icon, 8 + cx + 250 + 800, 8 + cy + 67);
 		}
 		else if (turn_order[turn] == enemies[3])
 		{
-			app->render->DrawTexture(app->tex->turn_icon, 8 + cx + 250 + 800, 8 + cy + 67);
+			app->render->DrawTexture(turn_icon, 8 + cx + 250 + 800, 8 + cy + 67);
 		}
 	}
 }

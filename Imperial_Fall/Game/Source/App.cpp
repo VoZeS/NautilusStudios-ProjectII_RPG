@@ -15,6 +15,14 @@
 #include "Menu.h"
 #include "Particles.h"
 #include "Frontground.h"
+#include "Town1.h"
+#include "Town2.h"
+#include "Forest.h"
+#include "Battlefield.h"
+#include "Dungeon.h"
+#include "Outside_Castle.h"
+#include "Inside_Castle.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -25,23 +33,30 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	win = new Window();
-	input = new Input();
-	render = new Render();
-	tex = new Textures();
-	audio = new Audio();
-	scene = new Scene();
-	map = new Map();
-	pathfinding = new PathFinding();
-	physics = new Physics();
-	entities = new Entities();
-	fonts = new Fonts();
-	combat_manager = new Combat_Manager();
-	combat_menu = new Combat_Menu();
-	menu = new Menu();
-	particles = new Particles();
-	frontground = new Frontground();
-
+	win = new Window(true);
+	input = new Input(true);
+	render = new Render(true);
+	tex = new Textures(true);
+	audio = new Audio(true);
+	scene = new Scene(true);
+	map = new Map(false);
+	pathfinding = new PathFinding(true);
+	physics = new Physics(true);
+	entities = new Entities(false);
+	fonts = new Fonts(true);
+	combat_manager = new Combat_Manager(false);
+	combat_menu = new Combat_Menu(false);
+	menu = new Menu(true);
+	particles = new Particles(false);
+	frontground = new Frontground(true);
+	town1 = new Town1(false);
+	town2 = new Town2(false);
+	forest = new Forest(false);
+	battlefield = new Battlefield(false);
+	dungeon = new Dungeon(false);
+	outside = new Outside_Castle(false);
+	inside = new Inside_Castle(false);
+	dialog = new Dialog(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -50,6 +65,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
+	AddModule(town1);
+	AddModule(town2);
+	AddModule(forest);
+	AddModule(battlefield);
+	AddModule(dungeon);
+	AddModule(outside);
+	AddModule(inside);
 	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(physics);
@@ -60,6 +82,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(menu);
 	AddModule(particles);
 	AddModule(frontground);
+	AddModule(dialog);
 
 	// Render last to swap buffer
 	AddModule(render);

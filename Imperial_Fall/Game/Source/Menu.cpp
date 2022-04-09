@@ -11,8 +11,15 @@
 #include "Player.h"
 #include "Defs.h"
 #include "Log.h"
+#include "Town1.h"
+#include "Town2.h"
+#include "Forest.h"
+#include "Battlefield.h"
+#include "Dungeon.h"
+#include "Outside_Castle.h"
+#include "Inside_Castle.h"
 
-Menu::Menu() : Module()
+Menu::Menu(bool enabled) : Module(enabled)
 {
 	name.Create("menu");
 
@@ -239,13 +246,21 @@ bool Menu::Start()
 // Called each loop iteration
 bool Menu::PreUpdate()
 {
-	intro = app->scene->GetStartScreenState();
+	intro = !started;
 
+	////////////////////////////////////////////////
+	////////////////////////////////////////////////
+	////////////////////////////////////////////////
+	////////////////////////////////////////////////
 	if (kill_enemy)
 	{
 		app->entities->KillEnemy();
 		app->LoadGameRequest(false);
 	}
+	////////////////////////////////////////////////
+	////////////////////////////////////////////////
+	////////////////////////////////////////////////
+	////////////////////////////////////////////////
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && intro == false )
 	{
@@ -266,7 +281,6 @@ bool Menu::PreUpdate()
 
 	if (app->scene->esc == true)
 	{
-
 		int x, y;
 		app->input->GetMousePosition(x, y);
 
@@ -404,7 +418,7 @@ bool Menu::Update(float dt)
 					//app->scene->opciones = true;
 					break;
 				case 2:
-					app->scene->ReturnStartScreen();
+					app->frontground->ReturnStartScreen();
 
 					paused = false;
 					break;
@@ -451,7 +465,8 @@ bool Menu::Update(float dt)
 					if (!started && !firstime)
 					{
 						app->LoadGameRequest(false);
-						app->scene->PassLevel(1);
+						app->menu->DisableAll();
+						app->town1->Enable();
 						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
@@ -468,14 +483,16 @@ bool Menu::Update(float dt)
 					if (!started)// && firstime)
 					{
 						app->LoadGame(true); // load now, not at frames end
-						app->scene->PassLevel(1);
-						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
+						app->menu->DisableAll();
+						app->town1->Enable();
+						/*app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0LookDir(0);
 						app->entities->GetPlayer()->SetCompanion1LookDir(0);
-						app->entities->GetPlayer()->SetCompanion2LookDir(0);
+						app->entities->GetPlayer()->SetCompanion2LookDir(0);*/
+						app->frontground->scene_to_town1 = true;
 						saving = false;
 						intro = false;
 						paused = false;
@@ -593,6 +610,107 @@ bool Menu::Update(float dt)
 				lose_buttons[chosed].state = 2;
 			}
 		}
+	}
+
+	// Tricks
+	if (app->frontground->godmode)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->town1->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1000));
+			app->entities->GetPlayer()->SetPlayerLookDir(1);
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->town2->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->forest->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(300));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(200));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->battlefield->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->dungeon->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(950), PIXELS_TO_METERS(200));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->outside->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1500));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1600));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1700));
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			DisableAll();
+
+			app->inside->Enable();
+
+			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(500), PIXELS_TO_METERS(800));
+			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(600));
+			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(500));
+			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(400));
+		}
+
+		else if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			app->SaveGameRequest();
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
+			app->LoadGameRequest(false);
+		}
+		
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		app->frontground->godmode = !app->frontground->godmode;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		app->ToggleFPS();
 	}
 
 	return true;
@@ -1056,4 +1174,24 @@ void Menu::SetWinLose(int n)
 		win = false;
 		lose = false;
 	}
+}
+
+bool Menu::ReturnStartScreen()
+{
+	started = false;
+	app->frontground->SetA_Black();
+
+	return true;
+}
+
+void Menu::DisableAll()
+{
+	app->scene->Disable();
+	app->town1->Disable();
+	app->town2->Disable();
+	app->forest->Disable();
+	app->battlefield->Disable();
+	app->dungeon->Disable();
+	app->outside->Disable();
+	app->inside->Disable();
 }

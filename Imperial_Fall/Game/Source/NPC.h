@@ -36,6 +36,11 @@ public:
 	// main Animations
 	Animation idleAnim_renato;
 	Animation idleAnim_vendedores;
+
+	SDL_Texture* curandero = NULL;
+	SDL_Texture* herrero = NULL;
+	SDL_Texture* granjero = NULL;
+	SDL_Texture* renato_bueno = NULL;
 };
 
 #endif

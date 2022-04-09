@@ -12,7 +12,7 @@
 
 #include <math.h>
 
-Map::Map() : Module(), mapLoaded(false)
+Map::Map(bool enabled) : Module(enabled), mapLoaded(false)
 {
     name.Create("map");
 	collision_loaded = false;
@@ -278,7 +278,6 @@ iPoint Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-// L06: TODO 3: Pick the right Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int id) const
 {
 	ListItem<TileSet*>* item = mapData.tilesets.start;
@@ -338,6 +337,9 @@ bool Map::CleanUp()
 		item2 = item2->next;
 	}
 	mapData.layers.Clear();
+
+	app->physics->CleanMapBoxes();
+	collision_loaded = false;
 
     return true;
 }
@@ -607,8 +609,8 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = item->data;
 
-		/*if (layer->properties.GetProperty("Navigation", 0) == 0)
-			continue;*/
+		if (layer->properties.GetProperty("Navigation", 0) == 0)
+			continue;
 
 		uchar* map = new uchar[layer->width * layer->height];
 		memset(map, 1, layer->width * layer->height);

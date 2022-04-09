@@ -14,7 +14,7 @@
 
 #include <time.h>
 
-Entities::Entities() : Module()
+Entities::Entities(bool enabled) : Module(enabled)
 {
 	name.Create("entities");
 }
@@ -32,8 +32,6 @@ void Entities::AddEntity(Entity* entity, ENTITY_TYPE type, fPoint p)
 // Called before render is available
 bool Entities::Awake()
 {
-	srand(time(NULL));
-
 	return true;
 }
 
@@ -41,8 +39,17 @@ bool Entities::Awake()
 bool Entities::Start()
 {
 	bool ret = true;
-	
-	app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
+
+	if (this->Enabled() && !this->Disabled())
+	{
+		white_templar = app->tex->Load("Assets/textures/white_templar.png");
+		mushroom = app->tex->Load("Assets/textures/mushroom.png");
+		goblin = app->tex->Load("Assets/textures/goblin.png");
+		skeleton = app->tex->Load("Assets/textures/skeleton.png");
+		red_templar = app->tex->Load("Assets/textures/red_templar.png");
+
+		app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
+	}
 
 	return ret;
 }
@@ -141,8 +148,7 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-	if (!app->scene->GetStartScreenState())
-	{
+	
 		ListItem<Entity*>* item;
 		Entity* entity = NULL;
 
@@ -165,7 +171,7 @@ bool Entities::PostUpdate()
 				ret = item->data->Draw();
 			}
 		}
-	}
+	
 
 	return ret;
 }

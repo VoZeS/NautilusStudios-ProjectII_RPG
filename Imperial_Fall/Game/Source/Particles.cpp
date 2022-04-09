@@ -14,7 +14,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-Particles::Particles() : Module()
+Particles::Particles(bool enabled) : Module(enabled)
 {
 	for(uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 		particles[i] = nullptr;
@@ -27,7 +27,7 @@ Particles::~Particles()
 
 bool Particles::Start()
 {
-	texture = app->tex->particles_texture;
+	texture = app->tex->Load("Assets/textures/particles.png");
 
 	int pix = 128;
 	float speed = 0.1f;
