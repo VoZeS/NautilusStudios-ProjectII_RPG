@@ -473,38 +473,31 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			break;
 		}
 
-		// damage inmunity
-		BUFF b;
-		b.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
-		if (objective->FindBuff(b) != -1)
-		{
-			damage = 0;
-		}
-		
-		b.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
-		if (objective->FindBuff(b) != -1)
-		{
-			skill.debuff_type = DEBUFF_TYPE::NOTHING;
-		}
-		
-
 		// lauch attack skill
 		if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 		{
-			DEBUFF b;
-			b.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			DEBUFF d;
+			d.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			if (objective->GetWeakness() == skill.element)
 			{
 				damage *= 1.5f;
 			}
-			else if (objective->FindDebuff(b) != -1 && skill.element == 0)
+			else if (objective->FindDebuff(d) != -1 && skill.element == 0)
 			{
 				damage *= 1.5f;
 			}
 
+			BUFF b;
+			b.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
+			if (objective->FindBuff(b) != -1)
+			{
+				damage = 0;
+			}
+
 			objective->DamageEntity(damage, skill.skill_bonus);
 
-			if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+			b.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
+			if (skill.debuff_type != DEBUFF_TYPE::NOTHING && objective->FindBuff(b) == -1)
 			{
 				objective->AddDebuff(skill.debuff_type, skill.buff_turns);
 			}
@@ -631,17 +624,23 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		}
 		else if (skill.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 		{
-			DEBUFF v;
-			v.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			DEBUFF d;
+			d.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			BUFF b1, b2, b3;
+			b1.buff_type = BUFF_TYPE::DODGE;
+			b2.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
+			b3.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
 			for (size_t i = 0; i < 4; i++)
 			{
 				if (user->GetType() < 4) // allies
 				{
-					BUFF b;
-					b.buff_type = BUFF_TYPE::DODGE;
-					if (enemies[i]->GetEntityState() && enemies[i]->FindBuff(b) == -1)
+					if (enemies[i]->GetEntityState() && enemies[i]->FindBuff(b1) == -1)
 					{
-						if ((enemies[i]->GetWeakness() == skill.element) || (enemies[i]->FindDebuff(v) != -1 && skill.element == 0))
+						if (enemies[i]->FindBuff(b2) != -1)
+						{
+							damage = 0;
+						}
+						else if ((enemies[i]->GetWeakness() == skill.element) || (enemies[i]->FindDebuff(d) != -1 && skill.element == 0))
 						{
 							enemies[i]->DamageEntity(damage * 1.5f, skill.skill_bonus);
 						}
@@ -649,9 +648,8 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							enemies[i]->DamageEntity(damage, skill.skill_bonus);
 						}
-						
 
-						if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+						if (skill.debuff_type != DEBUFF_TYPE::NOTHING && enemies[i]->FindBuff(b3) == -1)
 						{
 							enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
 						}
@@ -659,11 +657,13 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else // enemies
 				{
-					BUFF b;
-					b.buff_type = BUFF_TYPE::DODGE;
-					if (allies[i]->GetEntityState() && allies[i]->FindBuff(b) == -1)
+					if (allies[i]->GetEntityState() && allies[i]->FindBuff(b1) == -1)
 					{
-						if ((allies[i]->GetWeakness() == skill.element) || (allies[i]->FindDebuff(v) != -1 && skill.element == 0))
+						if (allies[i]->FindBuff(b2) != -1)
+						{
+							// dont do damage
+						}
+						else if ((allies[i]->GetWeakness() == skill.element) || (allies[i]->FindDebuff(d) != -1 && skill.element == 0))
 						{
 							allies[i]->DamageEntity(damage * 1.5f, skill.skill_bonus);
 						}
@@ -672,7 +672,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 							allies[i]->DamageEntity(damage, skill.skill_bonus);
 						}
 
-						if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+						if (skill.debuff_type != DEBUFF_TYPE::NOTHING && allies[i]->FindBuff(b3) == -1)
 						{
 							allies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
 						}
