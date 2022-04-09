@@ -71,6 +71,7 @@ public:
 	b2Body* body;
 
 	bool alive;
+	bool plan_to_delete;
 
 	bool init;
 

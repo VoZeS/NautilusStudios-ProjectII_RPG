@@ -2,6 +2,7 @@
 #include "Textures.h"
 #include "Entities.h"
 #include "Scene.h"
+#include "Menu.h"
 #include "Frontground.h"
 
 #include "Player.h"
@@ -40,32 +41,7 @@ bool Entities::Awake()
 bool Entities::Start()
 {
 	bool ret = true;
-	/*ListItem<Entity*>* item;
-	item = entities.start;
-
-	while (item != NULL && ret == true)
-	{
-		switch (item->data->entity_type)
-		{
-		case ENTITY_TYPE::RENATO:
-			item->data->InitCustomEntity(1);
-			break;
-		case ENTITY_TYPE::CURANDERO:
-			item->data->InitCustomEntity(2);
-			break;
-		case ENTITY_TYPE::HERRERO:
-			item->data->InitCustomEntity(3);
-			break;
-		case ENTITY_TYPE::GRANJERO:
-			item->data->InitCustomEntity(4);
-			break;
-		default:
-			item->data->InitCustomEntity();
-			break;
-		}
-		item = item->next;
-	}*/
-
+	
 	app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
 
 	return ret;
@@ -174,7 +150,14 @@ bool Entities::PostUpdate()
 		{
 			entity = item->data;
 
-			if (entity->alive == false) {
+			if (entity->alive == false)
+			{
+				if (entity->plan_to_delete)
+				{
+					app->physics->world->DestroyBody(entity->body);
+					entity->plan_to_delete = false;
+					app->SaveGameRequest();
+				}
 				continue;
 			}
 
@@ -203,6 +186,7 @@ bool Entities::CleanUp()
 			entities.Del(item);
 		}
 	}
+	enemies_lenght = 0;
 
 	return true;
 }
@@ -403,6 +387,8 @@ void Entities::KillEnemy()
 	if (combat_entity != NULL)
 	{
 		combat_entity->alive = false;
+		combat_entity->plan_to_delete = true;
+		app->menu->kill_enemy = false;
 	}
 }
 
@@ -434,6 +420,7 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	body = NULL;
 
 	alive = true;
+	plan_to_delete = false;
 
 	init = false;
 

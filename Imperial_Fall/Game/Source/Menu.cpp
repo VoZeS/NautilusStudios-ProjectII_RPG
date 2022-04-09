@@ -256,6 +256,11 @@ bool Menu::PreUpdate()
 {
 	intro = app->scene->GetStartScreenState();
 
+	if (kill_enemy)
+	{
+		app->entities->KillEnemy();
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !dead && intro == false )
 	{
 		paused = !paused;
@@ -273,119 +278,126 @@ bool Menu::PreUpdate()
 		settings = false;
 	}
 
-	if (app->scene->esc == true) {
-
-	int x, y;
-	app->input->GetMousePosition(x, y);
-
-	float cx = -app->render->camera.x;
-	float cy = -app->render->camera.y;
-
-	if (paused)
+	if (app->scene->esc == true)
 	{
-		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
+
+		int x, y;
+		app->input->GetMousePosition(x, y);
+
+		float cx = -app->render->camera.x;
+		float cy = -app->render->camera.y;
+
+		if (paused)
 		{
-			SDL_Rect rect = pause_buttons[i].rect;
+			for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
+			{
+				SDL_Rect rect = pause_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					if (paused)
+					{
+						//app->audio->PlayFx(hover_sound);
+					}
+					chosed = i;
+					pause_buttons[i].state = 1;
+				}
+				else
+				{
+					pause_buttons[i].state = 0;
+				}
+			}
+		}
+		else if (intro && !settings)
+		{
+			for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
+			{
+				SDL_Rect rect = menu_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					if (intro && !settings && !subplaymenu && !credits)
+					{
+						//app->audio->PlayFx(hover_sound);
+					}
+					chosed = i;
+					menu_buttons[i].state = 1;
+				}
+				else
+				{
+					menu_buttons[i].state = 0;
+				}
+			}
+		}
+
+		if (settings)
+		{
+			for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+			{
+				SDL_Rect rect = settings_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					if (settings)
+					{
+						//app->audio->PlayFx(hover_sound);
+					}
+					chosed = i;
+					settings_buttons[i].state = 1;
+				}
+				else
+				{
+					settings_buttons[i].state = 0;
+				}
+			}
+		}
+
+
+		for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
+		{
+			SDL_Rect rect = dead_buttons[i].rect;
 			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				if (paused)
+				if (dead)
 				{
 					//app->audio->PlayFx(hover_sound);
 				}
 				chosed = i;
-				pause_buttons[i].state = 1;
+				dead_buttons[i].state = 1;
 			}
 			else
 			{
-				pause_buttons[i].state = 0;
+				dead_buttons[i].state = 0;
 			}
 		}
-	}
-	else if (intro && !settings)
-	{
-		for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
+
+		if (win)
 		{
-			SDL_Rect rect = menu_buttons[i].rect;
+			SDL_Rect rect = win_button.rect;
 			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				if (intro && !settings &&!subplaymenu && !credits)
-				{
-					//app->audio->PlayFx(hover_sound);
-				}
-				chosed = i;
-				menu_buttons[i].state = 1;
+				win_button.state = 1;
 			}
 			else
 			{
-				menu_buttons[i].state = 0;
+				win_button.state = 0;
 			}
 		}
-	}
-	
-	if (settings) 
-	{
-		for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+		else if (lose)
 		{
-			SDL_Rect rect = settings_buttons[i].rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
 			{
-				if (settings)
+				SDL_Rect rect = lose_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					//app->audio->PlayFx(hover_sound);
+					chosed = i;
+					lose_buttons[i].state = 1;
 				}
-				chosed = i;
-				settings_buttons[i].state = 1;
-			}
-			else
-			{
-				settings_buttons[i].state = 0;
+				else
+				{
+					lose_buttons[i].state = 0;
+				}
 			}
 		}
-	}
-	
 
-	for (size_t i = 0; i < NUM_DEAD_BUTTONS; i++)
-	{
-		SDL_Rect rect = dead_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-		{
-			if (dead)
-			{
-				//app->audio->PlayFx(hover_sound);
-			}
-			chosed = i;
-			dead_buttons[i].state = 1;
-		}
-		else
-		{
-			dead_buttons[i].state = 0;
-		}
 	}
-
-	SDL_Rect rect = win_button.rect;
-	if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-	{
-		win_button.state = 1;
-	}
-	else
-	{
-		win_button.state = 0;
-	}
-
-	for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
-	{
-		SDL_Rect rect = lose_buttons[i].rect;
-		if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-		{
-			chosed = i;
-			lose_buttons[i].state = 1;
-		}
-		else
-		{
-			lose_buttons[i].state = 0;
-		}
-	}
-}
 	return true;
 }
 
@@ -487,7 +499,7 @@ bool Menu::Update(float dt)
 				case 5: // NEW GAME
 					if (!started && firstime)
 					{
-
+						app->LoadGameRequest(true);
 						app->scene->PassLevel(1);
 						app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
 						app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
@@ -561,7 +573,7 @@ bool Menu::Update(float dt)
 			load_cd--;
 			if (load_cd <= 0)
 			{
-				app->LoadGameRequest();
+				app->LoadGameRequest(false);
 				load_cd = 120;
 				loading = false;
 				paused = false;
@@ -611,6 +623,7 @@ bool Menu::Update(float dt)
 				app->audio->PlayFx(click_sound);
 				app->frontground->ReturnToField();
 				win_button.state = 2;
+				kill_enemy = true;
 			}
 		}
 		else if (lose)
@@ -1081,4 +1094,21 @@ bool Menu::CleanUp()
 bool Menu::GetGameState()
 {
 	return paused;
+}
+
+void Menu::SetWinLose(int n)
+{
+	if (n == 0)
+	{
+		win = true;
+	}
+	else if (n == 1)
+	{
+		lose = true;
+	}
+	else
+	{
+		win = false;
+		lose = false;
+	}
 }

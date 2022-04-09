@@ -59,8 +59,6 @@ public:
 
 	int enemy_type = 0; // 1 --> white templar, 2 --> mushroom, 3 --> goblin, 3 --> skeleton
 
-	bool plan_to_delete = false;
-
 	ENEMIES combat_enemies[4];
 
 	//PathFinding* path_save = NULL;

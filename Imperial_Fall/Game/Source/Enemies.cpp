@@ -160,12 +160,6 @@ bool Enemies::Draw()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
-	if (plan_to_delete)
-	{
-		app->physics->world->DestroyBody(body);
-		plan_to_delete = false;
-	}
-	
 	if (state != ENEMY_STATE::DEATH)
 	{
 		switch (enemy_type)
@@ -187,6 +181,7 @@ bool Enemies::Draw()
 	else
 	{
 		alive = false;
+		plan_to_delete = true;
 	}
 
 	return true;
@@ -296,50 +291,24 @@ bool Enemies::DeleteEntity()
 
 bool Enemies::Load(pugi::xml_node& data)
 {
-	/*std::string p = "ground";
+	std::string p = "enemy";
 	std::string s = std::to_string(p_in_array);
 	std::string t = p + s;
 	const char* c = t.c_str();
 	
-	if (data.child("enemies").child(c).attribute("state").as_int() == 0)
-	{
-		if (state == ENEMY_STATE::DEATH)
-		{
-			
-		}
-
-		position.x = data.child("enemies").child(c).attribute("x").as_int();
-		position.y = data.child("enemies").child(c).attribute("y").as_int();
-
-		body->SetTransform({ position.x + PIXELS_TO_METERS(w), position.y }, body->GetAngle());
-		body->ApplyForceToCenter({ 0, 1000 }, true);
-	}
-	else
-	{
-		state = ENEMY_STATE::DEATH;
-	}*/
-
+	alive = data.child("enemies").child(c).attribute("state").as_bool();
+	
 	return true;
 }
 
 bool Enemies::Save(pugi::xml_node& data)
 {
-	/*std::string p = "ground";
+	std::string p = "enemy";
 	std::string s = std::to_string(p_in_array);
 	std::string t = p + s;
 	const char* c = t.c_str();
 
-	data.child("enemies").child(c).attribute("x").set_value(position.x);
-	data.child("enemies").child(c).attribute("y").set_value(position.y);
-
-	if (state != ENEMY_STATE::DEATH)
-	{
-		data.child("enemies").child(c).attribute("state").set_value("0");
-	}
-	else
-	{
-		data.child("enemies").child(c).attribute("state").set_value("1");
-	}*/
+	data.child("enemies").child(c).attribute("state").set_value(alive);
 
 	return true;
 }

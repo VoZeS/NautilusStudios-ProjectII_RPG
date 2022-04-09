@@ -190,8 +190,16 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	if (loadGameRequested == true) LoadGame();
-	if (saveGameRequested == true) SaveGame();
+	if (loadGameRequested == true)
+	{
+		LoadGame(set_to_origin);
+		set_to_origin = false;
+	}
+	if (saveGameRequested == true)
+	{
+		SaveGame();
+	}
+		
 
 	// game time
 	float secondsSinceStartup = startupTime.ReadSec();
@@ -330,9 +338,10 @@ const char* App::GetOrganization() const
 }
 
 // Load / Save
-void App::LoadGameRequest()
+void App::LoadGameRequest(bool set_to_origin)
 {
 	loadGameRequested = true;
+	this->set_to_origin = set_to_origin;
 }
 
 // ---------------------------------------
@@ -341,11 +350,24 @@ void App::SaveGameRequest()
 	saveGameRequested = true;
 }
 
-bool App::LoadGame()
+bool App::LoadGame(bool set_to_origin)
 {
 	bool ret = true;
 
-	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_parse_result result;
+
+	if (!set_to_origin)
+	{
+		// load 
+		result = saveGame.load_file(SAVE_STATE_FILENAME);
+	}
+	else
+	{
+		// reset 
+		result = saveGame.load_file(ORIGIN_SAVE_STATE_FILENAME);
+		saveGame.save_file(SAVE_STATE_FILENAME);
+	}
+	
 
 	if (result == NULL)
 	{

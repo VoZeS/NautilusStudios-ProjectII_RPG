@@ -48,6 +48,7 @@ public:
 	bool dead;
 	bool win;
 	bool lose;
+	bool kill_enemy = false;
 
 
 	SDL_Texture* torch_fire = NULL;
@@ -74,22 +75,7 @@ public:
 
 	SDL_Rect PauseMenuHUD;
 
-	void SetWinLose(int n)
-	{
-		if (n == 0)
-		{
-			win = true;
-		}
-		else if (n == 1)
-		{
-			lose = true;
-		}
-		else
-		{
-			win = false;
-			lose = false;
-		}
-	}
+	void SetWinLose(int n);
 
 public:
 

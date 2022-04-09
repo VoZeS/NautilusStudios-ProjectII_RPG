@@ -188,7 +188,7 @@ bool Scene::Update(float dt)
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
-		app->LoadGameRequest();
+		app->LoadGameRequest(false);
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
