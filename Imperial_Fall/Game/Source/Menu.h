@@ -88,8 +88,8 @@ public:
 
 	int seguir;
 
-	bool firstime = true; //Mira si es la primera vez que juegas al juego
-	bool subplaymenu; //Menu que sale cuando le das a Play
+	bool firstime = true; // Mira si es la primera vez que juegas al juego
+	bool subplaymenu; // Menu que sale cuando le das a Play
 	
 	bool stop = false;
 	bool desMenu = false; //Menu in game que aparece cuando le das a ESC
@@ -98,6 +98,8 @@ public:
 	bool menu = false;
 
 	bool started = false;
+
+	void InitPlayer();
 
 	void DisableAll();
 private:

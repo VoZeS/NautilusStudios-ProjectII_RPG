@@ -419,7 +419,6 @@ bool Menu::Update(float dt)
 					settings = true;
 					paused = true;
 					started = true;
-					//app->scene->opciones = true;
 					break;
 				case 2:
 					app->frontground->ReturnStartScreen();
@@ -450,7 +449,6 @@ bool Menu::Update(float dt)
 				case 1:
 					if (!subplaymenu)
 						settings = true;
-					//app->scene->daleZom1 = true;
 					break;
 
 				case 2:
@@ -507,10 +505,7 @@ bool Menu::Update(float dt)
 						intro = false;
 						paused = false;
 						started = true;
-						firstime = false;
 						subplaymenu = false;
-
-						//app->entities->CreateEntity(ENTITY_TYPE::PLAYER, app->entities->GetPlayerSavedPos().x, app->entities->GetPlayerSavedPos().y);
 					}
 					break;
 				}
@@ -1204,4 +1199,13 @@ void Menu::DisableAll()
 	app->outside->Disable();
 	app->inside->Disable();
 	app->combat_scene->Disable();
+}
+
+void Menu::InitPlayer()
+{
+	if (firstime)
+	{
+		app->entities->player_init = false;
+		firstime = false;
+	}
 }

@@ -163,21 +163,21 @@ bool Frontground::FadeFromBlack()
 
 	switch (move_to)
 	{
-	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_TOWN2: app->town2->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_TOWN2: app->town2->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_FOREST: app->forest->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_FOREST: app->forest->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_BATTLEFIELD: app->battlefield->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_BATTLEFIELD: app->battlefield->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_DUNGEON: app->dungeon->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_DUNGEON: app->dungeon->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_OUTSIDE: app->outside->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_OUTSIDE: app->outside->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_INSIDE: app->town1->Enable(); app->entities->player_init = false;
+	case MOVE_TO::SCENE_INSIDE: app->town1->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::TOWN1_SCENE: app->scene->Enable();
+	case MOVE_TO::TOWN1_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::TOWN1_TOWN2: app->town2->Enable();
 		break;
@@ -185,7 +185,7 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::TOWN1_COMBAT: app->combat_scene->Enable();
 		break;
-	case MOVE_TO::TOWN2_SCENE: app->scene->Enable();
+	case MOVE_TO::TOWN2_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::TOWN2_TOWN1: app->town1->Enable();
 		break;
@@ -197,25 +197,25 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::TOWN2_COMBAT: app->combat_scene->Enable();
 		break;
-	case MOVE_TO::FOREST_SCENE: app->scene->Enable();
+	case MOVE_TO::FOREST_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::FOREST_TOWN2: app->town2->Enable();
 		break;
 	case MOVE_TO::FOREST_COMBAT: app->combat_scene->Enable();
 		break;
-	case MOVE_TO::BATTLEFIELD_SCENE: app->scene->Enable();
+	case MOVE_TO::BATTLEFIELD_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::BATTLEFIELD_TOWN2: app->town2->Enable();
 		break;
 	case MOVE_TO::BATTLEFIELD_COMBAT: app->combat_scene->Enable();
 		break;
-	case MOVE_TO::DUNGEON_SCENE: app->scene->Enable();
+	case MOVE_TO::DUNGEON_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::DUNGEON_TOWN2: app->town2->Enable();
 		break;
 	case MOVE_TO::DUNGEON_COMBAT: app->combat_scene->Enable();
 		break;
-	case MOVE_TO::OUTSIDE_SCENE: app->scene->Enable();
+	case MOVE_TO::OUTSIDE_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::OUTSIDE_TOWN1: app->town1->Enable();
 		break;
@@ -223,7 +223,7 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::OUTSIDE_COMBAT: app->combat_scene->Enable();
 		break;
-	case MOVE_TO::INSIDE_SCENE: app->scene->Enable();
+	case MOVE_TO::INSIDE_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
 	case MOVE_TO::INSIDE_OUTSIDE: app->outside->Enable();
 		break;
@@ -331,12 +331,30 @@ bool Frontground::ResetCombat()
 
 void Frontground::ReturnStartScreen()
 {
-	SetA_Black();
+	switch (current_level)
+	{
+	case 1:
+		move_to = MOVE_TO::TOWN1_SCENE;
+		break;
+	case 2:
+		move_to = MOVE_TO::TOWN2_SCENE;
+		break;
+	case 3:
+		move_to = MOVE_TO::FOREST_SCENE;
+		break;
+	case 4:
+		move_to = MOVE_TO::BATTLEFIELD_SCENE;
+		break;
+	case 5:
+		move_to = MOVE_TO::DUNGEON_SCENE;
+		break;
+	case 6:
+		move_to = MOVE_TO::OUTSIDE_SCENE;
+		break;
+	case 7:
+		move_to = MOVE_TO::INSIDE_SCENE;
+		break;
+	}
 
-	app->map->CleanMaps();
-	app->physics->CleanMapBoxes();
-	app->map->collision_loaded = false;
-	app->entities->CleanUp();
-
-	in_combat = 0;
+	FadeToBlack();
 }
