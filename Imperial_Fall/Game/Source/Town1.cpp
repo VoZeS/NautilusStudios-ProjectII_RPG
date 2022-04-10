@@ -53,7 +53,7 @@ bool Town1::Start()
 		app->fonts->Enable();
 		app->dialog->Enable();
 	
-		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1 == true)
+		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1)
 		{
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000),
 				PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
@@ -77,7 +77,11 @@ bool Town1::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 1;
-		app->LoadGameRequest(false);
+
+		if (app->frontground->move_to != MOVE_TO::FROM_COMBAT)
+		{
+			app->LoadGameRequest(false);
+		}
 	}
 
 	return true;

@@ -260,7 +260,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
-
+	
 	for (item = entities.start; item != NULL && ret == true; item = item->next)
 	{
 		entity = item->data;
@@ -439,13 +439,13 @@ void Entities::KillEnemy()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON)
-			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
+			&& (abs(GetPlayer()->GetPlayerPosition().DistanceTo(entity->position)) < max))
 		{
 			combat_entity = entity;
-			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
+			max = abs(GetPlayer()->GetPlayerPosition().DistanceTo(entity->position));
 		}
 	}
-
+	
 	if (combat_entity != NULL)
 	{
 		combat_entity->alive = false;
@@ -486,12 +486,6 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	plan_to_delete = false;
 
 	init = false;
-
-	/*if (type == ENTITY_TYPE::W_TEMPLAR || type == ENTITY_TYPE::MUSHROOM || type == ENTITY_TYPE::GOBLIN || type == ENTITY_TYPE::SKELETON)
-	{
-		p_in_array = app->entities->enemies_lenght;
-		app->entities->enemies_lenght++;
-	}*/
 }
 
 void Entity::InitCustomEntity(int npc)

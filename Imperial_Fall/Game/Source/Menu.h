@@ -155,7 +155,6 @@ private:
 	uint hover_sound;
 
 	uint menu_music;
-
 };
 
 #endif

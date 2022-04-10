@@ -16,8 +16,8 @@
 			<comp2 x="16" y="13" />
 		</player>
 		<enemies>
-			<enemy0 state="true" />
-			<enemy1 state="true" />
+			<enemy0 state="false" />
+			<enemy1 state="false" />
 		</enemies>
 	</entities>
 </game_state>

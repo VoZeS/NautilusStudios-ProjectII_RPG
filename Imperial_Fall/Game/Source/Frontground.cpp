@@ -83,37 +83,7 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		/*if (in_combat == 0 && restart == 2)
-		{
-			restart = 0;
-			return_black = true;
-			in_combat = 2;
-		}
-		else if (in_combat == 1 || in_combat == 2)
-		{
-			FadeOutCombat();
-		}
-		else if (in_combat == 3)
-		{
-			if (restart == 0)
-			{
-				// return field
-				in_combat = 0;
-				app->menu->SetWinLose(-1); // both false
-				FadeFromBlack();
-			}
-			else if (restart == 1)
-			{
-				// restart
-				in_combat = 0;
-				app->menu->SetWinLose(-1); // both false
-				restart = 2;
-			}
-		}
-		else
-		{*/
-			FadeFromBlack();
-		//}
+		FadeFromBlack();
 	}
 	else if (a <= 0)
 	{
