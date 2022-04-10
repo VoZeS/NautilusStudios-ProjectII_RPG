@@ -1906,6 +1906,34 @@ bool Combat_Menu::PostUpdate()
 bool Combat_Menu::CleanUp()
 {
 	// clean textures
+	app->tex->UnLoad(assassin_texture);
+	assassin_texture = NULL;
+	app->tex->UnLoad(tank_texture);
+	tank_texture = NULL;
+	app->tex->UnLoad(healer_texture);
+	healer_texture = NULL;
+	app->tex->UnLoad(wizard_texture);
+	wizard_texture = NULL;
+	app->tex->UnLoad(target);
+	target = NULL;
+	app->tex->UnLoad(tombstone);
+	tombstone = NULL;
+	app->tex->UnLoad(goblin);
+	goblin = NULL;
+	app->tex->UnLoad(skeleton);
+	skeleton = NULL;
+	app->tex->UnLoad(mushroom);
+	mushroom = NULL;
+	app->tex->UnLoad(white_templar);
+	white_templar = NULL;
+	app->tex->UnLoad(red_templar);
+	red_templar = NULL;
+	app->tex->UnLoad(whitemark_400x50);
+	whitemark_400x50 = NULL;
+	app->tex->UnLoad(whitemark_110x110);
+	whitemark_110x110 = NULL;
+	app->tex->UnLoad(whitemark_128x128);
+	whitemark_128x128 = NULL;
 
 	return true;
 }

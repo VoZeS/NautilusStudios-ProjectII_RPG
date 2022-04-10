@@ -173,7 +173,44 @@ bool Combat_Manager::PostUpdate()
 bool Combat_Manager::CleanUp()
 {
 	// clean textures
+	app->tex->UnLoad(heroes_icons);
+	heroes_icons = NULL;
+	app->tex->UnLoad(enemies_icons);
+	enemies_icons = NULL;
+	app->tex->UnLoad(turn_icon);
+	heroes_icons = NULL;
+	app->tex->UnLoad(dead_icon);
+	dead_icon = NULL;
+	app->tex->UnLoad(whitemark_64x64);
+	whitemark_64x64 = NULL;
 
+	// clean pointers
+	/*for (uint i = 0; i < 8; ++i)
+	{
+		if (turn_order[i] != nullptr)
+		{
+			delete turn_order[i];
+			turn_order[i] = nullptr;
+		}
+	}
+	for (uint i = 0; i < 4; ++i)
+	{
+		if (allies[i] != nullptr)
+		{
+			delete allies[i];
+			allies[i] = nullptr;
+		}
+		if (enemies[i] != nullptr)
+		{
+			delete enemies[i];
+			enemies[i] = nullptr;
+		}
+	}
+	if (items != nullptr)
+	{
+		delete items;
+		items = nullptr;
+	}*/
 
 	return true;
 }

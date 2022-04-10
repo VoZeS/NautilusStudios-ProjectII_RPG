@@ -286,7 +286,6 @@ bool Enemies::DeleteEntity()
 {
 	state = ENEMY_STATE::DEATH;
 	plan_to_delete = true;
-	app->entities->GetPlayer()->ImpulsePlayer();
 
 	return true;
 }

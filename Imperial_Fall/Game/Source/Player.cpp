@@ -176,7 +176,7 @@ Player::~Player()
 
 void Player::InitCustomEntity(int npc)
 {
-currentAnimation = &idleAnimD;
+	currentAnimation = &idleAnimD;
 	look_dir = 1;
 	collision_active = true;
 	player_enabled = true;

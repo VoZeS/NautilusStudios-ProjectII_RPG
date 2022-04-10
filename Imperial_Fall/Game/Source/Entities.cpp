@@ -433,16 +433,18 @@ void Entities::KillEnemy()
 	float max = 9999;
 	Entity* combat_entity = NULL;
 
+	fPoint prev_pos = { GetPlayer()->GetPlayerPosition().x + 7, GetPlayer()->GetPlayerPosition().y };
+
 	for (item = entities.start; item != NULL; item = item->next)
 	{
 		entity = item->data;
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON)
-			&& (abs(GetPlayer()->GetPlayerPosition().DistanceTo(entity->position)) < max))
+			&& (abs(prev_pos.DistanceTo(entity->position)) < max))
 		{
 			combat_entity = entity;
-			max = abs(GetPlayer()->GetPlayerPosition().DistanceTo(entity->position));
+			max = abs(prev_pos.DistanceTo(entity->position));
 		}
 	}
 	
