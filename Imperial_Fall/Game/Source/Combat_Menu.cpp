@@ -88,6 +88,7 @@ bool Combat_Menu::Start()
 		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
+		casting = app->tex->Load("Assets/textures/casting.png");
 
 		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");

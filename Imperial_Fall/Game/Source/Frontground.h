@@ -112,6 +112,9 @@ public:
 	// god mode
 	bool godmode;
 
+	// fast combat
+	bool fast_combat;
+
 	// 0 --> scene, 1 --> town1, 2 --> town2, 3 --> forest, 4 --> battlefield, 5 --> dungeon, 6 --> outside, 7 --> inside
 	int current_level = 0;
 };

@@ -35,6 +35,9 @@ Frontground::~Frontground()
 // Called before render is available
 bool Frontground::Awake()
 {
+	godmode = false;
+
+	fast_combat = false;
 
 	return true;
 }

@@ -7,6 +7,8 @@
 #include "Point.h"
 #include "Combat_Entities.h"
 
+#define CASTING_TIME 1 // in seconds
+
 class Combat_Entities;
 
 class Combat_Manager : public Module
@@ -108,6 +110,10 @@ private:
 	SDL_Texture* turn_icon = NULL;
 	SDL_Texture* dead_icon = NULL;
 	SDL_Texture* whitemark_64x64 = NULL;
+
+	// enemy casting skill
+	bool casting = false;
+	int casting_time = 0;
 };
 
 #endif

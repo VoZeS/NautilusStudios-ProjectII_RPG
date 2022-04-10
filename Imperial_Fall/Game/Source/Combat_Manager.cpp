@@ -70,6 +70,9 @@ bool Combat_Manager::Start()
 		turn = -1;
 		pass_turn = true;
 
+		casting = false;
+		casting_time = 0;
+
 		preupdatedone = false;
 	}
 
@@ -123,7 +126,7 @@ bool Combat_Manager::Update(float dt)
 		return true;
 	}
 
-	if (!pass_turn && !in_animation)
+	if (!pass_turn && !in_animation && !casting)
 	{
 		if (turn_order[turn]->GetType() == 0 || turn_order[turn]->GetType() == 1 || turn_order[turn]->GetType() == 2 || turn_order[turn]->GetType() == 3) // allies
 		{
@@ -141,7 +144,38 @@ bool Combat_Manager::Update(float dt)
 		{
 			// AI
 			enemies_loops = 0;
-			EnemyTurn(turn_order[turn]);
+			if (app->frontground->fast_combat)
+			{
+				EnemyTurn(turn_order[turn]);
+			}
+			else
+			{
+				casting = true;
+			}
+		}
+	}
+
+	if (casting)
+	{
+		casting_time += dt;
+
+		if (app->GetFPS() == 16) // 60 fps
+		{
+			if (casting_time >= CASTING_TIME * dt * 60)
+			{
+				EnemyTurn(turn_order[turn]);
+				casting = false;
+				casting_time = 0;
+			}
+		}
+		else // 30 fps
+		{
+			if (casting_time >= CASTING_TIME * dt * 120)
+			{
+				EnemyTurn(turn_order[turn]);
+				casting = false;
+				casting_time = 0;
+			}
 		}
 	}
 

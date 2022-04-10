@@ -1160,6 +1160,7 @@ bool Menu::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		app->frontground->godmode = !app->frontground->godmode;
+		app->frontground->fast_combat = !app->frontground->fast_combat;
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{

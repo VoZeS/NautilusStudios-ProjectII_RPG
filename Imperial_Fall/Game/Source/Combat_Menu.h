@@ -141,6 +141,7 @@ private:
 	SDL_Texture* whitemark_400x50 = NULL;
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;
+	SDL_Texture* casting = NULL;
 
 	// skills fx
 	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal, 5 --> buff
