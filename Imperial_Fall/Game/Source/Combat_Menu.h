@@ -57,11 +57,6 @@ public:
 		prep_in_allies = true;
 	}
 
-	void SetGameState(bool b)
-	{
-		in_combat = b;
-	}
-
 	iPoint GetEntityPosition(bool ally, int n);
 
 	void SetButtonsController(bool controller)
@@ -86,8 +81,9 @@ public:
 	}
 
 private:
+	bool preupdatedone = false;
+	bool updatedone = false;
 
-	bool in_combat = false;
 	bool in_action = false;
 	bool allies_turn = false;
 

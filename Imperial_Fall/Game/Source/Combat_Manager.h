@@ -76,11 +76,10 @@ public:
 
 	void HeroesStats(int& health, int& mana, int& speed, int& power, int owner, int& skill1, int& skill2, int& skill3, int& skill4);
 
-	bool in_combat = false;
-
 private:
+	bool preupdatedone = false;
+
 	bool in_action = false;
-	bool combat_init = false;
 
 	bool pass_turn = false;
 

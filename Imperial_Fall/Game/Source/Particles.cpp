@@ -27,80 +27,83 @@ Particles::~Particles()
 
 bool Particles::Start()
 {
-	texture = app->tex->Load("Assets/textures/particles.png");
+	if (this->Enabled() && !this->Disabled())
+	{
+		texture = app->tex->Load("Assets/textures/particles.png");
 
-	int pix = 128;
-	float speed = 0.1f;
+		int pix = 128;
+		float speed = 0.1f;
 
-	// physic
-	physic.anim.PushBack({ pix * 0, pix * 0, pix, pix });
-	physic.anim.PushBack({ pix * 1, pix * 0, pix, pix });
-	physic.anim.PushBack({ pix * 2, pix * 0, pix, pix });
-	physic.anim.PushBack({ pix * 3, pix * 0, pix, pix });
-	physic.anim.PushBack({ pix * 4, pix * 0, pix, pix });
-	physic.anim.PushBack({ pix * 5, pix * 0, pix, pix });
-	physic.anim.loop = false;
-	physic.anim.speed = speed;
+		// physic
+		physic.anim.PushBack({ pix * 0, pix * 0, pix, pix });
+		physic.anim.PushBack({ pix * 1, pix * 0, pix, pix });
+		physic.anim.PushBack({ pix * 2, pix * 0, pix, pix });
+		physic.anim.PushBack({ pix * 3, pix * 0, pix, pix });
+		physic.anim.PushBack({ pix * 4, pix * 0, pix, pix });
+		physic.anim.PushBack({ pix * 5, pix * 0, pix, pix });
+		physic.anim.loop = false;
+		physic.anim.speed = speed;
 
-	// fire
-	fire.anim.PushBack({ pix * 0, pix * 1, pix, pix });
-	fire.anim.PushBack({ pix * 1, pix * 1, pix, pix });
-	fire.anim.PushBack({ pix * 2, pix * 1, pix, pix });
-	fire.anim.PushBack({ pix * 3, pix * 1, pix, pix });
-	fire.anim.PushBack({ pix * 4, pix * 1, pix, pix });
-	fire.anim.PushBack({ pix * 5, pix * 1, pix, pix });
-	fire.anim.loop = false;
-	fire.anim.speed = speed;
+		// fire
+		fire.anim.PushBack({ pix * 0, pix * 1, pix, pix });
+		fire.anim.PushBack({ pix * 1, pix * 1, pix, pix });
+		fire.anim.PushBack({ pix * 2, pix * 1, pix, pix });
+		fire.anim.PushBack({ pix * 3, pix * 1, pix, pix });
+		fire.anim.PushBack({ pix * 4, pix * 1, pix, pix });
+		fire.anim.PushBack({ pix * 5, pix * 1, pix, pix });
+		fire.anim.loop = false;
+		fire.anim.speed = speed;
 
-	// lightning
-	lightning.anim.PushBack({ pix * 0, pix * 2, pix, pix });
-	lightning.anim.PushBack({ pix * 1, pix * 2, pix, pix });
-	lightning.anim.PushBack({ pix * 2, pix * 2, pix, pix });
-	lightning.anim.PushBack({ pix * 3, pix * 2, pix, pix });
-	lightning.anim.PushBack({ pix * 4, pix * 2, pix, pix });
-	lightning.anim.PushBack({ pix * 5, pix * 2, pix, pix });
-	lightning.anim.loop = false;
-	lightning.anim.speed = speed;
+		// lightning
+		lightning.anim.PushBack({ pix * 0, pix * 2, pix, pix });
+		lightning.anim.PushBack({ pix * 1, pix * 2, pix, pix });
+		lightning.anim.PushBack({ pix * 2, pix * 2, pix, pix });
+		lightning.anim.PushBack({ pix * 3, pix * 2, pix, pix });
+		lightning.anim.PushBack({ pix * 4, pix * 2, pix, pix });
+		lightning.anim.PushBack({ pix * 5, pix * 2, pix, pix });
+		lightning.anim.loop = false;
+		lightning.anim.speed = speed;
 
-	// water
-	water.anim.PushBack({ pix * 0, pix * 3, pix, pix });
-	water.anim.PushBack({ pix * 1, pix * 3, pix, pix });
-	water.anim.PushBack({ pix * 2, pix * 3, pix, pix });
-	water.anim.PushBack({ pix * 3, pix * 3, pix, pix });
-	water.anim.PushBack({ pix * 4, pix * 3, pix, pix });
-	water.anim.PushBack({ pix * 5, pix * 3, pix, pix });
-	water.anim.loop = false;
-	water.anim.speed = speed;
+		// water
+		water.anim.PushBack({ pix * 0, pix * 3, pix, pix });
+		water.anim.PushBack({ pix * 1, pix * 3, pix, pix });
+		water.anim.PushBack({ pix * 2, pix * 3, pix, pix });
+		water.anim.PushBack({ pix * 3, pix * 3, pix, pix });
+		water.anim.PushBack({ pix * 4, pix * 3, pix, pix });
+		water.anim.PushBack({ pix * 5, pix * 3, pix, pix });
+		water.anim.loop = false;
+		water.anim.speed = speed;
 
-	// heal
-	heal.anim.PushBack({ pix * 0, pix * 4, pix, pix });
-	heal.anim.PushBack({ pix * 1, pix * 4, pix, pix });
-	heal.anim.PushBack({ pix * 2, pix * 4, pix, pix });
-	heal.anim.PushBack({ pix * 3, pix * 4, pix, pix });
-	heal.anim.PushBack({ pix * 4, pix * 4, pix, pix });
-	heal.anim.PushBack({ pix * 5, pix * 4, pix, pix });
-	heal.anim.loop = false;
-	heal.anim.speed = speed;
+		// heal
+		heal.anim.PushBack({ pix * 0, pix * 4, pix, pix });
+		heal.anim.PushBack({ pix * 1, pix * 4, pix, pix });
+		heal.anim.PushBack({ pix * 2, pix * 4, pix, pix });
+		heal.anim.PushBack({ pix * 3, pix * 4, pix, pix });
+		heal.anim.PushBack({ pix * 4, pix * 4, pix, pix });
+		heal.anim.PushBack({ pix * 5, pix * 4, pix, pix });
+		heal.anim.loop = false;
+		heal.anim.speed = speed;
 
-	// buff
-	buff.anim.PushBack({ pix * 0, pix * 5, pix, pix });
-	buff.anim.PushBack({ pix * 1, pix * 5, pix, pix });
-	buff.anim.PushBack({ pix * 2, pix * 5, pix, pix });
-	buff.anim.PushBack({ pix * 3, pix * 5, pix, pix });
-	buff.anim.PushBack({ pix * 4, pix * 5, pix, pix });
-	buff.anim.PushBack({ pix * 5, pix * 5, pix, pix });
-	buff.anim.loop = false;
-	buff.anim.speed = speed;
+		// buff
+		buff.anim.PushBack({ pix * 0, pix * 5, pix, pix });
+		buff.anim.PushBack({ pix * 1, pix * 5, pix, pix });
+		buff.anim.PushBack({ pix * 2, pix * 5, pix, pix });
+		buff.anim.PushBack({ pix * 3, pix * 5, pix, pix });
+		buff.anim.PushBack({ pix * 4, pix * 5, pix, pix });
+		buff.anim.PushBack({ pix * 5, pix * 5, pix, pix });
+		buff.anim.loop = false;
+		buff.anim.speed = speed;
 
-	// anti_heal
-	anti_heal.anim.PushBack({ pix * 0, pix * 6, pix, pix });
-	anti_heal.anim.PushBack({ pix * 1, pix * 6, pix, pix });
-	anti_heal.anim.PushBack({ pix * 2, pix * 6, pix, pix });
-	anti_heal.anim.PushBack({ pix * 3, pix * 6, pix, pix });
-	anti_heal.anim.PushBack({ pix * 4, pix * 6, pix, pix });
-	anti_heal.anim.PushBack({ pix * 5, pix * 6, pix, pix });
-	anti_heal.anim.loop = false;
-	anti_heal.anim.speed = speed;
+		// anti_heal
+		anti_heal.anim.PushBack({ pix * 0, pix * 6, pix, pix });
+		anti_heal.anim.PushBack({ pix * 1, pix * 6, pix, pix });
+		anti_heal.anim.PushBack({ pix * 2, pix * 6, pix, pix });
+		anti_heal.anim.PushBack({ pix * 3, pix * 6, pix, pix });
+		anti_heal.anim.PushBack({ pix * 4, pix * 6, pix, pix });
+		anti_heal.anim.PushBack({ pix * 5, pix * 6, pix, pix });
+		anti_heal.anim.loop = false;
+		anti_heal.anim.speed = speed;
+	}
 
 	return true;
 }
