@@ -220,8 +220,14 @@ bool Dialog::PostUpdate()
 // Called before quitting
 bool Dialog::CleanUp()
 {
-	
-
+	// clean textures
+	app->tex->UnLoad(whitemark_1200x140);
+	whitemark_1200x140 = NULL;
+	app->tex->UnLoad(whitemark_300x80);
+	whitemark_300x80 = NULL;
+	app->tex->UnLoad(press_e);
+	press_e = NULL;
+	anim = NULL;
 	return true;
 }
 

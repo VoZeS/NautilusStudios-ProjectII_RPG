@@ -203,7 +203,34 @@ bool Entities::CleanUp()
 		}
 	}
 
-	app->tex->CleanUp();
+	// clean textures
+	app->tex->UnLoad(assassin_texture);
+	assassin_texture = NULL;
+	app->tex->UnLoad(tank_texture);
+	tank_texture = NULL;
+	app->tex->UnLoad(healer_texture);
+	healer_texture = NULL;
+	app->tex->UnLoad(wizard_texture);
+	wizard_texture = NULL;
+	app->tex->UnLoad(curandero);
+	curandero = NULL;
+	app->tex->UnLoad(herrero);
+	herrero = NULL;
+	app->tex->UnLoad(granjero);
+	granjero = NULL;
+	curandero = NULL;
+	app->tex->UnLoad(renato_bueno);
+	renato_bueno = NULL;
+	app->tex->UnLoad(white_templar);
+	white_templar = NULL;
+	app->tex->UnLoad(mushroom);
+	mushroom = NULL;
+	app->tex->UnLoad(goblin);
+	goblin = NULL;
+	app->tex->UnLoad(skeleton);
+	skeleton = NULL;
+	app->tex->UnLoad(red_templar);
+	red_templar = NULL;
 
 	return true;
 }

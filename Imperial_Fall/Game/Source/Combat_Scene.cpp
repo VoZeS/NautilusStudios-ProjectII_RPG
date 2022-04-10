@@ -83,9 +83,10 @@ bool Combat_Scene::CleanUp()
 {
 	LOG("Freeing bcombat_scene");
 
-	app->tex->CleanUp();
 	app->combat_manager->Disable();
 	app->combat_menu->Disable();
+
+	// clean textures
 
 	return true;
 }

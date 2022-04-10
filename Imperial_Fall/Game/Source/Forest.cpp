@@ -99,11 +99,12 @@ bool Forest::CleanUp()
 {
 	LOG("Freeing forest");
 
-	app->tex->CleanUp();
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
+
+	// clean textures
 
 	return true;
 }

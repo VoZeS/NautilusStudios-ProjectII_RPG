@@ -101,11 +101,12 @@ bool Battlefield::CleanUp()
 {
 	LOG("Freeing battlefield");
 
-	app->tex->CleanUp();
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
+
+	// clean textures
 
 	return true;
 }

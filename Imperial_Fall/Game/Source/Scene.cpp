@@ -134,7 +134,11 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	app->tex->CleanUp();
+	// clean textures
+	app->tex->UnLoad(start_screen);
+	start_screen = NULL;
+	app->tex->UnLoad(settings_screen);
+	settings_screen = NULL;
 
 	return true;
 }
