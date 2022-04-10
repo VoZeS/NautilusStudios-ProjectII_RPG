@@ -76,7 +76,17 @@ bool Dialog::PreUpdate()
 // Called each loop iteration
 bool Dialog::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	if (app->frontground->controller)
+	{
+		GamePad& pad = app->input->pads[0];
+
+		if (pad.b == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_E, KEY_REPEAT);
+		}
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
 	{
 		if (app->physics->GetInNPC(1))
 		{

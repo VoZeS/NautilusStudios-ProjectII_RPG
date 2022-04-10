@@ -271,44 +271,28 @@ void Player::HandleInput(float dt)
 {
 	if (player_enabled)
 	{
-		// Get gamepad info
-		GamePad& pad = app->input->pads[0];
+		if (app->frontground->controller)
+		{
+			// Get gamepad info
+			GamePad& pad = app->input->pads[0];
 
-		if (pad.up == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+			if (pad.left_y < -0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+			}
+			if (pad.left_y > 0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+			}
+			if (pad.left_x < -0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+			}
+			if (pad.left_x > 0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+			}
 		}
-		if (pad.down == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
-		}
-		if (pad.left == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
-		}
-		if (pad.right == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
-		}
-
-		if (pad.left_y < -0.5f)
-		{
-			app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
-		}
-		if (pad.left_y > 0.5f)
-		{
-			app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
-		}
-		if (pad.left_x < -0.5f)
-		{
-			app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
-		}
-		if (pad.left_x > 0.5f)
-		{
-			app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
-		}
-
-
 
 		float fixedSpeed = speed * dt;
 

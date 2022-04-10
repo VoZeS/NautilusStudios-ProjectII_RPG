@@ -188,13 +188,6 @@ bool Combat_Menu::Start()
 // Called each loop iteration
 bool Combat_Menu::PreUpdate()
 {
-	// toggle controller
-	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		controller = !controller;
-		app->combat_menu->SetButtonsController(controller);
-	}
-
 	// animations
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -243,7 +236,7 @@ bool Combat_Menu::PreUpdate()
 		}
 	}
 
-	if (!controller) // keyboard
+	if (!app->frontground->controller) // keyboard
 	{
 		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape)
 		{
@@ -1125,7 +1118,7 @@ bool Combat_Menu::PreUpdate()
 		{
 			items_buttons[i].state = 0;
 		}
-		if (controller)
+		if (app->frontground->controller)
 		{
 			general_buttons[0].state = 1;
 			chosed = 0;
@@ -1140,7 +1133,7 @@ bool Combat_Menu::PreUpdate()
 		{
 			general_buttons[i].state = 0;
 		}
-		if (controller)
+		if (app->frontground->controller)
 		{
 			items_buttons[0].state = 1;
 			chosed = 0;
@@ -1155,7 +1148,7 @@ bool Combat_Menu::PreUpdate()
 		{
 			enemies_buttons[i].state = 0;
 		}
-		if (controller)
+		if (app->frontground->controller)
 		{
 			general_buttons[0].state = 1;
 			chosed = 0;
@@ -1170,7 +1163,7 @@ bool Combat_Menu::PreUpdate()
 		{
 			general_buttons[i].state = 0;
 		}
-		if (controller)
+		if (app->frontground->controller)
 		{
 			if (app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1)
 			{
@@ -1204,7 +1197,7 @@ bool Combat_Menu::PreUpdate()
 		{
 			allies_buttons[i].state = 0;
 		}
-		if (controller)
+		if (app->frontground->controller)
 		{
 			general_buttons[0].state = 1;
 			chosed = 0;
@@ -1220,7 +1213,7 @@ bool Combat_Menu::PreUpdate()
 			general_buttons[i].state = 0;
 		}
 
-		if (controller)
+		if (app->frontground->controller)
 		{
 			if (app->combat_manager->GetAllyByNumber(0)->GetEntityState() == 1)
 			{
@@ -1266,7 +1259,7 @@ bool Combat_Menu::Update(float dt)
 
 	if (allies_turn)
 	{
-		if (controller)
+		if (app->frontground->controller)
 		{
 			GamePad& pad = app->input->pads[0];
 
@@ -1353,7 +1346,7 @@ bool Combat_Menu::Update(float dt)
 					break;
 				}
 
-				if ((chosed == 4 || chosed == 6) && controller)
+				if ((chosed == 4 || chosed == 6) && app->frontground->controller)
 				{
 					general_buttons[chosed].state = 0;
 					general_buttons[0].state = 1;

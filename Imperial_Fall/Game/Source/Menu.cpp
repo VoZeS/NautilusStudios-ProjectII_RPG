@@ -20,6 +20,7 @@
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
+#include "Combat_Menu.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -122,9 +123,6 @@ bool Menu::Start()
 	intro = false;
 	subplaymenu = false;
 
-	pause_buttons[0].state = 1;
-	menu_buttons[0].state = 1;
-	settings_buttons[0].state = 1;
 	chosed = 0;
 	app->win->GetWindowSize(win_w, win_h);
 
@@ -261,152 +259,468 @@ bool Menu::Start()
 bool Menu::PreUpdate()
 {
 	intro = !started;
-
+	
 	if (kill_enemy)
 	{
 		app->entities->KillEnemy();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && intro == false )
+	if (!app->frontground->controller) // keyboard
 	{
-		paused = !paused;
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && intro == false)
+		{
+			paused = !paused;
+		}
+
+		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			subplaymenu = false;
+
+		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			credits = false;
+
+		if (settings && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			subplaymenu = false;
+			settings = false;
+		}
+
+		if (app->scene->esc == true)
+		{
+			int x, y;
+			app->input->GetMousePosition(x, y);
+
+			float cx = -app->render->camera.x;
+			float cy = -app->render->camera.y;
+
+			if (paused)
+			{
+				for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
+				{
+					SDL_Rect rect = pause_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (paused)
+						{
+							//app->audio->PlayFx(hover_sound);
+						}
+						chosed = i;
+						pause_buttons[i].state = 1;
+					}
+					else
+					{
+						pause_buttons[i].state = 0;
+					}
+				}
+
+				if (app->combat_scene->Enabled())
+				{
+					if (chosed == 2)
+					{
+						pause_buttons[2].state = 0;
+					}
+				}
+			}
+			else if (intro && !settings)
+			{
+				for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
+				{
+					SDL_Rect rect = menu_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (intro && !settings && !subplaymenu && !credits)
+						{
+							//app->audio->PlayFx(hover_sound);
+						}
+						chosed = i;
+						menu_buttons[i].state = 1;
+					}
+					else
+					{
+						menu_buttons[i].state = 0;
+					}
+				}
+			}
+
+			if (settings)
+			{
+				for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
+				{
+					SDL_Rect rect = settings_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (settings)
+						{
+							//app->audio->PlayFx(hover_sound);
+						}
+						chosed = i;
+						settings_buttons[i].state = 1;
+					}
+					else
+					{
+						settings_buttons[i].state = 0;
+					}
+				}
+			}
+
+			if (win)
+			{
+				SDL_Rect rect = win_button.rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					win_button.state = 1;
+				}
+				else
+				{
+					win_button.state = 0;
+				}
+			}
+			else if (lose)
+			{
+				for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
+				{
+					SDL_Rect rect = lose_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						chosed = i;
+						lose_buttons[i].state = 1;
+					}
+					else
+					{
+						lose_buttons[i].state = 0;
+					}
+				}
+			}
+			else if (scape)
+			{
+				for (size_t i = 0; i < NUM_SCAPE_BUTTONS; i++)
+				{
+					SDL_Rect rect = scape_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						chosed = i;
+						scape_buttons[i].state = 1;
+					}
+					else
+					{
+						scape_buttons[i].state = 0;
+					}
+				}
+			}
+		}
 	}
-
-	if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		subplaymenu = false;
-
-	if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		credits = false;
-
-	if (settings && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	else // controller
 	{
-		subplaymenu = false;
-		settings = false;
-	}
+		GamePad& pad = app->input->pads[0];
 
-	if (app->scene->esc == true)
-	{
-		int x, y;
-		app->input->GetMousePosition(x, y);
-
-		float cx = -app->render->camera.x;
-		float cy = -app->render->camera.y;
-
-		if (paused)
+		if (pad.up == true)
 		{
-			for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
-			{
-				SDL_Rect rect = pause_buttons[i].rect;
-				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-				{
-					if (paused)
-					{
-						//app->audio->PlayFx(hover_sound);
-					}
-					chosed = i;
-					pause_buttons[i].state = 1;
-				}
-				else
-				{
-					pause_buttons[i].state = 0;
-				}
-			}
-
-			if (app->combat_scene->Enabled())
-			{
-				if (chosed == 2)
-				{
-					pause_buttons[2].state = 0;
-				}
-			}
+			app->input->SetKey(SDL_SCANCODE_UP, KEY_REPEAT);
 		}
-		else if (intro && !settings)
+		if (pad.down == true)
 		{
-			for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
-			{
-				SDL_Rect rect = menu_buttons[i].rect;
-				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-				{
-					if (intro && !settings && !subplaymenu && !credits)
-					{
-						//app->audio->PlayFx(hover_sound);
-					}
-					chosed = i;
-					menu_buttons[i].state = 1;
-				}
-				else
-				{
-					menu_buttons[i].state = 0;
-				}
-			}
+			app->input->SetKey(SDL_SCANCODE_DOWN, KEY_REPEAT);
+		}
+		if (pad.left == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_LEFT, KEY_REPEAT);
+		}
+		if (pad.right == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_RIGHT, KEY_REPEAT);
+		}
+		if (pad.y == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_U, KEY_REPEAT);
 		}
 
-		if (settings)
+
+		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_UP && !intro)
 		{
-			for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
-			{
-				SDL_Rect rect = settings_buttons[i].rect;
-				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-				{
-					if (settings)
-					{
-						//app->audio->PlayFx(hover_sound);
-					}
-					chosed = i;
-					settings_buttons[i].state = 1;
-				}
-				else
-				{
-					settings_buttons[i].state = 0;
-				}
-			}
+			paused = !paused;
+			chosed = 0;
 		}
 
-		if (win)
+		if (intro && subplaymenu && app->input->GetKey(SDL_SCANCODE_U) == KEY_UP)
 		{
-			SDL_Rect rect = win_button.rect;
-			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			subplaymenu = false;
+			menu_buttons[0].state = 1;
+			chosed = 0;
+		}
+
+		if (intro && credits && app->input->GetKey(SDL_SCANCODE_U) == KEY_UP)
+		{
+			credits = false;
+			menu_buttons[2].state = 1;
+			chosed = 2;
+		}
+
+		if (intro && settings && app->input->GetKey(SDL_SCANCODE_U) == KEY_UP)
+		{
+			subplaymenu = false;
+			settings = false;
+			menu_buttons[1].state = 1;
+			chosed = 1;
+		}
+
+		if (!intro && settings && app->input->GetKey(SDL_SCANCODE_U) == KEY_UP)
+		{
+			subplaymenu = false;
+			settings = false;
+			menu_buttons[1].state = 1;
+			chosed = 1;
+		}
+
+		if (app->scene->esc == true)
+		{
+			int x, y;
+			app->input->GetMousePosition(x, y);
+
+			float cx = -app->render->camera.x;
+			float cy = -app->render->camera.y;
+
+			if (paused)
+			{
+				if (pause_buttons[0].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						pause_buttons[0].state = 0;
+						pause_buttons[1].state = 1;
+						chosed = 1;
+					}
+				}
+				else if (pause_buttons[1].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						if (app->combat_scene->Enabled())
+						{
+							pause_buttons[1].state = 0;
+							pause_buttons[3].state = 1;
+							chosed = 3;
+						}
+						else
+						{
+							pause_buttons[1].state = 0;
+							pause_buttons[2].state = 1;
+							chosed = 2;
+						}
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						pause_buttons[1].state = 0;
+						pause_buttons[0].state = 1;
+						chosed = 0;
+					}
+				}
+				else if (pause_buttons[2].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						pause_buttons[2].state = 0;
+						pause_buttons[1].state = 1;
+						chosed = 1;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						pause_buttons[2].state = 0;
+						pause_buttons[3].state = 1;
+						chosed = 3;
+					}
+				}
+				else if (pause_buttons[3].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						if (app->combat_scene->Enabled())
+						{
+							pause_buttons[3].state = 0;
+							pause_buttons[1].state = 1;
+							chosed = 1;
+						}
+						else
+						{
+							pause_buttons[3].state = 0;
+							pause_buttons[2].state = 1;
+							chosed = 2;
+						}
+					}
+				}
+			}
+			else if (intro && !settings)
+			{
+				if (menu_buttons[0].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						menu_buttons[0].state = 0;
+						menu_buttons[1].state = 1;
+						chosed = 1;
+					}
+				}
+				else if (menu_buttons[1].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						menu_buttons[1].state = 0;
+						menu_buttons[2].state = 1;
+						chosed = 2;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						menu_buttons[1].state = 0;
+						menu_buttons[0].state = 1;
+						chosed = 0;
+					}
+				}
+				else if (menu_buttons[2].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						menu_buttons[2].state = 0;
+						menu_buttons[3].state = 1;
+						chosed = 3;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						menu_buttons[2].state = 0;
+						menu_buttons[1].state = 1;
+						chosed = 1;
+					}
+				}
+				else if (menu_buttons[3].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						menu_buttons[3].state = 0;
+						menu_buttons[2].state = 1;
+						chosed = 2;
+					}
+				}
+			}
+			else if (intro && subplaymenu)
+			{
+				if (menu_buttons[4].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						menu_buttons[4].state = 0;
+						menu_buttons[5].state = 1;
+						chosed = 5;
+					}
+				}
+				else if (menu_buttons[5].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !firstime)
+					{
+						menu_buttons[5].state = 0;
+						menu_buttons[4].state = 1;
+						chosed = 4;
+					}
+				}
+			}
+
+			if (settings)
+			{
+				if (settings_buttons[0].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						settings_buttons[0].state = 0;
+						settings_buttons[1].state = 1;
+						chosed = 1;
+					}
+				}
+				else if (settings_buttons[1].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						settings_buttons[1].state = 0;
+						settings_buttons[2].state = 1;
+						chosed = 2;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						settings_buttons[1].state = 0;
+						settings_buttons[0].state = 1;
+						chosed = 0;
+					}
+				}
+				else if (settings_buttons[2].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					{
+						settings_buttons[2].state = 0;
+						settings_buttons[3].state = 1;
+						chosed = 3;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						settings_buttons[2].state = 0;
+						settings_buttons[1].state = 1;
+						chosed = 1;
+					}
+				}
+				else if (settings_buttons[3].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					{
+						settings_buttons[3].state = 0;
+						settings_buttons[2].state = 1;
+						chosed = 2;
+					}
+				}
+			}
+
+			if (win)
 			{
 				win_button.state = 1;
 			}
-			else
+			else if (lose)
 			{
-				win_button.state = 0;
+				if (lose_buttons[0].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+					{
+						lose_buttons[0].state = 0;
+						lose_buttons[1].state = 1;
+						chosed = 1;
+					}
+				}
+				else if (lose_buttons[1].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+					{
+						lose_buttons[1].state = 0;
+						lose_buttons[0].state = 1;
+						chosed = 0;
+					}
+				}
 			}
-		}
-		else if (lose)
-		{
-			for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
+			else if (scape)
 			{
-				SDL_Rect rect = lose_buttons[i].rect;
-				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				if (scape_buttons[0].state == 1)
 				{
-					chosed = i;
-					lose_buttons[i].state = 1;
+					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+					{
+						scape_buttons[0].state = 0;
+						scape_buttons[1].state = 1;
+						chosed = 1;
+					}
 				}
-				else
+				else if (scape_buttons[1].state == 1)
 				{
-					lose_buttons[i].state = 0;
-				}
-			}
-		}
-		else if (scape)
-		{
-			for (size_t i = 0; i < NUM_SCAPE_BUTTONS; i++)
-			{
-				SDL_Rect rect = scape_buttons[i].rect;
-				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-				{
-					chosed = i;
-					scape_buttons[i].state = 1;
-				}
-				else
-				{
-					scape_buttons[i].state = 0;
+					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+					{
+						scape_buttons[1].state = 0;
+						scape_buttons[0].state = 1;
+						chosed = 0;
+					}
 				}
 			}
 		}
 	}
+	
 	return true;
 }
 
@@ -427,10 +741,21 @@ bool Menu::Update(float dt)
 
 
 	if (app->scene->esc == true) {
+
+		if (app->frontground->controller)
+		{
+			GamePad& pad = app->input->pads[0];
+
+			if (pad.a == true)
+			{
+				app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
+			}
+		}
+
 		// pause buttons
 		if (paused && !intro && !settings)
 		{
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && pause_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && pause_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -461,18 +786,41 @@ bool Menu::Update(float dt)
 		//menu buttons
 		if (intro && !settings && !credits)
 		{
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && menu_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && menu_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
 				{
 				case 0:
 					subplaymenu = true;
+					if (app->frontground->controller)
+					{
+						if (firstime)
+						{
+							menu_buttons[0].state = 0;
+							menu_buttons[5].state = 1;
+							chosed = 5;
+						}
+						else
+						{
+							menu_buttons[0].state = 0;
+							menu_buttons[4].state = 1;
+							chosed = 4;
+						}
+					}
+					
 					break;
 
 				case 1:
 					if (!subplaymenu)
+					{
 						settings = true;
+						if (app->frontground->controller)
+						{
+							settings_buttons[0].state = 1;
+							chosed = 0;
+						}
+					}
 					break;
 
 				case 2:
@@ -533,8 +881,10 @@ bool Menu::Update(float dt)
 					}
 					break;
 				}
-
-				menu_buttons[chosed].state = 2;
+				if (!app->frontground->controller)
+				{
+					menu_buttons[chosed].state = 2;
+				}
 			}
 		}
 
@@ -542,17 +892,33 @@ bool Menu::Update(float dt)
 		if (settings)
 		{
 			subplaymenu = false;
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && settings_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && settings_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 
 				switch (chosed)
 				{
 				case 0:
-					slider = !slider;
+					if (!app->frontground->controller)
+					{
+						slider = !slider;
+					}
+					else
+					{
+						slider = true;
+					}
+					
 					break;
 				case 1:
-					slider2 = !slider2;
+					if (!app->frontground->controller)
+					{
+						slider2 = !slider2;
+					}
+					else
+					{
+						slider2 = true;
+					}
+
 					break;
 				case 2:
 					fullscreen = !fullscreen;
@@ -563,6 +929,12 @@ bool Menu::Update(float dt)
 					else
 					{
 						SDL_SetWindowFullscreen(app->win->window, 0);
+					}
+
+					if (app->frontground->controller)
+					{
+						settings_buttons[2].state = 1;
+						chosed = 2;
 					}
 					break;
 				case 3:
@@ -576,9 +948,18 @@ bool Menu::Update(float dt)
 					{
 						SDL_GL_SetSwapInterval(0);
 					}
+
+					if (app->frontground->controller)
+					{
+						settings_buttons[3].state = 1;
+						chosed = 3;
+					}
 					break;
 				}
-				settings_buttons[chosed].state = 2;
+				if (!app->frontground->controller)
+				{
+					settings_buttons[chosed].state = 2;
+				}
 			}
 		}
 
@@ -612,19 +993,24 @@ bool Menu::Update(float dt)
 		// win
 		if (win)
 		{
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && win_button.state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && win_button.state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				app->frontground->ReturnToField();
 				win_button.state = 2;
 				kill_enemy = true;
 			}
+			if (chosed == -1)
+			{
+				win_button.state = 1;
+				chosed = 0;
+			}
 		}
 		else if (lose)
 		{
 			subplaymenu = false;
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && lose_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && lose_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -641,12 +1027,17 @@ bool Menu::Update(float dt)
 
 				lose_buttons[chosed].state = 2;
 			}
+			if (chosed == -1)
+			{
+				lose_buttons[0].state = 1;
+				chosed = 0;
+			}
 		}
 		else if (scape)
 		{
 			subplaymenu = false;
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && scape_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && scape_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -658,10 +1049,19 @@ bool Menu::Update(float dt)
 				case 1:
 					// cancel scape
 					scape = false;
+					if (app->frontground->controller)
+					{
+						app->combat_menu->SetController();
+					}
 					break;
 				}
 
 				scape_buttons[chosed].state = 2;
+			}
+			if (chosed == -1)
+			{
+				scape_buttons[0].state = 1;
+				chosed = 0;
 			}
 		}
 	}
@@ -787,7 +1187,7 @@ bool Menu::PostUpdate()
 	{
 		app->scene->fuegoSeguir = false;
 	}
-	if (settings == false && !started)
+	if (!settings && !started)
 	{
 		app->render->DrawTexture(big_fire_light, c_x + 752, c_y + seguir + 930, &(light_big_fire_anim.GetCurrentFrame()));
 		app->render->DrawTexture(big_fire, c_x + 897, c_y + seguir +585, &(big_fire_anim.GetCurrentFrame()));
@@ -972,7 +1372,7 @@ bool Menu::PostUpdate()
 				menu_buttons[5].rect.y = c_y + 2500;
 				menu_play_anim.Reset();
 			}
-
+			
 			//Recuadro en Botones permanente
 			if (menu_buttons[0].state == 0 && !subplaymenu)
 				app->render->DrawTexture(menu_buttons[0].tex, menu_buttons[0].rect.x + 10, menu_buttons[0].rect.y - 5);
@@ -1033,27 +1433,21 @@ bool Menu::PostUpdate()
 				app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 164, menu_buttons[3].rect.y - 25, &(torch_selection_anim.GetCurrentFrame()));
 			}
 
-			
-			//Recuadro en Botones cuando haces click Izquiero
-			/*/else if (menu_buttons[0].state == 2)
-			{
-				if (credits)
-				{
-					app->render->DrawTexture(team_photo, PauseMenuHUD.x - 100, PauseMenuHUD.y);
-				}
-			}*/
-
 			if (credits)
 			{
-				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 100, PauseMenuHUD.y);
+				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 70, PauseMenuHUD.y);
 			}
 		}
 
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
-		if (settings)//&& app->scene->opciones==true)
+		if (settings)
 		{
-			int z, w;
-			app->input->GetMousePosition(z, w);
+			int w;
+			if (!app->frontground->controller)
+			{
+				app->input->GetMousePosition(z1, w);
+				app->input->GetMousePosition(z2, w);
+			}
 
 			for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
 			{
@@ -1099,17 +1493,51 @@ bool Menu::PostUpdate()
 
 				if (slider)
 				{
-					if (z < 25)
+					if (!app->frontground->controller)
 					{
-						z = 25;
+						if (z1 < 25)
+						{
+							z1 = 25;
+						}
+						else if (z1 > 215)
+						{
+							z1 = 215;
+						}
 					}
-					else if (z > 215)
+					else
 					{
-						z = 215;
+						GamePad& pad = app->input->pads[0];
+
+						if (pad.a == true)
+						{
+							app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
+						}
+
+						if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP)
+						{
+							if (z1 == 25)
+							{
+								z1 = 60;
+							}
+							else if (z1 == 60)
+							{
+								z1 = 135;
+							}
+							else if (z1 == 135)
+							{
+								z1 = 215;
+							}
+							else if (z1 == 215)
+							{
+								z1 = 25;
+							}
+							slider = false;
+						}
 					}
-					xbarra = z;
-					app->render->DrawTexture(settings_buttons[0].alt_tex, z + c_x, settings_buttons[0].rect.y);
-					app->audio->SetMusic((z - 0) / 2);
+					
+					xbarra = z1;
+					app->render->DrawTexture(settings_buttons[0].alt_tex, z1 + c_x, settings_buttons[0].rect.y);
+					app->audio->SetMusic((z1 - 0) / 2);
 				}
 				else
 
@@ -1119,18 +1547,51 @@ bool Menu::PostUpdate()
 
 				if (slider2)
 				{
-					xbarra2 = z;
-					if (z < 30)
+					if (!app->frontground->controller)
 					{
-						z = 30;
+						if (z2 < 30)
+						{
+							z2 = 30;
+						}
+						else if (z2 > 220)
+						{
+							z2 = 220;
+						}
 					}
-					else if (z > 220)
+					else
 					{
-						z = 220;
+						GamePad& pad = app->input->pads[0];
+
+						if (pad.a == true)
+						{
+							app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
+						}
+
+						if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP)
+						{
+							if (z2 == 30)
+							{
+								z2 = 65;
+							}
+							else if (z2 == 65)
+							{
+								z2 = 140;
+							}
+							else if (z2 == 140)
+							{
+								z2 = 220;
+							}
+							else if (z2 == 220)
+							{
+								z2 = 30;
+							}
+							slider2 = false;
+						}
 					}
 
-					app->render->DrawTexture(settings_buttons[1].alt_tex, z + c_x, settings_buttons[1].rect.y);
-					app->audio->SetFX((z - 100) / 2);
+					xbarra2 = z2;
+					app->render->DrawTexture(settings_buttons[1].alt_tex, z2 + c_x, settings_buttons[1].rect.y);
+					app->audio->SetFX((z2 - 100) / 2);
 				}
 				else
 				{
@@ -1270,14 +1731,29 @@ void Menu::SetWinLoseScape(int n)
 	if (n == 0)
 	{
 		win = true;
+		if (app->frontground->controller)
+		{
+			win_button.state = 1;
+			chosed = -1;
+		}
 	}
 	else if (n == 1)
 	{
 		lose = true;
+		if (app->frontground->controller)
+		{
+			lose_buttons[0].state = 1;
+			chosed = -1;
+		}
 	}
 	else if (n == 2)
 	{
 		scape = true;
+		if (app->frontground->controller)
+		{
+			scape_buttons[0].state = 1;
+			chosed = -1;
+		}
 	}
 	else
 	{

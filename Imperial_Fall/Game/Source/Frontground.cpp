@@ -2,6 +2,7 @@
 #include "Textures.h"
 #include "Render.h"
 #include "Window.h"
+#include "Input.h"
 #include "Scene.h"
 #include "Fonts.h"
 #include "Map.h"
@@ -17,6 +18,7 @@
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
+#include "Combat_Menu.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -49,6 +51,17 @@ bool Frontground::Start()
 // Called each loop iteration
 bool Frontground::PreUpdate()
 {
+	// toggle controller
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		controller = !controller;
+		if (controller)
+		{
+			app->menu->SetController();
+			app->combat_menu->SetController();
+		}
+	}
+
 	if (go_black)
 	{
 		if (a < 256 - fade_speed)

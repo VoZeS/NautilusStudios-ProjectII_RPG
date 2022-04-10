@@ -106,6 +106,9 @@ private:
 	int fade_speed = 4;
 
 public:
+	// controller
+	bool controller = false;
+
 	// god mode
 	bool godmode;
 

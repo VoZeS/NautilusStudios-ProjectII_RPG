@@ -59,25 +59,12 @@ public:
 
 	iPoint GetEntityPosition(bool ally, int n);
 
-	void SetButtonsController(bool controller)
+	void SetController()
 	{
-		if (!in_items && !in_enemies && !in_allies)
-		{
-			general_buttons[0].state = controller;
-		}
-		else if (in_items && !in_enemies && !in_allies)
-		{
-			items_buttons[0].state = controller;
-		}
-		else if (!in_items && in_enemies && !in_allies)
-		{
-			enemies_buttons[0].state = controller;
-		}
-		else if (!in_items && !in_enemies && in_allies)
-		{
-			allies_buttons[0].state = controller;
-		}
-		chosed = 0;
+		general_buttons[0].state = 1;
+		items_buttons[0].state = 1;
+		enemies_buttons[0].state = 1;
+		allies_buttons[0].state = 1;
 	}
 
 private:
@@ -138,8 +125,6 @@ private:
 	ATT_EFFECT skill_att_effect;
 	SUPP_EFFECT skill_supp_effect;
 	iPoint objective_pos;
-
-	bool controller = false;
 
 	// textures
 	SDL_Texture* assassin_texture = NULL;

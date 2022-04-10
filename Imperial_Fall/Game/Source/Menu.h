@@ -50,7 +50,6 @@ public:
 	bool scape;
 	bool kill_enemy = false;
 
-
 	SDL_Texture* torch_fire = NULL;
 	SDL_Texture* light_fire1 = NULL;
 	SDL_Texture* light_fire2 = NULL;
@@ -105,6 +104,17 @@ public:
 	void InitPlayer();
 
 	void DisableAll();
+
+	void SetController()
+	{
+		pause_buttons[0].state = 1;
+		menu_buttons[0].state = 1;
+		settings_buttons[0].state = 1;
+		win_button.state = 1;
+		lose_buttons[0].state = 1;
+		scape_buttons[0].state = 1;
+	}
+
 private:
 	
 	Animation torch_selection_anim;
@@ -120,6 +130,7 @@ private:
 
 	Animation menu_play_anim;
 
+	int z1 = 60, z2 = 65;
 	int xbarra = 145;
 	int xbarra2 = 145;
 	bool slider;
