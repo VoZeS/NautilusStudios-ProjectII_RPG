@@ -593,7 +593,7 @@ bool Menu::Update(float dt)
 				app->audio->PlayFx(click_sound);
 				app->frontground->ReturnToField();
 				win_button.state = 2;
-				kill_enemy = true;
+				//kill_enemy = true;
 			}
 		}
 		else if (lose)

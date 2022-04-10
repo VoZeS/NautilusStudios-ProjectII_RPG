@@ -249,6 +249,8 @@ bool Frontground::FadeFromBlack()
 		default:
 			break;
 		}
+
+		app->menu->SetWinLose(-1);
 		break;
 	default:
 		break;
@@ -260,7 +262,6 @@ bool Frontground::FadeFromBlack()
 bool Frontground::FadeInCombat(ENEMIES enemies[])
 {
 	go_black = true;
-	//in_combat = 1;
 
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -270,52 +271,12 @@ bool Frontground::FadeInCombat(ENEMIES enemies[])
 	return true;
 }
 
-bool Frontground::FadeOutCombat()
-{
-	return_black = true;
-
-	app->map->CleanMaps();
-	app->physics->CleanMapBoxes();
-	app->map->collision_loaded = false;
-	app->entities->CleanUp();
-
-	app->map->Load("combat.tmx");
-
-	app->entities->GetPlayer()->DeleteEntity();
-	in_combat = 2;
-
-	return true;
-}
-
 bool Frontground::ReturnToField()
 {
-	in_combat = 3;
-	switch (app->frontground->current_level)
-	{
-	case 1:
-		app->town1->Enable();
-		break;
-	case 2:
-		app->town2->Enable();
-		break;
-	case 3:
-		app->forest->Enable();
-		break;
-	case 4:
-		app->battlefield->Enable();
-		break;
-	case 5:
-		app->dungeon->Enable();
-		break;
-	case 6:
-		app->outside->Enable();
-		break;
-	case 7:
-		app->inside->Enable();
-		break;
-	}
+	move_to = MOVE_TO::FROM_COMBAT;
+
+	FadeToBlack();
 	app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 7, app->entities->GetPlayer()->GetPlayerPosition().y);
-	app->SaveGameRequest();
 
 	return true;
 }
@@ -323,8 +284,6 @@ bool Frontground::ReturnToField()
 bool Frontground::ResetCombat()
 {
 	go_black = true;
-	in_combat = 3;
-	restart = 1;
 
 	return true;
 }

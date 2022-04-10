@@ -48,6 +48,7 @@ bool Combat_Scene::Start()
 		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 		//Enable combat
+		app->map->Enable();
 		app->combat_manager->Enable();
 		app->combat_menu->Enable();
 		app->particles->Enable();
@@ -85,6 +86,7 @@ bool Combat_Scene::CleanUp()
 {
 	LOG("Freeing combat_scene");
 
+	app->map->Disable();
 	app->combat_manager->Disable();
 	app->combat_menu->Disable();
 	app->particles->Disable();

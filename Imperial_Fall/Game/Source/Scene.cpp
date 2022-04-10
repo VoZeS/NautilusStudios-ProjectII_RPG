@@ -54,25 +54,6 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	{
-		if (!app->frontground->GetCombatState())
-		{
-			ENEMIES enemies[4];
-			enemies[0] = ENEMIES::MUSHROOM;
-			enemies[1] = ENEMIES::W_TEMPLAR;
-			enemies[2] = ENEMIES::SKELETON;
-			enemies[3] = ENEMIES::GOBLIN;
-			app->frontground->FadeInCombat(enemies);
-		}
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		if (app->frontground->GetCombatState())
-		{
-			app->frontground->ReturnToField();
-		}
-	}
 
 	return true;
 }

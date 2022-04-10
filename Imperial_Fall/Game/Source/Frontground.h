@@ -83,8 +83,6 @@ public:
 
 	ENEMIES enemies_to_fight[4];
 
-	bool FadeOutCombat();
-
 	ENEMIES GetEnemiesToFight(int n)
 	{
 		return enemies_to_fight[n];
@@ -93,11 +91,6 @@ public:
 	bool ReturnToField(); // end combat
 
 	bool ResetCombat();
-
-	int GetCombatState()
-	{
-		return in_combat;
-	}
 
 	void ReturnStartScreen();
 
@@ -110,9 +103,6 @@ private:
 	bool go_black = false;
 	bool return_black = false;
 	int fade_speed = 4;
-
-	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat, 4 --> restart combat
-	int restart = 0; // 0 --> desactivado, 1 --> activado, 2 --> proceso
 
 public:
 	// god mode
