@@ -83,7 +83,7 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		if (in_combat == 0 && restart == 2)
+		/*if (in_combat == 0 && restart == 2)
 		{
 			restart = 0;
 			return_black = true;
@@ -111,9 +111,9 @@ bool Frontground::Update(float dt)
 			}
 		}
 		else
-		{
+		{*/
 			FadeFromBlack();
-		}
+		//}
 	}
 	else if (a <= 0)
 	{
@@ -260,7 +260,7 @@ bool Frontground::FadeFromBlack()
 bool Frontground::FadeInCombat(ENEMIES enemies[])
 {
 	go_black = true;
-	in_combat = 1;
+	//in_combat = 1;
 
 	for (size_t i = 0; i < 4; i++)
 	{

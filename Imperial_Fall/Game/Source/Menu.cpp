@@ -490,7 +490,7 @@ bool Menu::Update(float dt)
 						saving = true;
 						intro = false;
 						paused = false;
-						started = true;
+						//started = true;
 						subplaymenu = false;
 					}
 					break;
@@ -504,7 +504,7 @@ bool Menu::Update(float dt)
 						saving = false;
 						intro = false;
 						paused = false;
-						started = true;
+						//started = true;
 						subplaymenu = false;
 					}
 					break;
@@ -1208,4 +1208,7 @@ void Menu::InitPlayer()
 		app->entities->player_init = false;
 		firstime = false;
 	}
+
+	// after fadeout
+	started = true;
 }

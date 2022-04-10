@@ -81,7 +81,7 @@ bool Combat_Scene::PostUpdate()
 // Called before quitting
 bool Combat_Scene::CleanUp()
 {
-	LOG("Freeing bcombat_scene");
+	LOG("Freeing combat_scene");
 
 	app->combat_manager->Disable();
 	app->combat_menu->Disable();

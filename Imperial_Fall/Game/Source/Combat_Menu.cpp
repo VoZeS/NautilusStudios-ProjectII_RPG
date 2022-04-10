@@ -62,110 +62,113 @@ bool Combat_Menu::Awake()
 // Called before the first frame
 bool Combat_Menu::Start()
 {
-	r = { 0, 0, 1280, 720 };
-	currentAnimation = &idleAnim;
-
-	chosed = 0;
-	app->win->GetWindowSize(win_w, win_h);
-
-	// textures
-	assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
-	tank_texture = app->tex->Load("Assets/textures/Tanque.png");
-	healer_texture = app->tex->Load("Assets/textures/Healer.png");
-	wizard_texture = app->tex->Load("Assets/textures/Mago.png");
-	target = app->tex->Load("Assets/textures/target.png");
-	tombstone = app->tex->Load("Assets/textures/tombstone.png");
-	goblin = app->tex->Load("Assets/textures/goblin.png");
-	skeleton = app->tex->Load("Assets/textures/skeleton.png");
-	mushroom = app->tex->Load("Assets/textures/mushroom.png");
-	white_templar = app->tex->Load("Assets/textures/white_templar.png");
-	red_templar = app->tex->Load("Assets/textures/red_templar.png");
-	whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
-	whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
-	whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
-
-	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
-	hover_sound = app->audio->LoadFx("Assets/audio/fx/water.wav");
-
-	action_pos[0] = { 50.0f, 600.0f };
-	action_pos[1] = { 460.0f, 600.0f };
-	action_pos[2] = { 50.0f, 660.0f };
-	action_pos[3] = { 460.0f, 660.0f };
-	action_pos[4] = { 870.0f, 600.0f };
-	action_pos[5] = { 990.0f, 600.0f };
-	action_pos[6] = { 1110.0f, 600.0f };
-
-	item_pos[0] = { 300.0f, 550.0f };
-	item_pos[1] = { 438.0f, 550.0f };
-	item_pos[2] = { 576.0f, 550.0f };
-	item_pos[3] = { 714.0f, 550.0f };
-	item_pos[4] = { 852.0f, 550.0f };
-
-	enemy_pos[0] = { 866.0f, 180.0f };
-	enemy_pos[1] = { 966.0f, 280.0f };
-	enemy_pos[2] = { 866.0f, 380.0f };
-	enemy_pos[3] = { 966.0f, 480.0f };
-	enemy_pos[4] = { 415.0f, 660.0f };
-
-	ally_pos[0] = { 350.0f, 180.0f };
-	ally_pos[1] = { 250.0f, 280.0f };
-	ally_pos[2] = { 350.0f, 380.0f };
-	ally_pos[3] = { 250.0f, 480.0f };
-	ally_pos[4] = { 415.0f, 660.0f };
-
-	// attack buttons dimensions
-	for (size_t i = 0; i < 4; i++)
+	if (this->Enabled() && !this->Disabled())
 	{
-		general_buttons[i].rect.x = action_pos[i].x;
-		general_buttons[i].rect.y = action_pos[i].y;
-		general_buttons[i].rect.w = 400;
-		general_buttons[i].rect.h = 50;
-	}
-	// reload
-	general_buttons[4].rect.x = action_pos[4].x;
-	general_buttons[4].rect.y = action_pos[4].y;
-	general_buttons[4].rect.w = 110;
-	general_buttons[4].rect.h = 110;
-	// item and scape
-	for (size_t i = 5; i < 7; i++)
-	{
-		general_buttons[i].rect.x = action_pos[i].x;
-		general_buttons[i].rect.y = action_pos[i].y;
-		general_buttons[i].rect.w = 110;
-		general_buttons[i].rect.h = 110;
-	}
+		r = { 0, 0, 1280, 720 };
+		currentAnimation = &idleAnim;
 
-	for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
-	{
-		items_buttons[i].rect.x = item_pos[i].x;
-		items_buttons[i].rect.y = item_pos[i].y;
-		items_buttons[i].rect.w = 128;
-		items_buttons[i].rect.h = 128;
-	}
+		chosed = 0;
+		app->win->GetWindowSize(win_w, win_h);
 
-	for (size_t i = 0; i < NUM_ENEMIES_BUTTONS - 1; i++)
-	{
-		enemies_buttons[i].rect.x = enemy_pos[i].x;
-		enemies_buttons[i].rect.y = enemy_pos[i].y;
-		enemies_buttons[i].rect.w = 64;
-		enemies_buttons[i].rect.h = 70;
-	}
-	enemies_buttons[4].rect.x = enemy_pos[4].x;
-	enemies_buttons[4].rect.y = enemy_pos[4].y;
-	enemies_buttons[4].rect.w = 400;
-	enemies_buttons[4].rect.h = 50;
+		// textures
+		assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
+		tank_texture = app->tex->Load("Assets/textures/Tanque.png");
+		healer_texture = app->tex->Load("Assets/textures/Healer.png");
+		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
+		target = app->tex->Load("Assets/textures/target.png");
+		tombstone = app->tex->Load("Assets/textures/tombstone.png");
+		goblin = app->tex->Load("Assets/textures/goblin.png");
+		skeleton = app->tex->Load("Assets/textures/skeleton.png");
+		mushroom = app->tex->Load("Assets/textures/mushroom.png");
+		white_templar = app->tex->Load("Assets/textures/white_templar.png");
+		red_templar = app->tex->Load("Assets/textures/red_templar.png");
+		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
+		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
+		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 
-	for (size_t i = 0; i < NUM_ALLIES_BUTTONS - 1; i++)
-	{
-		allies_buttons[i].rect.x = ally_pos[i].x;
-		allies_buttons[i].rect.y = ally_pos[i].y;
-		allies_buttons[i].rect.w = 64;
-		allies_buttons[i].rect.h = 70;
+		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
+		hover_sound = app->audio->LoadFx("Assets/audio/fx/water.wav");
+
+		action_pos[0] = { 50.0f, 600.0f };
+		action_pos[1] = { 460.0f, 600.0f };
+		action_pos[2] = { 50.0f, 660.0f };
+		action_pos[3] = { 460.0f, 660.0f };
+		action_pos[4] = { 870.0f, 600.0f };
+		action_pos[5] = { 990.0f, 600.0f };
+		action_pos[6] = { 1110.0f, 600.0f };
+
+		item_pos[0] = { 300.0f, 550.0f };
+		item_pos[1] = { 438.0f, 550.0f };
+		item_pos[2] = { 576.0f, 550.0f };
+		item_pos[3] = { 714.0f, 550.0f };
+		item_pos[4] = { 852.0f, 550.0f };
+
+		enemy_pos[0] = { 866.0f, 180.0f };
+		enemy_pos[1] = { 966.0f, 280.0f };
+		enemy_pos[2] = { 866.0f, 380.0f };
+		enemy_pos[3] = { 966.0f, 480.0f };
+		enemy_pos[4] = { 415.0f, 660.0f };
+
+		ally_pos[0] = { 350.0f, 180.0f };
+		ally_pos[1] = { 250.0f, 280.0f };
+		ally_pos[2] = { 350.0f, 380.0f };
+		ally_pos[3] = { 250.0f, 480.0f };
+		ally_pos[4] = { 415.0f, 660.0f };
+
+		// attack buttons dimensions
+		for (size_t i = 0; i < 4; i++)
+		{
+			general_buttons[i].rect.x = action_pos[i].x;
+			general_buttons[i].rect.y = action_pos[i].y;
+			general_buttons[i].rect.w = 400;
+			general_buttons[i].rect.h = 50;
+		}
+		// reload
+		general_buttons[4].rect.x = action_pos[4].x;
+		general_buttons[4].rect.y = action_pos[4].y;
+		general_buttons[4].rect.w = 110;
+		general_buttons[4].rect.h = 110;
+		// item and scape
+		for (size_t i = 5; i < 7; i++)
+		{
+			general_buttons[i].rect.x = action_pos[i].x;
+			general_buttons[i].rect.y = action_pos[i].y;
+			general_buttons[i].rect.w = 110;
+			general_buttons[i].rect.h = 110;
+		}
+
+		for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+		{
+			items_buttons[i].rect.x = item_pos[i].x;
+			items_buttons[i].rect.y = item_pos[i].y;
+			items_buttons[i].rect.w = 128;
+			items_buttons[i].rect.h = 128;
+		}
+
+		for (size_t i = 0; i < NUM_ENEMIES_BUTTONS - 1; i++)
+		{
+			enemies_buttons[i].rect.x = enemy_pos[i].x;
+			enemies_buttons[i].rect.y = enemy_pos[i].y;
+			enemies_buttons[i].rect.w = 64;
+			enemies_buttons[i].rect.h = 70;
+		}
+		enemies_buttons[4].rect.x = enemy_pos[4].x;
+		enemies_buttons[4].rect.y = enemy_pos[4].y;
+		enemies_buttons[4].rect.w = 400;
+		enemies_buttons[4].rect.h = 50;
+
+		for (size_t i = 0; i < NUM_ALLIES_BUTTONS - 1; i++)
+		{
+			allies_buttons[i].rect.x = ally_pos[i].x;
+			allies_buttons[i].rect.y = ally_pos[i].y;
+			allies_buttons[i].rect.w = 64;
+			allies_buttons[i].rect.h = 70;
+		}
+		allies_buttons[4].rect.x = ally_pos[4].x;
+		allies_buttons[4].rect.y = ally_pos[4].y;
+		allies_buttons[4].rect.w = 400;
+		allies_buttons[4].rect.h = 50;
 	}
-	allies_buttons[4].rect.x = ally_pos[4].x;
-	allies_buttons[4].rect.y = ally_pos[4].y;
-	allies_buttons[4].rect.w = 400;
-	allies_buttons[4].rect.h = 50;
 
 	return true;
 }
@@ -173,72 +176,64 @@ bool Combat_Menu::Start()
 // Called each loop iteration
 bool Combat_Menu::PreUpdate()
 {
-	if (app->frontground->GetCombatState() == 2)
+	// toggle controller
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
-		in_combat = true;
+		controller = !controller;
+		app->combat_menu->SetButtonsController(controller);
+	}
 
-		if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	// animations
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1) // alive
 		{
-			controller = !controller;
-			app->combat_menu->SetButtonsController(controller);
-		}
-
-		for (size_t i = 0; i < 4; i++)
-		{
-			if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1) // alive
+			switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 			{
-				switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
+			case 4:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &templarAnim)
 				{
-				case 4:
-					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &templarAnim)
-					{
-						app->combat_manager->GetEnemyByNumber(i)->current_anim = &templarAnim;
-					}
-					break;
-				case 5:
-					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &mushroomAnim)
-					{
-						app->combat_manager->GetEnemyByNumber(i)->current_anim = &mushroomAnim;
-					}
-					break;
-				case 6:
-					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &goblinAnim)
-					{
-						app->combat_manager->GetEnemyByNumber(i)->current_anim = &goblinAnim;
-					}
-					break;
-				case 7:
-					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &skeletonAnim)
-					{
-						app->combat_manager->GetEnemyByNumber(i)->current_anim = &skeletonAnim;
-					}
-					break;
-				default:
-					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
-					{
-						app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
-					}
-					break;
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &templarAnim;
 				}
-			}
-			else
-			{
+				break;
+			case 5:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &mushroomAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &mushroomAnim;
+				}
+				break;
+			case 6:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &goblinAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &goblinAnim;
+				}
+				break;
+			case 7:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &skeletonAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &skeletonAnim;
+				}
+				break;
+			default:
 				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
 				{
 					app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
 				}
+				break;
 			}
 		}
-	}
-	else if (app->frontground->GetCombatState() == 0)
-	{
-		in_combat = false;
-		allies_turn = false;
+		else
+		{
+			if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
+			{
+				app->combat_manager->GetEnemyByNumber(i)->current_anim = &idleAnim;
+			}
+		}
 	}
 
 	if (!controller) // keyboard
 	{
-		if (in_combat && !app->menu->GetGameState() && allies_turn)
+		if (!app->menu->GetGameState() && allies_turn)
 		{
 			int x, y;
 			app->input->GetMousePosition(x, y);
@@ -396,7 +391,7 @@ bool Combat_Menu::PreUpdate()
 				}
 			}
 		}
-		else if (in_combat && app->menu->GetGameState())
+		else if (app->menu->GetGameState())
 		{
 			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
@@ -1897,6 +1892,7 @@ bool Combat_Menu::PostUpdate()
 // Called before quitting
 bool Combat_Menu::CleanUp()
 {
+	// clean textures
 
 	return true;
 }

@@ -36,13 +36,16 @@ bool Combat_Manager::Awake()
 // Called before the first frame
 bool Combat_Manager::Start()
 {
-	LoadHeroesStats();
+	if (this->Enabled() && !this->Disabled())
+	{
+		LoadHeroesStats();
 
-	heroes_icons = app->tex->Load("Assets/textures/heroes_icons.png");
-	enemies_icons = app->tex->Load("Assets/textures/enemies_icons.png");
-	turn_icon = app->tex->Load("Assets/textures/turn_icon.png");
-	dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
-	whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
+		heroes_icons = app->tex->Load("Assets/textures/heroes_icons.png");
+		enemies_icons = app->tex->Load("Assets/textures/enemies_icons.png");
+		turn_icon = app->tex->Load("Assets/textures/turn_icon.png");
+		dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
+		whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
+	}
 
 	return true;
 }
@@ -182,6 +185,8 @@ bool Combat_Manager::PostUpdate()
 // Called before quitting
 bool Combat_Manager::CleanUp()
 {
+	// clean textures
+
 
 	return true;
 }

@@ -160,30 +160,29 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-	
-		ListItem<Entity*>* item;
-		Entity* entity = NULL;
 
-		for (item = entities.start; item != NULL && ret == true; item = item->next)
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
+	{
+		entity = item->data;
+
+		if (entity->alive == false)
 		{
-			entity = item->data;
-
-			if (entity->alive == false)
+			if (entity->plan_to_delete)
 			{
-				if (entity->plan_to_delete)
-				{
-					app->physics->world->DestroyBody(entity->body);
-					entity->plan_to_delete = false;
-				}
-				continue;
+				app->physics->world->DestroyBody(entity->body);
+				entity->plan_to_delete = false;
 			}
-
-			if (entity->init)
-			{
-				ret = item->data->Draw();
-			}
+			continue;
 		}
-	
+
+		if (entity->init)
+		{
+			ret = item->data->Draw();
+		}
+	}	
 
 	return ret;
 }
@@ -403,6 +402,25 @@ void Entities::StartCombat()
 		enemies[1] = combat_entity->GetCombatEnemy(1);
 		enemies[2] = combat_entity->GetCombatEnemy(2);
 		enemies[3] = combat_entity->GetCombatEnemy(3);
+		switch (app->frontground->current_level)
+		{
+		case 1: app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
+			break;
+		case 2: app->frontground->move_to = MOVE_TO::TOWN2_COMBAT;
+			break;
+		case 3: app->frontground->move_to = MOVE_TO::FOREST_COMBAT;
+			break;
+		case 4: app->frontground->move_to = MOVE_TO::BATTLEFIELD_COMBAT;
+			break;
+		case 5: app->frontground->move_to = MOVE_TO::DUNGEON_COMBAT;
+			break;
+		case 6: app->frontground->move_to = MOVE_TO::OUTSIDE_COMBAT;
+			break;
+		case 7: app->frontground->move_to = MOVE_TO::INSIDE_COMBAT;
+			break;
+		default:
+			break;
+		}
 		app->frontground->FadeInCombat(enemies);
 	}
 }
