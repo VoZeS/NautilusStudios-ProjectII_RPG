@@ -83,6 +83,7 @@ public:
 	int owner; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
 
 	const char* skill_name = "name";
+	const char* skill_description = "png source";
 	ATT_EFFECT att_effect = ATT_EFFECT::EMPTY;
 	SUPP_EFFECT supp_effect = SUPP_EFFECT::EMPTY;
 	int mana_cost = 0;

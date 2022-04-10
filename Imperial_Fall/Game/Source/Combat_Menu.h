@@ -67,6 +67,10 @@ public:
 		allies_buttons[0].state = 1;
 	}
 
+	// description
+	bool in_description;
+	SDL_Texture* description = NULL;
+
 private:
 	bool preupdatedone = false;
 	bool updatedone = false;

@@ -70,6 +70,8 @@ bool Combat_Menu::Start()
 		preupdatedone = false;
 		updatedone = false;
 
+		in_description = false;
+
 		chosed = 0;
 		app->win->GetWindowSize(win_w, win_h);
 
@@ -89,6 +91,7 @@ bool Combat_Menu::Start()
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		casting = app->tex->Load("Assets/textures/casting.png");
+		description = NULL;
 
 		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
@@ -239,7 +242,12 @@ bool Combat_Menu::PreUpdate()
 
 	if (!app->frontground->controller) // keyboard
 	{
-		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape)
+		if (in_description && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			in_description = false;
+		}
+
+		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape && !in_description)
 		{
 			int x, y;
 			app->input->GetMousePosition(x, y);
@@ -397,7 +405,7 @@ bool Combat_Menu::PreUpdate()
 				}
 			}
 		}
-		else if (app->menu->GetGameState() || app->menu->scape)
+		else if (app->menu->GetGameState() || app->menu->scape || in_description)
 		{
 			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
@@ -442,7 +450,7 @@ bool Combat_Menu::PreUpdate()
 		}
 
 
-		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape)
+		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape && !in_description)
 		{
 			if (!in_items && !in_enemies && !in_allies)
 			{
@@ -1086,7 +1094,7 @@ bool Combat_Menu::PreUpdate()
 				}
 			}
 		}
-		else if (app->menu->GetGameState() || app->menu->scape)
+		else if (app->menu->GetGameState() || app->menu->scape || in_description)
 		{
 			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
@@ -1356,6 +1364,33 @@ bool Combat_Menu::Update(float dt)
 				else
 				{
 					general_buttons[chosed].state = 2;
+				}
+			}
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && general_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					//attack 1 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(0).skill_description);
+					break;
+				case 1:
+					//attack 2 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(1).skill_description);
+					break;
+				case 2:
+					//attack 3 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(2).skill_description);
+					break;
+				case 3:
+					//attack 4 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(3).skill_description);
+					break;
 				}
 			}
 		}
@@ -1978,6 +2013,8 @@ bool Combat_Menu::CleanUp()
 	whitemark_110x110 = NULL;
 	app->tex->UnLoad(whitemark_128x128);
 	whitemark_128x128 = NULL;
+	app->tex->UnLoad(description);
+	description = NULL;
 
 	return true;
 }

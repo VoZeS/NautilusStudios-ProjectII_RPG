@@ -267,7 +267,7 @@ bool Menu::PreUpdate()
 
 	if (!app->frontground->controller) // keyboard
 	{
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && intro == false)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
 		{
 			paused = !paused;
 		}
@@ -719,6 +719,15 @@ bool Menu::PreUpdate()
 				}
 			}
 		}
+	}
+
+	if (app->combat_menu->in_description)
+	{
+		description_disabled = false;
+	}
+	else
+	{
+		description_disabled = true;
 	}
 	
 	return true;
@@ -1710,6 +1719,18 @@ bool Menu::PostUpdate()
 
 		app->fonts->BlitText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
 		app->fonts->BlitText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
+	}
+
+	// skills descriptions
+	if (app->combat_menu->in_description)
+	{
+		app->render->DrawRectangle({ c_x, c_y, 1280, 720 }, 0, 0, 0, 200);
+		app->render->DrawTexture(app->combat_menu->description, c_x + 20, c_y + 20);
+	}
+	else if (app->combat_menu->description != NULL)
+	{
+		app->tex->UnLoad(app->combat_menu->description);
+		app->combat_menu->description = NULL;
 	}
 
 	return true;

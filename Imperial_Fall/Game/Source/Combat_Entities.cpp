@@ -519,6 +519,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Stab";
+			skill.skill_description = "Assets/textures/skills_descriptions/stab.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -528,6 +529,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Strong Stab";
+			skill.skill_description = "Assets/textures/skills_descriptions/strong_stab.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -537,6 +539,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Bomb";
+			skill.skill_description = "Assets/textures/skills_descriptions/bomb.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -546,6 +549,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Stealth";
+			skill.skill_description = "Assets/textures/skills_descriptions/stealth.png";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -696,6 +700,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Staff Blow";
+			skill.skill_description = "Assets/textures/skills_descriptions/staff_blow.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -705,6 +710,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Shield";
+			skill.skill_description = "Assets/textures/skills_descriptions/shield.png";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -716,6 +722,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Heal";
+			skill.skill_description = "Assets/textures/skills_descriptions/heal.png";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 15;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -726,6 +733,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Clean";
+			skill.skill_description = "Assets/textures/skills_descriptions/clean.png";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -872,6 +880,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Slash";
+			skill.skill_description = "Assets/textures/skills_descriptions/slash.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -881,6 +890,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Heavy Slash";
+			skill.skill_description = "Assets/textures/skills_descriptions/heavy_slash.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -890,6 +900,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Taunt";
+			skill.skill_description = "Assets/textures/skills_descriptions/taunt.png";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -900,6 +911,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Pierce Slash";
+			skill.skill_description = "Assets/textures/skills_descriptions/pierce_slash.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1060,6 +1072,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Stone";
+			skill.skill_description = "Assets/textures/skills_descriptions/stone.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1069,6 +1082,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Rock";
+			skill.skill_description = "Assets/textures/skills_descriptions/rock.png";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1078,6 +1092,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Fire Ball";
+			skill.skill_description = "Assets/textures/skills_descriptions/fire_ball.png";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1087,6 +1102,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Water Jet";
+			skill.skill_description = "Assets/textures/skills_descriptions/water_jet.png";
 			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;

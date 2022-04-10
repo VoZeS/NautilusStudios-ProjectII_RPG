@@ -116,6 +116,8 @@ public:
 	}
 
 private:
+
+	bool description_disabled = true;
 	
 	Animation torch_selection_anim;
 	Animation torch_light_1_anim;
