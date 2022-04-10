@@ -72,6 +72,7 @@ bool Combat_Manager::Start()
 
 		casting = false;
 		casting_time = 0;
+		casting_rect = { -64, 0, 64, 64 };
 
 		preupdatedone = false;
 	}
@@ -166,6 +167,23 @@ bool Combat_Manager::Update(float dt)
 				EnemyTurn(turn_order[turn]);
 				casting = false;
 				casting_time = 0;
+				casting_rect = { -64, 0, 64, 64 };
+			}
+			else if (casting_time >= 0.75 * CASTING_TIME * dt * 60)
+			{
+				casting_rect = { 192, 0, 64, 64 };
+			}
+			else if (casting_time >= 0.50 * CASTING_TIME * dt * 60)
+			{
+				casting_rect = { 128, 0, 64, 64 };
+			}
+			else if (casting_time >= 0.25 * CASTING_TIME * dt * 60)
+			{
+				casting_rect = { 64, 0, 64, 64 };
+			}
+			else
+			{
+				casting_rect = { 0, 0, 64, 64 };
 			}
 		}
 		else // 30 fps
@@ -175,6 +193,23 @@ bool Combat_Manager::Update(float dt)
 				EnemyTurn(turn_order[turn]);
 				casting = false;
 				casting_time = 0;
+				casting_rect = { -64, 0, 64, 64 };
+			}
+			else if (casting_time >= 0.75 * CASTING_TIME * dt * 120)
+			{
+				casting_rect = { 192, 0, 64, 64 };
+			}
+			else if (casting_time >= 0.50 * CASTING_TIME * dt * 120)
+			{
+				casting_rect = { 128, 0, 64, 64 };
+			}
+			else if (casting_time >= 0.25 * CASTING_TIME * dt * 120)
+			{
+				casting_rect = { 64, 0, 64, 64 };
+			}
+			else
+			{
+				casting_rect = { 0, 0, 64, 64 };
 			}
 		}
 	}

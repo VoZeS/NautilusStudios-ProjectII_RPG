@@ -1605,6 +1605,22 @@ bool Combat_Menu::PostUpdate()
 		}
 	}
 
+	SDL_Rect casting_rect = { 0, 0, 64, 64 };
+	if (!allies_turn && !app->frontground->fast_combat)
+	{
+		app->render->DrawTexture(casting, app->combat_manager->GetActualEntity()->position.x, app->combat_manager->GetActualEntity()->position.y, &app->combat_manager->GetCastingRect());
+	}
+	else if (!allies_turn && app->frontground->fast_combat)
+	{
+		casting_rect = { 192, 0, 64, 64 };
+		app->render->DrawTexture(casting, app->combat_manager->GetActualEntity()->position.x, app->combat_manager->GetActualEntity()->position.y, &casting_rect);
+	}
+	else if (allies_turn)
+	{
+		casting_rect = { 256, 0, 64, 64 };
+		app->render->DrawTexture(casting, app->combat_manager->GetActualEntity()->position.x, app->combat_manager->GetActualEntity()->position.y, &casting_rect);
+	}
+
 	if (allies_turn && app->combat_manager->GetInAnimation() != 2)
 	{
 		if (!in_items && !in_enemies && !in_allies)

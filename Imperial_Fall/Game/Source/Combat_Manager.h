@@ -7,7 +7,7 @@
 #include "Point.h"
 #include "Combat_Entities.h"
 
-#define CASTING_TIME 1 // in seconds
+#define CASTING_TIME 2 // in seconds
 
 class Combat_Entities;
 
@@ -78,6 +78,11 @@ public:
 
 	void HeroesStats(int& health, int& mana, int& speed, int& power, int owner, int& skill1, int& skill2, int& skill3, int& skill4);
 
+	SDL_Rect GetCastingRect()
+	{
+		return casting_rect;
+	}
+
 private:
 	bool preupdatedone = false;
 
@@ -114,6 +119,7 @@ private:
 	// enemy casting skill
 	bool casting = false;
 	int casting_time = 0;
+	SDL_Rect casting_rect;
 };
 
 #endif
