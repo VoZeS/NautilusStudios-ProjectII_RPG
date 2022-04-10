@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "Dungeon.h"
 #include "Pathfinding.h"
+#include "Fonts.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +50,8 @@ bool Dungeon::Start()
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();
+		app->fonts->Enable();
+		app->dialog->Enable();
 
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
 			PIXELS_TO_METERS(950), PIXELS_TO_METERS(200), PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
@@ -96,6 +100,8 @@ bool Dungeon::CleanUp()
 	LOG("Freeing dungeon");
 
 	app->tex->CleanUp();
+	app->fonts->Disable();
+	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
 

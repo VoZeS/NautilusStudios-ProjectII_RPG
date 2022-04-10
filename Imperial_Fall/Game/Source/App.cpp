@@ -44,7 +44,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding(true);
 	physics = new Physics(true);
 	entities = new Entities(false);
-	fonts = new Fonts(true);
+	fonts = new Fonts(false);
 	combat_manager = new Combat_Manager(false);
 	combat_menu = new Combat_Menu(false);
 	menu = new Menu(true);
@@ -58,7 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	outside = new Outside_Castle(false);
 	inside = new Inside_Castle(false);
 	combat_scene = new Combat_Scene(false);
-	dialog = new Dialog(true);
+	dialog = new Dialog(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -84,8 +84,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(combat_menu);
 	AddModule(menu);
 	AddModule(particles);
-	AddModule(frontground);
 	AddModule(dialog);
+	AddModule(frontground);
 
 	// Render last to swap buffer
 	AddModule(render);

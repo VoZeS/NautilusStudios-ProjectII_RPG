@@ -42,8 +42,6 @@ bool Textures::Start()
 	LOG("start textures");
 	bool ret = true;
 
-	
-	
 	/*start_menu = Load("Assets/textures/Start_screen.png");
 	goblin = Load("Assets/textures/goblin.png");
 	skeleton = Load("Assets/textures/skeleton.png");

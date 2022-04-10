@@ -36,6 +36,11 @@ public:
 	bool inDialogAlly = false;
 	bool inDialogEnemy = false;
 
+	void SetPressE_Hide(bool hide)
+	{
+		press_e_hide = hide;
+	}
+
 private:
 	
 	pugi::xml_document dialogFile;
@@ -60,6 +65,11 @@ private:
 
 	SDL_Texture* whitemark_300x80 = NULL;
 	SDL_Texture* whitemark_1200x140 = NULL;
+
+	SDL_Texture* press_e;
+	bool press_e_hide = true;
+	Animation* anim = NULL;
+	Animation idle_e;
 
 };
 

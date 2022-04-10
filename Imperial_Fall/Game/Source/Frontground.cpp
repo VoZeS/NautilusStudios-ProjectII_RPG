@@ -24,7 +24,6 @@
 Frontground::Frontground(bool enabled) : Module(enabled)
 {
 	name.Create("frontground");
-	a = 0;
 }
 
 // Destructor
@@ -42,8 +41,7 @@ bool Frontground::Awake()
 bool Frontground::Start()
 {
 	r = { 0, 0, 1280, 720 };
-
-	press_e = app->tex->Load("Assets/textures/PressE.png");
+	a = 0;
 
 	return true;
 }
@@ -130,12 +128,6 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
-
-	if (!press_e_hide)
-	{
-		app->render->DrawRectangle({ c_x + 540 , c_y + 650, 200, 50 }, 255, 255, 255, 150);
-		app->render->DrawTexture(press_e, c_x + 540, c_y + 650);
-	}
 	
 	r.x = c_x;
 	r.y = c_y;

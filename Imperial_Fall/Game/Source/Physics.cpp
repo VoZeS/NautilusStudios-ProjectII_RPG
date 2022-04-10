@@ -19,6 +19,7 @@
 #include "Dungeon.h"
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -250,25 +251,25 @@ void Physics::BeginContact(b2Contact* contact)
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inRenato = true;
 		}
 		else if ((int)fixtureUserDataB == 3)
 		{
 			// curandero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inCurandero = true;
 		}
 		else if ((int)fixtureUserDataB == 4)
 		{
 			// herrero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inHerrero = true;
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
 			// granjero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataB == 6)
@@ -370,25 +371,25 @@ void Physics::BeginContact(b2Contact* contact)
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inRenato = true;
 		}
 		else if ((int)fixtureUserDataA == 3)
 		{
 			// curandero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inCurandero = true;
 		}
 		else if ((int)fixtureUserDataA == 4)
 		{
 			// herrero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inHerrero = true;
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
 			// granjero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataA == 6)
@@ -494,25 +495,25 @@ void Physics::EndContact(b2Contact* contact)
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
-			app->frontground->SetPressE_Hide(true);
+			app->dialog->SetPressE_Hide(true);
 			inRenato = false;
 		}
 		else if ((int)fixtureUserDataB == 3)
 		{
 			// curandero contact
-			app->frontground->SetPressE_Hide(true);
+			app->dialog->SetPressE_Hide(true);
 			inCurandero = false;
 		}
 		else if ((int)fixtureUserDataB == 4)
 		{
 			// herrero contact
-			app->frontground->SetPressE_Hide(true);
+			app->dialog->SetPressE_Hide(true);
 			inHerrero = false;
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
 			// granjero contact
-			app->frontground->SetPressE_Hide(true);
+			app->dialog->SetPressE_Hide(true);
 			inGranjero = false;
 		}
 	}
@@ -522,25 +523,25 @@ void Physics::EndContact(b2Contact* contact)
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inRenato = false;
 		}
 		else if ((int)fixtureUserDataA == 3)
 		{
 			// curandero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inCurandero = false;
 		}
 		else if ((int)fixtureUserDataA == 4)
 		{
 			// herrero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inHerrero = false;
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
 			// granjero contact
-			app->frontground->SetPressE_Hide(false);
+			app->dialog->SetPressE_Hide(false);
 			inGranjero = false;
 		}
 	}

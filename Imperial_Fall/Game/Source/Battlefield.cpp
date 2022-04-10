@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "Battlefield.h"
 #include "Pathfinding.h"
+#include "Fonts.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +50,8 @@ bool Battlefield::Start()
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();
+		app->fonts->Enable();
+		app->dialog->Enable();
 
 		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
 		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000));
@@ -98,6 +102,8 @@ bool Battlefield::CleanUp()
 	LOG("Freeing battlefield");
 
 	app->tex->CleanUp();
+	app->fonts->Disable();
+	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
 

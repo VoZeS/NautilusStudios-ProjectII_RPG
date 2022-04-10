@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "Town1.h"
 #include "Pathfinding.h"
+#include "Fonts.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +50,8 @@ bool Town1::Start()
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();
+		app->fonts->Enable();
+		app->dialog->Enable();
 	
 		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1 == true)
 		{
@@ -108,6 +112,8 @@ bool Town1::CleanUp()
 	LOG("Freeing town1");
 	
 	app->tex->CleanUp();
+	app->fonts->Disable();
+	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
 

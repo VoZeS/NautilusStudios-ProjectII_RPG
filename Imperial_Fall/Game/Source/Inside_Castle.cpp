@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "Inside_Castle.h"
 #include "Pathfinding.h"
+#include "Fonts.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +50,8 @@ bool Inside_Castle::Start()
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();
+		app->fonts->Enable();
+		app->dialog->Enable();
 
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200),
 			PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
@@ -96,6 +100,8 @@ bool Inside_Castle::CleanUp()
 	LOG("Freeing inside_castle");
 
 	app->tex->CleanUp();
+	app->fonts->Disable();
+	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
 

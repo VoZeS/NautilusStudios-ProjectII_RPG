@@ -16,6 +16,10 @@
 Dialog::Dialog(bool enabled) : Module(enabled)
 {
 	name.Create("dialog");
+
+	idle_e.PushBack({ 0, 0, 128, 136 });
+	idle_e.PushBack({ 128, 0, 128, 136 });
+	idle_e.speed = 0.05f;
 }
 
 // Destructor
@@ -34,6 +38,9 @@ bool Dialog::Start()
 {
 	whitemark_1200x140 = app->tex->Load("Assets/textures/1200x140_whitemark.png");
 	whitemark_300x80 = app->tex->Load("Assets/textures/300x80_whitemark.png");
+
+	press_e = app->tex->Load("Assets/textures/Boton_E.png");
+	anim = &idle_e;
 
 	LoadDialog();
 
@@ -78,7 +85,7 @@ bool Dialog::Update(float dt)
 
 			inDialog = !inDialog;
 			inDialogRenato = !inDialogRenato;
-			app->frontground->SetPressE_Hide(true);
+			SetPressE_Hide(true);
 		}
 		else if (app->physics->GetInNPC(2))
 		{
@@ -87,7 +94,7 @@ bool Dialog::Update(float dt)
 
 			inDialog = !inDialog;
 			inDialogAlly = !inDialogAlly;
-			app->frontground->SetPressE_Hide(true);
+			SetPressE_Hide(true);
 		}
 		else if (app->physics->GetInNPC(3))
 		{
@@ -96,7 +103,7 @@ bool Dialog::Update(float dt)
 
 			inDialog = !inDialog;
 			inDialogEnemy = !inDialogEnemy;
-			app->frontground->SetPressE_Hide(true);
+			SetPressE_Hide(true);
 		}
 		else
 		{
@@ -154,6 +161,11 @@ bool Dialog::Update(float dt)
 		}
 	}
 
+	if (!press_e_hide)
+	{
+		anim->Update();
+	}
+
 	return true;
 }
 
@@ -194,51 +206,13 @@ bool Dialog::PostUpdate()
 	{
 		letlengh = 0;
 	}
-	/*
-	// RENATO TALKING
-	if (inDialog && inDialogRenato && !inDialogAlly && !inDialogEnemy)
-	{
-		app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 255, 0, 100); // Green
-		app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
-		app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "RENATO:");
-		app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, linea1Char_Renato, 1,255, 255, 255, 1920, 1, letlengh, 1);
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
-	}
-	else if (!inDialog)
-	{
-		letlengh = 0;
-	}
 
-	// ALLY TALKING
-	if (inDialog && inDialogAlly && !inDialogRenato && !inDialogEnemy)
-	{
-		app->render->DrawRectangle({ c_x + 30, c_y + 480, 300, 80 }, 0, 0, 255, 100); // Blue
-		app->render->DrawRectangle({ c_x + 30, c_y + 560, 1200, 140 }, 255, 255, 255, 100); // White
-		app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "ALLY:");
-		//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenos dias, por ahora no", 1,255, 255, 255, 1920, 1, letlengh);
-		//app->fonts->BlitTextLetter(c_x + 50,c_y + 640, textFontDialog, "tenemos nada disponible.", 1,255, 255, 255, 1920, 1, letlengh);
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 640, textFontDialog, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+	SDL_Rect rect = anim->GetCurrentFrame();
 
-	}
-	else if (!inDialog)
+	if (!press_e_hide)
 	{
-		letlengh = 0;
+		app->render->DrawTexture(press_e, c_x + 1110, c_y + 550, &rect);
 	}
-
-	// ENEMIES TALKING
-	if(inDialog && inDialogEnemy && !inDialogAlly && !inDialogRenato)
-	{
-		app->render->DrawRectangle({ c_x + 30,c_y + 480, 300, 80 }, 255, 0, 0, 100); //Red
-		app->render->DrawRectangle({ c_x + 30,c_y + 560, 1200, 140 }, 255, 255, 255, 100); //White
-		app->fonts->BlitText(c_x + 50,c_y + 500, textFontDialog, "ENEMY:");
-		//app->fonts->BlitTextLetter(c_x + 50,c_y + 600, textFontDialog, "Buenas, soy un enemigo.", 1,255, 255, 255, 1920, 1, letlengh);
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 600, textFontDialog, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-	}
-	else  if (!inDialog)
-	{
-		letlengh = 0;
-	}*/
 
 	return true;
 }

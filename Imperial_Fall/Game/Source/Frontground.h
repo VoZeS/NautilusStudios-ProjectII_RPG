@@ -2,6 +2,7 @@
 #define __FRONTGROUND_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 enum class ENEMIES;
 
@@ -93,11 +94,6 @@ public:
 
 	bool ResetCombat();
 
-	void SetPressE_Hide(bool hide)
-	{
-		press_e_hide = hide;
-	}
-
 	int GetCombatState()
 	{
 		return in_combat;
@@ -114,9 +110,6 @@ private:
 	bool go_black = false;
 	bool return_black = false;
 	int fade_speed = 4;
-
-	SDL_Texture* press_e;
-	bool press_e_hide = true;
 
 	int in_combat = 0; // 0 --> no combat, 1 --> entering combat, 2 --> in combat, 3 --> exiting combat, 4 --> restart combat
 	int restart = 0; // 0 --> desactivado, 1 --> activado, 2 --> proceso

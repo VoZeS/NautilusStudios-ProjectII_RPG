@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "Outside_Castle.h"
 #include "Pathfinding.h"
+#include "Fonts.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +50,8 @@ bool Outside_Castle::Start()
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();
+		app->fonts->Enable();
+		app->dialog->Enable();
 
 		if (app->frontground->move_to == MOVE_TO::TOWN1_OUTSIDE)
 		{
@@ -104,6 +108,8 @@ bool Outside_Castle::CleanUp()
 	LOG("Freeing outside_castle");
 
 	app->tex->CleanUp();
+	app->fonts->Disable();
+	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
 
