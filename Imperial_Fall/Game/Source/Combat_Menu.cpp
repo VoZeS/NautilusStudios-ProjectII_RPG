@@ -89,8 +89,17 @@ bool Combat_Menu::Start()
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 
+		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/water.wav");
+
+		physic_fx = app->audio->LoadFx("Assets/audio/fx/physic_attack.wav");
+		fire_fx = app->audio->LoadFx("Assets/audio/fx/fire_attack.wav");
+		lightning_fx = app->audio->LoadFx("Assets/audio/fx/lightning_attack.wav");
+		water_fx = app->audio->LoadFx("Assets/audio/fx/water_attack.wav");
+		heal_fx = app->audio->LoadFx("Assets/audio/fx/heal.wav");
+		buff_fx = app->audio->LoadFx("Assets/audio/fx/buff.wav");
+
 
 		action_pos[0] = { 50.0f, 600.0f };
 		action_pos[1] = { 460.0f, 600.0f };
@@ -1832,6 +1841,21 @@ bool Combat_Menu::PostUpdate()
 		app->fonts->BlitText(500 + c_x, 100 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
 		if (skill_att_effect != ATT_EFFECT::EMPTY)
 		{
+			// fx
+			switch (skill_att_effect)
+			{
+			case ATT_EFFECT::PHYSIC: PlaySkillFx(0);
+				break;
+			case ATT_EFFECT::FIRE: PlaySkillFx(1);
+				break;
+			case ATT_EFFECT::LIGHTNING: PlaySkillFx(2);
+				break;
+			case ATT_EFFECT::WATER: PlaySkillFx(3);
+				break;
+			default:
+				break;
+			}
+
 			if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 			{
 				if (skill_prepared.owner < 4)
@@ -1862,6 +1886,15 @@ bool Combat_Menu::PostUpdate()
 		}
 		if (skill_supp_effect != SUPP_EFFECT::EMPTY)
 		{
+			// fx
+			switch (skill_supp_effect)
+			{
+			case SUPP_EFFECT::HEAL: PlaySkillFx(4);
+				break;
+			case SUPP_EFFECT::BUFF: PlaySkillFx(5);
+				break;
+			}
+			
 			if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
 			{
 				if (skill_prepared.owner < 4)
@@ -1955,4 +1988,23 @@ iPoint Combat_Menu::GetEntityPosition(bool ally, int n)
 	}
 
 	return pos;
+}
+
+void Combat_Menu::PlaySkillFx(int n)
+{
+	switch (n)
+	{
+	case 0: app->audio->PlayFx(physic_fx);
+		break;
+	case 1: app->audio->PlayFx(fire_fx);
+		break;
+	case 2: app->audio->PlayFx(lightning_fx);
+		break;
+	case 3: app->audio->PlayFx(water_fx);
+		break;
+	case 4: app->audio->PlayFx(heal_fx);
+		break;
+	case 5: app->audio->PlayFx(buff_fx);
+		break;
+	}
 }

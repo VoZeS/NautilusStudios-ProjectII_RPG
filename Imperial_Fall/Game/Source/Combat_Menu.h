@@ -157,6 +157,16 @@ private:
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;
 
+	// skills fx
+	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal, 5 --> buff
+	void PlaySkillFx(int n);
+	uint physic_fx;
+	uint fire_fx;
+	uint lightning_fx;
+	uint water_fx;
+	uint heal_fx;
+	uint buff_fx;
+
 };
 
 #endif
