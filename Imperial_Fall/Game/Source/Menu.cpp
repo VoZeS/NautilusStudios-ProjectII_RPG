@@ -19,6 +19,7 @@
 #include "Dungeon.h"
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
+#include "Combat_Scene.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -468,8 +469,26 @@ bool Menu::Update(float dt)
 					if (!started && !firstime)
 					{
 						app->LoadGameRequest(false);
-						app->menu->DisableAll();
-						app->town1->Enable();
+						switch (app->frontground->current_level)
+						{
+						case 1: app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
+							break;
+						case 2: app->frontground->move_to = MOVE_TO::SCENE_TOWN2;
+							break;
+						case 3: app->frontground->move_to = MOVE_TO::SCENE_FOREST;
+							break;
+						case 4: app->frontground->move_to = MOVE_TO::SCENE_BATTLEFIELD;
+							break;
+						case 5: app->frontground->move_to = MOVE_TO::SCENE_DUNGEON;
+							break;
+						case 6: app->frontground->move_to = MOVE_TO::SCENE_OUTSIDE;
+							break;
+						case 7: app->frontground->move_to = MOVE_TO::SCENE_INSIDE;
+							break;
+						default:
+							break;
+						}
+						app->frontground->FadeToBlack();
 						saving = true;
 						intro = false;
 						paused = false;
@@ -482,9 +501,8 @@ bool Menu::Update(float dt)
 					if (!started)
 					{
 						app->LoadGame(true); // load now, not at frames end
-						app->menu->DisableAll();
-						app->town1->Enable();
-						app->frontground->scene_to_town1 = true;
+						app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
+						app->frontground->FadeToBlack();
 						saving = false;
 						intro = false;
 						paused = false;
@@ -492,7 +510,7 @@ bool Menu::Update(float dt)
 						firstime = false;
 						subplaymenu = false;
 
-						app->entities->CreateEntity(ENTITY_TYPE::PLAYER, app->entities->GetPlayerSavedPos().x, app->entities->GetPlayerSavedPos().y);
+						//app->entities->CreateEntity(ENTITY_TYPE::PLAYER, app->entities->GetPlayerSavedPos().x, app->entities->GetPlayerSavedPos().y);
 					}
 					break;
 				}
@@ -753,11 +771,7 @@ bool Menu::PostUpdate()
 			if (c_x_menu >= 90)
 			{
 				c_x_menu -= 35.0f;
-
-
 			}
-
-
 		}
 
 		//Fondo Negro transparente que sale cuando pausas
@@ -767,9 +781,10 @@ bool Menu::PostUpdate()
 		}
 
 		if (started)
+		{
 			//Cuando pausas se pone un fondo verde (Substituir en un futuro por un HUD creado)
 			app->render->DrawTexture(menu_in_game, PauseMenuHUD.x - 475, PauseMenuHUD.y + 40);
-
+		}
 
 		//Hace que el menu aparezca
 		if (paused && !intro && !settings)
@@ -1188,4 +1203,5 @@ void Menu::DisableAll()
 	app->dungeon->Disable();
 	app->outside->Disable();
 	app->inside->Disable();
+	app->combat_scene->Disable();
 }

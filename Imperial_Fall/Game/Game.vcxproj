@@ -93,6 +93,7 @@
     <ClCompile Include="Source\Combat_Entities.cpp" />
     <ClCompile Include="Source\Combat_Manager.cpp" />
     <ClCompile Include="Source\Combat_Menu.cpp" />
+    <ClCompile Include="Source\Combat_Scene.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Dungeon.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Source\Combat_Entities.h" />
     <ClInclude Include="Source\Combat_Manager.h" />
     <ClInclude Include="Source\Combat_Menu.h" />
+    <ClInclude Include="Source\Combat_Scene.h" />
     <ClInclude Include="Source\Dialog.h" />
     <ClInclude Include="Source\Dungeon.h" />
     <ClInclude Include="Source\Enemies.h" />

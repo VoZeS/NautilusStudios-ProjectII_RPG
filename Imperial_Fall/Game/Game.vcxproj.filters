@@ -32,6 +32,15 @@
     <ClCompile Include="Source\Combat_Manager.cpp" />
     <ClCompile Include="Source\Particles.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\Battlefield.cpp" />
+    <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\Dungeon.cpp" />
+    <ClCompile Include="Source\Forest.cpp" />
+    <ClCompile Include="Source\Inside_Castle.cpp" />
+    <ClCompile Include="Source\Outside_Castle.cpp" />
+    <ClCompile Include="Source\Town1.cpp" />
+    <ClCompile Include="Source\Town2.cpp" />
+    <ClCompile Include="Source\Combat_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -90,6 +99,15 @@
     <ClInclude Include="Source\Combat_Manager.h" />
     <ClInclude Include="Source\Particles.h" />
     <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\Battlefield.h" />
+    <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\Dungeon.h" />
+    <ClInclude Include="Source\Forest.h" />
+    <ClInclude Include="Source\Inside_Castle.h" />
+    <ClInclude Include="Source\Outside_Castle.h" />
+    <ClInclude Include="Source\Town1.h" />
+    <ClInclude Include="Source\Town2.h" />
+    <ClInclude Include="Source\Combat_Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

@@ -74,13 +74,13 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->entities->entities.start && !app->combat_manager->in_combat)
+	if (app->entities->entities.start && app->scene->Disabled() && app->combat_manager->Disabled())
 	{
 		Entity* entity = app->entities->GetPlayer();
 		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
 		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
 	}
-	else if (app->combat_manager->in_combat)
+	else if (app->combat_manager->Enabled())
 	{
 		camera.x = 0;
 		camera.y = 0;

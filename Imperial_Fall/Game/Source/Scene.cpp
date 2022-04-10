@@ -37,7 +37,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	c_y_menu = -app->render->camera.y + 140; // Posicion de la camara en el inicio del juego
+	c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
 	
 	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 	settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
@@ -48,7 +48,6 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
-
 	return true;
 }
 
@@ -101,7 +100,7 @@ bool Scene::PostUpdate()
 	}
 
 	//Limite de donde la camara llegara al principio del juego
-	if (c_y_menu <= -555)
+	if (c_y_menu <= -700)
 	{
 		esc = true;
 		desMenu = false;

@@ -48,11 +48,9 @@ bool Dungeon::Start()
 		//Enable Player & map
 		app->entities->Enable();
 		app->map->Enable();
-	
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
-				app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
-				app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(950), PIXELS_TO_METERS(200));
-				app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
+
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
+			PIXELS_TO_METERS(950), PIXELS_TO_METERS(200), PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
 
 		int w, h;
 		uchar* data = NULL;
@@ -62,6 +60,7 @@ bool Dungeon::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 5;
+		app->LoadGameRequest(false);
 	}
 
 

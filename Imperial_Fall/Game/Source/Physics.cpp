@@ -281,155 +281,86 @@ void Physics::BeginContact(b2Contact* contact)
 		else if ((int)fixtureUserDataB == 12)
 		{
 			// town_1 --> town_2
-			app->frontground->town1_to_town2 = true;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_TOWN2;
 
 			app->frontground->FadeToBlack();
-			//app->town1->Disable();
-			//app->town2->Enable();
 		}
 		else if ((int)fixtureUserDataB == 21)
 		{
 			// town_2 --> town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = true;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::TOWN2_TOWN1;
 
-			app->town2->Disable();
-			app->town1->Enable();
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 23)
 		{
 			// town_2 --> forest
-			app->town2->Disable();
-			app->forest->Enable();
+			app->frontground->move_to = MOVE_TO::TOWN2_FOREST;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 32)
 		{
 			// forest --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = true;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::FOREST_TOWN2;
 
-			app->forest->Disable();
-			app->town2->Enable();
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 24)
 		{
 			// town_2 --> battlefield
-			app->town2->Disable();
-			app->battlefield->Enable();
+			app->frontground->move_to = MOVE_TO::TOWN2_BATTLEFIELD;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 42)
 		{
 			// battlefield --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = true;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::BATTLEFIELD_TOWN2;
 
-			app->battlefield->Disable();
-			app->town2->Enable();
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 25)
 		{
 			// town_2 --> dungeon
-			app->town2->Disable();
-			app->dungeon->Enable();
+			app->frontground->move_to = MOVE_TO::TOWN2_DUNGEON;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 52)
 		{
 			// dungeon --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = true;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::DUNGEON_TOWN2;
 
-			app->dungeon->Disable();
-			app->town2->Enable();
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 16)
 		{
 			// town_1 --> outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = true;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_OUTSIDE;
 
-			app->town1->Disable();
-			app->outside->Enable();
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 61)
 		{
 			// outside_castle -->  town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = true;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::OUTSIDE_TOWN1;
 
-			app->outside->Disable();
-			app->town1->Enable();
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 67)
 		{
 			// outside_castle --> inside_castle
-			app->outside->Disable();
-			app->inside->Enable();
+			app->frontground->move_to = MOVE_TO::OUTSIDE_INSIDE;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 76)
 		{
 			// inside_castle -->  outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = true;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::INSIDE_OUTSIDE;
 
-			app->inside->Disable();
-			app->outside->Enable();
+			app->frontground->FadeToBlack();
 		}
 	}
 
@@ -466,158 +397,89 @@ void Physics::BeginContact(b2Contact* contact)
 			app->entities->StartCombat();
 		}
 		// --------------------------------------------------------------- PASS LEVELS
-		else if ((int)fixtureUserDataB == 12)
+		else if ((int)fixtureUserDataA == 12)
 		{
 			// town_1 --> town_2
-			app->frontground->town1_to_town2 = true;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_TOWN2;
 
-			app->town1->Disable();
-			app->town2->Enable();
-			//app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 21)
+		else if ((int)fixtureUserDataA == 21)
 		{
 			// town_2 --> town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = true;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::TOWN2_TOWN1;
 
-			app->town2->Disable();
-			app->town1->Enable();
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 23)
+		else if ((int)fixtureUserDataA == 23)
 		{
 			// town_2 --> forest
-			app->town2->Disable();
-			app->forest->Enable();
+			app->frontground->move_to = MOVE_TO::TOWN2_FOREST;
+
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 32)
+		else if ((int)fixtureUserDataA == 32)
 		{
 			// forest --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = true;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::FOREST_TOWN2;
 
-			app->forest->Disable();
-			app->town2->Enable();
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 24)
+		else if ((int)fixtureUserDataA == 24)
 		{
 			// town_2 --> battlefield
-			app->town2->Disable();
-			app->battlefield->Enable();
+			app->frontground->move_to = MOVE_TO::TOWN2_BATTLEFIELD;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 42)
 		{
 			// battlefield --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = true;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::BATTLEFIELD_TOWN2;
 
-			app->battlefield->Disable();
-			app->town2->Enable();
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 25)
+		else if ((int)fixtureUserDataA == 25)
 		{
 			// town_2 --> dungeon
-			app->town2->Disable();
-			app->dungeon->Enable();
+			app->frontground->move_to = MOVE_TO::TOWN2_DUNGEON;
+
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 52)
+		else if ((int)fixtureUserDataA == 52)
 		{
 			// dungeon --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = true;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::DUNGEON_TOWN2;
 
-			app->dungeon->Disable();
-			app->town2->Enable();
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 16)
+		else if ((int)fixtureUserDataA == 16)
 		{
 			// town_1 --> outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = true;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_OUTSIDE;
 
-			app->town1->Disable();
-			app->outside->Enable();
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 61)
+		else if ((int)fixtureUserDataA == 61)
 		{
 			// outside_castle -->  town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = true;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::OUTSIDE_TOWN1;
 
-			app->outside->Disable();
-			app->town1->Enable();
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 67)
+		else if ((int)fixtureUserDataA == 67)
 		{
 			// outside_castle --> inside_castle
-			app->outside->Disable();
-			app->inside->Enable();
+			app->frontground->move_to = MOVE_TO::OUTSIDE_INSIDE;
+
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 76)
+		else if ((int)fixtureUserDataA == 76)
 		{
 			// inside_castle -->  outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = true;
-			app->frontground->scene_to_town1 = false;
+			app->frontground->move_to = MOVE_TO::INSIDE_OUTSIDE;
 
-			app->inside->Disable();
-			app->outside->Enable();
+			app->frontground->FadeToBlack();
 		}
 	}
 }

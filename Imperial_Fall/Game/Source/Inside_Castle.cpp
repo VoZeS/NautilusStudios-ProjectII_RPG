@@ -49,10 +49,8 @@ bool Inside_Castle::Start()
 		app->entities->Enable();
 		app->map->Enable();
 
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000));
-		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200));
-		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300));
-		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200),
+			PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
 
 		int w, h;
 		uchar* data = NULL;
@@ -62,6 +60,7 @@ bool Inside_Castle::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 7;
+		app->LoadGameRequest(false);
 	}
 
 

@@ -49,30 +49,20 @@ bool Town1::Start()
 		app->entities->Enable();
 		app->map->Enable();
 	
-		if (app->frontground->town2_to_town1 == true)
+		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1 == true)
 		{
-			app->SaveGameRequest();
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000),
+				PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
 		}
-		else if (app->frontground->outside_to_town1 == true)
+		else if (app->frontground->move_to == MOVE_TO::OUTSIDE_TOWN1 == true)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(100));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300), PIXELS_TO_METERS(800), PIXELS_TO_METERS(100),
+				PIXELS_TO_METERS(800), PIXELS_TO_METERS(0), PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
 		}
-		else if (app->frontground->scene_to_town1)
+		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN1)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(500), PIXELS_TO_METERS(950));
-			app->entities->GetPlayer()->SetCompanion0LookDir(0);
-			app->entities->GetPlayer()->SetCompanion1LookDir(0);
-			app->entities->GetPlayer()->SetCompanion2LookDir(0);
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950), PIXELS_TO_METERS(800), PIXELS_TO_METERS(850),
+				PIXELS_TO_METERS(800), PIXELS_TO_METERS(750), PIXELS_TO_METERS(800), PIXELS_TO_METERS(650));
 		}
 
 		int w, h;
@@ -83,6 +73,7 @@ bool Town1::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 1;
+		app->LoadGameRequest(false);
 	}
 
 	return true;

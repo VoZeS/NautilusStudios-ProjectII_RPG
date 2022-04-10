@@ -105,7 +105,7 @@ public:
 	bool SaveState(pugi::xml_node&);
 
 	fPoint GetPlayerSavedPos();
-	void SetPlayerSavedPos(float x, float y);
+	void SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y);
 
 public:
 	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
@@ -113,13 +113,12 @@ public:
 	List<Entity*> entities;
 	DynArray<bool> entities_state;
 
-	int enemies_lenght = 0;
-
 	int FindNPC();
 	void StartCombat();
 	void KillEnemy();
 
 	Entity* GetPlayer();
+	bool player_init = true;
 
 	SDL_Texture* assassin_texture = NULL;
 	SDL_Texture* tank_texture = NULL;

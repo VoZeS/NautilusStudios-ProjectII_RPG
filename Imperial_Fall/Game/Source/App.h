@@ -38,6 +38,7 @@ class Battlefield;
 class Dungeon;
 class Outside_Castle;
 class Inside_Castle;
+class Combat_Scene;
 class Dialog;
 
 
@@ -127,6 +128,7 @@ public:
 	Dungeon* dungeon;
 	Outside_Castle* outside;
 	Inside_Castle* inside;
+	Combat_Scene* combat_scene;
 	Dialog* dialog;
 
 

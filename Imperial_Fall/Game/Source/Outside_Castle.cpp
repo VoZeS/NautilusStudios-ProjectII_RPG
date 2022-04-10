@@ -49,19 +49,15 @@ bool Outside_Castle::Start()
 		app->entities->Enable();
 		app->map->Enable();
 
-		if (app->frontground->town1_to_outside == true)
+		if (app->frontground->move_to == MOVE_TO::TOWN1_OUTSIDE)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1500));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1600));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1700));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1500),
+				PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1700));
 		}
-		else if (app->frontground->inside_to_outside == true)
+		else if (app->frontground->move_to == MOVE_TO::INSIDE_OUTSIDE == true)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
+				PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(0));
 		}
 
 		int w, h;
@@ -72,6 +68,7 @@ bool Outside_Castle::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 6;
+		app->LoadGameRequest(false);
 	}
 
 

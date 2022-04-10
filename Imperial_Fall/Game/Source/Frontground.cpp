@@ -16,6 +16,7 @@
 #include "Dungeon.h"
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
+#include "Combat_Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -162,13 +163,103 @@ bool Frontground::FadeFromBlack()
 {
 	return_black = true;
 
-	app->menu->DisableAll();
-
-	app->physics->CleanMapBoxes();
-
-	if (app->frontground->town1_to_town2)
+	if (move_to != MOVE_TO::NOTHING)
 	{
-		app->town2->Enable();
+		app->menu->DisableAll();
+		app->physics->CleanMapBoxes();
+	}
+
+	switch (move_to)
+	{
+	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::SCENE_TOWN2: app->town2->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::SCENE_FOREST: app->forest->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::SCENE_BATTLEFIELD: app->battlefield->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::SCENE_DUNGEON: app->dungeon->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::SCENE_OUTSIDE: app->outside->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::SCENE_INSIDE: app->town1->Enable(); app->entities->player_init = false;
+		break;
+	case MOVE_TO::TOWN1_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::TOWN1_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::TOWN1_OUTSIDE: app->outside->Enable();
+		break;
+	case MOVE_TO::TOWN1_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::TOWN2_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::TOWN2_TOWN1: app->town1->Enable();
+		break;
+	case MOVE_TO::TOWN2_FOREST: app->forest->Enable();
+		break;
+	case MOVE_TO::TOWN2_BATTLEFIELD: app->battlefield->Enable();
+		break;
+	case MOVE_TO::TOWN2_DUNGEON: app->dungeon->Enable();
+		break;
+	case MOVE_TO::TOWN2_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::FOREST_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::FOREST_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::FOREST_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::BATTLEFIELD_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::BATTLEFIELD_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::BATTLEFIELD_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::DUNGEON_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::DUNGEON_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::DUNGEON_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_TOWN1: app->town1->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_INSIDE: app->inside->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::INSIDE_SCENE: app->scene->Enable();
+		break;
+	case MOVE_TO::INSIDE_OUTSIDE: app->outside->Enable();
+		break;
+	case MOVE_TO::INSIDE_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::FROM_COMBAT:
+		switch (current_level)
+		{
+		case 1: app->town1->Enable();
+			break;
+		case 2: app->town2->Enable();
+			break;
+		case 3: app->forest->Enable();
+			break;
+		case 4: app->battlefield->Enable();
+			break;
+		case 5: app->dungeon->Enable();
+			break;
+		case 6: app->outside->Enable();
+			break;
+		case 7: app->inside->Enable();
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
 	}
 
 	return true;

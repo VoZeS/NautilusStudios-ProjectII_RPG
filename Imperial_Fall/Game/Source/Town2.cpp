@@ -50,34 +50,25 @@ bool Town2::Start()
 		app->map->Enable();
 		
 
-		if (app->frontground->town1_to_town2 == true)
+		if (app->frontground->move_to == MOVE_TO::TOWN1_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600));
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
+				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
 		}
-		else if (app->frontground->forest_to_town2 == true)
+		else if (app->frontground->move_to == MOVE_TO::FOREST_TOWN2)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2800));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2900));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(3000));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2800),
+				PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(3000));
 		}
-		else if (app->frontground->battlefield_to_town2 == true)
+		else if (app->frontground->move_to == MOVE_TO::BATTLEFIELD_TOWN2)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(200));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(100));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(200),
+				PIXELS_TO_METERS(2350), PIXELS_TO_METERS(100), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(0));
 		}
-		else if (app->frontground->dungeon_to_town2 == true)
+		else if (app->frontground->move_to == MOVE_TO::DUNGEON_TOWN2)
 		{
-			app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
-			app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
-			app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
-			app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850),
+				PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
 		}
 
 		int w, h;
@@ -88,6 +79,7 @@ bool Town2::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 2;
+		app->LoadGameRequest(false);
 	}
 
 	return true;

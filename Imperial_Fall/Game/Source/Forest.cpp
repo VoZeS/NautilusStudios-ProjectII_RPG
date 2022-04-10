@@ -49,10 +49,8 @@ bool Forest::Start()
 		app->entities->Enable();
 		app->map->Enable();
 
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500));
-		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(300));
-		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(200));
-		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500), PIXELS_TO_METERS(450), PIXELS_TO_METERS(300),
+			PIXELS_TO_METERS(450), PIXELS_TO_METERS(200), PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
 
 		int w, h;
 		uchar* data = NULL;
@@ -62,6 +60,7 @@ bool Forest::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 3;
+		app->LoadGameRequest(false);
 	}
 
 

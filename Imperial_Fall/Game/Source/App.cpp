@@ -22,6 +22,7 @@
 #include "Dungeon.h"
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
+#include "Combat_Scene.h"
 #include "Dialog.h"
 
 #include "Defs.h"
@@ -56,6 +57,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	dungeon = new Dungeon(false);
 	outside = new Outside_Castle(false);
 	inside = new Inside_Castle(false);
+	combat_scene = new Combat_Scene(false);
 	dialog = new Dialog(true);
 
 	// Ordered for awake / Start / Update
@@ -72,6 +74,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(dungeon);
 	AddModule(outside);
 	AddModule(inside);
+	AddModule(combat_scene);
 	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(physics);

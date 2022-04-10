@@ -62,6 +62,7 @@ bool Battlefield::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 4;
+		app->LoadGameRequest(false);
 	}
 
 

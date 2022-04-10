@@ -5,6 +5,45 @@
 
 enum class ENEMIES;
 
+enum class MOVE_TO
+{
+	NOTHING = -1,
+	SCENE_TOWN1,
+	SCENE_TOWN2,
+	SCENE_FOREST,
+	SCENE_BATTLEFIELD,
+	SCENE_DUNGEON,
+	SCENE_OUTSIDE,
+	SCENE_INSIDE,
+	TOWN1_SCENE,
+	TOWN1_TOWN2,
+	TOWN1_OUTSIDE,
+	TOWN1_COMBAT,
+	TOWN2_SCENE,
+	TOWN2_TOWN1,
+	TOWN2_FOREST,
+	TOWN2_BATTLEFIELD,
+	TOWN2_DUNGEON,
+	TOWN2_COMBAT,
+	FOREST_SCENE,
+	FOREST_TOWN2,
+	FOREST_COMBAT,
+	BATTLEFIELD_SCENE,
+	BATTLEFIELD_TOWN2,
+	BATTLEFIELD_COMBAT,
+	DUNGEON_SCENE,
+	DUNGEON_TOWN2,
+	DUNGEON_COMBAT,
+	OUTSIDE_SCENE,
+	OUTSIDE_TOWN1,
+	OUTSIDE_INSIDE,
+	OUTSIDE_COMBAT,
+	INSIDE_SCENE,
+	INSIDE_OUTSIDE,
+	INSIDE_COMBAT,
+	FROM_COMBAT
+};
+
 class Frontground : public Module
 {
 public:
@@ -66,15 +105,7 @@ public:
 
 	void ReturnStartScreen();
 
-	bool scene_to_town1 = false,
-		town1_to_town2 = false,
-		town2_to_town1 = false,
-		forest_to_town2 = false,
-		battlefield_to_town2 = false,
-		dungeon_to_town2 = false,
-		town1_to_outside = false,
-		inside_to_outside = false,
-		outside_to_town1 = false;
+	MOVE_TO move_to = MOVE_TO::NOTHING;
 
 private:
 	SDL_Rect r;
@@ -83,8 +114,6 @@ private:
 	bool go_black = false;
 	bool return_black = false;
 	int fade_speed = 4;
-
-	int destination_level = -1;
 
 	SDL_Texture* press_e;
 	bool press_e_hide = true;
@@ -96,6 +125,7 @@ public:
 	// god mode
 	bool godmode;
 
+	// 0 --> scene, 1 --> town1, 2 --> town2, 3 --> forest, 4 --> battlefield, 5 --> dungeon, 6 --> outside, 7 --> inside
 	int current_level = 0;
 };
 
