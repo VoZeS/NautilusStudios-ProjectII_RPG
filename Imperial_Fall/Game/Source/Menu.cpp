@@ -250,6 +250,8 @@ bool Menu::Start()
 // Called each loop iteration
 bool Menu::PreUpdate()
 {
+	LOG("%d", chosed);
+
 	intro = !started;
 
 	////////////////////////////////////////////////
@@ -454,7 +456,7 @@ bool Menu::Update(float dt)
 				case 2:
 					if (!subplaymenu)
 					{
-						credits = !credits;
+						credits = true;
 						settings = false;
 					}
 					break;
@@ -979,13 +981,20 @@ bool Menu::PostUpdate()
 				app->render->DrawTexture(light_fire4, menu_buttons[3].rect.x - 65, menu_buttons[3].rect.y - 67, &(torch_light_4_anim.GetCurrentFrame()));
 				app->render->DrawTexture(torch_fire, menu_buttons[3].rect.x + 164, menu_buttons[3].rect.y - 25, &(torch_selection_anim.GetCurrentFrame()));
 			}
+
+			
 			//Recuadro en Botones cuando haces click Izquiero
-			else if (menu_buttons[0].state == 2)
+			/*/else if (menu_buttons[0].state == 2)
 			{
 				if (credits)
 				{
 					app->render->DrawTexture(team_photo, PauseMenuHUD.x - 100, PauseMenuHUD.y);
 				}
+			}*/
+
+			if (credits)
+			{
+				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 100, PauseMenuHUD.y);
 			}
 		}
 
