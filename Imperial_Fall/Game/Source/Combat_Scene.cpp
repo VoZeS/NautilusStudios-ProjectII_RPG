@@ -11,6 +11,7 @@
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
 #include "Combat_Entities.h"
+#include "Particles.h"
 #include "Player.h"
 #include "Combat_Scene.h"
 #include "Pathfinding.h"
@@ -49,6 +50,7 @@ bool Combat_Scene::Start()
 		//Enable combat
 		app->combat_manager->Enable();
 		app->combat_menu->Enable();
+		app->particles->Enable();
 	}
 
 
@@ -85,6 +87,7 @@ bool Combat_Scene::CleanUp()
 
 	app->combat_manager->Disable();
 	app->combat_menu->Disable();
+	app->particles->Disable();
 
 	// clean textures
 

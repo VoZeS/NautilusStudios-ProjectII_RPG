@@ -67,6 +67,9 @@ bool Combat_Menu::Start()
 		r = { 0, 0, 1280, 720 };
 		currentAnimation = &idleAnim;
 
+		preupdatedone = false;
+		updatedone = false;
+
 		chosed = 0;
 		app->win->GetWindowSize(win_w, win_h);
 
@@ -436,7 +439,7 @@ bool Combat_Menu::PreUpdate()
 		}
 
 
-		if (in_combat && !app->menu->GetGameState() && allies_turn)
+		if (!app->menu->GetGameState() && allies_turn)
 		{
 			if (!in_items && !in_enemies && !in_allies)
 			{
@@ -1080,7 +1083,7 @@ bool Combat_Menu::PreUpdate()
 				}
 			}
 		}
-		else if (in_combat && app->menu->GetGameState())
+		else if (app->menu->GetGameState())
 		{
 			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
@@ -1239,13 +1242,20 @@ bool Combat_Menu::PreUpdate()
 		app->combat_manager->SetInAnimation(2);
 	}
 
+	preupdatedone = true;
+
 	return true;
 }
 
 // Called each loop iteration
 bool Combat_Menu::Update(float dt)
 {
-	if (in_combat && allies_turn)
+	if (!preupdatedone)
+	{
+		return true;
+	}
+
+	if (allies_turn)
 	{
 		if (controller)
 		{
@@ -1485,14 +1495,14 @@ bool Combat_Menu::Update(float dt)
 		}
 	}
 
+	// animations
 	currentAnimation->Update();
-	if (in_combat)
+	for (size_t i = 0; i < 4; i++)
 	{
-		for (size_t i = 0; i < 4; i++)
-		{
-			app->combat_manager->GetEnemyByNumber(i)->current_anim->Update();
-		}
+		app->combat_manager->GetEnemyByNumber(i)->current_anim->Update();
 	}
+
+	updatedone = true;
 
 	return true;
 }
@@ -1500,391 +1510,394 @@ bool Combat_Menu::Update(float dt)
 // Called each loop iteration
 bool Combat_Menu::PostUpdate()
 {
-	if (in_combat)
+	if (!updatedone)
 	{
-		int c_x = -app->render->camera.x;
-		int c_y = -app->render->camera.y;
+		return true;
+	}
 
-		SDL_Rect r = currentAnimation->GetCurrentFrame();
-		SDL_Texture* texture = NULL;
+	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;
 
-		for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+	SDL_Rect r = currentAnimation->GetCurrentFrame();
+	SDL_Texture* texture = NULL;
+
+	for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+	{
+		enemies_buttons[i].rect.x = enemy_pos[i].x + c_x;
+		enemies_buttons[i].rect.y = enemy_pos[i].y + c_y;
+
+		if (i != 4)
 		{
-			enemies_buttons[i].rect.x = enemy_pos[i].x + c_x;
-			enemies_buttons[i].rect.y = enemy_pos[i].y + c_y;
-
-			if (i != 4)
+			if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
 			{
-				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+				switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
 				{
-					switch (app->combat_manager->GetEnemyByNumber(i)->GetType())
-					{
-					case 4:
-						texture = white_templar;
-						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 40, &r);
-						break;
-					case 5:
-						texture = mushroom;
-						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 50, &r);
-						break;
-					case 6: 
-						texture = goblin;
-						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y - 10, &r);
-						break;
-					case 7:
-						texture = skeleton;
-						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 110, &r);
-						break;
-					default: 
-						texture = assassin_texture;
-						r = currentAnimation->GetCurrentFrame();
-						app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
-						break;
-					}
-				}
-				else if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 0)
-				{
-					texture = tombstone;
-					r = { 64, 0, 64, 64 };
+				case 4:
+					texture = white_templar;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 40, &r);
+					break;
+				case 5:
+					texture = mushroom;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 50, &r);
+					break;
+				case 6:
+					texture = goblin;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y - 10, &r);
+					break;
+				case 7:
+					texture = skeleton;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 110, &r);
+					break;
+				default:
+					texture = assassin_texture;
+					r = currentAnimation->GetCurrentFrame();
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
+					break;
 				}
+			}
+			else if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 0)
+			{
+				texture = tombstone;
+				r = { 64, 0, 64, 64 };
+				app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &r);
+			}
+		}
+	}
+
+	r = currentAnimation->GetCurrentFrame();
+	for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+	{
+		allies_buttons[i].rect.x = ally_pos[i].x + c_x;
+		allies_buttons[i].rect.y = ally_pos[i].y + c_y;
+
+		if (i != 4)
+		{
+			if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+			{
+				switch (i)
+				{
+				case 0: texture = assassin_texture;
+					break;
+				case 1: texture = healer_texture;
+					break;
+				case 2: texture = tank_texture;
+					break;
+				case 3: texture = wizard_texture;
+					break;
+				}
+
+				app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
+			}
+			else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 0)
+			{
+				texture = tombstone;
+				r = { 0, 0, 64, 64 };
+				app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y + 5, &r);
+			}
+		}
+	}
+
+	if (allies_turn && app->combat_manager->GetInAnimation() != 2)
+	{
+		if (!in_items && !in_enemies && !in_allies)
+		{
+			SDL_Rect g_rect;
+			for (size_t i = 0; i < NUM_BUTTONS; i++)
+			{
+				general_buttons[i].rect.x = action_pos[i].x + c_x;
+				general_buttons[i].rect.y = action_pos[i].y + c_y;
+
+				if (i < 4)
+				{
+					if (general_buttons[i].state == 1 && !in_action)
+					{
+						//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
+						g_rect = { 0, 50, 400, 50 };
+					}
+					else if (general_buttons[i].state == 2 && !in_action)
+					{
+						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+						g_rect = { 0, 100, 400, 50 };
+					}
+					else if (general_buttons[i].state == 3)
+					{
+						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+						g_rect = { 0, 100, 400, 50 };
+					}
+					else if (general_buttons[i].state == 0)
+					{
+						//app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+						switch (app->combat_manager->GetActualEntity()->GetSkill(i).element)
+						{
+						case 0: g_rect = { 0, 0, 400, 50 };
+							  break;
+						case 1: g_rect = { 0, 150, 400, 50 };
+							  break;
+						case 2: g_rect = { 0, 250, 400, 50 };
+							  break;
+						case 3: g_rect = { 0, 200, 400, 50 };
+							  break;
+						}
+					}
+					texture = whitemark_400x50;
+				}
+				else
+				{
+					if (general_buttons[i].state == 1 && !in_action)
+					{
+						//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
+						g_rect = { 0, 110, 110, 110 };
+					}
+					else if (general_buttons[i].state == 2 && !in_action)
+					{
+						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
+						g_rect = { 0, 220, 110, 110 };
+					}
+					else if (general_buttons[i].state == 0)
+					{
+						g_rect = { 0, 0, 110, 110 };
+					}
+					texture = whitemark_110x110;
+				}
+				app->render->DrawTexture(texture, general_buttons[i].rect.x, general_buttons[i].rect.y, &g_rect);
+			}
+
+			for (size_t i = 0; i < 4; i++)
+			{
+				general_buttons[i].rect.x = action_pos[i].x + c_x;
+				general_buttons[i].rect.y = action_pos[i].y + c_y;
+
+				app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont1, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
 			}
 		}
 
-		r = currentAnimation->GetCurrentFrame();
-		for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+		if (in_items && !in_enemies && !in_allies)
 		{
-			allies_buttons[i].rect.x = ally_pos[i].x + c_x;
-			allies_buttons[i].rect.y = ally_pos[i].y + c_y;
-
-			if (i != 4)
+			SDL_Rect i_rect;
+			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 			{
-				if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
-				{
-					switch (i)
-					{
-					case 0: texture = assassin_texture;
-						break;
-					case 1: texture = healer_texture;
-						break;
-					case 2: texture = tank_texture;
-						break;
-					case 3: texture = wizard_texture;
-						break;
-					}
+				items_buttons[i].rect.x = item_pos[i].x + c_x;
+				items_buttons[i].rect.y = item_pos[i].y + c_y;
 
-					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &r);
-				}
-				else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 0)
+				if (items_buttons[i].state == 0)
 				{
-					texture = tombstone;
-					r = { 0, 0, 64, 64 };
-					app->render->DrawTexture(texture, allies_buttons[i].rect.x, allies_buttons[i].rect.y + 5, &r);
+					//app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					i_rect = { 0, 0, 128, 128 };
 				}
+				else if (items_buttons[i].state == 1)
+				{
+					//app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
+					i_rect = { 0, 128, 128, 128 };
+				}
+				else if (items_buttons[i].state == 2)
+				{
+					//app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
+					i_rect = { 0, 256, 128, 128 };
+				}
+				app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
 			}
 		}
 
-		if (allies_turn && app->combat_manager->GetInAnimation() != 2)
+		if (!in_items && in_enemies && !in_allies)
 		{
-			if (!in_items && !in_enemies && !in_allies)
+			SDL_Rect e_rect;
+			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
 			{
-				SDL_Rect g_rect;
-				for (size_t i = 0; i < NUM_BUTTONS; i++)
+				if (enemies_buttons[i].state == 1)
 				{
-					general_buttons[i].rect.x = action_pos[i].x + c_x;
-					general_buttons[i].rect.y = action_pos[i].y + c_y;
-
-					if (i < 4)
+					// aiming sprites
+					if (i == 4)
 					{
-						if (general_buttons[i].state == 1 && !in_action)
-						{
-							//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
-							g_rect = { 0, 50, 400, 50 };
-						}
-						else if (general_buttons[i].state == 2 && !in_action)
-						{
-							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
-							g_rect = { 0, 100, 400, 50 };
-						}
-						else if (general_buttons[i].state == 3)
-						{
-							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
-							g_rect = { 0, 100, 400, 50 };
-						}
-						else if (general_buttons[i].state == 0)
-						{
-							//app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-							switch (app->combat_manager->GetActualEntity()->GetSkill(i).element)
-							{
-							case 0: g_rect = { 0, 0, 400, 50 };
-								  break;
-							case 1: g_rect = { 0, 150, 400, 50 };
-								  break;
-							case 2: g_rect = { 0, 250, 400, 50 };
-								  break;
-							case 3: g_rect = { 0, 200, 400, 50 };
-								  break;
-							}
-						}
-						texture = whitemark_400x50;
-					}
-					else
-					{
-						if (general_buttons[i].state == 1 && !in_action)
-						{
-							//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
-							g_rect = { 0, 110, 110, 110 };
-						}
-						else if (general_buttons[i].state == 2 && !in_action)
-						{
-							//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
-							g_rect = { 0, 220, 110, 110 };
-						}
-						else if (general_buttons[i].state == 0)
-						{
-							g_rect = { 0, 0, 110, 110 };
-						}
-						texture = whitemark_110x110;
-					}
-					app->render->DrawTexture(texture, general_buttons[i].rect.x, general_buttons[i].rect.y, &g_rect);
-				}
-
-				for (size_t i = 0; i < 4; i++)
-				{
-					general_buttons[i].rect.x = action_pos[i].x + c_x;
-					general_buttons[i].rect.y = action_pos[i].y + c_y;
-
-					app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont1, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
-				}
-			}
-
-			if (in_items && !in_enemies && !in_allies)
-			{
-				SDL_Rect i_rect;
-				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
-				{
-					items_buttons[i].rect.x = item_pos[i].x + c_x;
-					items_buttons[i].rect.y = item_pos[i].y + c_y;
-
-					if (items_buttons[i].state == 0)
-					{
-						//app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-						i_rect = { 0, 0, 128, 128 };
-					}
-					else if (items_buttons[i].state == 1)
-					{
-						//app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
-						i_rect = { 0, 128, 128, 128 };
-					}
-					else if (items_buttons[i].state == 2)
-					{
-						//app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
-						i_rect = { 0, 256, 128, 128 };
-					}
-					app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
-				}
-			}
-
-			if (!in_items && in_enemies && !in_allies)
-			{
-				SDL_Rect e_rect;
-				for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
-				{
-					if (enemies_buttons[i].state == 1)
-					{
-						// aiming sprites
-						if (i == 4)
-						{
-							//app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
-							e_rect = { 0, 50, 400, 50 };
-							app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
-						}
-						else
-						{
-							SDL_Rect rect = { 0, 0, 64, 64 };
-							app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
-						}
-					}
-					else if (enemies_buttons[i].state == 2)
-					{
-						// fire sprites
-						if (i == 4)
-						{
-							//app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
-							e_rect = { 0, 100, 400, 50 };
-							app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
-						}
-						else
-						{
-							SDL_Rect rect = { 64, 0, 64, 64 };
-							app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
-						}
-					}
-					else if (enemies_buttons[i].state == 3)
-					{
-						// no selectable sprites
-						SDL_Rect rect = { 256, 0, 64, 64 };
-						app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
-					}
-					else if (enemies_buttons[i].state == 0 && i == 4)
-					{
-						//app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-						switch (skill_prepared.element)
-						{
-						case 0: e_rect = { 0, 0, 400, 50 };
-							  break;
-						case 1: e_rect = { 0, 150, 400, 50 };
-							  break;
-						case 2: e_rect = { 0, 250, 400, 50 };
-							  break;
-						case 3: e_rect = { 0, 200, 400, 50 };
-							  break;
-						}
+						//app->render->DrawRectangle(enemies_buttons[i].rect, inColorR, inColorG, inColorB);
+						e_rect = { 0, 50, 400, 50 };
 						app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 					}
-
-					if (i == 4)
+					else
 					{
-						app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, app->fonts->textFont1, skill_prepared.skill_name);
+						SDL_Rect rect = { 0, 0, 64, 64 };
+						app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 					}
 				}
-			}
-
-			if (!in_items && !in_enemies && in_allies)
-			{
-				for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+				else if (enemies_buttons[i].state == 2)
 				{
-					SDL_Rect a_rect;
-					if (allies_buttons[i].state == 1)
+					// fire sprites
+					if (i == 4)
 					{
-						// aiming sprites
-						if (i == 4)
-						{
-							//app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
-							a_rect = { 0, 50, 400, 50 };
-							app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
-						}
-						else
-						{
-							SDL_Rect rect = { 128, 0, 64, 64 };
-							app->render->DrawTexture(target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
-						}
+						//app->render->DrawRectangle(enemies_buttons[i].rect, pColorR, pColorG, pColorB);
+						e_rect = { 0, 100, 400, 50 };
+						app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 					}
-					else if (allies_buttons[i].state == 2)
+					else
 					{
-						// fire sprites
-						if (i == 4)
-						{
-							//app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
-							a_rect = { 0, 100, 400, 50 };
-							app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
-						}
-						else
-						{
-							SDL_Rect rect = { 192, 0, 64, 64 };
-							app->render->DrawTexture(target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
-						}
+						SDL_Rect rect = { 64, 0, 64, 64 };
+						app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
 					}
-					else if (allies_buttons[i].state == 0 && i == 4)
+				}
+				else if (enemies_buttons[i].state == 3)
+				{
+					// no selectable sprites
+					SDL_Rect rect = { 256, 0, 64, 64 };
+					app->render->DrawTexture(target, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &rect);
+				}
+				else if (enemies_buttons[i].state == 0 && i == 4)
+				{
+					//app->render->DrawRectangle(enemies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					switch (skill_prepared.element)
 					{
-						//app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
-						switch (skill_prepared.element)
-						{
-						case 0: a_rect = { 0, 0, 400, 50 };
-							  break;
-						case 1: a_rect = { 0, 150, 400, 50 };
-							  break;
-						case 2: a_rect = { 0, 250, 400, 50 };
-							  break;
-						case 3: a_rect = { 0, 200, 400, 50 };
-							  break;
-						}
+					case 0: e_rect = { 0, 0, 400, 50 };
+						  break;
+					case 1: e_rect = { 0, 150, 400, 50 };
+						  break;
+					case 2: e_rect = { 0, 250, 400, 50 };
+						  break;
+					case 3: e_rect = { 0, 200, 400, 50 };
+						  break;
+					}
+					app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
+				}
+
+				if (i == 4)
+				{
+					app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, app->fonts->textFont1, skill_prepared.skill_name);
+				}
+			}
+		}
+
+		if (!in_items && !in_enemies && in_allies)
+		{
+			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+			{
+				SDL_Rect a_rect;
+				if (allies_buttons[i].state == 1)
+				{
+					// aiming sprites
+					if (i == 4)
+					{
+						//app->render->DrawRectangle(allies_buttons[i].rect, inColorR, inColorG, inColorB);
+						a_rect = { 0, 50, 400, 50 };
 						app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 					}
-
+					else
+					{
+						SDL_Rect rect = { 128, 0, 64, 64 };
+						app->render->DrawTexture(target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
+					}
+				}
+				else if (allies_buttons[i].state == 2)
+				{
+					// fire sprites
 					if (i == 4)
 					{
-						app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, app->fonts->textFont1, skill_prepared.skill_name);
-					}
-				}
-			}
-		}
-		else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
-		{
-			app->fonts->BlitText(500 + c_x, 100 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
-			if (skill_att_effect != ATT_EFFECT::EMPTY)
-			{
-				if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
-				{
-					if (skill_prepared.owner < 4)
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
-							{
-								app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
-							}
-						}
+						//app->render->DrawRectangle(allies_buttons[i].rect, pColorR, pColorG, pColorB);
+						a_rect = { 0, 100, 400, 50 };
+						app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 					}
 					else
 					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
-							{
-								app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
-							}
-						}
+						SDL_Rect rect = { 192, 0, 64, 64 };
+						app->render->DrawTexture(target, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &rect);
 					}
 				}
-				else
+				else if (allies_buttons[i].state == 0 && i == 4)
 				{
-					app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, objective_pos.x - 32, objective_pos.y - 32);
-				}
-			}
-			if (skill_supp_effect != SUPP_EFFECT::EMPTY)
-			{
-				if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
-				{
-					if (skill_prepared.owner < 4)
+					//app->render->DrawRectangle(allies_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+					switch (skill_prepared.element)
 					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
-							{
-								app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
-							}
-						}
+					case 0: a_rect = { 0, 0, 400, 50 };
+						  break;
+					case 1: a_rect = { 0, 150, 400, 50 };
+						  break;
+					case 2: a_rect = { 0, 250, 400, 50 };
+						  break;
+					case 3: a_rect = { 0, 200, 400, 50 };
+						  break;
 					}
-					else
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
-							{
-								app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
-							}
-						}
-					}
+					app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
 				}
-				else if (skill_prepared.enemy_objective != ENEMY_OBJECTIVE::NOTHING && skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
-				{
-					app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, app->combat_manager->GetActualEntity()->position.x - 32, app->combat_manager->GetActualEntity()->position.y - 32);
-				}
-				else
-				{
-					app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, objective_pos.x - 32, objective_pos.y - 32);
-				}
-			}
 
-			SetSkillAnimation(ATT_EFFECT::EMPTY, SUPP_EFFECT::EMPTY, 0, 0);
+				if (i == 4)
+				{
+					app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, app->fonts->textFont1, skill_prepared.skill_name);
+				}
+			}
 		}
-		app->combat_manager->UpdateHUD();
 	}
+	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
+	{
+		app->fonts->BlitText(500 + c_x, 100 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		if (skill_att_effect != ATT_EFFECT::EMPTY)
+		{
+			if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+			{
+				if (skill_prepared.owner < 4)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+						{
+							app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+						}
+					}
+				}
+				else
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+						{
+							app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+						}
+					}
+				}
+			}
+			else
+			{
+				app->particles->PlayParticle(skill_att_effect, SUPP_EFFECT::EMPTY, objective_pos.x - 32, objective_pos.y - 32);
+			}
+		}
+		if (skill_supp_effect != SUPP_EFFECT::EMPTY)
+		{
+			if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+			{
+				if (skill_prepared.owner < 4)
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1)
+						{
+							app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, allies_buttons[i].rect.x - 32, allies_buttons[i].rect.y - 32);
+						}
+					}
+				}
+				else
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
+						{
+							app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, enemies_buttons[i].rect.x - 32, enemies_buttons[i].rect.y - 32);
+						}
+					}
+				}
+			}
+			else if (skill_prepared.enemy_objective != ENEMY_OBJECTIVE::NOTHING && skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
+			{
+				app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, app->combat_manager->GetActualEntity()->position.x - 32, app->combat_manager->GetActualEntity()->position.y - 32);
+			}
+			else
+			{
+				app->particles->PlayParticle(ATT_EFFECT::EMPTY, skill_supp_effect, objective_pos.x - 32, objective_pos.y - 32);
+			}
+		}
+
+		SetSkillAnimation(ATT_EFFECT::EMPTY, SUPP_EFFECT::EMPTY, 0, 0);
+	}
+
+	app->combat_manager->UpdateHUD();
 
 	return true;
 }

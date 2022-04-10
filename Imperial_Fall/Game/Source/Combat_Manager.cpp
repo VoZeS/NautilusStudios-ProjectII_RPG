@@ -45,6 +45,32 @@ bool Combat_Manager::Start()
 		turn_icon = app->tex->Load("Assets/textures/turn_icon.png");
 		dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
 		whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
+
+		//init allies
+		int health, mana, speed, power, skill1, skill2, skill3, skill4;
+		HeroesStats(health, mana, speed, power, 0, skill1, skill2, skill3, skill4); // assassin
+		allies[0] = new Combat_Entities(health, mana, speed, power, 0, skill1, skill2, skill3, skill4);
+		HeroesStats(health, mana, speed, power, 1, skill1, skill2, skill3, skill4); // healer
+		allies[1] = new Combat_Entities(health, mana, speed, power, 1, skill1, skill2, skill3, skill4);
+		HeroesStats(health, mana, speed, power, 2, skill1, skill2, skill3, skill4); // tank
+		allies[2] = new Combat_Entities(health, mana, speed, power, 2, skill1, skill2, skill3, skill4);
+		HeroesStats(health, mana, speed, power, 3, skill1, skill2, skill3, skill4); // wizard
+		allies[3] = new Combat_Entities(health, mana, speed, power, 3, skill1, skill2, skill3, skill4);
+
+		//init enemies
+		for (size_t i = 0; i < 4; i++)
+		{
+			enemies[i] = new Combat_Entities(app->frontground->GetEnemiesToFight(i));
+		}
+
+		items = new Combat_Entities(); // items
+
+		//set turn order
+		SetOrder();
+		turn = -1;
+		pass_turn = true;
+
+		preupdatedone = false;
 	}
 
 	return true;
@@ -53,75 +79,38 @@ bool Combat_Manager::Start()
 // Called each loop iteration
 bool Combat_Manager::PreUpdate()
 {
-	if (app->frontground->GetCombatState() == 2)
+	if (!app->menu->GetGameState())
 	{
-		in_combat = true;
-	}
-	else if (app->frontground->GetCombatState() == 0)
-	{
-		in_combat = false;
-		combat_init = false;
-	}
-
-	if (in_combat && !app->menu->GetGameState())
-	{
-		if (!combat_init)
+		if (CheckCombatState() == 0)
 		{
-			//init allies
-			int health, mana, speed, power, skill1, skill2, skill3, skill4;
-			HeroesStats(health, mana, speed, power, 0, skill1, skill2, skill3, skill4); // assassin
-			allies[0] = new Combat_Entities(health, mana, speed, power, 0, skill1, skill2, skill3, skill4);
-			HeroesStats(health, mana, speed, power, 1, skill1, skill2, skill3, skill4); // healer
-			allies[1] = new Combat_Entities(health, mana, speed, power, 1, skill1, skill2, skill3, skill4);
-			HeroesStats(health, mana, speed, power, 2, skill1, skill2, skill3, skill4); // tank
-			allies[2] = new Combat_Entities(health, mana, speed, power, 2, skill1, skill2, skill3, skill4);
-			HeroesStats(health, mana, speed, power, 3, skill1, skill2, skill3, skill4); // wizard
-			allies[3] = new Combat_Entities(health, mana, speed, power, 3, skill1, skill2, skill3, skill4);
-			
-			//init enemies
-			for (size_t i = 0; i < 4; i++)
+			if (pass_turn)
 			{
-				enemies[i] = new Combat_Entities(app->frontground->GetEnemiesToFight(i));
-			}
-
-			items = new Combat_Entities(); // items
-
-			//set turn order
-			SetOrder();
-			turn = -1;
-			pass_turn = true;
-		}
-		else
-		{
-			if (CheckCombatState() == 0)
-			{
-				if (pass_turn)
+				srand(time(NULL));
+				SetEntitiesPositions();
+				do
 				{
-					srand(time(NULL));
-					SetEntitiesPositions();
-					do
+					turn++;
+					if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
 					{
-						turn++;
-						if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
-						{
-							turn = 0;
-							SetOrder();
-						}
-					} while (turn_order[turn]->GetEntityState() != 1);
-					UpdateBuffs();
-					pass_turn = false;
-				}
-			}
-			else if (CheckCombatState() == 1)
-			{
-				app->menu->SetWinLose(0); // win
-			}
-			else if (CheckCombatState() == 2)
-			{
-				app->menu->SetWinLose(1); // lose
+						turn = 0;
+						SetOrder();
+					}
+				} while (turn_order[turn]->GetEntityState() != 1);
+				UpdateBuffs();
+				pass_turn = false;
 			}
 		}
+		else if (CheckCombatState() == 1)
+		{
+			app->menu->SetWinLose(0); // win
+		}
+		else if (CheckCombatState() == 2)
+		{
+			app->menu->SetWinLose(1); // lose
+		}
 	}
+
+	preupdatedone = true;
 
 	return true;
 }
@@ -129,7 +118,12 @@ bool Combat_Manager::PreUpdate()
 // Called each loop iteration
 bool Combat_Manager::Update(float dt)
 {
-	if (in_combat && !pass_turn && !in_animation)
+	if (!preupdatedone)
+	{
+		return true;
+	}
+
+	if (!pass_turn && !in_animation)
 	{
 		if (turn_order[turn]->GetType() == 0 || turn_order[turn]->GetType() == 1 || turn_order[turn]->GetType() == 2 || turn_order[turn]->GetType() == 3) // allies
 		{
@@ -171,13 +165,6 @@ bool Combat_Manager::Update(float dt)
 // Called each loop iteration
 bool Combat_Manager::PostUpdate()
 {
-	if (in_combat)
-	{
-		if (!combat_init)
-		{
-			combat_init = true;
-		}
-	}
 
 	return true;
 }
