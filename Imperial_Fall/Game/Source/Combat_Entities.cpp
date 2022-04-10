@@ -147,6 +147,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 			else
 			{
 				actual_health += shield;
+				shield = 0;
 			}
 		}
 		else if (bonus == SKILL_BONUS::DESTROY_SHIELD)

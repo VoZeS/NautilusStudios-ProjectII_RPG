@@ -1018,7 +1018,6 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		return;
 	}
 
-
 	do
 	{
 		skill = rand() % 4;
@@ -1035,14 +1034,46 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 	}
 	else
 	{
+		BUFF b1;
+		b1.buff_type = BUFF_TYPE::STEALTH;
+		BUFF b2;
+		b2.buff_type = BUFF_TYPE::TAUNT;
+		bool has_taunt = false;
 		if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 		{
+			rounds = 0;
 			do
 			{
-				objective = rand() % 4;
-			} while (!allies[objective]->GetEntityState());
-			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-			UseSkill(user, user->GetSkill(skill), allies[objective]);
+				for (size_t i = 0; i < 4; i++)
+				{
+					if (allies[i]->FindBuff(b2) != -1)
+					{
+						objective = i;
+						has_taunt = true;
+						break;
+					}
+				}
+				if (!has_taunt)
+				{
+					objective = rand() % 4;
+					rounds++;
+				}
+			} while ((allies[objective]->GetEntityState() == 0 || allies[objective]->FindBuff(b1) != -1) && rounds < 10);
+
+			if (rounds == 10)
+			{
+				do
+				{
+					objective = rand() % 4;
+				} while ((allies[objective]->GetEntityState() == 0));
+				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+				UseSkill(user, user->GetSkill(skill), allies[objective]);
+			}
+			else
+			{
+				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+				UseSkill(user, user->GetSkill(skill), allies[objective]);
+			}
 		}
 		else if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
 		{

@@ -42,7 +42,8 @@ enum class MOVE_TO
 	INSIDE_SCENE,
 	INSIDE_OUTSIDE,
 	INSIDE_COMBAT,
-	FROM_COMBAT
+	FROM_COMBAT,
+	RESET_COMBAT
 };
 
 class Frontground : public Module

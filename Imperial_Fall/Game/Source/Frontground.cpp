@@ -101,6 +101,11 @@ bool Frontground::PostUpdate()
 	
 	r.x = c_x;
 	r.y = c_y;
+	
+	if (a == 254)
+	{
+		a++;
+	}
 
 	app->render->DrawRectangle(r, 0, 0, 0, a);
 
@@ -222,6 +227,8 @@ bool Frontground::FadeFromBlack()
 
 		app->menu->SetWinLose(-1);
 		break;
+	case MOVE_TO::RESET_COMBAT: app->combat_scene->Enable(); app->menu->SetWinLose(-1);
+		break;
 	default:
 		break;
 	}
@@ -243,6 +250,7 @@ bool Frontground::FadeInCombat(ENEMIES enemies[])
 
 bool Frontground::ReturnToField()
 {
+	app->SaveGameRequest();
 	move_to = MOVE_TO::FROM_COMBAT;
 
 	FadeToBlack();
@@ -253,7 +261,9 @@ bool Frontground::ReturnToField()
 
 bool Frontground::ResetCombat()
 {
-	go_black = true;
+	move_to = MOVE_TO::RESET_COMBAT;
+
+	FadeToBlack();
 
 	return true;
 }
