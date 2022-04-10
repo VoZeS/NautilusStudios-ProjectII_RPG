@@ -102,11 +102,11 @@ bool Combat_Manager::PreUpdate()
 		}
 		else if (CheckCombatState() == 1)
 		{
-			app->menu->SetWinLose(0); // win
+			app->menu->SetWinLoseScape(0); // win
 		}
 		else if (CheckCombatState() == 2)
 		{
-			app->menu->SetWinLose(1); // lose
+			app->menu->SetWinLoseScape(1); // lose
 		}
 	}
 

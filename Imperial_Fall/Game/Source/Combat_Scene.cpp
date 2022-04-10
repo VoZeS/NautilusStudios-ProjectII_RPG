@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Menu.h"
+#include "Scene.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"

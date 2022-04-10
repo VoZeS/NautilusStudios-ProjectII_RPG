@@ -113,6 +113,7 @@ bool Menu::Start()
 	settings = false;
 	win = false;
 	lose = false;
+	scape = false;
 	slider = false;
 	slider2 = false;
 	fullscreen = false;
@@ -150,6 +151,8 @@ bool Menu::Start()
 		settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1);
 	}
 
+	whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
+
 	win_button.rect.w = 600;
 	win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
 	win_button.rect.y = (int)win_h / 2 + 200;
@@ -160,6 +163,13 @@ bool Menu::Start()
 	lose_buttons[1].rect.w = 500;
 	lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 600;
 	lose_buttons[1].rect.y = (int)win_h / 2 + 200;
+
+	scape_buttons[0].rect.w = 500;
+	scape_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) - 600;
+	scape_buttons[0].rect.y = (int)win_h / 2 + 200;
+	scape_buttons[1].rect.w = 500;
+	scape_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 600;
+	scape_buttons[1].rect.y = (int)win_h / 2 + 200;
 
 	pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue_In_game.png"); // Continue
 	pause_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
@@ -301,6 +311,14 @@ bool Menu::PreUpdate()
 					pause_buttons[i].state = 0;
 				}
 			}
+
+			if (app->combat_scene->Enabled())
+			{
+				if (chosed == 2)
+				{
+					pause_buttons[2].state = 0;
+				}
+			}
 		}
 		else if (intro && !settings)
 		{
@@ -372,7 +390,22 @@ bool Menu::PreUpdate()
 				}
 			}
 		}
-
+		else if (scape)
+		{
+			for (size_t i = 0; i < NUM_SCAPE_BUTTONS; i++)
+			{
+				SDL_Rect rect = scape_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					chosed = i;
+					scape_buttons[i].state = 1;
+				}
+				else
+				{
+					scape_buttons[i].state = 0;
+				}
+			}
+		}
 	}
 	return true;
 }
@@ -609,6 +642,28 @@ bool Menu::Update(float dt)
 				lose_buttons[chosed].state = 2;
 			}
 		}
+		else if (scape)
+		{
+			subplaymenu = false;
+
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED && scape_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					// sure to scape
+					app->frontground->ReturnToField();
+					break;
+				case 1:
+					// cancel scape
+					scape = false;
+					break;
+				}
+
+				scape_buttons[chosed].state = 2;
+			}
+		}
 	}
 
 	// Tricks
@@ -732,7 +787,7 @@ bool Menu::PostUpdate()
 	{
 		app->scene->fuegoSeguir = false;
 	}
-	if (settings==false && !started)
+	if (settings == false && !started)
 	{
 		app->render->DrawTexture(big_fire_light, c_x + 752, c_y + seguir + 930, &(light_big_fire_anim.GetCurrentFrame()));
 		app->render->DrawTexture(big_fire, c_x + 897, c_y + seguir +585, &(big_fire_anim.GetCurrentFrame()));
@@ -840,7 +895,14 @@ bool Menu::PostUpdate()
 				}
 
 				//Imprime las imagenes de los botones
-				app->render->DrawTexture(pause_buttons[i].tex, pause_buttons[i].rect.x + 10, pause_buttons[i].rect.y + 10);
+				if (app->combat_scene->Enabled() && i == 2)
+				{
+					app->render->DrawTexture(menu_buttons[4].alt_tex2, pause_buttons[i].rect.x + 10, pause_buttons[i].rect.y + 40);
+				}
+				else
+				{
+					app->render->DrawTexture(pause_buttons[i].tex, pause_buttons[i].rect.x + 10, pause_buttons[i].rect.y + 10);
+				}
 			}
 		}
 		//------------------------------------------------------
@@ -1091,6 +1153,7 @@ bool Menu::PostUpdate()
 		}
 	}
 
+	SDL_Rect rect;
 	if (win)
 	{
 		app->render->DrawRectangle(r, 0, 0, 0, 200);
@@ -1099,18 +1162,21 @@ bool Menu::PostUpdate()
 
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x;
 		win_button.rect.y = (int)win_h / 2 + 200 + c_y;
-		
+
 		if (win_button.state == 0)
 		{
-			app->render->DrawRectangle(win_button.rect, idleColorR, idleColorG, idleColorB);
+			rect = { 0, 0, 500, 70 };
+			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 		}
 		else if (win_button.state == 1)
 		{
-			app->render->DrawRectangle(win_button.rect, inColorR, inColorG, inColorB);
+			rect = { 0, 70, 500, 70 };
+			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 		}
 		else if (win_button.state == 2)
 		{
-			app->render->DrawRectangle(win_button.rect, pColorR, pColorG, pColorB);
+			rect = { 0, 140, 500, 70 };
+			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 		}
 
 		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
@@ -1131,21 +1197,59 @@ bool Menu::PostUpdate()
 		{
 			if (lose_buttons[i].state == 0)
 			{
-				app->render->DrawRectangle(lose_buttons[i].rect, idleColorR, idleColorG, idleColorB);
+				rect = { 0, 0, 500, 70 };
+				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 			else if (lose_buttons[i].state == 1)
 			{
-				app->render->DrawRectangle(lose_buttons[i].rect, inColorR, inColorG, inColorB);
+				rect = { 0, 70, 500, 70 };
+				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 			else if (lose_buttons[i].state == 2)
 			{
-				app->render->DrawRectangle(lose_buttons[i].rect, pColorR, pColorG, pColorB);
+				rect = { 0, 140, 500, 70 };
+				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 		}
 		
 		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
 		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
+
+	if (scape)
+	{
+		app->render->DrawRectangle(r, 0, 0, 0, 200);
+
+		//app->render->DrawTexture(combat_scape, c_x, c_y);
+
+		scape_buttons[0].rect.x = ((int)win_w / 2) - (scape_buttons[0].rect.w / 2) - 300 + c_x;
+		scape_buttons[0].rect.y = (int)win_h / 2 + 200 + c_y;
+		scape_buttons[1].rect.x = ((int)win_w / 2) - (scape_buttons[1].rect.w / 2) + 300 + c_x;
+		scape_buttons[1].rect.y = (int)win_h / 2 + 200 + c_y;
+
+		for (size_t i = 0; i < NUM_SCAPE_BUTTONS; i++)
+		{
+			if (scape_buttons[i].state == 0)
+			{
+				rect = { 0, 0, 500, 70 };
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+			}
+			else if (scape_buttons[i].state == 1)
+			{
+				rect = { 0, 70, 500, 70 };
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+			}
+			else if (scape_buttons[i].state == 2)
+			{
+				rect = { 0, 140, 500, 70 };
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+			}
+		}
+
+		app->fonts->BlitText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
+		app->fonts->BlitText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
+	}
+
 	return true;
 }
 
@@ -1161,7 +1265,7 @@ bool Menu::GetGameState()
 	return paused;
 }
 
-void Menu::SetWinLose(int n)
+void Menu::SetWinLoseScape(int n)
 {
 	if (n == 0)
 	{
@@ -1171,10 +1275,15 @@ void Menu::SetWinLose(int n)
 	{
 		lose = true;
 	}
+	else if (n == 2)
+	{
+		scape = true;
+	}
 	else
 	{
 		win = false;
 		lose = false;
+		scape = false;
 	}
 }
 

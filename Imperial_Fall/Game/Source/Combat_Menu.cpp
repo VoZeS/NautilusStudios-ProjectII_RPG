@@ -236,7 +236,7 @@ bool Combat_Menu::PreUpdate()
 
 	if (!controller) // keyboard
 	{
-		if (!app->menu->GetGameState() && allies_turn)
+		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape)
 		{
 			int x, y;
 			app->input->GetMousePosition(x, y);
@@ -394,7 +394,7 @@ bool Combat_Menu::PreUpdate()
 				}
 			}
 		}
-		else if (app->menu->GetGameState())
+		else if (app->menu->GetGameState() || app->menu->scape)
 		{
 			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
@@ -439,7 +439,7 @@ bool Combat_Menu::PreUpdate()
 		}
 
 
-		if (!app->menu->GetGameState() && allies_turn)
+		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape)
 		{
 			if (!in_items && !in_enemies && !in_allies)
 			{
@@ -1083,7 +1083,7 @@ bool Combat_Menu::PreUpdate()
 				}
 			}
 		}
-		else if (app->menu->GetGameState())
+		else if (app->menu->GetGameState() || app->menu->scape)
 		{
 			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
@@ -1340,6 +1340,7 @@ bool Combat_Menu::Update(float dt)
 					break;
 				case 6:
 					//scape
+					app->menu->SetWinLoseScape(2);
 					break;
 				}
 

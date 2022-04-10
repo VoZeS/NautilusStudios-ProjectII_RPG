@@ -225,9 +225,9 @@ bool Frontground::FadeFromBlack()
 			break;
 		}
 
-		app->menu->SetWinLose(-1);
+		app->menu->SetWinLoseScape(-1);
 		break;
-	case MOVE_TO::RESET_COMBAT: app->combat_scene->Enable(); app->menu->SetWinLose(-1);
+	case MOVE_TO::RESET_COMBAT: app->combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
 		break;
 	default:
 		break;

@@ -9,6 +9,7 @@
 #define NUM_MENU_BUTTONS 6
 #define NUM_WIN_BUTTONS 1
 #define NUM_LOSE_BUTTONS 2
+#define NUM_SCAPE_BUTTONS 2
 
 #define NUM_SETTINGS_BUTTONS 4
 
@@ -46,6 +47,7 @@ public:
 
 	bool win;
 	bool lose;
+	bool scape;
 	bool kill_enemy = false;
 
 
@@ -72,7 +74,8 @@ public:
 
 	SDL_Rect PauseMenuHUD;
 
-	void SetWinLose(int n);
+	// -1 --> all false, 0 --> win, 1 --> lose, 2 --> scape
+	void SetWinLoseScape(int n);
 
 	bool ReturnStartScreen();
 
@@ -128,9 +131,13 @@ private:
 	Button settings_buttons[NUM_SETTINGS_BUTTONS];
 	Button win_button;
 	Button lose_buttons[NUM_LOSE_BUTTONS];
+	Button scape_buttons[NUM_SCAPE_BUTTONS];
 
 	SDL_Texture* combat_win = NULL;
 	SDL_Texture* combat_lose = NULL;
+	SDL_Texture* combat_scape = NULL;
+
+	SDL_Texture* whitemark_500x70 = NULL;
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;
