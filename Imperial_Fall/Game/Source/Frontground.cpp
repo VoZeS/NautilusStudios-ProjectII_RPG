@@ -65,7 +65,7 @@ bool Frontground::PreUpdate()
 			app->combat_menu->SetController();
 		}
 	}
-
+	
 	if (go_black)
 	{
 		if (a < 256 - fade_speed)

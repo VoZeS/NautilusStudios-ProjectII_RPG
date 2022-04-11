@@ -26,6 +26,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 2: combat_enemies[0] = ENEMIES::MUSHROOM; break;
 	case 3: combat_enemies[0] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[0] = ENEMIES::SKELETON; break;
+	case 5: combat_enemies[0] = ENEMIES::R_TEMPLAR; break;
 	}
 	switch (en2)
 	{
@@ -34,6 +35,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 2: combat_enemies[1] = ENEMIES::MUSHROOM; break;
 	case 3: combat_enemies[1] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[1] = ENEMIES::SKELETON; break;
+	case 5: combat_enemies[1] = ENEMIES::R_TEMPLAR; break;
 	}
 	switch (en3)
 	{
@@ -42,6 +44,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 2: combat_enemies[2] = ENEMIES::MUSHROOM; break;
 	case 3: combat_enemies[2] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[2] = ENEMIES::SKELETON; break;
+	case 5: combat_enemies[2] = ENEMIES::R_TEMPLAR; break;
 	}
 	switch (en4)
 	{
@@ -50,8 +53,9 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 2: combat_enemies[3] = ENEMIES::MUSHROOM; break;
 	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
+	case 5: combat_enemies[3] = ENEMIES::R_TEMPLAR; break;
 	}
-
+	
 	p_in_array = index;
 
 	// animations
@@ -177,6 +181,9 @@ bool Enemies::Draw()
 			break;
 		case 4:
 			app->render->DrawTexture(app->entities->skeleton, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 5:
+			app->render->DrawTexture(app->entities->red_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
 			break;
 		}
 	}

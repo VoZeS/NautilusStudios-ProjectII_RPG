@@ -223,6 +223,12 @@ bool Combat_Menu::PreUpdate()
 					app->combat_manager->GetEnemyByNumber(i)->current_anim = &skeletonAnim;
 				}
 				break;
+			case 8:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &templarAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &templarAnim;
+				}
+				break;
 			default:
 				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &idleAnim)
 				{
@@ -1590,6 +1596,11 @@ bool Combat_Menu::PostUpdate()
 					texture = skeleton;
 					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 75, enemies_buttons[i].rect.y - 110, &r);
+					break;
+				case 8:
+					texture = red_templar;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 40, &r);
 					break;
 				default:
 					texture = assassin_texture;

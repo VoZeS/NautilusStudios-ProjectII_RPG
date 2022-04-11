@@ -31,7 +31,7 @@ public:
 	bool CleanUp();
 
 	void SetOrder();
-	bool InArray(Combat_Entities* array[], int length, Combat_Entities* check);
+	bool InArray(int length, Combat_Entities* check);
 
 	void UpdateHUD();
 

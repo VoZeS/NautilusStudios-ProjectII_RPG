@@ -94,7 +94,7 @@ bool Combat_Manager::PreUpdate()
 				do
 				{
 					turn++;
-					if (turn >= sizeof(turn_order) / sizeof(turn_order[0]))
+					if (turn >= 7)
 					{
 						turn = 0;
 						SetOrder();
@@ -254,7 +254,7 @@ bool Combat_Manager::CleanUp()
 	whitemark_64x64 = NULL;
 
 	// clean pointers
-	/*for (uint i = 0; i < 8; ++i)
+	for (uint i = 0; i < 8; ++i)
 	{
 		if (turn_order[i] != nullptr)
 		{
@@ -262,7 +262,7 @@ bool Combat_Manager::CleanUp()
 			turn_order[i] = nullptr;
 		}
 	}
-	for (uint i = 0; i < 4; ++i)
+	/*for (uint i = 0; i < 4; ++i)
 	{
 		if (allies[i] != nullptr)
 		{
@@ -296,7 +296,7 @@ void Combat_Manager::SetOrder()
 	aux[6] = enemies[2];
 	aux[7] = enemies[3];
 
-	int max = 0;
+	int max = -1;
 	int id;
 
 	// order
@@ -304,22 +304,22 @@ void Combat_Manager::SetOrder()
 	{
 		for (size_t j = 0; j < 8; j++)
 		{
-			if (aux[j]->GetSpeed() > max && !InArray(turn_order, i, aux[j]))
+			if (aux[j]->GetSpeed() > max && !InArray(i, aux[j]))
 			{
 				id = j;
-				max = allies[j]->GetSpeed();
+				max = aux[j]->GetSpeed();
 			}
 		}
 		turn_order[i] = aux[id];
-		max = 0;
+		max = -1;
 	}
 }
 
-bool Combat_Manager::InArray(Combat_Entities* array[], int length, Combat_Entities* check)
+bool Combat_Manager::InArray(int length, Combat_Entities* check)
 {
 	for (size_t i = 0; i < length; i++)
 	{
-		if (array[i] == check)
+		if (turn_order[i] == check)
 		{
 			return true;
 		}
@@ -420,6 +420,8 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 7: rect = { 128, 0, 64, 64 };
 			  break;
+		case 8: rect = { 256, 0, 64, 64 };
+			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -452,6 +454,8 @@ void Combat_Manager::UpdateHUD()
 		case 6: rect = { 64, 0, 64, 64 };
 			  break;
 		case 7: rect = { 128, 0, 64, 64 };
+			  break;
+		case 8: rect = { 256, 0, 64, 64 };
 			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
@@ -486,6 +490,8 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 7: rect = { 128, 0, 64, 64 };
 			  break;
+		case 8: rect = { 256, 0, 64, 64 };
+			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -518,6 +524,8 @@ void Combat_Manager::UpdateHUD()
 		case 6: rect = { 64, 0, 64, 64 };
 			  break;
 		case 7: rect = { 128, 0, 64, 64 };
+			  break;
+		case 8: rect = { 256, 0, 64, 64 };
 			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;

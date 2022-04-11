@@ -8,11 +8,12 @@
 
 enum class ENEMIES
 {
-	NOTHING = -1,
+	NOTHING = 0,
 	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
-	SKELETON
+	SKELETON,
+	R_TEMPLAR
 };
 
 struct BUFF {
@@ -188,7 +189,9 @@ private:
 	int weak_to = -1;
 
 	int alive; // 0 --> dead, 1 --> alive, 2 --> no exist
-	int entity_type; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> Templar, 5 --> EnemyHealer, 6 --> Goblin
+	// 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> white templar, 5 --> mushroom, 6 --> goblin, 7 --> skeleton
+	// 8 --> red templar
+	int entity_type;
 
 	Skill skills[4];
 

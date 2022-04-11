@@ -104,6 +104,9 @@ bool Entities::PreUpdate()
 			case ENTITY_TYPE::SKELETON:
 				entity->InitCustomEntity(4);
 				break;
+			case ENTITY_TYPE::R_TEMPLAR:
+				entity->InitCustomEntity(5);
+				break;
 			default:
 				entity->InitCustomEntity();
 				break;
@@ -334,6 +337,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(enemy, ENTITY_TYPE::SKELETON, p);
 	}
 		break;
+	case ENTITY_TYPE::R_TEMPLAR:
+	{
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::R_TEMPLAR, p);
+	}
+		break;
 	default:
 		break;
 	}
@@ -387,7 +396,8 @@ void Entities::StartCombat()
 		entity = item->data;
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
-			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON)
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			combat_entity = entity;
@@ -440,7 +450,8 @@ void Entities::KillEnemy()
 		entity = item->data;
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
-			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON)
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
 			&& (abs(prev_pos.DistanceTo(entity->position)) < max))
 		{
 			combat_entity = entity;

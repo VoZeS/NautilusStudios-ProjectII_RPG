@@ -19,7 +19,8 @@ enum class ENTITY_TYPE
 	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
-	SKELETON
+	SKELETON,
+	R_TEMPLAR
 };
 
 class Entity

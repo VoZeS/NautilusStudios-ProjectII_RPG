@@ -28,9 +28,13 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 	switch (enemy)
 	{
 	case ENEMIES::NOTHING:
+		max_health = 9999999;
+		actual_health = max_health;
 		this->speed = 0;
 		
 		alive = 2;
+
+		entity_type = -1;
 		break;
 	case ENEMIES::W_TEMPLAR:
 		max_health = 100;
@@ -110,6 +114,27 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 
 		entity_type = 7;
+
+		skills[0] = SetSkill(entity_type, 0); // read from xml
+		skills[1] = SetSkill(entity_type, 1); // read from xml
+		skills[2] = SetSkill(entity_type, 2); // read from xml
+		skills[3] = SetSkill(entity_type, 3); // read from xml
+		break;
+	case ENEMIES::R_TEMPLAR:
+		max_health = 200;
+		actual_health = max_health;
+		max_mana = 80;
+		actual_mana = max_mana;
+		this->speed = 40;
+		this->power = 80;
+		shield = 0;
+		shield_turns = 0;
+
+		weak_to = -1;
+
+		alive = 1;
+
+		entity_type = 8;
 
 		skills[0] = SetSkill(entity_type, 0); // read from xml
 		skills[1] = SetSkill(entity_type, 1); // read from xml
@@ -1241,7 +1266,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		}
 	}
-	else if (owner == 4) // Templar (ENEMY)
+	else if (owner == 4) // White Templar (ENEMY)
 	{
 		switch (skill_number)
 		{
@@ -1425,6 +1450,60 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 0;
+			break;
+		}
+	}
+	else if (owner == 8) // Red Templar (ENEMY)
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Berserker";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 40;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 3;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Demolish";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 2;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "I command thee, kneel!";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 25;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
+			// buff
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "Recovery";	
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 0;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 2;
+			skill.supp_strenght = 2;
+			skill.support_type = SUPPORT_TYPE::RELOAD;
 			break;
 		}
 	}
