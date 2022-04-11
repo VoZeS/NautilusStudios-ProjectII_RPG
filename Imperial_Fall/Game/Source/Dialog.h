@@ -53,13 +53,30 @@ private:
 	const char* linea1Char_Renato;
 	const char* linea2Char_Renato;
 
-	std::string linea1String_Ally;
-	std::string linea2String_Ally;
-	const char* linea1Char_Ally;
-	const char* linea2Char_Ally;
+	std::string linea1String_Herrero;
+	std::string linea2String_Herrero;
+	const char* linea1Char_Herrero;
+	const char* linea2Char_Herrero;
 
-	std::string linea1String_Enemy;
-	const char* linea1Char_Enemy;
+	std::string linea1String_Granjero;
+	std::string linea2String_Granjero;
+	const char* linea1Char_Granjero;
+	const char* linea2Char_Granjero;
+
+	std::string linea1String_Medico;
+	std::string linea2String_Medico;
+	const char* linea1Char_Medico;
+	const char* linea2Char_Medico;
+
+	std::string linea1String_Templario;
+	std::string linea2String_Templario;
+	const char* linea1Char_Templario;
+	const char* linea2Char_Templario;
+
+	std::string linea1String_Seta;
+	std::string linea2String_Seta;
+	const char* linea1Char_Seta;
+	const char* linea2Char_Seta;
 
 	bool LoadDialog();
 

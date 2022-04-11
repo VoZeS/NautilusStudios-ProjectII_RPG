@@ -52,16 +52,44 @@ bool Dialog::Start()
 	linea2Char_Renato = linea2String_Renato.c_str();
 
 
-	linea1String_Ally = dialog.child("ally").child("text1").attribute("linea1").as_string();
-	linea2String_Ally = dialog.child("ally").child("text1").attribute("linea2").as_string();
 
-	linea1Char_Ally = linea1String_Ally.c_str();
-	linea2Char_Ally = linea2String_Ally.c_str();
+	linea1String_Herrero = dialog.child("herrero").child("text1").attribute("linea1").as_string();
+	linea2String_Herrero = dialog.child("herrero").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Herrero = linea1String_Herrero.c_str();
+	linea2Char_Herrero = linea2String_Herrero.c_str();
 
 
-	linea1String_Enemy = dialog.child("enemy").child("text1").attribute("linea1").as_string();
+
+	linea1String_Granjero = dialog.child("granjero").child("text1").attribute("linea1").as_string();
+	linea2String_Granjero = dialog.child("granjero").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Granjero = linea1String_Granjero.c_str();
+	linea2Char_Granjero = linea2String_Granjero.c_str();
+
+
+
+	linea1String_Medico = dialog.child("granjero").child("text1").attribute("linea1").as_string();
+	linea2String_Medico = dialog.child("granjero").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Medico = linea1String_Medico.c_str();
+	linea2Char_Medico = linea2String_Medico.c_str();
+
+
+
+	linea1String_Templario = dialog.child("templario").child("text1").attribute("linea1").as_string();
+	linea2String_Templario = dialog.child("templario").child("text1").attribute("linea2").as_string();
 	
-	linea1Char_Enemy = linea1String_Enemy.c_str();
+	linea1Char_Templario = linea1String_Templario.c_str();
+	linea2Char_Templario = linea2String_Templario.c_str();
+
+
+
+	linea1String_Seta = dialog.child("seta").child("text1").attribute("linea1").as_string();
+	linea2String_Seta = dialog.child("seta").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Seta = linea1String_Seta.c_str();
+	linea2Char_Seta = linea2String_Seta.c_str();
 
 	return true;
 }
@@ -199,17 +227,19 @@ bool Dialog::PostUpdate()
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
-			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ALLY:");
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "HERRERO:");
 
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Ally, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Herrero, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Herrero, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
 		else if (inDialogEnemy) // ENEMIES TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
 			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ENEMY:");
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Enemy, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh2, 1);
+
 		}
 	}
 	else
