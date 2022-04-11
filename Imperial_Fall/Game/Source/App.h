@@ -40,6 +40,7 @@ class Outside_Castle;
 class Inside_Castle;
 class Combat_Scene;
 class Dialog;
+class LogoScreen;
 
 
 
@@ -130,6 +131,7 @@ public:
 	Inside_Castle* inside;
 	Combat_Scene* combat_scene;
 	Dialog* dialog;
+	LogoScreen* logo;
 
 
 private:

@@ -21,6 +21,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "LogoScreen.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -1795,6 +1796,7 @@ bool Menu::ReturnStartScreen()
 
 void Menu::DisableAll()
 {
+	app->logo->Disable();
 	app->scene->Disable();
 	app->town1->Disable();
 	app->town2->Disable();

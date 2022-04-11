@@ -9,6 +9,7 @@ enum class ENEMIES;
 enum class MOVE_TO
 {
 	NOTHING = -1,
+	LOGO_SCENE,
 	SCENE_TOWN1,
 	SCENE_TOWN2,
 	SCENE_FOREST,

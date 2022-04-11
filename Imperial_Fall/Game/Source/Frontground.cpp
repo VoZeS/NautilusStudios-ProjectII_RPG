@@ -19,6 +19,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "LogoScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -154,6 +155,8 @@ bool Frontground::FadeFromBlack()
 
 	switch (move_to)
 	{
+	case MOVE_TO::LOGO_SCENE: app->logo->Disable(); app->scene->Enable();  app->menu->started = false;
+		break;
 	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->menu->InitPlayer();
 		break;
 	case MOVE_TO::SCENE_TOWN2: app->town2->Enable(); app->menu->InitPlayer();

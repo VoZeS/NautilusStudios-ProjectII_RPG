@@ -24,6 +24,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Dialog.h"
+#include "LogoScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -39,7 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(true);
 	tex = new Textures(true);
 	audio = new Audio(true);
-	scene = new Scene(true);
+	scene = new Scene(false);
 	map = new Map(false);
 	pathfinding = new PathFinding(true);
 	physics = new Physics(true);
@@ -59,6 +60,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	inside = new Inside_Castle(false);
 	combat_scene = new Combat_Scene(false);
 	dialog = new Dialog(false);
+	logo = new LogoScreen(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -85,6 +87,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(menu);
 	AddModule(particles);
 	AddModule(dialog);
+	AddModule(logo);
 	AddModule(frontground);
 
 	// Render last to swap buffer
