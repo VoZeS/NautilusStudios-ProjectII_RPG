@@ -53,10 +53,8 @@ bool Battlefield::Start()
 		app->fonts->Enable();
 		app->dialog->Enable();
 
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
-		app->entities->GetPlayer()->SetCompanion0Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000));
-		app->entities->GetPlayer()->SetCompanion1Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100));
-		app->entities->GetPlayer()->SetCompanion2Position(PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000),
+			PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
 
 		int w, h;
 		uchar* data = NULL;
