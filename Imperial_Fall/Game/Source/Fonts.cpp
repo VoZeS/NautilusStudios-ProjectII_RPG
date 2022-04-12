@@ -129,11 +129,11 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 		}
 		else if (text[i] == 'M' || text[i] == 'W' || text[i] == 'm' || text[i] == 'w') {
 			app->render->DrawTexture(font->texture, x + 4, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
-			x += spriteRect.w;
+			x += spriteRect.w - 10;
 		}
 		else {
 			app->render->DrawTexture(font->texture, x, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
-			x += spriteRect.w - 8;
+			x += spriteRect.w - 8 - 15;
 		}
 
 
@@ -214,11 +214,11 @@ void Fonts::BlitTextLetter(int x, int y, int font_id, const char* text, int zoom
 		}
 		else if (text[i] == 'M' || text[i] == 'W' || text[i] == 'm' || text[i] == 'w') {
 			app->render->DrawTexture(font->texture, x + 4, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
-			x += spriteRect.w;
+			x += spriteRect.w - 10;
 		}
 		else {
 			app->render->DrawTexture(font->texture, x, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
-			x += spriteRect.w - 8;
+			x += spriteRect.w - 8 - 15;
 		}
 
 

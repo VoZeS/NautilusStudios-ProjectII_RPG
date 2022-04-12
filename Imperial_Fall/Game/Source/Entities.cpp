@@ -50,11 +50,11 @@ bool Entities::Start()
 		herrero = app->tex->Load("Assets/textures/herrero.png");
 		granjero = app->tex->Load("Assets/textures/granjero.png");
 		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
-		white_templar = app->tex->Load("Assets/textures/white_templar.png");
-		mushroom = app->tex->Load("Assets/textures/mushroom.png");
-		goblin = app->tex->Load("Assets/textures/goblin.png");
-		skeleton = app->tex->Load("Assets/textures/skeleton.png");
-		red_templar = app->tex->Load("Assets/textures/red_templar.png");
+		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
+		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
+		goblin = app->tex->Load("Assets/textures/goblin_b.png");
+		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
+		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
 	}
 
 	return ret;

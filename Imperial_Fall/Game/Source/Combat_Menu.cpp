@@ -85,8 +85,8 @@ bool Combat_Menu::Start()
 		goblin = app->tex->Load("Assets/textures/goblin_b.png");
 		skeleton = app->tex->Load("Assets/textures/skeleton.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
-		white_templar = app->tex->Load("Assets/textures/white_templar.png");
-		red_templar = app->tex->Load("Assets/textures/red_templar.png");
+		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
+		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
 		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
