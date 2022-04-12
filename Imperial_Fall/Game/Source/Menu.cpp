@@ -1547,13 +1547,13 @@ bool Menu::PostUpdate()
 					}
 					
 					xbarra = z1;
-					app->render->DrawTexture(settings_buttons[0].alt_tex, z1 + c_x, settings_buttons[0].rect.y);
-					app->audio->SetMusic((z1 - 0) / 2);
+					app->render->DrawTexture(settings_buttons[0].alt_tex, z1 + c_x - 3, settings_buttons[0].rect.y);
+					app->audio->SetMusic((z1 - 25) / 2);
 				}
 				else
 
 				{
-					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x, settings_buttons[0].rect.y);
+					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x - 3, settings_buttons[0].rect.y);
 				}
 
 				if (slider2)
@@ -1601,12 +1601,12 @@ bool Menu::PostUpdate()
 					}
 
 					xbarra2 = z2;
-					app->render->DrawTexture(settings_buttons[1].alt_tex, z2 + c_x, settings_buttons[1].rect.y);
-					app->audio->SetFX((z2 - 100) / 2);
+					app->render->DrawTexture(settings_buttons[1].alt_tex, z2 + c_x - 3, settings_buttons[1].rect.y);
+					app->audio->SetFX((z2 - 30) / 2);
 				}
 				else
 				{
-					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x, settings_buttons[1].rect.y);
+					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x - 3, settings_buttons[1].rect.y);
 				}
 
 				if (vsync && i == 3)

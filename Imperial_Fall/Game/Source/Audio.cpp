@@ -190,5 +190,4 @@ void Audio::SetFX(int volume)
 	{
 		Mix_VolumeChunk(fx.At(i)->data, volume);
 	}
-	
 }

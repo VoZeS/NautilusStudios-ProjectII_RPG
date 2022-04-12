@@ -274,12 +274,12 @@ bool Combat_Manager::CleanUp()
 			delete enemies[i];
 			enemies[i] = nullptr;
 		}
-	}
+	}*/
 	if (items != nullptr)
 	{
 		delete items;
 		items = nullptr;
-	}*/
+	}
 
 	return true;
 }
@@ -1279,12 +1279,12 @@ int Combat_Manager::CheckCombatState()
 
 	for (size_t i = 0; i < 4; i++)
 	{
-		if (allies[i]->GetEntityState())
+		if (allies[i]->GetEntityState() == 1)
 		{
 			allies_alive++;
 		}
 
-		if (enemies[i]->GetEntityState())
+		if (enemies[i]->GetEntityState() == 1)
 		{
 			enemies_alive++;
 		}

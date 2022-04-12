@@ -11,13 +11,13 @@
 	<entities>
 		<player>
 			<position x="19" y="16" />
-			<comp0 x="24.6166267" y="17.5165424" />
-			<comp1 x="22.6699276" y="18.4444275" />
-			<comp2 x="20.7491913" y="19.3656769" />
+			<comp0 x="24.8672733" y="16.7799969" />
+			<comp1 x="22.9181385" y="17.7051868" />
+			<comp2 x="20.9971313" y="18.6241875" />
 		</player>
 		<enemies>
 			<enemy0 state="true" />
-			<enemy1 state="true" />
+			<enemy1 state="false" />
 			<enemy2 state="true" />
 		</enemies>
 	</entities>

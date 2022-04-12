@@ -2051,6 +2051,12 @@ bool Combat_Menu::CleanUp()
 	whitemark_110x110 = NULL;
 	app->tex->UnLoad(whitemark_128x128);
 	whitemark_128x128 = NULL;
+	app->tex->UnLoad(whitemark_800x50);
+	whitemark_800x50 = NULL;
+	app->tex->UnLoad(special_buttons);
+	special_buttons = NULL;
+	app->tex->UnLoad(items);
+	items = NULL;
 	app->tex->UnLoad(description);
 	description = NULL;
 

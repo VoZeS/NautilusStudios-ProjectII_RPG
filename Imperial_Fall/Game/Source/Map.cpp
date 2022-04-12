@@ -333,7 +333,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 bool Map::CleanUp()
 {
     LOG("Unloading map");
-
+	
     // L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
     // Remove all tilesets
 	ListItem<TileSet*>* item;
@@ -357,8 +357,6 @@ bool Map::CleanUp()
 		item2 = item2->next;
 	}
 	mapData.layers.Clear();
-
-	app->physics->CleanMapBoxes();
 
     return true;
 }
