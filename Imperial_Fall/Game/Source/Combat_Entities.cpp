@@ -515,7 +515,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 2:
 			skill.owner = owner;
-			skill.skill_name = "Fire Granade";
+			skill.skill_name = "Fire Jar";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -526,7 +526,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 3:
 			skill.owner = owner;
-			skill.skill_name = "Lightning Knife";
+			skill.skill_name = "Lightning Jar";
 			skill.att_effect = ATT_EFFECT::LIGHTNING;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;

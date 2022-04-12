@@ -313,8 +313,6 @@ void Combat_Manager::SetOrder()
 		turn_order[i] = aux[id];
 		max = -1;
 	}
-	LOG("%d %d %d %d %d %d %d %d", turn_order[0]->GetType(), turn_order[1]->GetType(), turn_order[2]->GetType(), turn_order[3]->GetType(),
-		turn_order[4]->GetType(), turn_order[5]->GetType(), turn_order[6]->GetType(), turn_order[7]->GetType());
 }
 
 bool Combat_Manager::InArray(int length, Combat_Entities* check)

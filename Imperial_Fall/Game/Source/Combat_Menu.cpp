@@ -91,6 +91,8 @@ bool Combat_Menu::Start()
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_800x50 = app->tex->Load("Assets/textures/800x50_whitemark.png");
+		special_buttons = app->tex->Load("Assets/textures/special_buttons.png");
+		items = app->tex->Load("Assets/textures/Objects/items.png");
 		casting = app->tex->Load("Assets/textures/casting.png");
 		description = NULL;
 
@@ -1733,6 +1735,7 @@ bool Combat_Menu::PostUpdate()
 				app->render->DrawTexture(texture, general_buttons[i].rect.x, general_buttons[i].rect.y, &g_rect);
 			}
 
+			SDL_Rect sp_rect;
 			for (size_t i = 0; i < 4; i++)
 			{
 				general_buttons[i].rect.x = action_pos[i].x + c_x;
@@ -1740,11 +1743,26 @@ bool Combat_Menu::PostUpdate()
 
 				app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont1, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
 			}
+			for (size_t i = 4; i < 7; i++)
+			{
+				general_buttons[i].rect.x = action_pos[i].x + c_x;
+				general_buttons[i].rect.y = action_pos[i].y + c_y;
+
+				switch (i)
+				{
+				case 4: sp_rect = { 0, 0, 110, 110 }; break;
+				case 5: sp_rect = { 110, 0, 110, 110 }; break;
+				case 6: sp_rect = { 220, 0, 110, 110 }; break;
+				}
+
+				app->render->DrawTexture(special_buttons, general_buttons[i].rect.x, general_buttons[i].rect.y, &sp_rect);
+			}
 		}
 
 		if (in_items && !in_enemies && !in_allies)
 		{
 			SDL_Rect i_rect;
+			SDL_Rect e_rect;
 			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 			{
 				items_buttons[i].rect.x = item_pos[i].x + c_x;
@@ -1752,20 +1770,28 @@ bool Combat_Menu::PostUpdate()
 
 				if (items_buttons[i].state == 0)
 				{
-					//app->render->DrawRectangle(items_buttons[i].rect, idleColorR, idleColorG, idleColorB);
 					i_rect = { 0, 0, 128, 128 };
 				}
 				else if (items_buttons[i].state == 1)
 				{
-					//app->render->DrawRectangle(items_buttons[i].rect, inColorR, inColorG, inColorB);
 					i_rect = { 0, 128, 128, 128 };
 				}
 				else if (items_buttons[i].state == 2)
 				{
-					//app->render->DrawRectangle(items_buttons[i].rect, pColorR, pColorG, pColorB);
 					i_rect = { 0, 256, 128, 128 };
 				}
 				app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
+
+				switch (i)
+				{
+				case 0: e_rect = { 0, 0, 128, 128 }; break;
+				case 1: e_rect = { 128, 0, 128, 128 }; break;
+				case 2: e_rect = { 256, 0, 128, 128 }; break;
+				case 3: e_rect = { 384, 0, 128, 128 }; break;
+				case 4: e_rect = { 512, 0, 128, 128 }; break;
+				}
+
+				app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 			}
 		}
 
