@@ -115,7 +115,9 @@ bool Combat_Manager::PreUpdate()
 	}
 
 	preupdatedone = true;
-
+	BUFF b1, b2;
+	b1.buff_type = BUFF_TYPE::STRONG; b2.buff_type = BUFF_TYPE::QUICK;
+	LOG("%d, %d", enemies[1]->FindBuff(b1), enemies[1]->FindBuff(b2));
 	return true;
 }
 
@@ -614,6 +616,11 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				objective->AddDebuff(skill.debuff_type, skill.buff_turns);
 			}
 
+			if (skill.support_type == SUPPORT_TYPE::CLEAN_BUFFS)
+			{
+				objective->RemoveAllBuffs();
+			}
+
 			if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
 			{
 				if (skill.support_type == SUPPORT_TYPE::SHIELD)
@@ -662,7 +669,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						}
 					}
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
 					if (user->GetType() < 4) // allies
 					{
@@ -670,7 +677,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->CleanEntity();
+								allies[i]->CleanDebuffedEntity();
 							}
 						}
 					}
@@ -680,7 +687,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->CleanEntity();
+								enemies[i]->CleanDebuffedEntity();
 							}
 						}
 					}
@@ -708,6 +715,30 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						}
 					}
 				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->AddBuff(skill.buff_type, skill.buff_turns);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->AddBuff(skill.buff_type, skill.buff_turns);
+							}
+						}
+					}
+				}
 			}
 			if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
 			{
@@ -719,9 +750,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				{
 					user->HealEntity(support);
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					user->CleanEntity();
+					user->CleanDebuffedEntity();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -746,7 +777,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			{
 				if (user->GetType() < 4) // allies
 				{
-					if (enemies[i]->GetEntityState() && enemies[i]->FindBuff(b1) == -1)
+					if (enemies[i]->GetEntityState() == 1 && enemies[i]->FindBuff(b1) == -1)
 					{
 						if (enemies[i]->FindBuff(b2) != -1)
 						{
@@ -764,6 +795,11 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						if (skill.debuff_type != DEBUFF_TYPE::NOTHING && enemies[i]->FindBuff(b3) == -1)
 						{
 							enemies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+						}
+
+						if (skill.support_type == SUPPORT_TYPE::CLEAN_BUFFS)
+						{
+							enemies[i]->RemoveAllBuffs();
 						}
 					}
 				}
@@ -787,6 +823,11 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						if (skill.debuff_type != DEBUFF_TYPE::NOTHING && allies[i]->FindBuff(b3) == -1)
 						{
 							allies[i]->AddDebuff(skill.debuff_type, skill.buff_turns);
+						}
+
+						if (skill.support_type == SUPPORT_TYPE::CLEAN_BUFFS)
+						{
+							allies[i]->RemoveAllBuffs();
 						}
 					}
 				}
@@ -840,7 +881,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						}
 					}
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
 					if (user->GetType() < 4) // allies
 					{
@@ -848,7 +889,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->CleanEntity();
+								allies[i]->CleanDebuffedEntity();
 							}
 						}
 					}
@@ -858,7 +899,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->CleanEntity();
+								enemies[i]->CleanDebuffedEntity();
 							}
 						}
 					}
@@ -886,6 +927,30 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						}
 					}
 				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->AddBuff(skill.buff_type, skill.buff_turns);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->AddBuff(skill.buff_type, skill.buff_turns);
+							}
+						}
+					}
+				}
 			}
 			if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
 			{
@@ -897,9 +962,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				{
 					user->HealEntity(support);
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					user->CleanEntity();
+					user->CleanDebuffedEntity();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -926,9 +991,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				{
 					objective->HealEntity(support);
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					objective->CleanEntity();
+					objective->CleanDebuffedEntity();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -938,6 +1003,11 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				{
 					objective->HealEntity(support);
 					objective->Revive();
+				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					objective->AddBuff(skill.buff_type, skill.buff_turns);
 				}
 			}
 			else if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
@@ -989,7 +1059,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						}
 					}
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
 					if (user->GetType() < 4) // allies
 					{
@@ -997,7 +1067,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->CleanEntity();
+								allies[i]->CleanDebuffedEntity();
 							}
 						}
 					}
@@ -1007,7 +1077,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->CleanEntity();
+								enemies[i]->CleanDebuffedEntity();
 							}
 						}
 					}
@@ -1035,6 +1105,30 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						}
 					}
 				}
+
+				if (skill.buff_type != BUFF_TYPE::NOTHING)
+				{
+					if (user->GetType() < 4) // allies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (allies[i]->GetEntityState())
+							{
+								allies[i]->AddBuff(skill.buff_type, skill.buff_turns);
+							}
+						}
+					}
+					else // enemies
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							if (enemies[i]->GetEntityState())
+							{
+								enemies[i]->AddBuff(skill.buff_type, skill.buff_turns);
+							}
+						}
+					}
+				}
 			}
 			else if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
 			{
@@ -1046,9 +1140,9 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				{
 					user->HealEntity(support);
 				}
-				else if (skill.support_type == SUPPORT_TYPE::CLEAN)
+				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					user->CleanEntity();
+					user->CleanDebuffedEntity();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -1082,7 +1176,7 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int objective, skill, rounds = 0;
+	int objective, skill = 2, rounds = 0;
 
 	DEBUFF b;
 	b.debuff_type = DEBUFF_TYPE::STUN;
@@ -1095,170 +1189,179 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		return;
 	}
 
-	do
+	/*do
 	{
 		skill = rand() % 4;
 		rounds++;
-	} while (user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10);
+	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);*/
 	
 	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{
-		user->ReloadMana();
-		Skill reload;
-		reload.skill_name = "reload";
-		app->combat_menu->SetSkillPrepared(reload);
-		SetInAnimation(1);
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (user->GetSkill(i).zero_mana)
+			{
+				skill = i;
+			}
+		}
+		if (!user->GetSkill(skill).zero_mana)
+		{
+			user->ReloadMana();
+			Skill reload;
+			reload.skill_name = "reload";
+			app->combat_menu->SetSkillPrepared(reload);
+			SetInAnimation(1);
+			return;
+		}
 	}
-	else
+
+	BUFF b1;
+	b1.buff_type = BUFF_TYPE::STEALTH;
+	BUFF b2;
+	b2.buff_type = BUFF_TYPE::TAUNT;
+	bool has_taunt = false;
+	if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 	{
-		BUFF b1;
-		b1.buff_type = BUFF_TYPE::STEALTH;
-		BUFF b2;
-		b2.buff_type = BUFF_TYPE::TAUNT;
-		bool has_taunt = false;
-		if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+		rounds = 0;
+		do
+		{
+			for (size_t i = 0; i < 4; i++)
+			{
+				if (allies[i]->FindBuff(b2) != -1)
+				{
+					objective = i;
+					has_taunt = true;
+					break;
+				}
+			}
+			if (!has_taunt)
+			{
+				objective = rand() % 4;
+				rounds++;
+			}
+		} while ((allies[objective]->GetEntityState() == 0 || allies[objective]->FindBuff(b1) != -1) && rounds < 10);
+
+		if (rounds == 10)
+		{
+			do
+			{
+				objective = rand() % 4;
+			} while ((allies[objective]->GetEntityState() == 0));
+			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+			UseSkill(user, user->GetSkill(skill), allies[objective]);
+		}
+		else
+		{
+			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+			UseSkill(user, user->GetSkill(skill), allies[objective]);
+		}
+	}
+	else if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+	{
+		app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+		UseSkill(user, user->GetSkill(skill), allies[0]);
+	}
+	else if (user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+	{
+		if (user->GetSkill(skill).support_type == SUPPORT_TYPE::HEAL)
 		{
 			rounds = 0;
 			do
 			{
-				for (size_t i = 0; i < 4; i++)
-				{
-					if (allies[i]->FindBuff(b2) != -1)
-					{
-						objective = i;
-						has_taunt = true;
-						break;
-					}
-				}
-				if (!has_taunt)
-				{
-					objective = rand() % 4;
-					rounds++;
-				}
-			} while ((allies[objective]->GetEntityState() == 0 || allies[objective]->FindBuff(b1) != -1) && rounds < 10);
+				objective = rand() % 4;
+				rounds++;
+			} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualHealth() > enemies[objective]->GetMaxHealth() - 20)) && rounds < 10);
 
 			if (rounds == 10)
 			{
-				do
-				{
-					objective = rand() % 4;
-				} while ((allies[objective]->GetEntityState() == 0));
-				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-				UseSkill(user, user->GetSkill(skill), allies[objective]);
+				// restart AI
+				enemies_loops++;
+				EnemyTurn(user);
 			}
 			else
 			{
 				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-				UseSkill(user, user->GetSkill(skill), allies[objective]);
+				UseSkill(user, user->GetSkill(skill), enemies[objective]);
 			}
 		}
-		else if (user->GetSkill(skill).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+		else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::SHIELD)
 		{
+			do
+			{
+				objective = rand() % 4;
+			} while (!enemies[objective]->GetEntityState());
+
 			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-			UseSkill(user, user->GetSkill(skill), allies[0]);
+			UseSkill(user, user->GetSkill(skill), enemies[objective]);
 		}
-		else if (user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+		else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 		{
-			if (user->GetSkill(skill).support_type == SUPPORT_TYPE::HEAL)
+			rounds = 0;
+			do
 			{
-				rounds = 0;
-				do
-				{
-					objective = rand() % 4;
-					rounds++;
-				} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualHealth() > enemies[objective]->GetMaxHealth() - 20)) && rounds < 10);
+				objective = rand() % 4;
+				rounds++;
+			} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetDebuffList().Count() > 0)) && rounds < 10);
 
-				if (rounds == 10)
-				{
-					// restart AI
-					enemies_loops++;
-					EnemyTurn(user);
-				}
-				else
-				{
-					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-					UseSkill(user, user->GetSkill(skill), enemies[objective]);
-				}
+			if (rounds == 10)
+			{
+				// restart AI
+				enemies_loops++;
+				EnemyTurn(user);
 			}
-			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::SHIELD)
+			else
 			{
-				do
-				{
-					objective = rand() % 4;
-				} while (!enemies[objective]->GetEntityState());
-
 				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
 				UseSkill(user, user->GetSkill(skill), enemies[objective]);
 			}
-			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::CLEAN)
-			{
-				rounds = 0;
-				do
-				{
-					objective = rand() % 4;
-					rounds++;
-				} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetDebuffList().Count() > 0)) && rounds < 10);
-
-				if (rounds == 10)
-				{
-					// restart AI
-					enemies_loops++;
-					EnemyTurn(user);
-				}
-				else
-				{
-					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-					UseSkill(user, user->GetSkill(skill), enemies[objective]);
-				}
-			}
-			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::RELOAD)
-			{
-				rounds = 0;
-				do
-				{
-					objective = rand() % 4;
-					rounds++;
-				} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualMana() < (enemies[objective]->GetMaxMana() / 2))) && rounds < 10);
-
-				if (rounds == 10)
-				{
-					// restart AI
-					enemies_loops++;
-					EnemyTurn(user);
-				}
-				else
-				{
-					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-					UseSkill(user, user->GetSkill(skill), enemies[objective]);
-				}
-			}
-			else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::REVIVE)
-			{
-				rounds = 0;
-				do
-				{
-					objective = rand() % 4;
-					rounds++;
-				} while (enemies[objective]->GetEntityState() && rounds < 10);
-
-				if (rounds == 10)
-				{
-					// restart AI
-					enemies_loops++;
-					EnemyTurn(user);
-				}
-				else
-				{
-					app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-					UseSkill(user, user->GetSkill(skill), enemies[objective]);
-				}
-			}
 		}
-		else if (user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::ALL_ALLY || user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::SELF)
+		else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::RELOAD)
 		{
-			app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
-			UseSkill(user, user->GetSkill(skill), user);
+			rounds = 0;
+			do
+			{
+				objective = rand() % 4;
+				rounds++;
+			} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualMana() < (enemies[objective]->GetMaxMana() / 2))) && rounds < 10);
+
+			if (rounds == 10)
+			{
+				// restart AI
+				enemies_loops++;
+				EnemyTurn(user);
+			}
+			else
+			{
+				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+				UseSkill(user, user->GetSkill(skill), enemies[objective]);
+			}
 		}
+		else if (user->GetSkill(skill).support_type == SUPPORT_TYPE::REVIVE)
+		{
+			rounds = 0;
+			do
+			{
+				objective = rand() % 4;
+				rounds++;
+			} while (enemies[objective]->GetEntityState() && rounds < 10);
+
+			if (rounds == 10)
+			{
+				// restart AI
+				enemies_loops++;
+				EnemyTurn(user);
+			}
+			else
+			{
+				app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+				UseSkill(user, user->GetSkill(skill), enemies[objective]);
+			}
+		}
+	}
+	else if (user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::ALL_ALLY || user->GetSkill(skill).ally_objective == ALLY_OBJECTIVE::SELF)
+	{
+		app->combat_menu->SetSkillPrepared(user->GetSkill(skill));
+		UseSkill(user, user->GetSkill(skill), user);
 	}
 }
 

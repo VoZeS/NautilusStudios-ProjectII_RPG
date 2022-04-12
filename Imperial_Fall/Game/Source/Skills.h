@@ -41,7 +41,8 @@ enum class SUPPORT_TYPE // other allies
 	NOTHING = 0,
 	HEAL,
 	SHIELD,
-	CLEAN,
+	CLEAN_DEBUFFS,
+	CLEAN_BUFFS,
 	RELOAD,
 	REVIVE
 };
@@ -108,6 +109,9 @@ public:
 	int buff_turns = 0; // used with shield too
 	// skill bonus
 	SKILL_BONUS skill_bonus = SKILL_BONUS::NOTHING;
+
+	// no mana skill, used in enemy AI
+	bool zero_mana = false;
 };
 
 #endif

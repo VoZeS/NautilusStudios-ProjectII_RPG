@@ -44,7 +44,8 @@ public:
 	void ReloadMana(int amount = 0);
 	void ShieldEntity(int amount, int turns);
 	void HealEntity(int amount);
-	void CleanEntity();
+	void CleanDebuffedEntity();
+	void CleanBuffedEntity();
 
 	int CheckMana()
 	{

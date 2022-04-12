@@ -251,7 +251,11 @@ void Combat_Entities::ReloadMana(int amount)
 
 void Combat_Entities::ShieldEntity(int amount, int turns)
 {
-	shield += amount;
+	if (amount > shield)
+	{
+		shield = amount;
+	}
+	
 	shield_turns += turns;
 }
 
@@ -266,7 +270,7 @@ void Combat_Entities::HealEntity(int amount)
 }
 
 
-void Combat_Entities::CleanEntity()
+void Combat_Entities::CleanDebuffedEntity()
 {
 	RemoveAllDebuffs();
 }
@@ -331,7 +335,11 @@ void Combat_Entities::AddBuffTurns(BUFF buff, int turns_to_add)
 	{
 		if (buff.buff_type == item->data.buff_type)
 		{
-			buff.turns += turns_to_add;
+			item->data.turns += turns_to_add;
+			if (buff.buff_type == BUFF_TYPE::QUICK || buff.buff_type == BUFF_TYPE::STRONG)
+			{
+				item->data.turns--;
+			}
 			break;
 		}
 	}
@@ -433,7 +441,11 @@ void Combat_Entities::AddDebuffTurns(DEBUFF debuff, int turns_to_add)
 	{
 		if (debuff.debuff_type == item->data.debuff_type)
 		{
-			debuff.turns += turns_to_add;
+			item->data.turns += turns_to_add;
+			if (debuff.debuff_type == DEBUFF_TYPE::ANTI_QUICK || debuff.debuff_type == DEBUFF_TYPE::ANTI_STRONG || debuff.debuff_type == DEBUFF_TYPE::STUN)
+			{
+				item->data.turns--;
+			}
 			break;
 		}
 	}
@@ -763,7 +775,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
-			skill.support_type = SUPPORT_TYPE::CLEAN;
+			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 4:
 			skill.owner = owner;
@@ -798,13 +810,12 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 7:
 			skill.owner = owner;
-			skill.skill_name = "Prevent Debuffs";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 20;
-			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.skill_name = "Cancel";
+			skill.att_effect = ATT_EFFECT::ANTI_HEAL;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
-			skill.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
-			skill.buff_turns = 2;
+			skill.support_type = SUPPORT_TYPE::CLEAN_BUFFS;
 			break;
 		case 8:
 			skill.owner = owner;
@@ -843,7 +854,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
-			skill.support_type = SUPPORT_TYPE::CLEAN;
+			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 12:
 			skill.owner = owner;
@@ -878,13 +889,12 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 15:
 			skill.owner = owner;
-			skill.skill_name = "Field Prevent Debuffs";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 50;
-			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.skill_name = "Field Cancel";
+			skill.att_effect = ATT_EFFECT::ANTI_HEAL;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;
-			skill.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
-			skill.buff_turns = 2;
+			skill.support_type = SUPPORT_TYPE::CLEAN_BUFFS;
 			break;
 		case 16:
 			skill.owner = owner;
@@ -1506,12 +1516,13 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.support_type = SUPPORT_TYPE::RELOAD;
 			skill.debuff_type = DEBUFF_TYPE::STUN;
 			skill.buff_turns = 1;
+			skill.zero_mana = true;
 			break;
 		}
 	}
 
 	if (skill.buff_type == BUFF_TYPE::QUICK || skill.buff_type == BUFF_TYPE::STRONG || skill.debuff_type == DEBUFF_TYPE::STUN
-		|| skill.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+		|| skill.debuff_type == DEBUFF_TYPE::ANTI_STRONG || skill.debuff_type == DEBUFF_TYPE::ANTI_QUICK)
 	{
 		skill.buff_turns++;
 	}
