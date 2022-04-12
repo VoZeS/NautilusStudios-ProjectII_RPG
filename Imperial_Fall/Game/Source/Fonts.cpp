@@ -26,8 +26,11 @@ Fonts::~Fonts()
 
 bool Fonts::Start()
 {
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
-	textFont1 = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
+	if (this->Enabled() && !this->Disabled())
+	{
+		char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
+		textFont1 = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
+	}
 
 	return true;
 }

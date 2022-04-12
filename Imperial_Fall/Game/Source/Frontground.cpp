@@ -155,7 +155,7 @@ bool Frontground::FadeFromBlack()
 
 	switch (move_to)
 	{
-	case MOVE_TO::LOGO_SCENE: app->logo->Disable(); app->scene->Enable();  app->menu->started = false;
+	case MOVE_TO::LOGO_SCENE: app->scene->Enable();  app->menu->started = false;
 		break;
 	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->menu->InitPlayer();
 		break;

@@ -98,7 +98,6 @@ bool Combat_Menu::Start()
 
 		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
-		hover_sound = app->audio->LoadFx("Assets/audio/fx/water.wav");
 
 		physic_fx = app->audio->LoadFx("Assets/audio/fx/physic_attack.wav");
 		fire_fx = app->audio->LoadFx("Assets/audio/fx/fire_attack.wav");

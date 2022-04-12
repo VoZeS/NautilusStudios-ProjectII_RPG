@@ -45,9 +45,10 @@ bool Town1::Start()
 		app->map->Load("town_1.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 		app->audio->PlayMusic("Assets/audio/music/gameplay.ogg");
+
 		//Enable Player & map
+		app->menu->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -114,11 +115,12 @@ bool Town1::PostUpdate()
 bool Town1::CleanUp()
 {
 	LOG("Freeing town1");
-	
+	app->tex->CleanUp();
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
+	app->menu->Disable();
 
 	// clean textures
 

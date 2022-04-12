@@ -37,10 +37,18 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
-	
-	start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
-	settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
+	if (this->Enabled() && !this->Disabled())
+	{
+		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
+
+		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
+		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
+
+		if (!app->menu->Enabled())
+		{
+			app->menu->Enable();
+		}
+	}
 
 	return true;
 }
@@ -124,6 +132,8 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	
+	app->menu->Disable();
 
 	// clean textures
 	app->tex->UnLoad(start_screen);

@@ -240246,9 +240246,9 @@
   <properties>
    <property name="Collision" type="int" value="9"/>
    <property name="Draw" type="int" value="0"/>
-   <property name="Enemy1" type="int" value="0"/>
-   <property name="Enemy2" type="int" value="0"/>
-   <property name="Enemy3" type="int" value="0"/>
+   <property name="Enemy1" type="int" value="1"/>
+   <property name="Enemy2" type="int" value="2"/>
+   <property name="Enemy3" type="int" value="1"/>
    <property name="Enemy4" type="int" value="2"/>
    <property name="Height" type="int" value="1"/>
    <property name="Index" type="int" value="1"/>

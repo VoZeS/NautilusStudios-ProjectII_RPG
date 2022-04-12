@@ -10,7 +10,6 @@
 #define NUM_WIN_BUTTONS 1
 #define NUM_LOSE_BUTTONS 2
 #define NUM_SCAPE_BUTTONS 2
-
 #define NUM_SETTINGS_BUTTONS 4
 
 struct Button {
@@ -173,6 +172,8 @@ private:
 	// sound
 	uint click_sound;
 	uint hover_sound;
+	bool hover_playing = false;
+	bool InAnyButton();
 
 	uint menu_music;
 };

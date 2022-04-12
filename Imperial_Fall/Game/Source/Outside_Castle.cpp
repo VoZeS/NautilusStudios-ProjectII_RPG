@@ -48,6 +48,7 @@ bool Outside_Castle::Start()
 		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 		//Enable Player & map
+		app->menu->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -106,7 +107,8 @@ bool Outside_Castle::PostUpdate()
 bool Outside_Castle::CleanUp()
 {
 	LOG("Freeing outside_castle");
-
+	app->menu->Disable();
+	app->tex->CleanUp();
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();

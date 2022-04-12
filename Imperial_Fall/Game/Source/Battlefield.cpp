@@ -48,6 +48,7 @@ bool Battlefield::Start()
 		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 		//Enable Player & map
+		app->menu->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -98,7 +99,8 @@ bool Battlefield::PostUpdate()
 bool Battlefield::CleanUp()
 {
 	LOG("Freeing battlefield");
-
+	app->menu->Disable();
+	app->tex->CleanUp();
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();

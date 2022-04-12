@@ -48,6 +48,7 @@ bool Town2::Start()
 		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 		//Enable Player &
+		app->menu->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -117,7 +118,8 @@ bool Town2::PostUpdate()
 bool Town2::CleanUp()
 {
 	LOG("Freeing town2");
-
+	app->menu->Disable();
+	app->tex->CleanUp();
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
