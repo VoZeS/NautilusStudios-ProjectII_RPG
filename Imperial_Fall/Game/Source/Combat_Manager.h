@@ -71,6 +71,16 @@ public:
 		in_animation = n;
 	}
 
+	int GetItemsUses(int n)
+	{
+		return items_uses[n];
+	}
+
+	void SetItemsUses(int n)
+	{
+		items_uses[n]--;
+	}
+
 	void SetEntitiesPositions();
 
 	// 0 --> normal, 1 --> win, 2 --> lose
@@ -108,6 +118,8 @@ private:
 	bool LoadHeroesStats();
 	pugi::xml_document heroes_statsFile;
 	pugi::xml_node heroes_stats;
+
+	int items_uses[4];
 
 	// textures
 	SDL_Texture* heroes_icons = NULL;

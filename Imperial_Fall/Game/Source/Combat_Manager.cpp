@@ -64,6 +64,10 @@ bool Combat_Manager::Start()
 		}
 
 		items = new Combat_Entities(); // items
+		for (size_t i = 0; i < 4; i++)
+		{
+			items_uses[i] = 1; // read from xml
+		}
 
 		//set turn order
 		SetOrder();

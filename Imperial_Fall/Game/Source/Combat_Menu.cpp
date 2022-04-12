@@ -71,6 +71,7 @@ bool Combat_Menu::Start()
 		updatedone = false;
 
 		in_description = false;
+		skill_prepared_is_item = -1;
 
 		chosed = 0;
 		app->win->GetWindowSize(win_w, win_h);
@@ -298,7 +299,8 @@ bool Combat_Menu::PreUpdate()
 				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 				{
 					SDL_Rect rect = items_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h 
+						&& app->combat_manager->GetItemsUses(i) > 0)
 					{
 						chosed = i;
 						items_buttons[i].state = 1;
@@ -1423,6 +1425,7 @@ bool Combat_Menu::Update(float dt)
 						prep_in_allies = 2;
 					}
 					skill_prepared = app->combat_manager->GetItemList()->GetSkill(0);
+					skill_prepared_is_item = 0;
 					break;
 				case 1:
 					//prepare item 2
@@ -1436,6 +1439,7 @@ bool Combat_Menu::Update(float dt)
 						prep_in_allies = 2;
 					}
 					skill_prepared = app->combat_manager->GetItemList()->GetSkill(1);
+					skill_prepared_is_item = 1;
 					break;
 				case 2:
 					//prepare item 3
@@ -1449,6 +1453,7 @@ bool Combat_Menu::Update(float dt)
 						prep_in_allies = 2;
 					}
 					skill_prepared = app->combat_manager->GetItemList()->GetSkill(2);
+					skill_prepared_is_item = 2;
 					break;
 				case 3:
 					//prepare item 4
@@ -1462,6 +1467,7 @@ bool Combat_Menu::Update(float dt)
 						prep_in_allies = 2;
 					}
 					skill_prepared = app->combat_manager->GetItemList()->GetSkill(3);
+					skill_prepared_is_item = 3;
 					break;
 				case 4:
 					in_action = false;
@@ -1484,21 +1490,45 @@ bool Combat_Menu::Update(float dt)
 				case 0:
 					//choose enemy 1
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(0));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 1:
 					//choose enemy 2
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(1));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 2:
 					//choose enemy 3
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(2));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 3:
 					//choose enemy 4
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(3));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 4:
 					//cancel action
+					if (skill_prepared_is_item != -1)
+					{
+						skill_prepared_is_item = -1;
+					}
 					break;
 				}
 
@@ -1518,21 +1548,45 @@ bool Combat_Menu::Update(float dt)
 				case 0:
 					//choose ally 1
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(0));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 1:
 					//choose ally 2
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(1));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 2:
 					//choose ally 3
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(2));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 3:
 					//choose ally 4
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(3));
+					if (skill_prepared_is_item != -1)
+					{
+						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						skill_prepared_is_item = -1;
+					}
 					break;
 				case 4:
 					//cancel action
+					if (skill_prepared_is_item != -1)
+					{
+						skill_prepared_is_item = -1;
+					}
 					break;
 				}
 
@@ -1791,6 +1845,12 @@ bool Combat_Menu::PostUpdate()
 				}
 
 				app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
+
+				if (app->combat_manager->GetItemsUses(i) == 0)
+				{
+					e_rect = { 640, 0, 128, 128 };
+					app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
+				}
 			}
 		}
 

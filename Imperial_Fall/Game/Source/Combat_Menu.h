@@ -85,6 +85,8 @@ private:
 	int prep_in_enemies = 0; // 0 --> unactive, 1 --> to false, 2 --> to true
 	int prep_in_allies = 0; // 0 --> unactive, 1 --> to false, 2 --> to true
 
+	int skill_prepared_is_item = -1; // -1 --> no item, 0 --> item 0, 1 --> item 1, 2 --> item 2, 3 --> item 3
+
 	SDL_Rect r;
 
 	int chosed;

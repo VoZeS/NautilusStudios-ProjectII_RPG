@@ -519,7 +519,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "MP Potion";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 0; 
+			skill.mana_cost = -1; // reload the half of the mana from the user
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 1;
