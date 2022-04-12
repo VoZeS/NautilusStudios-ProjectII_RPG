@@ -115,9 +115,7 @@ bool Combat_Manager::PreUpdate()
 	}
 
 	preupdatedone = true;
-	BUFF b1, b2;
-	b1.buff_type = BUFF_TYPE::STRONG; b2.buff_type = BUFF_TYPE::QUICK;
-	LOG("%d, %d", enemies[1]->FindBuff(b1), enemies[1]->FindBuff(b2));
+
 	return true;
 }
 
@@ -1176,7 +1174,7 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int objective, skill = 2, rounds = 0;
+	int objective, skill, rounds = 0;
 
 	DEBUFF b;
 	b.debuff_type = DEBUFF_TYPE::STUN;
@@ -1189,11 +1187,11 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		return;
 	}
 
-	/*do
+	do
 	{
 		skill = rand() % 4;
 		rounds++;
-	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);*/
+	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);
 	
 	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{

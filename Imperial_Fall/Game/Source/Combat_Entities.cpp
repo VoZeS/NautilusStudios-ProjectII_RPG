@@ -230,7 +230,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 
 void Combat_Entities::ReloadMana(int amount)
 {
-	if (amount == 0)
+	if (amount == -1)
 	{
 		actual_mana += max_mana / 2;
 	}
@@ -519,7 +519,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "MP Potion";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 0;
+			skill.mana_cost = 0; 
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 1;

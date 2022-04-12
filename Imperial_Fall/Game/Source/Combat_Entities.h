@@ -41,7 +41,7 @@ public:
 	}
 
 	bool DamageEntity(int amount, SKILL_BONUS bonus);
-	void ReloadMana(int amount = 0);
+	void ReloadMana(int amount = -1);
 	void ShieldEntity(int amount, int turns);
 	void HealEntity(int amount);
 	void CleanDebuffedEntity();
