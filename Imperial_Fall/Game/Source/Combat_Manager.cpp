@@ -94,7 +94,7 @@ bool Combat_Manager::PreUpdate()
 				do
 				{
 					turn++;
-					if (turn >= 7)
+					if (turn > 7)
 					{
 						turn = 0;
 						SetOrder();
@@ -127,7 +127,7 @@ bool Combat_Manager::Update(float dt)
 		return true;
 	}
 
-	if (!pass_turn && !in_animation && !casting)
+	if (!pass_turn && in_animation == 0 && !casting)
 	{
 		if (turn_order[turn]->GetType() == 0 || turn_order[turn]->GetType() == 1 || turn_order[turn]->GetType() == 2 || turn_order[turn]->GetType() == 3) // allies
 		{
@@ -213,7 +213,7 @@ bool Combat_Manager::Update(float dt)
 			}
 		}
 	}
-
+	
 	if (in_animation == 2)
 	{
 		animation_cd += dt;
@@ -313,6 +313,8 @@ void Combat_Manager::SetOrder()
 		turn_order[i] = aux[id];
 		max = -1;
 	}
+	LOG("%d %d %d %d %d %d %d %d", turn_order[0]->GetType(), turn_order[1]->GetType(), turn_order[2]->GetType(), turn_order[3]->GetType(),
+		turn_order[4]->GetType(), turn_order[5]->GetType(), turn_order[6]->GetType(), turn_order[7]->GetType());
 }
 
 bool Combat_Manager::InArray(int length, Combat_Entities* check)

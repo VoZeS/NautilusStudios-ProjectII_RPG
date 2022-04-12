@@ -1464,10 +1464,10 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.mana_cost = 40;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
-			skill.supp_strenght = 1;
+			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
 			skill.buff_type = BUFF_TYPE::STRONG;
-			skill.buff_turns = 3;
+			skill.buff_turns = 2;
 			break;
 		case 1:
 			skill.owner = owner;
@@ -1504,6 +1504,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 2;
 			skill.supp_strenght = 2;
 			skill.support_type = SUPPORT_TYPE::RELOAD;
+			skill.debuff_type = DEBUFF_TYPE::STUN;
+			skill.buff_turns = 1;
 			break;
 		}
 	}
