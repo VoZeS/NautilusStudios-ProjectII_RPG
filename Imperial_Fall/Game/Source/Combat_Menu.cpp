@@ -90,6 +90,7 @@ bool Combat_Menu::Start()
 		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
+		whitemark_800x50 = app->tex->Load("Assets/textures/800x50_whitemark.png");
 		casting = app->tex->Load("Assets/textures/casting.png");
 		description = NULL;
 
@@ -1894,7 +1895,8 @@ bool Combat_Menu::PostUpdate()
 	}
 	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 	{
-		app->fonts->BlitText(500 + c_x, 100 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->render->DrawTexture(whitemark_800x50, 240 + c_x, 580 + c_y);
+		app->fonts->BlitText(240 + c_x, 590 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
 		if (skill_att_effect != ATT_EFFECT::EMPTY)
 		{
 			// fx

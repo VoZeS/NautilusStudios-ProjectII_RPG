@@ -145,6 +145,7 @@ private:
 	SDL_Texture* whitemark_400x50 = NULL;
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;
+	SDL_Texture* whitemark_800x50 = NULL;
 	SDL_Texture* casting = NULL;
 
 	// skills fx
