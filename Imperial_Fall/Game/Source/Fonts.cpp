@@ -127,6 +127,10 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 			x = x0;
 			y += spriteRect.h * zoom + zoom * down;
 		}
+		else if (text[i] == ' ') {
+			app->render->DrawTexture(font->texture, x, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 25;
+		}
 		else if (text[i] == 'M' || text[i] == 'W' || text[i] == 'm' || text[i] == 'w') {
 			app->render->DrawTexture(font->texture, x + 4, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
 			x += spriteRect.w - 10;

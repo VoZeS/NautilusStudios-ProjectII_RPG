@@ -150,6 +150,8 @@ private:
 	SDL_Texture* items = NULL;
 	SDL_Texture* casting = NULL;
 
+	void BlittAttackText(int c_x, int c_y);
+
 	// skills fx
 	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal, 5 --> buff
 	void PlaySkillFx(int n);

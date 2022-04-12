@@ -36,10 +36,10 @@ Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 	mushroomAnim.PushBack({ 300, 0, 100, 125 });
 	mushroomAnim.speed = 0.03f;
 
-	goblinAnim.PushBack({ 0, 0, 64, 70 });
-	goblinAnim.PushBack({ 64, 0, 64, 70 });
-	goblinAnim.PushBack({ 128, 0, 64, 70 });
-	goblinAnim.PushBack({ 192, 0, 64, 70 });
+	goblinAnim.PushBack({ 0, 0, 66, 72 });
+	goblinAnim.PushBack({ 66, 0, 66, 72 });
+	goblinAnim.PushBack({ 132, 0, 66, 72 });
+	goblinAnim.PushBack({ 198, 0, 66, 72 });
 	goblinAnim.speed = 0.03f;
 
 	skeletonAnim.PushBack({ 0, 0, 192, 210 });
@@ -83,7 +83,7 @@ bool Combat_Menu::Start()
 		target = app->tex->Load("Assets/textures/target.png");
 		tombstone = app->tex->Load("Assets/textures/tombstone.png");
 		goblin = app->tex->Load("Assets/textures/goblin_b.png");
-		skeleton = app->tex->Load("Assets/textures/skeleton.png");
+		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
@@ -1921,8 +1921,7 @@ bool Combat_Menu::PostUpdate()
 	}
 	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 	{
-		app->render->DrawTexture(whitemark_800x50, 240 + c_x, 580 + c_y);
-		app->fonts->BlitText(240 + c_x, 590 + c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		BlittAttackText(240 + c_x, 590 + c_y);
 		if (skill_att_effect != ATT_EFFECT::EMPTY)
 		{
 			// fx
@@ -2074,6 +2073,43 @@ iPoint Combat_Menu::GetEntityPosition(bool ally, int n)
 	}
 
 	return pos;
+}
+
+void Combat_Menu::BlittAttackText(int c_x, int c_y)
+{
+	app->render->DrawTexture(whitemark_800x50, c_x, c_y - 10);
+	switch (app->combat_manager->GetActualEntity()->GetType())
+	{
+	case 0:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 1:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 2:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 3:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 4:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 5:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 6:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 7:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+	case 8:
+		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		break;
+
+	}
+	
 }
 
 void Combat_Menu::PlaySkillFx(int n)
