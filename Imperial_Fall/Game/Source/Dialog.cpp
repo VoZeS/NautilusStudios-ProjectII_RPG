@@ -45,13 +45,23 @@ bool Dialog::Start()
 	LoadDialog();
 
 	//Text 1
-	linea1String_Renato = dialog.child("renato").child("text1").attribute("linea1").as_string();
-	linea2String_Renato = dialog.child("renato").child("text1").attribute("linea2").as_string();
+	linea1String_Renato[0] = dialog.child("renato").child("text1").attribute("linea1").as_string();
+	linea2String_Renato[0] = dialog.child("renato").child("text1").attribute("linea2").as_string();
 
-	linea1Char_Renato = linea1String_Renato.c_str();
-	linea2Char_Renato = linea2String_Renato.c_str();
+	linea1String_Renato[1] = dialog.child("renato").child("text2").attribute("linea1").as_string();
+	linea2String_Renato[1] = dialog.child("renato").child("text2").attribute("linea2").as_string();
 
+	linea1String_Renato[2] = dialog.child("renato").child("text3").attribute("linea1").as_string();
+	linea2String_Renato[2] = dialog.child("renato").child("text3").attribute("linea2").as_string();
 
+	linea1String_Renato[3] = dialog.child("renato").child("text4").attribute("linea1").as_string();
+	linea2String_Renato[3] = dialog.child("renato").child("text4").attribute("linea2").as_string();
+
+	for (int i = 0; i < 4; i++)
+	{
+		linea1Char_Renato[i] = linea1String_Renato[i].c_str();
+		linea2Char_Renato[i] = linea2String_Renato[i].c_str();
+	}
 
 	linea1String_Herrero = dialog.child("herrero").child("text1").attribute("linea1").as_string();
 	linea2String_Herrero = dialog.child("herrero").child("text1").attribute("linea2").as_string();
@@ -80,7 +90,7 @@ bool Dialog::Start()
 	linea1Char_Aldeano = linea1String_Aldeano.c_str();
 
 
-
+	/*
 	linea1String_Templario = dialog.child("templario").child("text1").attribute("linea1").as_string();
 	linea2String_Templario = dialog.child("templario").child("text1").attribute("linea2").as_string();
 	
@@ -88,13 +98,13 @@ bool Dialog::Start()
 	linea2Char_Templario = linea2String_Templario.c_str();
 
 
-
+	
 	linea1String_Seta = dialog.child("seta").child("text1").attribute("linea1").as_string();
 	linea2String_Seta = dialog.child("seta").child("text1").attribute("linea2").as_string();
 
 	linea1Char_Seta = linea1String_Seta.c_str();
 	linea2Char_Seta = linea2String_Seta.c_str();
-
+	*/
 	return true;
 }
 
@@ -122,38 +132,93 @@ bool Dialog::Update(float dt)
 	{
 		if (app->physics->GetInNPC(1))
 		{
-			letlengh = 0;
-			letlengh2 = 0;
+			if (ContinueDialog(renato_text, renato_maxtext))
+			{
+				letlengh = 0;
+				letlengh2 = 0;
 
-			inDialog = !inDialog;
-			inDialogRenato = !inDialogRenato;
-			SetPressE_Hide(true);
+				inDialog = true;
+				actual_dialog = DIALOGS::RENATO;
+				SetPressE_Hide(true);
+			}
+			else
+			{
+				inDialog = false;
+				actual_dialog = DIALOGS::NO_ONE;
+			}
 		}
 		else if (app->physics->GetInNPC(2))
 		{
-			letlengh = 0;
-			letlengh2 = 0;
+			if (ContinueDialog(medico_text, medico_maxtext))
+			{
+				letlengh = 0;
+				letlengh2 = 0;
 
-			inDialog = !inDialog;
-			inDialogAlly = !inDialogAlly;
-			SetPressE_Hide(true);
+				inDialog = true;
+				actual_dialog = DIALOGS::MEDICO;
+				SetPressE_Hide(true);
+			}
+			else
+			{
+				inDialog = false;
+				actual_dialog = DIALOGS::NO_ONE;
+			}
+		}
+		else if (app->physics->GetInNPC(3))
+		{
+			if (ContinueDialog(herrero_text, herrero_maxtext))
+			{
+				letlengh = 0;
+				letlengh2 = 0;
+
+				inDialog = true;
+				actual_dialog = DIALOGS::HERRERO;
+				SetPressE_Hide(true);
+			}
+			else
+			{
+				inDialog = false;
+				actual_dialog = DIALOGS::NO_ONE;
+			}
+		}
+		else if (app->physics->GetInNPC(4))
+		{
+			if (ContinueDialog(granjero_text, granjero_maxtext))
+			{
+				letlengh = 0;
+				letlengh2 = 0;
+
+				inDialog = true;
+				actual_dialog = DIALOGS::GRANJERO;
+				SetPressE_Hide(true);
+			}
+			else
+			{
+				inDialog = false;
+				actual_dialog = DIALOGS::NO_ONE;
+			}
 		}
 		else if (app->physics->GetInNPC(5))
 		{
-			letlengh = 0;
-			letlengh2 = 0;
+			if (ContinueDialog(aldeano_text, aldeano_maxtext))
+			{
+				letlengh = 0;
+				letlengh2 = 0;
 
-			inDialog = !inDialog;
-			inDialogAldeano = !inDialogAldeano;
-			SetPressE_Hide(true);
+				inDialog = true;
+				actual_dialog = DIALOGS::ALDEANO;
+				SetPressE_Hide(true);
+			}
+			else
+			{
+				inDialog = false;
+				actual_dialog = DIALOGS::NO_ONE;
+			}
 		}
 		else
 		{
 			inDialog = false;
-			inDialogRenato = false;
-			inDialogAlly = false;
-			inDialogAldeano = false;
-			inDialogEnemy = false;
+			actual_dialog = DIALOGS::NO_ONE;
 		}
 	}
 
@@ -220,15 +285,15 @@ bool Dialog::PostUpdate()
 
 	if (inDialog)
 	{
-		if (inDialogRenato) // RENATO TALKING
+		if (actual_dialog == DIALOGS::RENATO) // RENATO TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
 			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "RENATO:");
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Renato, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Renato[renato_text], 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Renato[renato_text], 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
-		else if (inDialogAlly) // ALLY TALKING
+		else if (actual_dialog == DIALOGS::HERRERO) // ALLY TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
@@ -237,7 +302,25 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Herrero, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Herrero, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
-		else if (inDialogEnemy) // ENEMIES TALKING
+		else if (actual_dialog == DIALOGS::MEDICO) // ALLY TALKING
+		{
+			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
+			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "MEDICO:");
+
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Medico, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Medico, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		}
+		else if (actual_dialog == DIALOGS::GRANJERO) // ALLY TALKING
+		{
+			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
+			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "GRANJERO:");
+
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Granjero, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Granjero, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		}
+		/*else if (actual_dialog == DIALOGS::ENEMIGO) // ENEMIES TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
@@ -245,8 +328,8 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh2, 1);
 
-		}
-		else if (inDialogAldeano) // ALDEANO TALKING
+		}*/
+		else if (actual_dialog == DIALOGS::ALDEANO) // ALDEANO TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
@@ -301,4 +384,18 @@ bool Dialog::LoadDialog()
 	}
 
 	return ret;
+}
+
+bool Dialog::ContinueDialog(int& actual_text, int max_text)
+{
+	actual_text++;
+	if (actual_text < max_text)
+	{
+		return true;
+	}
+	else 
+	{
+		actual_text = -1;
+		return false;
+	}
 }
