@@ -172,6 +172,8 @@ public:
 
 	bool collision_loaded;
 
+	bool combat_map;
+
 	bool GetEnemyStateXml(int index);
 
 private:

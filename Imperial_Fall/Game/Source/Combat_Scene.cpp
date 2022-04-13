@@ -55,6 +55,8 @@ bool Combat_Scene::Start()
 		app->combat_manager->Enable();
 		app->combat_menu->Enable();
 		app->particles->Enable();
+
+		app->map->combat_map = true;
 	}
 
 
