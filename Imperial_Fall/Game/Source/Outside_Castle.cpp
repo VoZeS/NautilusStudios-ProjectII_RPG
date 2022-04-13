@@ -73,7 +73,11 @@ bool Outside_Castle::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 6;
-		app->LoadGameRequest(false);
+		
+		if (app->frontground->move_to != MOVE_TO::FROM_COMBAT)
+		{
+			app->LoadGameRequest(false);
+		}
 	}
 
 

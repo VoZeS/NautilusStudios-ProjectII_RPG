@@ -65,7 +65,11 @@ bool Dungeon::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 5;
-		app->LoadGameRequest(false);
+		
+		if (app->frontground->move_to != MOVE_TO::FROM_COMBAT)
+		{
+			app->LoadGameRequest(false);
+		}
 	}
 
 

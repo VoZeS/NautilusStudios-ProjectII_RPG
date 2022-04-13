@@ -84,7 +84,11 @@ bool Town2::Start()
 		RELEASE_ARRAY(data);
 
 		app->frontground->current_level = 2;
-		app->LoadGameRequest(false);
+		
+		if (app->frontground->move_to != MOVE_TO::FROM_COMBAT)
+		{
+			app->LoadGameRequest(false);
+		}
 	}
 
 	return true;
