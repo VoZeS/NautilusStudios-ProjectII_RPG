@@ -91,6 +91,8 @@ public:
 	}
 
 	bool ReturnToField(); // end combat
+	void SaveDirection();
+	void MovePlayer();
 
 	bool ResetCombat();
 
@@ -105,6 +107,8 @@ private:
 	bool go_black = false;
 	bool return_black = false;
 	int fade_speed = 4;
+
+	int direction = -1; // 0 --> down, 1 --> up, 2 --> right, 3 --> left
 
 public:
 	// controller

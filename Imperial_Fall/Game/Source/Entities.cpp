@@ -49,6 +49,7 @@ bool Entities::Start()
 		curandero = app->tex->Load("Assets/textures/curandero.png");
 		herrero = app->tex->Load("Assets/textures/herrero.png");
 		granjero = app->tex->Load("Assets/textures/granjero.png");
+		aldeano = app->tex->Load("Assets/textures/aldeano.png");
 		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
@@ -91,6 +92,9 @@ bool Entities::PreUpdate()
 				break;
 			case ENTITY_TYPE::GRANJERO:
 				entity->InitCustomEntity(4);
+				break;
+			case ENTITY_TYPE::ALDEANO:
+				entity->InitCustomEntity(5);
 				break;
 			case ENTITY_TYPE::W_TEMPLAR:
 				entity->InitCustomEntity(1);
@@ -313,6 +317,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
+	case ENTITY_TYPE::ALDEANO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::ALDEANO, p);
+	}
+		break;
 	case ENTITY_TYPE::W_TEMPLAR:
 	{
 		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
@@ -374,6 +384,8 @@ int Entities::FindNPC()
 				break;
 			case ENTITY_TYPE::GRANJERO: ret = 4;
 				break;
+			case ENTITY_TYPE::ALDEANO: ret = 5;
+				break;
 			}
 
 			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
@@ -383,8 +395,42 @@ int Entities::FindNPC()
 	return ret;
 }
 
+fPoint Entities::GetEnemyPos()
+{
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	float max = 9999;
+	Entity* combat_entity = NULL;
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		entity = item->data;
+
+		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
+		{
+			combat_entity = entity;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
+		}
+	}
+
+	if (combat_entity != NULL)
+	{
+		return combat_entity->position;
+	}
+	else
+	{
+		return { 0, 0 };
+	}
+}
+
 void Entities::StartCombat()
 {
+	app->frontground->SaveDirection();
+
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
 

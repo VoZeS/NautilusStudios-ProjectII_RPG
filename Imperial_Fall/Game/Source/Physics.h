@@ -52,6 +52,7 @@ public:
 	bool inCurandero = false;
 	bool inHerrero = false;
 	bool inGranjero = false;
+	bool inAldeano = false;
 
 	bool GetInNPC(int npc)
 	{
@@ -63,6 +64,7 @@ public:
 		case 2: ret = inCurandero; break;
 		case 3: ret = inHerrero; break;
 		case 4: ret = inGranjero; break;
+		case 5: ret = inAldeano; break;
 		}
 
 		return ret;

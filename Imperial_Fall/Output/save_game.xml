@@ -10,15 +10,23 @@
 	</renderer>
 	<entities>
 		<player>
-			<position x="8" y="9" />
-			<comp0 x="16.0215626" y="10.9813528" />
-			<comp1 x="16.942379" y="12.6009541" />
-			<comp2 x="17.8305321" y="13.6029701" />
+			<position x="26" y="30" />
+			<comp0 x="27.0342827" y="29.7189922" />
+			<comp1 x="25.1153717" y="28.8029289" />
+			<comp2 x="24.6526432" y="27.8890057" />
 		</player>
 		<enemies>
 			<enemy0 state="true" />
-			<enemy1 state="false" />
+			<enemy1 state="true" />
 			<enemy2 state="true" />
+			<enemy3 state="true" />
+			<enemy4 state="true" />
+			<enemy5 state="true" />
+			<enemy6 state="true" />
+			<enemy7 state="true" />
+			<enemy8 state="true" />
+			<enemy9 state="true" />
+			<enemy10 state="true" />
 		</enemies>
 	</entities>
 </game_state>

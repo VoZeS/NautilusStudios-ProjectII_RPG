@@ -137,12 +137,12 @@ bool Physics::PostUpdate()
 						c_g = 200;
 						c_b = 0;
 						break;
-					case 6: // enemies interaction
+					case 6: // aldeano interaction
 						c_r = 200;
 						c_g = 200;
 						c_b = 200;
 						break;
-					case 7:
+					case 7: // enemies interaction
 						c_r = 100;
 						c_g = 100;
 						c_b = 100;
@@ -274,6 +274,12 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 6)
 		{
+			// aldeano contact
+			app->dialog->SetPressE_Hide(false);
+			inAldeano = true;
+		}
+		else if ((int)fixtureUserDataB == 7)
+		{
 			// enemy contact
 			app->entities->StartCombat();
 		}
@@ -394,6 +400,12 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataA == 6)
 		{
+			// aldeano contact
+			app->dialog->SetPressE_Hide(false);
+			inAldeano = true;
+		}
+		else if ((int)fixtureUserDataA == 7)
+		{
 			// enemy contact
 			app->entities->StartCombat();
 		}
@@ -497,24 +509,35 @@ void Physics::EndContact(b2Contact* contact)
 			// renato contact
 			app->dialog->SetPressE_Hide(true);
 			inRenato = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 3)
 		{
 			// curandero contact
 			app->dialog->SetPressE_Hide(true);
 			inCurandero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 4)
 		{
 			// herrero contact
 			app->dialog->SetPressE_Hide(true);
 			inHerrero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
 			// granjero contact
 			app->dialog->SetPressE_Hide(true);
 			inGranjero = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 6)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inAldeano = false;
+			app->dialog->QuitDialogs();
 		}
 	}
 
@@ -525,24 +548,35 @@ void Physics::EndContact(b2Contact* contact)
 			// renato contact
 			app->dialog->SetPressE_Hide(false);
 			inRenato = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataA == 3)
 		{
 			// curandero contact
 			app->dialog->SetPressE_Hide(false);
 			inCurandero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataA == 4)
 		{
 			// herrero contact
 			app->dialog->SetPressE_Hide(false);
 			inHerrero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
 			// granjero contact
 			app->dialog->SetPressE_Hide(false);
 			inGranjero = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataA == 6)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inAldeano = false;
+			app->dialog->QuitDialogs();
 		}
 	}
 }

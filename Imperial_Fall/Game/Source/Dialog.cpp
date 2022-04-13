@@ -75,6 +75,10 @@ bool Dialog::Start()
 	linea1Char_Medico = linea1String_Medico.c_str();
 	linea2Char_Medico = linea2String_Medico.c_str();
 
+	linea1String_Aldeano = dialog.child("aldeano").child("text1").attribute("linea1").as_string();
+
+	linea1Char_Aldeano = linea1String_Aldeano.c_str();
+
 
 
 	linea1String_Templario = dialog.child("templario").child("text1").attribute("linea1").as_string();
@@ -134,13 +138,13 @@ bool Dialog::Update(float dt)
 			inDialogAlly = !inDialogAlly;
 			SetPressE_Hide(true);
 		}
-		else if (app->physics->GetInNPC(3))
+		else if (app->physics->GetInNPC(5))
 		{
 			letlengh = 0;
 			letlengh2 = 0;
 
 			inDialog = !inDialog;
-			inDialogEnemy = !inDialogEnemy;
+			inDialogAldeano = !inDialogAldeano;
 			SetPressE_Hide(true);
 		}
 		else
@@ -148,6 +152,7 @@ bool Dialog::Update(float dt)
 			inDialog = false;
 			inDialogRenato = false;
 			inDialogAlly = false;
+			inDialogAldeano = false;
 			inDialogEnemy = false;
 		}
 	}
@@ -240,6 +245,14 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh2, 1);
 
+		}
+		else if (inDialogAldeano) // ALDEANO TALKING
+		{
+			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
+			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ALDEANO:");
+
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Aldeano, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 		}
 	}
 	else

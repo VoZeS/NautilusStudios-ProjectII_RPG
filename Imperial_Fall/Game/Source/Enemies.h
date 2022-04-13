@@ -54,10 +54,12 @@ public:
 	Animation* currentAnimation = NULL;
 
 	Animation mushroomAnim;
+	Animation goblinAnim;
+	Animation skeletonAnim;
 
 	ENEMY_STATE state;
 
-	int enemy_type = 0; // 1 --> white templar, 2 --> mushroom, 3 --> goblin, 3 --> skeleton
+	int enemy_type = 0; // 1 --> white templar, 2 --> mushroom, 3 --> goblin, 3 --> skeleton, 4 --> red templar
 
 	ENEMIES combat_enemies[4];
 

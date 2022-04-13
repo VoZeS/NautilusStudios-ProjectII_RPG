@@ -19,6 +19,14 @@
 			<enemy0 state="true" />
 			<enemy1 state="true" />
 			<enemy2 state="true" />
+			<enemy3 state="true" />
+			<enemy4 state="true" />
+			<enemy5 state="true" />
+			<enemy6 state="true" />
+			<enemy7 state="true" />
+			<enemy8 state="true" />
+			<enemy9 state="true" />
+			<enemy10 state="true" />
 		</enemies>
 	</entities>
 </game_state>

@@ -64,6 +64,17 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	mushroomAnim.PushBack({ 200, 0, 100, 125 });
 	mushroomAnim.PushBack({ 300, 0, 100, 125 });
 	mushroomAnim.speed = 0.03f;
+
+	goblinAnim.PushBack({ 0, 0, 66, 72 });
+	goblinAnim.PushBack({ 66, 0, 66, 72 });
+	goblinAnim.PushBack({ 132, 0, 66, 72 });
+	goblinAnim.PushBack({ 198, 0, 66, 72 });
+	goblinAnim.speed = 0.03f;
+
+	skeletonAnim.PushBack({ 0, 0, 192, 205 });
+	skeletonAnim.PushBack({ 192, 0, 192, 205 });
+	skeletonAnim.PushBack({ 384, 0, 192, 205 });
+	skeletonAnim.speed = 0.03f;
 }
 
 // Destructor
@@ -78,8 +89,8 @@ void Enemies::InitCustomEntity(int enemy)
 	{
 	case 1: currentAnimation = &mushroomAnim; break;
 	case 2: currentAnimation = &mushroomAnim; break;
-	case 3: currentAnimation = &mushroomAnim; break;
-	case 4: currentAnimation = &mushroomAnim; break;
+	case 3: currentAnimation = &goblinAnim; break;
+	case 4: currentAnimation = &skeletonAnim; break;
 	case 5: currentAnimation = &mushroomAnim; break;
 	}
 
@@ -108,7 +119,7 @@ void Enemies::InitCustomEntity(int enemy)
 	box.SetAsBox(PIXELS_TO_METERS((w * 5)), PIXELS_TO_METERS(h * 5), b2Vec2(0, 0), 0);
 	fixture.isSensor = true;
 	b2Fixture* sensorFixture = body->CreateFixture(&fixture);
-	sensorFixture->SetUserData((void*)6); // enemy sensor
+	sensorFixture->SetUserData((void*)7); // enemy sensor
 }
 
 // Called each loop iteration

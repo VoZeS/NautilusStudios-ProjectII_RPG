@@ -35,6 +35,13 @@ bool Fonts::Start()
 	return true;
 }
 
+bool Fonts::CleanUp()
+{
+	UnLoad(textFont1);
+
+	return true;
+}
+
 int Fonts::Load(const char* texture_path, const char* characters, uint rows)
 {
 	int id = -1;

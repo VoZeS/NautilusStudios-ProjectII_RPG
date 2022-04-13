@@ -31,6 +31,8 @@ public:
 
 	bool Start();
 
+	bool CleanUp();
+
 	int Load(const char* texturePath, const char* characters, uint rows = 1);
 
 	void UnLoad(int fontIndex);

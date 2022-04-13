@@ -16,6 +16,7 @@ enum class ENTITY_TYPE
 	CURANDERO,
 	HERRERO,
 	GRANJERO,
+	ALDEANO,
 	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
@@ -115,6 +116,7 @@ public:
 	DynArray<bool> entities_state;
 
 	int FindNPC();
+	fPoint GetEnemyPos();
 	void StartCombat();
 	void KillEnemy();
 
@@ -128,6 +130,7 @@ public:
 	SDL_Texture* curandero = NULL;
 	SDL_Texture* herrero = NULL;
 	SDL_Texture* granjero = NULL;
+	SDL_Texture* aldeano = NULL;
 	SDL_Texture* renato_bueno = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* mushroom = NULL;

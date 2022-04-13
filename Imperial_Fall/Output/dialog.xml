@@ -14,6 +14,9 @@
 	<medico>
 		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!"/>
 	</medico>
+	<aldeano>
+		<text1 linea1="No tengo nada que decir" linea2=" "/>
+	</aldeano>
 	<templario>
 		<text1 linea1="Y vosotros quienes sois?" linea2="Largaos de aqui!"/>
 	</templario>

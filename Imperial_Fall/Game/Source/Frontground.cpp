@@ -24,6 +24,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include <math.h>
+
 Frontground::Frontground(bool enabled) : Module(enabled)
 {
 	name.Create("frontground");
@@ -273,8 +275,8 @@ bool Frontground::ReturnToField()
 	move_to = MOVE_TO::FROM_COMBAT;
 
 	FadeToBlack();
-	app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 7, app->entities->GetPlayer()->GetPlayerPosition().y);
-
+	MovePlayer();
+	
 	return true;
 }
 
@@ -315,4 +317,58 @@ void Frontground::ReturnStartScreen()
 	}
 
 	FadeToBlack();
+}
+
+void Frontground::SaveDirection()
+{
+	fPoint enemy_position = app->entities->GetEnemyPos();
+	float x = 0, y = 0, modulo = 0;
+
+	if (enemy_position.x != 0 || enemy_position.y != 0)
+	{
+		x = app->entities->GetPlayer()->GetPlayerPosition().x - enemy_position.x;
+		y = app->entities->GetPlayer()->GetPlayerPosition().y - enemy_position.y;
+
+		if (abs(x) >= abs(y))
+		{
+			// desplazamiento horizontal
+			if (x > 0)
+			{
+				direction = 3;
+			}
+			else
+			{
+				direction = 2;
+			}
+		}
+		else
+		{
+			// desplazamiento vertical
+			if (y > 0)
+			{
+				direction = 0;
+			}
+			else
+			{
+				direction = 1;
+			}
+		}
+	}
+}
+
+void Frontground::MovePlayer()
+{
+	switch (direction)
+	{
+	case 0: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y + 3);
+		break;
+	case 1: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y - 3);
+		break;
+	case 2: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 3, app->entities->GetPlayer()->GetPlayerPosition().y);
+		break;
+	case 3: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x + 3, app->entities->GetPlayer()->GetPlayerPosition().y);
+		break;
+	}
+
+	direction = -1;
 }

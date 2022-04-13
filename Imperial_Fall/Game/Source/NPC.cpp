@@ -105,6 +105,8 @@ bool NPC::Draw()
 		break;
 	case 4: app->render->DrawTexture(app->entities->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 		break;
+	case 5: app->render->DrawTexture(app->entities->aldeano, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		break;
 	default:
 		break;
 	}

@@ -120,6 +120,11 @@ void Map::Draw()
 							// Granjero
 							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
 						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 15)
+						{
+							// Aldeano
+							app->entities->CreateEntity(ENTITY_TYPE::ALDEANO, pos.x, pos.y);
+						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// White templar

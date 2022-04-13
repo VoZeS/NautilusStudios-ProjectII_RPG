@@ -34,7 +34,17 @@ public:
 	bool inDialog = false;
 	bool inDialogRenato = false;
 	bool inDialogAlly = false;
+	bool inDialogAldeano = false;
 	bool inDialogEnemy = false;
+
+	void QuitDialogs()
+	{
+		inDialog = false;
+		inDialogRenato = false;
+		inDialogAlly = false;
+		inDialogAldeano = false;
+		inDialogEnemy = false;
+	}
 
 	void SetPressE_Hide(bool hide)
 	{
@@ -67,6 +77,9 @@ private:
 	std::string linea2String_Medico;
 	const char* linea1Char_Medico;
 	const char* linea2Char_Medico;
+
+	std::string linea1String_Aldeano;
+	const char* linea1Char_Aldeano;
 
 	std::string linea1String_Templario;
 	std::string linea2String_Templario;
