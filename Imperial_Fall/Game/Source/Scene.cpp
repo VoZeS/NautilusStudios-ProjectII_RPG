@@ -7,20 +7,18 @@
 #include "Scene.h"
 #include "Menu.h"
 #include "Map.h"
-#include "Pathfinding.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Combat_Entities.h"
 #include "Player.h"
-#include "Coins.h"
-#include "Hearts.h"
+#include "Town1.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-Scene::Scene() : Module()
+Scene::Scene(bool enabled) : Module(enabled)
 {
 	name.Create("scene");
-	godmode = false;
 }
 
 // Destructor
@@ -39,49 +37,16 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	app->SaveGameRequest();
-
-	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
-	
-	// Load music
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-
-
-	char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
-	textFont = app->fonts->Load("Assets/textures/pixel_letters.png", lookupTableChars, 8);
-
-	return true;
-}
-
-// Called each loop iteration
-bool Scene::PreUpdate()
-{
-
-	if (/*start_screen != NULL &&*/ app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)  
+	if (this->Enabled() && !this->Disabled())
 	{
-		PassLevel(1);
-		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(400), PIXELS_TO_METERS(750));
+		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
 
-	}
-	else
-	{
-		int mouseX, mouseY;
-		app->input->GetMousePosition(mouseX, mouseY);
-		iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-		p = app->map->WorldToMap(p.x, p.y);
+		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
+		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 
-		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		if (!app->menu->Enabled())
 		{
-			if (originSelected == true)
-			{
-				app->pathfinding->CreatePath(origin, p);
-				originSelected = false;
-			}
-			else
-			{
-				origin = p;
-				originSelected = true;
-			}
+			app->menu->Enable();
 		}
 	}
 
@@ -89,62 +54,14 @@ bool Scene::PreUpdate()
 }
 
 // Called each loop iteration
+bool Scene::PreUpdate()
+{
+	return true;
+}
+
+// Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		PassLevel(1);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		PassLevel(2);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		PassLevel(3);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-	{
-		PassLevel(4);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
-	{
-		PassLevel(5);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
-	{
-		PassLevel(6);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
-	{
-		PassLevel(7);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-	{
-		PassLevel(current_level);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		app->SaveGameRequest();
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-	{
-		app->LoadGameRequest();
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		godmode = !godmode;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	{
-		app->ToggleFPS();
-	}
-
-	// Draw map
-	if (start_screen != NULL)
-	{
-		app->map->Draw();
-	}
 
 	return true;
 }
@@ -152,26 +69,61 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	
 	bool ret = true;
-
 	int c_x = -app->render->camera.x;
+	int c_y = -app->render->camera.y;	
 
-	if (start_screen != NULL) 
+	if (app->frontground->controller)
 	{
-		app->render->DrawTexture(start_screen, 0, 0);
-	}
-	else
-	{
-		app->map->Draw();
+		GamePad& pad = app->input->pads[0];
 
-		app->fonts->BlitText(c_x + 30, 5, textFont, "MONEDAS: ");
-		app->fonts->BlitText(c_x + 330, 5, textFont, app->entities->numCoins);
-		app->fonts->BlitText(c_x + 30, 45, textFont, "VIDAS: ");
-		app->fonts->BlitText(c_x + 250, 45, textFont, app->entities->numLifes);
+		if (pad.a == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
+		}
 	}
 	
-	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-		ret = false;
+	//--------------------------------------MENU----------------------------
+
+
+	//Desplazamiento del fondo al inicio del juego
+	//Una vez pulses el Espacio entrara el menu de opciones
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP || desMenu == true)
+	{
+		space_boton = false;
+		desMenu = true;
+		c_y_menu -= 10.0f;
+		fuegoSeguir = true;
+
+	}
+
+	//Limite de donde la camara llegara al principio del juego
+	if (c_y_menu <= -700)
+	{
+		esc = true;
+		desMenu = false;
+		fuegoSeguir = false;
+    }
+
+	//Primera pantalla menu
+	if (esc == false && app->menu->settings == false)
+	{
+		app->render->DrawTexture(start_screen, c_x, c_y_menu);
+	}	
+
+	//----------------------------------------------------
+	//-------------------Settings
+	if (app->menu->settings == true)
+	{
+		app->render->DrawTexture(settings_screen, c_x, c_y);
+	}
+	
+	//Segunda Pantalla Menu
+	if (start_screen != NULL && esc == true && app->menu->settings == false)
+	{
+		app->render->DrawTexture(start_screen, c_x, c_y - 700);
+	}
 
 	return ret;
 }
@@ -180,49 +132,14 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	
+	app->menu->Disable();
 
-	return true;
-}
-
-bool Scene::GetStartScreenState()
-{
-	if (start_screen != NULL)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool Scene::PassLevel(int dest_level)
-{
-	if (start_screen != NULL)
-	{
-		app->frontground->SetA_Black();
-		app->frontground->FadeFromBlack(dest_level);
-	}
-	else
-	{
-		app->frontground->FadeToBlack(dest_level);
-	}
-
+	// clean textures
+	app->tex->UnLoad(start_screen);
 	start_screen = NULL;
-
-	return true;
-}
-
-bool Scene::QuitStartScreen()
-{
-	start_screen = NULL;
-
-	return true;
-}
-
-bool Scene::ReturnStartScreen()
-{
-	start_screen = app->tex->Load("Assets/textures/Start_screen.png");
+	app->tex->UnLoad(settings_screen);
+	settings_screen = NULL;
 
 	return true;
 }

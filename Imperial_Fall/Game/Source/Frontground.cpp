@@ -2,19 +2,33 @@
 #include "Textures.h"
 #include "Render.h"
 #include "Window.h"
+#include "Input.h"
 #include "Scene.h"
+#include "Fonts.h"
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Player.h"
+#include "Menu.h"
 #include "Frontground.h"
+#include "Town1.h"
+#include "Town2.h"
+#include "Forest.h"
+#include "Battlefield.h"
+#include "Dungeon.h"
+#include "Outside_Castle.h"
+#include "Inside_Castle.h"
+#include "Combat_Scene.h"
+#include "Combat_Menu.h"
+#include "LogoScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-Frontground::Frontground() : Module()
+#include <math.h>
+
+Frontground::Frontground(bool enabled) : Module(enabled)
 {
 	name.Create("frontground");
-	a = 0;
 }
 
 // Destructor
@@ -24,6 +38,9 @@ Frontground::~Frontground()
 // Called before render is available
 bool Frontground::Awake()
 {
+	godmode = false;
+
+	fast_combat = false;
 
 	return true;
 }
@@ -32,8 +49,7 @@ bool Frontground::Awake()
 bool Frontground::Start()
 {
 	r = { 0, 0, 1280, 720 };
-
-	press_e = app->tex->Load("Assets/textures/PressE.png");
+	a = 0;
 
 	return true;
 }
@@ -41,6 +57,17 @@ bool Frontground::Start()
 // Called each loop iteration
 bool Frontground::PreUpdate()
 {
+	// toggle controller
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		controller = !controller;
+		if (controller)
+		{
+			app->menu->SetController();
+			app->combat_menu->SetController();
+		}
+	}
+	
 	if (go_black)
 	{
 		if (a < 256 - fade_speed)
@@ -70,11 +97,12 @@ bool Frontground::PreUpdate()
 // Called each loop iteration
 bool Frontground::Update(float dt)
 {
+
 	if (a >= 255)
 	{
 		go_black = false;
-		FadeFromBlack(destination_level);
-		
+
+		FadeFromBlack();
 	}
 	else if (a <= 0)
 	{
@@ -89,15 +117,14 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
-
-	if (!press_e_hide)
-	{
-		app->render->DrawRectangle({ c_x + 640 , 650, 100, 25 }, 255, 255, 255, 150);
-		app->render->DrawTexture(press_e, c_x + 640, 650);
-	}
-
+	
 	r.x = c_x;
 	r.y = c_y;
+	
+	if (a == 254)
+	{
+		a++;
+	}
 
 	app->render->DrawRectangle(r, 0, 0, 0, a);
 
@@ -111,167 +138,238 @@ bool Frontground::CleanUp()
 	return true;
 }
 
-bool Frontground::FadeToBlack(int dest_level)
+bool Frontground::FadeToBlack()
 {
 	go_black = true;
-	if (dest_level != -1) destination_level = dest_level;
 
 	return true;
 }
 
-bool Frontground::FadeFromBlack(int dest_level)
+bool Frontground::FadeFromBlack()
 {
 	return_black = true;
 
-	if (dest_level != -1)
+	if (move_to != MOVE_TO::NOTHING)
 	{
-		app->map->CleanMaps();
+		app->menu->DisableAll();
 		app->physics->CleanMapBoxes();
-		app->entities->CleanUp();
-		app->map->collision_loaded = false;
-
-		switch (dest_level)
-		{
-		case 0:
-			app->scene->ReturnStartScreen();
-			break;
-		case 1: 
-			app->SaveGameRequest();
-			if (app->map->Load("town_1.tmx") == true)
-			{
-				if (town2_to_town1 == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2800), PIXELS_TO_METERS(1000));
-				}
-				else if (outside_to_town1 == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300));
-				}
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 1;
-			break;
-		case 2:
-			app->SaveGameRequest();
-			if (app->map->Load("town_2.tmx") == true)
-			{
-				if (town1_to_town2 == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(300), PIXELS_TO_METERS(1600));
-				}
-				else if (forest_to_town2 == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600));
-				}
-				else if (battlefield_to_town2 == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400));
-				}
-				else if (dungeon_to_town2 == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
-				}
-
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 2;
-			break;
-		case 3:
-			app->SaveGameRequest();
-			if (app->map->Load("forest.tmx") == true)
-			{
-				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500));
-
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 3;
-			break;
-		case 4:
-			app->SaveGameRequest();
-			if (app->map->Load("battlefield.tmx") == true)
-			{
-				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
-
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 4;
-			break;
-		case 5:
-			app->SaveGameRequest();
-			if (app->map->Load("dungeon.tmx") == true)
-			{
-				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200));
-
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 5;
-			break;
-		case 6:
-			app->SaveGameRequest();
-			if (app->map->Load("outside_castle.tmx") == true)
-			{
-				if (town1_to_outside == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1400));
-				}
-				else if (inside_to_outside == true)
-				{
-					app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100));
-				}
-
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 6;
-			break;
-		case 7:
-			app->SaveGameRequest();
-			if (app->map->Load("inside_castle.tmx") == true)
-			{
-				app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(500), PIXELS_TO_METERS(800));
-
-				int w, h;
-				uchar* data = NULL;
-
-				if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
-
-				RELEASE_ARRAY(data);
-			}
-			app->scene->current_level = 7;
-			break;
-		}
 	}
 
+	switch (move_to)
+	{
+	case MOVE_TO::LOGO_SCENE: app->scene->Enable();  app->menu->started = false;
+		break;
+	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::SCENE_TOWN2: app->town2->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::SCENE_FOREST: app->forest->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::SCENE_BATTLEFIELD: app->battlefield->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::SCENE_DUNGEON: app->dungeon->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::SCENE_OUTSIDE: app->outside->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::SCENE_INSIDE: app->town1->Enable(); app->menu->InitPlayer();
+		break;
+	case MOVE_TO::TOWN1_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::TOWN1_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::TOWN1_OUTSIDE: app->outside->Enable();
+		break;
+	case MOVE_TO::TOWN1_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::TOWN2_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::TOWN2_TOWN1: app->town1->Enable();
+		break;
+	case MOVE_TO::TOWN2_FOREST: app->forest->Enable();
+		break;
+	case MOVE_TO::TOWN2_BATTLEFIELD: app->battlefield->Enable();
+		break;
+	case MOVE_TO::TOWN2_DUNGEON: app->dungeon->Enable();
+		break;
+	case MOVE_TO::TOWN2_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::FOREST_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::FOREST_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::FOREST_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::BATTLEFIELD_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::BATTLEFIELD_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::BATTLEFIELD_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::DUNGEON_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::DUNGEON_TOWN2: app->town2->Enable();
+		break;
+	case MOVE_TO::DUNGEON_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::OUTSIDE_TOWN1: app->town1->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_INSIDE: app->inside->Enable();
+		break;
+	case MOVE_TO::OUTSIDE_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::INSIDE_SCENE: app->scene->Enable(); app->menu->started = false;
+		break;
+	case MOVE_TO::INSIDE_OUTSIDE: app->outside->Enable();
+		break;
+	case MOVE_TO::INSIDE_COMBAT: app->combat_scene->Enable();
+		break;
+	case MOVE_TO::FROM_COMBAT:
+		switch (current_level)
+		{
+		case 1: app->town1->Enable();
+			break;
+		case 2: app->town2->Enable();
+			break;
+		case 3: app->forest->Enable();
+			break;
+		case 4: app->battlefield->Enable();
+			break;
+		case 5: app->dungeon->Enable();
+			break;
+		case 6: app->outside->Enable();
+			break;
+		case 7: app->inside->Enable();
+			break;
+		default:
+			break;
+		}
+
+		app->menu->SetWinLoseScape(-1);
+		break;
+	case MOVE_TO::RESET_COMBAT: app->combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
+		break;
+	default:
+		break;
+	}
 
 	return true;
 }
 
+bool Frontground::FadeInCombat(ENEMIES enemies[])
+{
+	go_black = true;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		enemies_to_fight[i] = enemies[i];
+	}
+
+	return true;
+}
+
+bool Frontground::ReturnToField()
+{
+	app->SaveGameRequest();
+	move_to = MOVE_TO::FROM_COMBAT;
+
+	FadeToBlack();
+	MovePlayer();
+	app->entities->freeze = false;
+
+	return true;
+}
+
+bool Frontground::ResetCombat()
+{
+	move_to = MOVE_TO::RESET_COMBAT;
+
+	FadeToBlack();
+
+	return true;
+}
+
+void Frontground::ReturnStartScreen()
+{
+	switch (current_level)
+	{
+	case 1:
+		move_to = MOVE_TO::TOWN1_SCENE;
+		break;
+	case 2:
+		move_to = MOVE_TO::TOWN2_SCENE;
+		break;
+	case 3:
+		move_to = MOVE_TO::FOREST_SCENE;
+		break;
+	case 4:
+		move_to = MOVE_TO::BATTLEFIELD_SCENE;
+		break;
+	case 5:
+		move_to = MOVE_TO::DUNGEON_SCENE;
+		break;
+	case 6:
+		move_to = MOVE_TO::OUTSIDE_SCENE;
+		break;
+	case 7:
+		move_to = MOVE_TO::INSIDE_SCENE;
+		break;
+	}
+
+	FadeToBlack();
+}
+
+void Frontground::SaveDirection()
+{
+	fPoint enemy_position = app->entities->GetEnemyPos();
+	float x = 0, y = 0, modulo = 0;
+
+	if (enemy_position.x != 0 || enemy_position.y != 0)
+	{
+		x = app->entities->GetPlayer()->GetPlayerPosition().x - enemy_position.x;
+		y = app->entities->GetPlayer()->GetPlayerPosition().y - enemy_position.y;
+
+		if (abs(x) >= abs(y))
+		{
+			// desplazamiento horizontal
+			if (x > 0)
+			{
+				direction = 3;
+			}
+			else
+			{
+				direction = 2;
+			}
+		}
+		else
+		{
+			// desplazamiento vertical
+			if (y > 0)
+			{
+				direction = 0;
+			}
+			else
+			{
+				direction = 1;
+			}
+		}
+	}
+}
+
+void Frontground::MovePlayer()
+{
+	switch (direction)
+	{
+	case 0: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y + 1);
+		break;
+	case 1: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y - 1);
+		break;
+	case 2: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 1, app->entities->GetPlayer()->GetPlayerPosition().y);
+		break;
+	case 3: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x + 1, app->entities->GetPlayer()->GetPlayerPosition().y);
+		break;
+	}
+
+	direction = -1;
+}

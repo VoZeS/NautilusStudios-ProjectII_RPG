@@ -9,7 +9,10 @@
 #include "PugiXml/src/pugixml.hpp"
 
 #define CONFIG_FILENAME		"config.xml"
+#define ORIGIN_SAVE_STATE_FILENAME "origin_save_game.xml"
 #define SAVE_STATE_FILENAME "save_game.xml"
+#define DIALOG_FILENAME		"dialog.xml"
+#define HEROES_STATS_FILENAME		"heroes_stats.xml"
 
 // Modules
 class Window;
@@ -23,8 +26,21 @@ class PathFinding;
 class Physics;
 class Entities;
 class Fonts;
+class Combat_Manager;
+class Combat_Menu;
 class Menu;
+class Particles;
 class Frontground;
+class Town1;
+class Town2;
+class Forest;
+class Battlefield;
+class Dungeon;
+class Outside_Castle;
+class Inside_Castle;
+class Combat_Scene;
+class Dialog;
+class LogoScreen;
 
 
 
@@ -60,9 +76,9 @@ public:
 	const char* GetOrganization() const;
 
     // L02: DONE 1: Create methods to request Load / Save
-	void LoadGameRequest();
+	void LoadGameRequest(bool set_to_origin);
 	void SaveGameRequest();
-	bool LoadGame();
+	bool LoadGame(bool set_to_origin);
 	bool SaveGame();
 
 private:
@@ -101,8 +117,22 @@ public:
 	Physics* physics;
 	Entities* entities;
 	Fonts* fonts;
+	Combat_Manager* combat_manager;
+	Combat_Menu* combat_menu;
 	Menu* menu;
+	Particles* particles;
 	Frontground* frontground;
+	Town1* town1;
+	Town2* town2;
+	Forest* forest;
+	Battlefield* battlefield;
+	Dungeon* dungeon;
+	Outside_Castle* outside;
+	Inside_Castle* inside;
+	Combat_Scene* combat_scene;
+	Dialog* dialog;
+	LogoScreen* logo;
+
 
 private:
 
@@ -118,9 +148,11 @@ private:
 	pugi::xml_node configApp;
 
 	mutable bool saveGameRequested;
-	bool loadGameRequested;
+	
 
+	pugi::xml_document originSaveGame;
 	pugi::xml_document saveGame;
+	bool set_to_origin = false;
 		
 	PerfTimer* ptimer;
 
@@ -143,8 +175,10 @@ private:
 public:
 	float GetDT();
 
-	void ToggleFPS();
+	float GetFPS();
 
+	void ToggleFPS();
+	bool loadGameRequested;
 };
 
 extern App* app;

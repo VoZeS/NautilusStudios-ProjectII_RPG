@@ -1,0 +1,26 @@
+<dialog>
+	<renato>
+		<text1 linea1="Buenas, mis queridos amigos."/>
+		<text2 linea1="Antes de empezar la aventura, debo" linea2="comprobar vuestras habilidades en combate."/>
+		<text3 linea1="Id a derrotar al templario de la plaza."/>	
+		<text4 linea1="Cuando lo derroteis, volved y os contare el plan."/>	
+	</renato>
+	<herrero>
+		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar perfecto"/>
+	</herrero>
+	<granjero>
+		<text1 linea1="Hola! Ahora mismo estamos sin existencias." linea2="Volved mas adelante."/>
+	</granjero>
+	<medico>
+		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!"/>
+	</medico>
+	<aldeano>
+		<text1 linea1="No tengo nada que decir."/>
+	</aldeano>
+	<templario>
+		<text1 linea1="Y vosotros quienes sois?" linea2="Largaos de aqui!"/>
+	</templario>
+	<seta>
+		<text1 linea1="Camino bloqueado." linea2="No puedes pasar"/>
+	</seta>
+</dialog>

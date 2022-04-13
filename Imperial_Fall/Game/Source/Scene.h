@@ -5,12 +5,13 @@
 #include "Physics.h"
 
 struct SDL_Texture;
+enum class ENEMIES;
 
 class Scene : public Module
 {
 public:
 
-	Scene();
+	Scene(bool enabled);
 
 	// Destructor
 	virtual ~Scene();
@@ -33,28 +34,27 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	bool GetStartScreenState();
-
-	bool PassLevel(int dest_level);
-
-	bool QuitStartScreen();
-
-	bool ReturnStartScreen();
-
-	bool godmode;
-
 	int current_level = 0;
+
+	int textFontDialog= -1;
 
 	int textFont = -1;
 
+	int nh;
+
+	bool fuegoSeguir = false;
+
+	bool esc = false;
+	bool desMenu = false;
+
+	float c_y_menu;
+
+	bool space_boton = true; // Desactiva el boton ESPACIO del principio
+
 private:
+
 	SDL_Texture* start_screen;
-
-	SDL_Texture* pathTex;
-	SDL_Texture* originTex;
-
-	iPoint origin;
-	bool originSelected = false;
+	SDL_Texture* settings_screen;
 
 };
 

@@ -12,7 +12,7 @@
 // NOTE: Library linkage is configured in Linker Options
 //#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
 
-Audio::Audio() : Module()
+Audio::Audio(bool enabled) : Module(enabled)
 {
 	music = NULL;
 	name.Create("audio");
@@ -190,5 +190,4 @@ void Audio::SetFX(int volume)
 	{
 		Mix_VolumeChunk(fx.At(i)->data, volume);
 	}
-	
 }

@@ -8,9 +8,9 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Player.h"
-#include "Hearts.h"
 #include "Pathfinding.h"
 #include "Menu.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -18,155 +18,155 @@
 Player::Player() : Entity()
 {
 	// main idle animation
-	idleAnimD.PushBack({ 5, 0, 50, 74 });
-	idleAnimD.PushBack({ 65, 0, 50, 74 });
+	idleAnimD.PushBack({ 5, 2, 50, 72 });
+	idleAnimD.PushBack({ 65, 2, 50, 72 });
 	idleAnimD.speed = 0.03f;
 
-	idleAnimU.PushBack({ 5, 240, 50, 74 });
-	idleAnimU.PushBack({ 65, 240, 50, 74 });
+	idleAnimU.PushBack({ 5, 242, 50, 72 });
+	idleAnimU.PushBack({ 65, 242, 50, 72 });
 	idleAnimU.speed = 0.03f;
 
-	idleAnimL.PushBack({ 5, 82, 50, 74 });
-	idleAnimL.PushBack({ 65, 82, 50, 74 });
+	idleAnimL.PushBack({ 5, 84, 50, 72 });
+	idleAnimL.PushBack({ 65, 84, 50, 72 });
 	idleAnimL.speed = 0.03f;
 
-	idleAnimR.PushBack({ 5, 162, 50, 74 });
-	idleAnimR.PushBack({ 65, 162, 50, 74 });
+	idleAnimR.PushBack({ 5, 164, 50, 72 });
+	idleAnimR.PushBack({ 65, 164, 50, 72 });
 	idleAnimR.speed = 0.03f;
 
 	// main walk animation
-	walkAnimD.PushBack({ 5, 0, 50, 74 });
-	walkAnimD.PushBack({ 65, 0, 50, 74 });
-	walkAnimD.PushBack({ 125, 0, 50, 74 });
+	walkAnimD.PushBack({ 5, 2, 50, 72 });
+	walkAnimD.PushBack({ 65, 2, 50, 72 });
+	walkAnimD.PushBack({ 125, 2, 50, 72 });
 	walkAnimD.speed = 0.1f;
 
-	walkAnimU.PushBack({ 5, 240, 50, 74 });
-	walkAnimU.PushBack({ 65, 240, 50, 74 });
-	walkAnimU.PushBack({ 125, 240, 50, 74 });
+	walkAnimU.PushBack({ 5, 242, 50, 72 });
+	walkAnimU.PushBack({ 65, 242, 50, 72 });
+	walkAnimU.PushBack({ 125, 242, 50, 72 });
 	walkAnimU.speed = 0.1f;
 
-	walkAnimL.PushBack({ 5, 82, 50, 74 });
-	walkAnimL.PushBack({ 65, 82, 50, 74 });
-	walkAnimL.PushBack({ 125, 82, 50, 74 });
+	walkAnimL.PushBack({ 5, 84, 50, 72 });
+	walkAnimL.PushBack({ 65, 84, 50, 72 });
+	walkAnimL.PushBack({ 125, 84, 50, 72 });
 	walkAnimL.speed = 0.1f;
 
-	walkAnimR.PushBack({ 5, 162, 50, 74 });
-	walkAnimR.PushBack({ 65, 162, 50, 74 });
-	walkAnimR.PushBack({ 125, 162, 50, 74 });
+	walkAnimR.PushBack({ 5, 164, 50, 72 });
+	walkAnimR.PushBack({ 65, 164, 50, 72 });
+	walkAnimR.PushBack({ 125, 164, 50, 72 });
 	walkAnimR.speed = 0.1f;
 
 	// c0 idle animation
-	c0_idleAnimD.PushBack({ 5, 0, 50, 74 });
-	c0_idleAnimD.PushBack({ 65, 0, 50, 74 });
+	c0_idleAnimD.PushBack({ 5, 2, 50, 72 });
+	c0_idleAnimD.PushBack({ 65, 2, 50, 72 });
 	c0_idleAnimD.speed = 0.03f;
 
-	c0_idleAnimU.PushBack({ 5, 240, 50, 74 });
-	c0_idleAnimU.PushBack({ 65, 240, 50, 74 });
+	c0_idleAnimU.PushBack({ 5, 242, 50, 72 });
+	c0_idleAnimU.PushBack({ 65, 242, 50, 72 });
 	c0_idleAnimU.speed = 0.03f;
 
-	c0_idleAnimL.PushBack({ 5, 82, 50, 74 });
-	c0_idleAnimL.PushBack({ 65, 82, 50, 74 });
+	c0_idleAnimL.PushBack({ 5, 84, 50, 72 });
+	c0_idleAnimL.PushBack({ 65, 84, 50, 72 });
 	c0_idleAnimL.speed = 0.03f;
 
-	c0_idleAnimR.PushBack({ 5, 162, 50, 74 });
-	c0_idleAnimR.PushBack({ 65, 162, 50, 74 });
+	c0_idleAnimR.PushBack({ 5, 164, 50, 72 });
+	c0_idleAnimR.PushBack({ 65, 164, 50, 72 });
 	c0_idleAnimR.speed = 0.03f;
 
 	// c0 walk animation
-	c0_walkAnimD.PushBack({ 5, 0, 50, 74 });
-	c0_walkAnimD.PushBack({ 65, 0, 50, 74 });
-	c0_walkAnimD.PushBack({ 125, 0, 50, 74 });
+	c0_walkAnimD.PushBack({ 5, 2, 50, 72 });
+	c0_walkAnimD.PushBack({ 65, 2, 50, 72 });
+	c0_walkAnimD.PushBack({ 125, 2, 50, 72 });
 	c0_walkAnimD.speed = 0.1f;
 
-	c0_walkAnimU.PushBack({ 5, 240, 50, 74 });
-	c0_walkAnimU.PushBack({ 65, 240, 50, 74 });
-	c0_walkAnimU.PushBack({ 125, 240, 50, 74 });
+	c0_walkAnimU.PushBack({ 5, 242, 50, 72 });
+	c0_walkAnimU.PushBack({ 65, 242, 50, 72 });
+	c0_walkAnimU.PushBack({ 125, 242, 50, 72 });
 	c0_walkAnimU.speed = 0.1f;
 
-	c0_walkAnimL.PushBack({ 5, 82, 50, 74 });
-	c0_walkAnimL.PushBack({ 65, 82, 50, 74 });
-	c0_walkAnimL.PushBack({ 125, 82, 50, 74 });
+	c0_walkAnimL.PushBack({ 5, 84, 50, 72 });
+	c0_walkAnimL.PushBack({ 65, 84, 50, 72 });
+	c0_walkAnimL.PushBack({ 125, 84, 50, 72 });
 	c0_walkAnimL.speed = 0.1f;
 
-	c0_walkAnimR.PushBack({ 5, 162, 50, 74 });
-	c0_walkAnimR.PushBack({ 65, 162, 50, 74 });
-	c0_walkAnimR.PushBack({ 125, 162, 50, 74 });
+	c0_walkAnimR.PushBack({ 5, 164, 50, 72 });
+	c0_walkAnimR.PushBack({ 65, 164, 50, 72 });
+	c0_walkAnimR.PushBack({ 125, 164, 50, 72 });
 	c0_walkAnimR.speed = 0.1f;
 
 	// c1 idle animation
-	c1_idleAnimD.PushBack({ 5, 0, 50, 74 });
-	c1_idleAnimD.PushBack({ 65, 0, 50, 74 });
+	c1_idleAnimD.PushBack({ 5, 2, 50, 72 });
+	c1_idleAnimD.PushBack({ 65, 2, 50, 72 });
 	c1_idleAnimD.speed = 0.03f;
 
-	c1_idleAnimU.PushBack({ 5, 240, 50, 74 });
-	c1_idleAnimU.PushBack({ 65, 240, 50, 74 });
+	c1_idleAnimU.PushBack({ 5, 242, 50, 72 });
+	c1_idleAnimU.PushBack({ 65, 242, 50, 72 });
 	c1_idleAnimU.speed = 0.03f;
 
-	c1_idleAnimL.PushBack({ 5, 82, 50, 74 });
-	c1_idleAnimL.PushBack({ 65, 82, 50, 74 });
+	c1_idleAnimL.PushBack({ 5, 84, 50, 72 });
+	c1_idleAnimL.PushBack({ 65, 84, 50, 72 });
 	c1_idleAnimL.speed = 0.03f;
 
-	c1_idleAnimR.PushBack({ 5, 162, 50, 74 });
-	c1_idleAnimR.PushBack({ 65, 162, 50, 74 });
+	c1_idleAnimR.PushBack({ 5, 164, 50, 72 });
+	c1_idleAnimR.PushBack({ 65, 164, 50, 72 });
 	c1_idleAnimR.speed = 0.03f;
 
 	// c1 walk animation
-	c1_walkAnimD.PushBack({ 5, 0, 50, 74 });
-	c1_walkAnimD.PushBack({ 65, 0, 50, 74 });
-	c1_walkAnimD.PushBack({ 125, 0, 50, 74 });
+	c1_walkAnimD.PushBack({ 5, 2, 50, 72 });
+	c1_walkAnimD.PushBack({ 65, 2, 50, 72 });
+	c1_walkAnimD.PushBack({ 125, 2, 50, 72 });
 	c1_walkAnimD.speed = 0.1f;
 
-	c1_walkAnimU.PushBack({ 5, 240, 50, 74 });
-	c1_walkAnimU.PushBack({ 65, 240, 50, 74 });
-	c1_walkAnimU.PushBack({ 125, 240, 50, 74 });
+	c1_walkAnimU.PushBack({ 5, 242, 50, 72 });
+	c1_walkAnimU.PushBack({ 65, 242, 50, 72 });
+	c1_walkAnimU.PushBack({ 125, 242, 50, 72 });
 	c1_walkAnimU.speed = 0.1f;
 	
-	c1_walkAnimL.PushBack({ 5, 82, 50, 74 });
-	c1_walkAnimL.PushBack({ 65, 82, 50, 74 });
-	c1_walkAnimL.PushBack({ 125, 82, 50, 74 });
+	c1_walkAnimL.PushBack({ 5, 84, 50, 72 });
+	c1_walkAnimL.PushBack({ 65, 84, 50, 72 });
+	c1_walkAnimL.PushBack({ 125, 84, 50, 72 });
 	c1_walkAnimL.speed = 0.1f;
 
-	c1_walkAnimR.PushBack({ 5, 162, 50, 74 });
-	c1_walkAnimR.PushBack({ 65, 162, 50, 74 });
-	c1_walkAnimR.PushBack({ 125, 162, 50, 74 });
+	c1_walkAnimR.PushBack({ 5, 164, 50, 72 });
+	c1_walkAnimR.PushBack({ 65, 164, 50, 72 });
+	c1_walkAnimR.PushBack({ 125, 164, 50, 72 });
 	c1_walkAnimR.speed = 0.1f;
 
 	// c2 idle animation
-	c2_idleAnimD.PushBack({ 5, 0, 50, 74 });
-	c2_idleAnimD.PushBack({ 65, 0, 50, 74 });
+	c2_idleAnimD.PushBack({ 5, 2, 50, 72 });
+	c2_idleAnimD.PushBack({ 65, 2, 50, 72 });
 	c2_idleAnimD.speed = 0.03f;
 
-	c2_idleAnimU.PushBack({ 5, 240, 50, 74 });
-	c2_idleAnimU.PushBack({ 65, 240, 50, 74 });
+	c2_idleAnimU.PushBack({ 5, 242, 50, 72 });
+	c2_idleAnimU.PushBack({ 65, 242, 50, 72 });
 	c2_idleAnimU.speed = 0.03f;
 
-	c2_idleAnimL.PushBack({ 5, 82, 50, 74 });
-	c2_idleAnimL.PushBack({ 65, 82, 50, 74 });
+	c2_idleAnimL.PushBack({ 5, 84, 50, 72 });
+	c2_idleAnimL.PushBack({ 65, 84, 50, 72 });
 	c2_idleAnimL.speed = 0.03f;
 
-	c2_idleAnimR.PushBack({ 5, 162, 50, 74 });
-	c2_idleAnimR.PushBack({ 65, 162, 50, 74 });
+	c2_idleAnimR.PushBack({ 5, 164, 50, 72 });
+	c2_idleAnimR.PushBack({ 65, 164, 50, 72 });
 	c2_idleAnimR.speed = 0.03f;
 
 	// c2 walk animation
-	c2_walkAnimD.PushBack({ 5, 0, 50, 74 });
-	c2_walkAnimD.PushBack({ 65, 0, 50, 74 });
-	c2_walkAnimD.PushBack({ 125, 0, 50, 74 });
+	c2_walkAnimD.PushBack({ 5, 2, 50, 72 });
+	c2_walkAnimD.PushBack({ 65, 2, 50, 72 });
+	c2_walkAnimD.PushBack({ 125, 2, 50, 72 });
 	c2_walkAnimD.speed = 0.1f;
 
-	c2_walkAnimU.PushBack({ 5, 240, 50, 74 });
-	c2_walkAnimU.PushBack({ 65, 240, 50, 74 });
-	c2_walkAnimU.PushBack({ 125, 240, 50, 74 });
+	c2_walkAnimU.PushBack({ 5, 242, 50, 72 });
+	c2_walkAnimU.PushBack({ 65, 242, 50, 72 });
+	c2_walkAnimU.PushBack({ 125, 242, 50, 72 });
 	c2_walkAnimU.speed = 0.1f;
 
-	c2_walkAnimL.PushBack({ 5, 82, 50, 74 });
-	c2_walkAnimL.PushBack({ 65, 82, 50, 74 });
-	c2_walkAnimL.PushBack({ 125, 82, 50, 74 });
+	c2_walkAnimL.PushBack({ 5, 84, 50, 72 });
+	c2_walkAnimL.PushBack({ 65, 84, 50, 72 });
+	c2_walkAnimL.PushBack({ 125, 84, 50, 72 });
 	c2_walkAnimL.speed = 0.1f;
 
-	c2_walkAnimR.PushBack({ 5, 162, 50, 74 });
-	c2_walkAnimR.PushBack({ 65, 162, 50, 74 });
-	c2_walkAnimR.PushBack({ 125, 162, 50, 74 });
+	c2_walkAnimR.PushBack({ 5, 164, 50, 72 });
+	c2_walkAnimR.PushBack({ 65, 164, 50, 72 });
+	c2_walkAnimR.PushBack({ 125, 164, 50, 72 });
 	c2_walkAnimR.speed = 0.1f;
 }
 
@@ -179,6 +179,7 @@ void Player::InitCustomEntity(int npc)
 	currentAnimation = &idleAnimD;
 	look_dir = 1;
 	collision_active = true;
+	player_enabled = true;
 
 	walk_sound = app->audio->LoadFx("Assets/audio/fx/step_sound.wav");
 
@@ -210,7 +211,7 @@ void Player::InitCustomEntity(int npc)
 	b2BodyDef c0_body;
 	c0_body.type = b2_kinematicBody;
 	c0_body.fixedRotation = true;
-	c0_body.position.Set(position.x, position.y + 5);
+	c0_body.position.Set(position.x - 2, position.y);
 
 	c0.body = app->physics->world->CreateBody(&c0_body);
 
@@ -224,7 +225,7 @@ void Player::InitCustomEntity(int npc)
 	b2BodyDef c1_body;
 	c1_body.type = b2_kinematicBody;
 	c1_body.fixedRotation = true;
-	c1_body.position.Set(position.x, position.y + 10);
+	c1_body.position.Set(position.x - 4, position.y);
 
 	c1.body = app->physics->world->CreateBody(&c1_body);
 
@@ -236,9 +237,9 @@ void Player::InitCustomEntity(int npc)
 	c2.currentAnimation = &c2_idleAnimD;
 
 	b2BodyDef c2_body;
-	c2_body.type = b2_kinematicBody;
+	c2_body.type = b2_dynamicBody;
 	c2_body.fixedRotation = true;
-	c2_body.position.Set(position.x, position.y + 15);
+	c2_body.position.Set(position.x - 6, position.y);
 
 	c2.body = app->physics->world->CreateBody(&c2_body);
 
@@ -249,525 +250,523 @@ void Player::InitCustomEntity(int npc)
 // Called each loop iteration
 bool Player::PreUpdate()
 {
-	position.x = body->GetPosition().x;
-	position.y = body->GetPosition().y;
+	if (player_enabled)
+	{
+		position.x = body->GetPosition().x;
+		position.y = body->GetPosition().y;
 
-	// companions
-	c0.position.x = c0.body->GetPosition().x;
-	c0.position.y = c0.body->GetPosition().y;
-	c1.position.x = c1.body->GetPosition().x;
-	c1.position.y = c1.body->GetPosition().y;
-	c2.position.x = c2.body->GetPosition().x;
-	c2.position.y = c2.body->GetPosition().y;
+		// companions
+		c0.position.x = c0.body->GetPosition().x;
+		c0.position.y = c0.body->GetPosition().y;
+		c1.position.x = c1.body->GetPosition().x;
+		c1.position.y = c1.body->GetPosition().y;
+		c2.position.x = c2.body->GetPosition().x;
+		c2.position.y = c2.body->GetPosition().y;
+	}
 
 	return true;
 }
 
 void Player::HandleInput(float dt)
 {
-	// Get gamepad info
-	GamePad& pad = app->input->pads[0];
-
-	if (pad.up == true)
+	if (player_enabled)
 	{
-		app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
-	}
-	if (pad.down == true)
-	{
-		app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
-	}
-	if (pad.left == true)
-	{
-		app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
-	}
-	if (pad.right == true)
-	{
-		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
-	}
-	
-	if (pad.left_y < -0.5f)
-	{
-		app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
-	}
-	if (pad.left_y > 0.5f)
-	{
-		app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
-	}
-	if (pad.left_x < -0.5f)
-	{
-		app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
-	}
-	if (pad.left_x > 0.5f)
-	{
-		app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
-	}
-
-
-
-	float fixedSpeed = speed * dt;
-
-	if (app->scene->godmode)
-	{
-		fixedSpeed *= 2;
-		if (collision_active)
+		if (app->frontground->controller)
 		{
-			body->DestroyFixture(bodyFixture);
-			b2PolygonShape box;
-			box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
-			b2FixtureDef fixture;
-			fixture.shape = &box;
-			fixture.density = 1.0f;
-			fixture.friction = 0.0f;
-			bodyFixture = body->CreateFixture(&fixture);
-			bodyFixture->SetSensor(true);
-			bodyFixture->SetUserData((void*)2); // player without collision
+			// Get gamepad info
+			GamePad& pad = app->input->pads[0];
 
-			collision_active = false;
+			if (pad.left_y < -0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+			}
+			if (pad.left_y > 0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+			}
+			if (pad.left_x < -0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+			}
+			if (pad.left_x > 0.5f)
+			{
+				app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+			}
 		}
-	}
-	else
-	{
-		if (!collision_active)
+
+		float fixedSpeed = speed * dt;
+
+		if (app->frontground->godmode)
 		{
-			body->DestroyFixture(bodyFixture);
-			b2PolygonShape box;
-			box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
-			b2FixtureDef fixture;
-			fixture.shape = &box;
-			fixture.density = 1.0f;
-			fixture.friction = 0.0f;
-			bodyFixture = body->CreateFixture(&fixture);
-			bodyFixture->SetSensor(false);
-			bodyFixture->SetUserData((void*)1); // player collision
-
-			collision_active = true;
-		}
-	}
-
-	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
-	{
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
-		{
-			// move up
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			fixedSpeed *= 2;
+			if (collision_active)
 			{
-				body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
-				look_dir = 0;
+				body->DestroyFixture(bodyFixture);
+				b2PolygonShape box;
+				box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+				b2FixtureDef fixture;
+				fixture.shape = &box;
+				fixture.density = 1.0f;
+				fixture.friction = 0.0f;
+				bodyFixture = body->CreateFixture(&fixture);
+				bodyFixture->SetSensor(true);
+				bodyFixture->SetUserData((void*)1); // player without collision
 
-				if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
-				{
-					walkAnimU.Reset();
-					currentAnimation = &walkAnimU;
-				}
-			}
-			else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-			{
-				body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-
-				if (currentAnimation != &idleAnimU)
-				{
-					idleAnimU.Reset();
-					currentAnimation = &idleAnimU;
-				}
-			}
-
-			// move down
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			{
-				body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
-				look_dir = 1;
-
-				if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
-				{
-					walkAnimD.Reset();
-					currentAnimation = &walkAnimD;
-				}
-			}
-			else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-			{
-				body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-
-				if (currentAnimation != &idleAnimD)
-				{
-					idleAnimD.Reset();
-					currentAnimation = &idleAnimD;
-				}
+				collision_active = false;
 			}
 		}
 		else
 		{
-			body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-		}
-		
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
-		{
-			// move left
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			if (!collision_active)
 			{
-				body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
-				look_dir = 2;
+				body->DestroyFixture(bodyFixture);
+				b2PolygonShape box;
+				box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+				b2FixtureDef fixture;
+				fixture.shape = &box;
+				fixture.density = 1.0f;
+				fixture.friction = 0.0f;
+				bodyFixture = body->CreateFixture(&fixture);
+				bodyFixture->SetSensor(false);
+				bodyFixture->SetUserData((void*)1); // player collision
 
-				if (currentAnimation != &walkAnimL)
+				collision_active = true;
+			}
+		}
+
+		if (!app->menu->GetGameState())
+		{
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
+			{
+				// move up
+				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 				{
-					walkAnimL.Reset();
-					currentAnimation = &walkAnimL;
+					body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
+					look_dir = 0;
+
+					if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+					{
+						walkAnimU.Reset();
+						currentAnimation = &walkAnimU;
+					}
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+				{
+					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+					if (currentAnimation != &idleAnimU)
+					{
+						idleAnimU.Reset();
+						currentAnimation = &idleAnimU;
+					}
+				}
+
+				// move down
+				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+					body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
+					look_dir = 1;
+
+					if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+					{
+						walkAnimD.Reset();
+						currentAnimation = &walkAnimD;
+					}
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+				{
+					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+					if (currentAnimation != &idleAnimD)
+					{
+						idleAnimD.Reset();
+						currentAnimation = &idleAnimD;
+					}
 				}
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+			else
+			{
+				body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+			{
+				// move left
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				{
+					body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
+					look_dir = 2;
+
+					if (currentAnimation != &walkAnimL)
+					{
+						walkAnimL.Reset();
+						currentAnimation = &walkAnimL;
+					}
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+				{
+					body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+					if (currentAnimation != &idleAnimL)
+					{
+						idleAnimL.Reset();
+						currentAnimation = &idleAnimL;
+					}
+				}
+
+				//Move Right
+				if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				{
+					body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
+					look_dir = 3;
+
+					if (currentAnimation != &walkAnimR)
+					{
+						walkAnimR.Reset();
+						currentAnimation = &walkAnimR;
+					}
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+				{
+					body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+					if (currentAnimation != &idleAnimR)
+					{
+						idleAnimR.Reset();
+						currentAnimation = &idleAnimR;
+					}
+				}
+			}
+			else
 			{
 				body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-
-				if (currentAnimation != &idleAnimL)
-				{
-					idleAnimL.Reset();
-					currentAnimation = &idleAnimL;
-				}
 			}
 
-			//Move Right
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+
+			if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
 			{
-				body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
-				look_dir = 3;
-
-				if (currentAnimation != &walkAnimR)
+				walk_cd -= dt;
+				if (walk_cd <= 0)
 				{
-					walkAnimR.Reset();
-					currentAnimation = &walkAnimR;
+					app->audio->PlayFx(walk_sound);
+					walk_cd = 320;
 				}
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+
+
+			if (body->GetLinearVelocity().x == 0 && body->GetLinearVelocity().y == 0)
 			{
-				body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-
-				if (currentAnimation != &idleAnimR)
+				switch (look_dir)
 				{
-					idleAnimR.Reset();
-					currentAnimation = &idleAnimR;
+				case 0:
+					if (currentAnimation != &idleAnimU)
+					{
+						idleAnimU.Reset();
+						currentAnimation = &idleAnimU;
+					}
+					break;
+				case 1:
+					if (currentAnimation != &idleAnimD)
+					{
+						idleAnimD.Reset();
+						currentAnimation = &idleAnimD;
+					}
+					break;
+				case 2:
+					if (currentAnimation != &idleAnimL)
+					{
+						idleAnimL.Reset();
+						currentAnimation = &idleAnimL;
+					}
+					break;
+				case 3:
+					if (currentAnimation != &idleAnimR)
+					{
+						idleAnimR.Reset();
+						currentAnimation = &idleAnimR;
+					}
+					break;
 				}
 			}
+
+			currentAnimation->Update();
 		}
-		else
+
+		if (app->entities->freeze)
 		{
-			body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+			body->SetLinearVelocity({ 0, 0 });
 		}
-		
 
-		if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
+
+		// Charge character
+		/*if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
-			walk_cd -= dt;
-			if (walk_cd <= 0)
-			{
-				app->audio->PlayFx(walk_sound);
-				walk_cd = 320;
-			}
+			char_control = 0;
 		}
-
-		
-		if (body->GetLinearVelocity().x == 0 && body->GetLinearVelocity().y == 0)
+		else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		{
-			switch (look_dir)
-			{
-			case 0:
-				if (currentAnimation != &idleAnimU)
-				{
-					idleAnimU.Reset();
-					currentAnimation = &idleAnimU;
-				}
-				break;
-			case 1:
-				if (currentAnimation != &idleAnimD)
-				{
-					idleAnimD.Reset();
-					currentAnimation = &idleAnimD;
-				}
-				break;
-			case 2:
-				if (currentAnimation != &idleAnimL)
-				{
-					idleAnimL.Reset();
-					currentAnimation = &idleAnimL;
-				}
-				break;
-			case 3:
-				if (currentAnimation != &idleAnimR)
-				{
-					idleAnimR.Reset();
-					currentAnimation = &idleAnimR;
-				}
-				break;
-			}
+			char_control = 1;
 		}
-
-		currentAnimation->Update();
-	}
-
-
-	// Charge character
-	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		char_control = 0;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		char_control = 1;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		char_control = 2;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-	{
-		char_control = 3;
+		else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		{
+			char_control = 2;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+		{
+			char_control = 3;
+		}*/
 	}
 }
 
 // Called each loop iteration
 bool Player::Update(float dt)
 {
-	FollowPlayer(c0, c0, dt);
-	FollowPlayer(c1, c0, dt);
-	FollowPlayer(c2, c1, dt);
-
-	// c0 animation
-	if (abs(c0.body->GetLinearVelocity().x) > abs(c0.body->GetLinearVelocity().y))
+	if (player_enabled)
 	{
-		if (c0.body->GetLinearVelocity().x > 0)
+		FollowPlayer(c0, c0, dt);
+		FollowPlayer(c1, c0, dt);
+		FollowPlayer(c2, c1, dt);
+
+		// c0 animation
+		if (abs(c0.body->GetLinearVelocity().x) > abs(c0.body->GetLinearVelocity().y))
 		{
-			if (c0.currentAnimation != &c0_walkAnimR)
+			if (c0.body->GetLinearVelocity().x > 0)
 			{
-				c0_walkAnimR.Reset();
-				c0.currentAnimation = &c0_walkAnimR;
+				if (c0.currentAnimation != &c0_walkAnimR)
+				{
+					c0_walkAnimR.Reset();
+					c0.currentAnimation = &c0_walkAnimR;
+				}
+				c0.look_dir = 3;
 			}
-			c0.look_dir = 3;
+			else
+			{
+				if (c0.currentAnimation != &c0_walkAnimL)
+				{
+					c0_walkAnimL.Reset();
+					c0.currentAnimation = &c0_walkAnimL;
+				}
+				c0.look_dir = 2;
+			}
+		}
+		else if (abs(c0.body->GetLinearVelocity().x) < abs(c0.body->GetLinearVelocity().y))
+		{
+			if (c0.body->GetLinearVelocity().y > 0)
+			{
+				if (c0.currentAnimation != &c0_walkAnimD)
+				{
+					c0_walkAnimD.Reset();
+					c0.currentAnimation = &c0_walkAnimD;
+				}
+				c0.look_dir = 1;
+			}
+			else
+			{
+				if (c0.currentAnimation != &c0_walkAnimU)
+				{
+					c0_walkAnimU.Reset();
+					c0.currentAnimation = &c0_walkAnimU;
+				}
+				c0.look_dir = 0;
+			}
 		}
 		else
 		{
-			if (c0.currentAnimation != &c0_walkAnimL)
+			switch (c0.look_dir)
 			{
-				c0_walkAnimL.Reset();
-				c0.currentAnimation = &c0_walkAnimL;
+			case 0:
+				if (c0.currentAnimation != &c0_idleAnimU)
+				{
+					c0_idleAnimU.Reset();
+					c0.currentAnimation = &c0_idleAnimU;
+				}
+				break;
+			case 1:
+				if (c0.currentAnimation != &c0_idleAnimD)
+				{
+					c0_idleAnimD.Reset();
+					c0.currentAnimation = &c0_idleAnimD;
+				}
+				break;
+			case 2:
+				if (c0.currentAnimation != &c0_idleAnimL)
+				{
+					c0_idleAnimL.Reset();
+					c0.currentAnimation = &c0_idleAnimL;
+				}
+				break;
+			case 3:
+				if (c0.currentAnimation != &c0_idleAnimR)
+				{
+					c0_idleAnimR.Reset();
+					c0.currentAnimation = &c0_idleAnimR;
+				}
+				break;
 			}
-			c0.look_dir = 2;
 		}
-	}
-	else if (abs(c0.body->GetLinearVelocity().x) < abs(c0.body->GetLinearVelocity().y))
-	{
-		if (c0.body->GetLinearVelocity().y > 0)
+
+		c0.currentAnimation->Update();
+
+		// c1 animation
+		if (abs(c1.body->GetLinearVelocity().x) > abs(c1.body->GetLinearVelocity().y))
 		{
-			if (c0.currentAnimation != &c0_walkAnimD)
+			if (c1.body->GetLinearVelocity().x > 0)
 			{
-				c0_walkAnimD.Reset();
-				c0.currentAnimation = &c0_walkAnimD;
+				if (c1.currentAnimation != &c1_walkAnimR)
+				{
+					c1_walkAnimR.Reset();
+					c1.currentAnimation = &c1_walkAnimR;
+				}
+				c1.look_dir = 3;
 			}
-			c0.look_dir = 1;
+			else
+			{
+				if (c1.currentAnimation != &c1_walkAnimL)
+				{
+					c1_walkAnimL.Reset();
+					c1.currentAnimation = &c1_walkAnimL;
+				}
+				c1.look_dir = 2;
+			}
+		}
+		else if (abs(c1.body->GetLinearVelocity().x) < abs(c1.body->GetLinearVelocity().y))
+		{
+			if (c1.body->GetLinearVelocity().y > 0)
+			{
+				if (c1.currentAnimation != &c1_walkAnimD)
+				{
+					c1_walkAnimD.Reset();
+					c1.currentAnimation = &c1_walkAnimD;
+				}
+				c1.look_dir = 1;
+			}
+			else
+			{
+				if (c1.currentAnimation != &c1_walkAnimU)
+				{
+					c1_walkAnimU.Reset();
+					c1.currentAnimation = &c1_walkAnimU;
+				}
+				c1.look_dir = 0;
+			}
 		}
 		else
 		{
-			if (c0.currentAnimation != &c0_walkAnimU)
+			switch (c1.look_dir)
 			{
-				c0_walkAnimU.Reset();
-				c0.currentAnimation = &c0_walkAnimU;
+			case 0:
+				if (c1.currentAnimation != &c1_idleAnimU)
+				{
+					c1_idleAnimU.Reset();
+					c1.currentAnimation = &c1_idleAnimU;
+				}
+				break;
+			case 1:
+				if (c1.currentAnimation != &c1_idleAnimD)
+				{
+					c1_idleAnimD.Reset();
+					c1.currentAnimation = &c1_idleAnimD;
+				}
+				break;
+			case 2:
+				if (c1.currentAnimation != &c1_idleAnimL)
+				{
+					c1_idleAnimL.Reset();
+					c1.currentAnimation = &c1_idleAnimL;
+				}
+				break;
+			case 3:
+				if (c1.currentAnimation != &c1_idleAnimR)
+				{
+					c1_idleAnimR.Reset();
+					c1.currentAnimation = &c1_idleAnimR;
+				}
+				break;
 			}
-			c0.look_dir = 0;
 		}
-	}
-	else
-	{
-		switch (c0.look_dir)
+
+		c1.currentAnimation->Update();
+
+		// c2 animation
+		if (abs(c2.body->GetLinearVelocity().x) > abs(c2.body->GetLinearVelocity().y))
 		{
-		case 0:
-			if (c0.currentAnimation != &c0_idleAnimU)
+			if (c2.body->GetLinearVelocity().x > 0)
 			{
-				c0_idleAnimU.Reset();
-				c0.currentAnimation = &c0_idleAnimU;
+				if (c2.currentAnimation != &c2_walkAnimR)
+				{
+					c2_walkAnimR.Reset();
+					c2.currentAnimation = &c2_walkAnimR;
+				}
+				c2.look_dir = 3;
 			}
-			break;
-		case 1:
-			if (c0.currentAnimation != &c0_idleAnimD)
+			else
 			{
-				c0_idleAnimD.Reset();
-				c0.currentAnimation = &c0_idleAnimD;
+				if (c2.currentAnimation != &c2_walkAnimL)
+				{
+					c2_walkAnimL.Reset();
+					c2.currentAnimation = &c2_walkAnimL;
+				}
+				c2.look_dir = 2;
 			}
-			break;
-		case 2:
-			if (c0.currentAnimation != &c0_idleAnimL)
-			{
-				c0_idleAnimL.Reset();
-				c0.currentAnimation = &c0_idleAnimL;
-			}
-			break;
-		case 3:
-			if (c0.currentAnimation != &c0_idleAnimR)
-			{
-				c0_idleAnimR.Reset();
-				c0.currentAnimation = &c0_idleAnimR;
-			}
-			break;
 		}
-	}
-
-	c0.currentAnimation->Update();
-
-	// c1 animation
-	if (abs(c1.body->GetLinearVelocity().x) > abs(c1.body->GetLinearVelocity().y))
-	{
-		if (c1.body->GetLinearVelocity().x > 0)
+		else if (abs(c2.body->GetLinearVelocity().x) < abs(c2.body->GetLinearVelocity().y))
 		{
-			if (c1.currentAnimation != &c1_walkAnimR)
+			if (c2.body->GetLinearVelocity().y > 0)
 			{
-				c1_walkAnimR.Reset();
-				c1.currentAnimation = &c1_walkAnimR;
+				if (c2.currentAnimation != &c2_walkAnimD)
+				{
+					c2_walkAnimD.Reset();
+					c2.currentAnimation = &c2_walkAnimD;
+				}
+				c2.look_dir = 1;
 			}
-			c1.look_dir = 3;
+			else
+			{
+				if (c2.currentAnimation != &c2_walkAnimU)
+				{
+					c2_walkAnimU.Reset();
+					c2.currentAnimation = &c2_walkAnimU;
+				}
+				c2.look_dir = 0;
+			}
 		}
 		else
 		{
-			if (c1.currentAnimation != &c1_walkAnimL)
+			switch (c2.look_dir)
 			{
-				c1_walkAnimL.Reset();
-				c1.currentAnimation = &c1_walkAnimL;
+			case 0:
+				if (c2.currentAnimation != &c2_idleAnimU)
+				{
+					c2_idleAnimU.Reset();
+					c2.currentAnimation = &c2_idleAnimU;
+				}
+				break;
+			case 1:
+				if (c2.currentAnimation != &c2_idleAnimD)
+				{
+					c2_idleAnimD.Reset();
+					c2.currentAnimation = &c2_idleAnimD;
+				}
+				break;
+			case 2:
+				if (c2.currentAnimation != &c2_idleAnimL)
+				{
+					c2_idleAnimL.Reset();
+					c2.currentAnimation = &c2_idleAnimL;
+				}
+				break;
+			case 3:
+				if (c2.currentAnimation != &c2_idleAnimR)
+				{
+					c2_idleAnimR.Reset();
+					c2.currentAnimation = &c2_idleAnimR;
+				}
+				break;
 			}
-			c1.look_dir = 2;
 		}
-	}
-	else if (abs(c1.body->GetLinearVelocity().x) < abs(c1.body->GetLinearVelocity().y))
-	{
-		if (c1.body->GetLinearVelocity().y > 0)
-		{
-			if (c1.currentAnimation != &c1_walkAnimD)
-			{
-				c1_walkAnimD.Reset();
-				c1.currentAnimation = &c1_walkAnimD;
-			}
-			c1.look_dir = 1;
-		}
-		else
-		{
-			if (c1.currentAnimation != &c1_walkAnimU)
-			{
-				c1_walkAnimU.Reset();
-				c1.currentAnimation = &c1_walkAnimU;
-			}
-			c1.look_dir = 0;
-		}
-	}
-	else
-	{
-		switch (c1.look_dir)
-		{
-		case 0:
-			if (c1.currentAnimation != &c1_idleAnimU)
-			{
-				c1_idleAnimU.Reset();
-				c1.currentAnimation = &c1_idleAnimU;
-			}
-			break;
-		case 1:
-			if (c1.currentAnimation != &c1_idleAnimD)
-			{
-				c1_idleAnimD.Reset();
-				c1.currentAnimation = &c1_idleAnimD;
-			}
-			break;
-		case 2:
-			if (c1.currentAnimation != &c1_idleAnimL)
-			{
-				c1_idleAnimL.Reset();
-				c1.currentAnimation = &c1_idleAnimL;
-			}
-			break;
-		case 3:
-			if (c1.currentAnimation != &c1_idleAnimR)
-			{
-				c1_idleAnimR.Reset();
-				c1.currentAnimation = &c1_idleAnimR;
-			}
-			break;
-		}
-	}
 
-	c1.currentAnimation->Update();
-
-	// c2 animation
-	if (abs(c2.body->GetLinearVelocity().x) > abs(c2.body->GetLinearVelocity().y))
-	{
-		if (c2.body->GetLinearVelocity().x > 0)
-		{
-			if (c2.currentAnimation != &c2_walkAnimR)
-			{
-				c2_walkAnimR.Reset();
-				c2.currentAnimation = &c2_walkAnimR;
-			}
-			c2.look_dir = 3;
-		}
-		else
-		{
-			if (c2.currentAnimation != &c2_walkAnimL)
-			{
-				c2_walkAnimL.Reset();
-				c2.currentAnimation = &c2_walkAnimL;
-			}
-			c2.look_dir = 2;
-		}
+		c2.currentAnimation->Update();
 	}
-	else if (abs(c2.body->GetLinearVelocity().x) < abs(c2.body->GetLinearVelocity().y))
-	{
-		if (c2.body->GetLinearVelocity().y > 0)
-		{
-			if (c2.currentAnimation != &c2_walkAnimD)
-			{
-				c2_walkAnimD.Reset();
-				c2.currentAnimation = &c2_walkAnimD;
-			}
-			c2.look_dir = 1;
-		}
-		else
-		{
-			if (c2.currentAnimation != &c2_walkAnimU)
-			{
-				c2_walkAnimU.Reset();
-				c2.currentAnimation = &c2_walkAnimU;
-			}
-			c2.look_dir = 0;
-		}
-	}
-	else
-	{
-		switch (c2.look_dir)
-		{
-		case 0:
-			if (c2.currentAnimation != &c2_idleAnimU)
-			{
-				c2_idleAnimU.Reset();
-				c2.currentAnimation = &c2_idleAnimU;
-			}
-			break;
-		case 1:
-			if (c2.currentAnimation != &c2_idleAnimD)
-			{
-				c2_idleAnimD.Reset();
-				c2.currentAnimation = &c2_idleAnimD;
-			}
-			break;
-		case 2:
-			if (c2.currentAnimation != &c2_idleAnimL)
-			{
-				c2_idleAnimL.Reset();
-				c2.currentAnimation = &c2_idleAnimL;
-			}
-			break;
-		case 3:
-			if (c2.currentAnimation != &c2_idleAnimR)
-			{
-				c2_idleAnimR.Reset();
-				c2.currentAnimation = &c2_idleAnimR;
-			}
-			break;
-		}
-	}
-
-	c2.currentAnimation->Update();
 
 	return true;
 }
@@ -775,38 +774,48 @@ bool Player::Update(float dt)
 // Called each loop iteration
 bool Player::Draw()
 {
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
-	SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
-	SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
-	 
-	if (!app->scene->GetStartScreenState())
+	if (plan_to_delete)
 	{
+		app->physics->world->DestroyBody(body);
+		app->physics->world->DestroyBody(c0.body);
+		app->physics->world->DestroyBody(c1.body);
+		app->physics->world->DestroyBody(c2.body);
+		plan_to_delete = false;
+	}
+
+	if (player_enabled)
+	{
+		SDL_Rect rect = currentAnimation->GetCurrentFrame();
+		SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
+		SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
+		SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
+
+
 		switch (char_control)
 		{
 		case 0:
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 			break;
 		case 1:
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 			break;
 		case 2:
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 			break;
 		case 3:
-			app->render->DrawTexture(app->tex->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			app->render->DrawTexture(app->tex->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			app->render->DrawTexture(app->tex->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			app->render->DrawTexture(app->tex->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
+			app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
+			app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
+			app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 			break;
 		}
 	}
@@ -853,6 +862,19 @@ fPoint Player::GetPlayerPosition()
 {
 	return position;
 }
+fPoint Player::GetCompanion0Position()
+{
+	return c0.position;
+
+}
+fPoint Player::GetCompanion1Position()
+{
+	return c1.position;
+}
+fPoint Player::GetCompanion2Position()
+{
+	return c2.position;
+}
 
 void Player::SetPlayerPosition(int new_x, int new_y)
 {
@@ -863,10 +885,65 @@ void Player::SetPlayerPosition(int new_x, int new_y)
 	body->ApplyForceToCenter({ 0, 1 }, true);
 }
 
+void Player::SetCompanion0Position(int new_x, int new_y)
+{
+	c0.position.x = new_x;
+	c0.position.y = new_y;
+
+	c0.body->SetTransform({ c0.position.x, c0.position.y }, c0.body->GetAngle());
+	c0.body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion1Position(int new_x, int new_y)
+{
+	c1.position.x = new_x;
+	c1.position.y = new_y;
+
+	c1.body->SetTransform({ c1.position.x, c1.position.y }, c1.body->GetAngle());
+	c1.body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion2Position(int new_x, int new_y)
+{
+	c2.position.x = new_x;
+	c2.position.y = new_y;
+
+	c2.body->SetTransform({ c2.position.x, c2.position.y }, c2.body->GetAngle());
+	c2.body->ApplyForceToCenter({ 0, 1 }, true);
+}
+
+void Player::SetCompanion0LookDir(int lookDir)
+{
+	c0.look_dir = lookDir;
+}
+
+void Player::SetCompanion1LookDir(int lookDir)
+{
+	c1.look_dir = lookDir;
+}
+
+void Player::SetCompanion2LookDir(int lookDir)
+{
+	c2.look_dir = lookDir;
+}
+
+void Player::SetPlayerLookDir(int lookDir)
+{
+	look_dir = lookDir;
+}
+
+bool Player::DeleteEntity()
+{
+	player_enabled = false;
+	plan_to_delete = true;
+
+	return true;
+}
+
 void Player::ImpulsePlayer()
 {
-	body->SetLinearVelocity({ body->GetLinearVelocity().x , 0 });
-	body->ApplyForceToCenter({ 0, -25.0f * app->GetDT() }, true);
+	body->SetLinearVelocity({ 0, 0 });
+	body->ApplyForceToCenter({ -250.0f * app->GetDT(), 0 }, true);
 }
 
 int Player::GetCharControl()
@@ -924,7 +1001,7 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 	}
 
 
-	PathFinding* path = new PathFinding();
+	PathFinding* path = new PathFinding(true);
 	float distx;
 	float disty;
 
@@ -967,7 +1044,7 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 		}
 	}
 
-	if (app->scene->godmode)
+	if (app->frontground->godmode)
 	{
 		distx *= 2;
 		disty *= 2;

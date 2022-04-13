@@ -3,13 +3,15 @@
 #include "Render.h"
 #include "Scene.h"
 #include "Entities.h"
+#include "Combat_Scene.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #define VSYNC true
 
-Render::Render() : Module()
+Render::Render(bool enabled) : Module(enabled)
 {
 	name.Create("renderer");
 	background.r = 0;
@@ -72,14 +74,19 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->entities->entities.start)
+	if (app->entities->entities.start && app->scene->Disabled() && app->combat_scene->Disabled())
 	{
 		Entity* entity = app->entities->GetPlayer();
 		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
 		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
 	}
+	else if (app->combat_scene->Enabled())
+	{
+		camera.x = 0;
+		camera.y = 0;
+	}
 
-	if (app->scene->current_level == 1)
+	if (app->frontground->current_level == 1)
 	{
 		if (camera.x > 0)
 		{
@@ -99,7 +106,7 @@ bool Render::Update(float dt)
 			camera.y = -500;
 		}
 	}
-	else if (app->scene->current_level == 2)
+	else if (app->frontground->current_level == 2)
 	{
 		if (camera.x > 0)
 		{
@@ -120,7 +127,7 @@ bool Render::Update(float dt)
 		}
 
 	}
-	else if (app->scene->current_level == 3)
+	else if (app->frontground->current_level == 3)
 	{
 		if (camera.x > 0)
 		{
@@ -140,11 +147,11 @@ bool Render::Update(float dt)
 			camera.y = -2000;
 		}
 	}
-	else if (app->scene->current_level == 4)
+	else if (app->frontground->current_level == 4)
 	{
-		if (camera.x > -120)
+		if (camera.x > 0)
 		{
-			camera.x = -120;
+			camera.x = 0;
 		}
 		else if (camera.x < -1700)
 		{
@@ -160,11 +167,11 @@ bool Render::Update(float dt)
 			camera.y = -2400;
 		}
 	}
-	else if (app->scene->current_level == 5)
+	else if (app->frontground->current_level == 5)
 	{
-		if (camera.x > -0)
+		if (camera.x > 0)
 		{
-			camera.x = -0;
+			camera.x = 0;
 		}
 		else if (camera.x < -2300)
 		{
@@ -180,11 +187,11 @@ bool Render::Update(float dt)
 			camera.y = -1320;
 		}
 	}
-	else if (app->scene->current_level == 6)
+	else if (app->frontground->current_level == 6)
 	{
-	if (camera.x > -0)
+	if (camera.x > 0)
 	{
-		camera.x = -0;
+		camera.x = 0;
 	}
 	else if (camera.x < -700)
 	{
@@ -200,15 +207,15 @@ bool Render::Update(float dt)
 		camera.y = -970;
 	}
 	}
-	else if (app->scene->current_level == 7)
+	else if (app->frontground->current_level == 7)
 	{
-	if (camera.x > -0)
+	if (camera.x > 0)
 	{
-		camera.x = -0;
+		camera.x = 0;
 	}
-	else if (camera.x < -200)
+	else if (camera.x < -830)
 	{
-		camera.x = -200;
+		camera.x = -830;
 	}
 
 	if (camera.y > 0)
@@ -320,7 +327,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		//LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
 	}
 

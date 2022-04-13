@@ -20,7 +20,7 @@ NPC::NPC() : Entity()
 	idleAnim_renato.speed = 0.03f;
 
 	idleAnim_vendedores.PushBack({ 0, 0, 64, 80 });
-	idleAnim_vendedores.PushBack({ 0, 80, 64, 80 });
+	idleAnim_vendedores.PushBack({ 64, 0, 64, 80 });
 	idleAnim_vendedores.speed = 0.03f;
 }
 
@@ -66,7 +66,7 @@ void NPC::InitCustomEntity(int npc)
 	box.SetAsBox(PIXELS_TO_METERS((w * 3)), PIXELS_TO_METERS(h * 3), b2Vec2(0, 0), 0);
 	fixture.isSensor = true;
 	b2Fixture* sensorFixture = body->CreateFixture(&fixture);
-	sensorFixture->SetUserData((void*)2); // NPC sensor
+	sensorFixture->SetUserData((void*)(npc_type + 1)); // NPC sensor
 }
 
 // Called each loop iteration
@@ -81,10 +81,9 @@ bool NPC::PreUpdate()
 // Called each loop iteration
 bool NPC::Update(float dt)
 {
-	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+	if (!app->menu->GetGameState())
 	{
 		currentAnimation->Update();
-		LOG("%d", npc_type);
 	}
 
 	return true;
@@ -95,22 +94,23 @@ bool NPC::Draw()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	 
-	if (!app->scene->GetStartScreenState())
+	
+	switch (npc_type)
 	{
-		switch (npc_type)
-		{
-		case 1: app->render->DrawTexture(app->tex->renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 40.0f), &rect);
-			break;
-		case 2: app->render->DrawTexture(app->tex->curandero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
-			break;
-		case 3: app->render->DrawTexture(app->tex->herrero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
-			break;
-		case 4: app->render->DrawTexture(app->tex->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
-			break;
-		default:
-			break;
-		}
+	case 1: app->render->DrawTexture(app->entities->renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 40.0f), &rect);
+		break;
+	case 2: app->render->DrawTexture(app->entities->curandero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		break;
+	case 3: app->render->DrawTexture(app->entities->herrero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		break;
+	case 4: app->render->DrawTexture(app->entities->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		break;
+	case 5: app->render->DrawTexture(app->entities->aldeano, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		break;
+	default:
+		break;
 	}
+	
 	
 	return true;
 }

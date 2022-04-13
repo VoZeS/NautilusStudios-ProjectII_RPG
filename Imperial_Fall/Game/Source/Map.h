@@ -116,13 +116,15 @@ class Map : public Module
 {
 public:
 
-    Map();
+    Map(bool enabled);
 
     // Destructor
     virtual ~Map();
 
     // Called before render is available
     bool Awake(pugi::xml_node& conf);
+
+	bool Start();
 
     // Called each loop iteration
     void Draw();
@@ -169,6 +171,8 @@ public:
 	MapData mapData;
 
 	bool collision_loaded;
+
+	bool GetEnemyStateXml(int index);
 
 private:
 

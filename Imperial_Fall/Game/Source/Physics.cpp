@@ -10,10 +10,16 @@
 #include "Entities.h"
 #include "Player.h"
 #include "Enemies.h"
-#include "Coins.h"
-#include "Hearts.h"
 #include "Menu.h"
 #include "Frontground.h"
+#include "Town1.h"
+#include "Town2.h"
+#include "Forest.h"
+#include "Battlefield.h"
+#include "Dungeon.h"
+#include "Outside_Castle.h"
+#include "Inside_Castle.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,7 +30,7 @@
 #pragma comment( lib, "Source/External/Box2D/libx86/Release/Box2D.lib" )
 #endif
 
-Physics::Physics() : Module()
+Physics::Physics(bool enabled) : Module(enabled)
 {
 	name.Create("physics");
 	debug = false;
@@ -51,9 +57,6 @@ bool Physics::Start()
 	on_collosion = 0;
 
 	save_sound = app->audio->LoadFx("Assets/audio/fx/save_sound.wav");;
-	water_well_sound = app->audio->LoadFx("Assets/audio/fx/water_well_sound.wav");;
-	level_complete_sound = app->audio->LoadFx("Assets/audio/fx/level_complete_sound.wav");
-	death_sound = app->audio->LoadFx("Assets/audio/fx/death_sound.wav");
 
 	return true;
 }
@@ -62,10 +65,9 @@ bool Physics::Start()
 bool Physics::PreUpdate()
 {
 	
-	if (!app->menu->GetGameState() && !app->scene->GetStartScreenState())
+	if (!app->menu->GetGameState())
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
-
 	}
 	else
 	{
@@ -81,28 +83,6 @@ bool Physics::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		debug = !debug;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-	{
-		if (inScareCrow)
-		{
-			app->SaveGameRequest();
-			app->audio->PlayFx(save_sound);
-		}
-		else if (inStatue)
-		{
-			app->scene->PassLevel(app->scene->current_level + 1);
-			app->frontground->SetPressE_Hide(true);
-			app->audio->PlayFx(level_complete_sound);
-			inStatue = false;
-		}
-		else if (inWaterWell)
-		{
-			app->audio->PlayFx(water_well_sound);
-			app->frontground->SetPressE_Hide(true);
-			inWaterWell = false;
-		}
 	}
 
 	return true;
@@ -132,42 +112,37 @@ bool Physics::PostUpdate()
 					
 					switch ((int)userData)
 					{
-					case 0: // default
-						c_r = 0;
-						c_g = 0;
-						c_b = 255;
-						break;
 					case 1: // player
 						c_r = 255;
 						c_g = 128;
 						c_b = 0;
 						break;
-					case 2: // NPC
+					case 2: // renato interaction
 						c_r = 128;
 						c_g = 0;
 						c_b = 255;
 						break;
-					case 3:
+					case 3: // curandero interaction
 						c_r = 0;
 						c_g = 255;
 						c_b = 0;
 						break;
-					case 4:
+					case 4: // herrero interaction
 						c_r = 255;
 						c_g = 0;
 						c_b = 0;
 						break;
-					case 5:
+					case 5: // granjero interaction
 						c_r = 255;
 						c_g = 200;
 						c_b = 0;
 						break;
-					case 6:
+					case 6: // aldeano interaction
 						c_r = 200;
 						c_g = 200;
 						c_b = 200;
 						break;
-					case 7:
+					case 7: // enemies interaction
 						c_r = 100;
 						c_g = 100;
 						c_b = 100;
@@ -183,6 +158,11 @@ bool Physics::PostUpdate()
 						c_b = 50;
 						break;
 					case 10:
+						c_r = 100;
+						c_g = 100;
+						c_b = 100;
+						break;
+					default:
 						c_r = 100;
 						c_g = 100;
 						c_b = 100;
@@ -250,7 +230,7 @@ bool Physics::CleanMapBoxes()
 	{
 		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 		{
-			if ((int)f->GetUserData() >= 3)
+			if ((int)f->GetUserData() >= 2)
 			{
 				b->DestroyFixture(f);
 				world->DestroyBody(b);
@@ -266,386 +246,253 @@ void Physics::BeginContact(b2Contact* contact)
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
 
-	if ((int)fixtureUserDataA == 4)
-	{
-		if ((int)fixtureUserDataB == 4)
-		{
-			ListItem<Entity*>* item;
-			Entity* entity = NULL;
-			Ground_Enemies* g = NULL;
-
-			for (item = app->entities->entities.start; item != NULL; item = item->next)
-			{
-				entity = item->data;
-
-				if (entity->entity_type == ENTITY_TYPE::GROUND_ENEMY)
-				{
-					entity->SwitchDirection();
-				}
-			}
-		}
-	}
-	else if ((int)fixtureUserDataA == 1)
+	if ((int)fixtureUserDataA == 1)
 	{
 		if ((int)fixtureUserDataB == 2)
 		{
-			// npc contact
-			app->frontground->SetPressE_Hide(false);
+			// renato contact
+			app->dialog->SetPressE_Hide(false);
+			inRenato = true;
 		}
-		else if ((int)fixtureUserDataB == 4 && !app->scene->godmode)
+		else if ((int)fixtureUserDataB == 3)
 		{
-			// player death
-			Entity* entity = app->entities->GetPlayer();
-			entity->PlayerDeath();
-			app->audio->PlayFx(death_sound);
+			// curandero contact
+			app->dialog->SetPressE_Hide(false);
+			inCurandero = true;
+		}
+		else if ((int)fixtureUserDataB == 4)
+		{
+			// herrero contact
+			app->dialog->SetPressE_Hide(false);
+			inHerrero = true;
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
-			// save level
-			app->frontground->SetPressE_Hide(false);
-			inScareCrow = true;
+			// granjero contact
+			app->dialog->SetPressE_Hide(false);
+			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataB == 6)
 		{
-			// complete level
-			if (!statueUsed)
-			{
-				app->frontground->SetPressE_Hide(false);
-				inStatue = true;
-			}
+			// aldeano contact
+			app->dialog->SetPressE_Hide(false);
+			inAldeano = true;
 		}
 		else if ((int)fixtureUserDataB == 7)
 		{
-			// water well
-			app->frontground->SetPressE_Hide(false);
-			inWaterWell = true;
-		}
-		else if ((int)fixtureUserDataB == 8)
-		{
-			// coin
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickCoin(entity->GetPlayerPosition());
-		}
-		else if ((int)fixtureUserDataB == 10)
-		{
-			// hearts
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickHeart(entity->GetPlayerPosition());
+			// enemy contact
+			app->entities->StartCombat();
 		}
 
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataB == 12)
 		{
 			// town_1 --> town_2
-			app->frontground->town1_to_town2 = true;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 21)
 		{
 			// town_2 --> town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = true;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::TOWN2_TOWN1;
 
-			app->scene->PassLevel(1);
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 23)
 		{
 			// town_2 --> forest
-			app->scene->PassLevel(3);
+			app->frontground->move_to = MOVE_TO::TOWN2_FOREST;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 32)
 		{
 			// forest --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = true;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::FOREST_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 24)
 		{
 			// town_2 --> battlefield
-			app->scene->PassLevel(4);
+			app->frontground->move_to = MOVE_TO::TOWN2_BATTLEFIELD;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 42)
 		{
 			// battlefield --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = true;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::BATTLEFIELD_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 25)
 		{
 			// town_2 --> dungeon
-			app->scene->PassLevel(5);
+			app->frontground->move_to = MOVE_TO::TOWN2_DUNGEON;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 52)
 		{
 			// dungeon --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = true;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::DUNGEON_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 16)
 		{
 			// town_1 --> outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = true;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_OUTSIDE;
 
-			app->scene->PassLevel(6);
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 61)
 		{
 			// outside_castle -->  town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = true;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
-			app->scene->PassLevel(1);
+			app->frontground->move_to = MOVE_TO::OUTSIDE_TOWN1;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 67)
 		{
 			// outside_castle --> inside_castle
-			app->scene->PassLevel(7);
+			app->frontground->move_to = MOVE_TO::OUTSIDE_INSIDE;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 76)
 		{
 			// inside_castle -->  outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = true;
+			app->frontground->move_to = MOVE_TO::INSIDE_OUTSIDE;
 
-			app->scene->PassLevel(6);
+			app->frontground->FadeToBlack();
 		}
 	}
 
+	
 	if ((int)fixtureUserDataB == 1)
 	{
 		if ((int)fixtureUserDataA == 2)
 		{
-			// npc contact
-			app->frontground->SetPressE_Hide(false);
+			// renato contact
+			app->dialog->SetPressE_Hide(false);
+			inRenato = true;
 		}
-		else if ((int)fixtureUserDataA == 4 && !app->scene->godmode)
+		else if ((int)fixtureUserDataA == 3)
 		{
-			// player death
-			Entity* entity = app->entities->GetPlayer();
-			entity->PlayerDeath();
-			app->audio->PlayFx(death_sound);
+			// curandero contact
+			app->dialog->SetPressE_Hide(false);
+			inCurandero = true;
+		}
+		else if ((int)fixtureUserDataA == 4)
+		{
+			// herrero contact
+			app->dialog->SetPressE_Hide(false);
+			inHerrero = true;
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
-			// save level
-			app->frontground->SetPressE_Hide(false);
-			inScareCrow = true;
+			// granjero contact
+			app->dialog->SetPressE_Hide(false);
+			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataA == 6)
 		{
-			// complete level
-			if (!statueUsed)
-			{
-				app->frontground->SetPressE_Hide(false);
-				inStatue = true;
-			}
+			// aldeano contact
+			app->dialog->SetPressE_Hide(false);
+			inAldeano = true;
 		}
 		else if ((int)fixtureUserDataA == 7)
 		{
-			// water well
-			app->frontground->SetPressE_Hide(false);
-			inWaterWell = true;
-		}
-		else if ((int)fixtureUserDataA == 8)
-		{
-			// coin
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickCoin(entity->GetPlayerPosition());
-		}
-		else if ((int)fixtureUserDataA == 10)
-		{
-			// hearts
-			Entity* entity = app->entities->GetPlayer();
-			app->entities->PickHeart(entity->GetPlayerPosition());
+			// enemy contact
+			app->entities->StartCombat();
 		}
 		// --------------------------------------------------------------- PASS LEVELS
-		else if ((int)fixtureUserDataB == 12)
+		else if ((int)fixtureUserDataA == 12)
 		{
 			// town_1 --> town_2
-			app->frontground->town1_to_town2 = true;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 21)
+		else if ((int)fixtureUserDataA == 21)
 		{
 			// town_2 --> town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = true;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::TOWN2_TOWN1;
 
-			app->scene->PassLevel(1);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 23)
+		else if ((int)fixtureUserDataA == 23)
 		{
 			// town_2 --> forest
-			app->scene->PassLevel(3);
+			app->frontground->move_to = MOVE_TO::TOWN2_FOREST;
+
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 32)
+		else if ((int)fixtureUserDataA == 32)
 		{
 			// forest --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = true;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::FOREST_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 24)
+		else if ((int)fixtureUserDataA == 24)
 		{
 			// town_2 --> battlefield
-			app->scene->PassLevel(4);
+			app->frontground->move_to = MOVE_TO::TOWN2_BATTLEFIELD;
+
+			app->frontground->FadeToBlack();
 		}
 		else if ((int)fixtureUserDataB == 42)
 		{
 			// battlefield --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = true;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::BATTLEFIELD_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 25)
+		else if ((int)fixtureUserDataA == 25)
 		{
 			// town_2 --> dungeon
-			app->scene->PassLevel(5);
+			app->frontground->move_to = MOVE_TO::TOWN2_DUNGEON;
+
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 52)
+		else if ((int)fixtureUserDataA == 52)
 		{
 			// dungeon --> town_2
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = true;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::DUNGEON_TOWN2;
 
-			app->scene->PassLevel(2);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 16)
+		else if ((int)fixtureUserDataA == 16)
 		{
 			// town_1 --> outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = true;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::TOWN1_OUTSIDE;
 
-			app->scene->PassLevel(6);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 61)
+		else if ((int)fixtureUserDataA == 61)
 		{
 			// outside_castle -->  town_1
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = true;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = false;
+			app->frontground->move_to = MOVE_TO::OUTSIDE_TOWN1;
 
-			app->scene->PassLevel(1);
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 67)
+		else if ((int)fixtureUserDataA == 67)
 		{
 			// outside_castle --> inside_castle
-			app->scene->PassLevel(7);
+			app->frontground->move_to = MOVE_TO::OUTSIDE_INSIDE;
+
+			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 76)
+		else if ((int)fixtureUserDataA == 76)
 		{
 			// inside_castle -->  outside_castle
-			app->frontground->town1_to_town2 = false;
-			app->frontground->town2_to_town1 = false;
-			app->frontground->forest_to_town2 = false;
-			app->frontground->battlefield_to_town2 = false;
-			app->frontground->dungeon_to_town2 = false;
-			app->frontground->outside_to_town1 = false;
-			app->frontground->town1_to_outside = false;
-			app->frontground->inside_to_outside = true;
+			app->frontground->move_to = MOVE_TO::INSIDE_OUTSIDE;
 
-			app->scene->PassLevel(6);
+			app->frontground->FadeToBlack();
 		}
 	}
 }
@@ -659,26 +506,38 @@ void Physics::EndContact(b2Contact* contact)
 	{
 		if ((int)fixtureUserDataB == 2)
 		{
-			// npc contact
-			app->frontground->SetPressE_Hide(true);
+			// renato contact
+			app->dialog->SetPressE_Hide(true);
+			inRenato = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 3)
+		{
+			// curandero contact
+			app->dialog->SetPressE_Hide(true);
+			inCurandero = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 4)
+		{
+			// herrero contact
+			app->dialog->SetPressE_Hide(true);
+			inHerrero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
-			// hide save level
-			app->frontground->SetPressE_Hide(true);
-			inScareCrow = false;
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inGranjero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 6)
 		{
-			//  hide complete level
-			app->frontground->SetPressE_Hide(true);
-			inStatue = false;
-		}
-		else if ((int)fixtureUserDataB == 7)
-		{
-			// hide water well
-			app->frontground->SetPressE_Hide(true);
-			inWaterWell = false;
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inAldeano = false;
+			app->dialog->QuitDialogs();
 		}
 	}
 
@@ -686,26 +545,38 @@ void Physics::EndContact(b2Contact* contact)
 	{
 		if ((int)fixtureUserDataA == 2)
 		{
-			// npc contact
-			app->frontground->SetPressE_Hide(true);
+			// renato contact
+			app->dialog->SetPressE_Hide(false);
+			inRenato = false;
+			app->dialog->QuitDialogs();
 		}
-		if ((int)fixtureUserDataA == 5)
+		else if ((int)fixtureUserDataA == 3)
 		{
-			// hide save level
-			app->frontground->SetPressE_Hide(true);
-			inScareCrow = false;
+			// curandero contact
+			app->dialog->SetPressE_Hide(false);
+			inCurandero = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataA == 4)
+		{
+			// herrero contact
+			app->dialog->SetPressE_Hide(false);
+			inHerrero = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataA == 5)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(false);
+			inGranjero = false;
+			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataA == 6)
 		{
-			// hide complete level
-			app->frontground->SetPressE_Hide(true);
-			inStatue = false;
-		}
-		else if ((int)fixtureUserDataA == 7)
-		{
-			// hide water well
-			app->frontground->SetPressE_Hide(true);
-			inWaterWell = false;
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inAldeano = false;
+			app->dialog->QuitDialogs();
 		}
 	}
 }

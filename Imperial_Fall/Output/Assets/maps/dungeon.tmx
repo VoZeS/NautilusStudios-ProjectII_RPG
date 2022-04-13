@@ -51580,6 +51580,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1497"/>
+   <tile gid="1497"/>
    <tile/>
    <tile/>
    <tile/>
@@ -51703,10 +51705,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1558"/>
+   <tile gid="1558"/>
    <tile/>
    <tile/>
    <tile/>
@@ -51830,8 +51830,8 @@
    <tile gid="3564"/>
    <tile gid="3565"/>
    <tile gid="3566"/>
-   <tile/>
-   <tile/>
+   <tile gid="1619"/>
+   <tile gid="1619"/>
    <tile/>
    <tile/>
    <tile/>

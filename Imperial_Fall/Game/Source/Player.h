@@ -39,6 +39,26 @@ private:
 
 	fPoint GetPlayerPosition();
 	void SetPlayerPosition(int new_x, int new_y);
+	void SetPlayerLookDir(int lookDir);
+
+	fPoint GetCompanion0Position();
+	fPoint GetCompanion1Position();
+	fPoint GetCompanion2Position();
+
+	void SetCompanion0Position(int new_x, int new_y);
+	void SetCompanion1Position(int new_x, int new_y);
+	void SetCompanion2Position(int new_x, int new_y);
+
+	void SetCompanion0LookDir(int lookDir);
+	void SetCompanion1LookDir(int lookDir);
+	void SetCompanion2LookDir(int lookDir);
+
+	bool DeleteEntity();
+	bool IsPlayerEnabled()
+	{
+		return player_enabled;
+	}
+
 	void ImpulsePlayer();
 
 	int char_control = 0; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
@@ -54,6 +74,9 @@ private:
 	float speed = 0.3f;
 	bool collision_active;
 	b2Fixture* bodyFixture;
+
+	bool player_enabled = true;
+	bool plan_to_delete = false;
 
 public:
 	Animation* currentAnimation = NULL;
@@ -102,6 +125,7 @@ public:
 	int walk_cd = 320;
 
 	int look_dir; // 0 --> up, 1 --> down, 2 --> left, 3 --> right
+
 };
 
 #endif

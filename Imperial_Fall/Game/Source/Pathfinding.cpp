@@ -9,7 +9,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-PathFinding::PathFinding() : Module(), map(NULL), lastPath(DEFAULT_PATH_LENGTH), width(0), height(0)
+PathFinding::PathFinding(bool enabled) : Module(enabled), map(NULL), lastPath(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
 	name.Create("pathfinding");
 }
@@ -24,6 +24,8 @@ PathFinding::~PathFinding()
 bool PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
+
+	tileX = app->tex->Load("Assets/textures/x.png");
 
 	lastPath.Clear();
 	RELEASE_ARRAY(map);
@@ -258,6 +260,6 @@ void PathFinding::DrawPath(PathFinding* path, fPoint pos)
 {
 	for (uint i = 0; i < path->GetLastPath()->Count(); ++i)
 	{
-		app->render->DrawTexture(app->tex->tileX, METERS_TO_PIXELS(path->GetLastPath()->At(i)->x), METERS_TO_PIXELS(path->GetLastPath()->At(i)->y));
+		app->render->DrawTexture(tileX, METERS_TO_PIXELS(path->GetLastPath()->At(i)->x), METERS_TO_PIXELS(path->GetLastPath()->At(i)->y));
 	}
 }

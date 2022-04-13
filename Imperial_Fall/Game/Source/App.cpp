@@ -10,9 +10,21 @@
 #include "Physics.h"
 #include "Entities.h"
 #include "Fonts.h"
+#include "Combat_Manager.h"
+#include "Combat_Menu.h"
 #include "Menu.h"
+#include "Particles.h"
 #include "Frontground.h"
-
+#include "Town1.h"
+#include "Town2.h"
+#include "Forest.h"
+#include "Battlefield.h"
+#include "Dungeon.h"
+#include "Outside_Castle.h"
+#include "Inside_Castle.h"
+#include "Combat_Scene.h"
+#include "Dialog.h"
+#include "LogoScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -23,20 +35,32 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	win = new Window();
-	input = new Input();
-	render = new Render();
-	tex = new Textures();
-	audio = new Audio();
-	scene = new Scene();
-	map = new Map();
-	pathfinding = new PathFinding();
-	physics = new Physics();
-	entities = new Entities();
-	fonts = new Fonts();
-	menu = new Menu();
-	frontground = new Frontground();
-
+	win = new Window(true);
+	input = new Input(true);
+	render = new Render(true);
+	tex = new Textures(true);
+	audio = new Audio(true);
+	scene = new Scene(false);
+	map = new Map(false);
+	pathfinding = new PathFinding(true);
+	physics = new Physics(true);
+	entities = new Entities(false);
+	fonts = new Fonts(false);
+	combat_manager = new Combat_Manager(false);
+	combat_menu = new Combat_Menu(false);
+	menu = new Menu(true);
+	particles = new Particles(false);
+	frontground = new Frontground(true);
+	town1 = new Town1(false);
+	town2 = new Town2(false);
+	forest = new Forest(false);
+	battlefield = new Battlefield(false);
+	dungeon = new Dungeon(false);
+	outside = new Outside_Castle(false);
+	inside = new Inside_Castle(false);
+	combat_scene = new Combat_Scene(false);
+	dialog = new Dialog(false);
+	logo = new LogoScreen(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -45,12 +69,25 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
-	AddModule(map);
+	AddModule(town1);
+	AddModule(town2);
+	AddModule(forest);
+	AddModule(battlefield);
+	AddModule(dungeon);
+	AddModule(outside);
+	AddModule(inside);
+	AddModule(combat_scene);
 	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);
+	AddModule(map);
 	AddModule(fonts);
+	AddModule(combat_manager);
+	AddModule(combat_menu);
 	AddModule(menu);
+	AddModule(particles);
+	AddModule(dialog);
+	AddModule(logo);
 	AddModule(frontground);
 
 	// Render last to swap buffer
@@ -182,8 +219,16 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	if (loadGameRequested == true) LoadGame();
-	if (saveGameRequested == true) SaveGame();
+	if (loadGameRequested == true)
+	{
+		LoadGame(set_to_origin);
+		set_to_origin = false;
+	}
+	if (saveGameRequested == true)
+	{
+		SaveGame();
+	}
+		
 
 	// game time
 	float secondsSinceStartup = startupTime.ReadSec();
@@ -228,7 +273,7 @@ bool App::PreUpdate()
 		if(pModule->active == false) {
 			continue;
 		}
-
+		
 		ret = item->data->PreUpdate();
 	}
 
@@ -322,9 +367,10 @@ const char* App::GetOrganization() const
 }
 
 // Load / Save
-void App::LoadGameRequest()
+void App::LoadGameRequest(bool set_to_origin)
 {
 	loadGameRequested = true;
+	this->set_to_origin = set_to_origin;
 }
 
 // ---------------------------------------
@@ -333,11 +379,24 @@ void App::SaveGameRequest()
 	saveGameRequested = true;
 }
 
-bool App::LoadGame()
+bool App::LoadGame(bool set_to_origin)
 {
 	bool ret = true;
 
-	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_parse_result result;
+
+	if (!set_to_origin)
+	{
+		// load 
+		result = saveGame.load_file(SAVE_STATE_FILENAME);
+	}
+	else
+	{
+		// reset 
+		result = saveGame.load_file(ORIGIN_SAVE_STATE_FILENAME);
+		saveGame.save_file(SAVE_STATE_FILENAME);
+	}
+	
 
 	if (result == NULL)
 	{
@@ -398,6 +457,11 @@ bool App::SaveGame()
 float App::GetDT()
 {
 	return dt;
+}
+
+float App::GetFPS()
+{
+	return FPS;
 }
 
 void App::ToggleFPS()

@@ -2,19 +2,19 @@
 #include "Textures.h"
 #include "Entities.h"
 #include "Scene.h"
+#include "Menu.h"
+#include "Frontground.h"
 
 #include "Player.h"
 #include "Enemies.h"
 #include "NPC.h"
-#include "Coins.h"
-#include "Hearts.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #include <time.h>
 
-Entities::Entities() : Module()
+Entities::Entities(bool enabled) : Module(enabled)
 {
 	name.Create("entities");
 }
@@ -32,8 +32,6 @@ void Entities::AddEntity(Entity* entity, ENTITY_TYPE type, fPoint p)
 // Called before render is available
 bool Entities::Awake()
 {
-	srand(time(NULL));
-
 	return true;
 }
 
@@ -41,33 +39,26 @@ bool Entities::Awake()
 bool Entities::Start()
 {
 	bool ret = true;
-	ListItem<Entity*>* item;
-	item = entities.start;
 
-	while (item != NULL && ret == true)
+	if (this->Enabled() && !this->Disabled())
 	{
-		switch (item->data->entity_type)
-		{
-		case ENTITY_TYPE::RENATO:
-			item->data->InitCustomEntity(1);
-			break;
-		case ENTITY_TYPE::CURANDERO:
-			item->data->InitCustomEntity(2);
-			break;
-		case ENTITY_TYPE::HERRERO:
-			item->data->InitCustomEntity(3);
-			break;
-		case ENTITY_TYPE::GRANJERO:
-			item->data->InitCustomEntity(4);
-			break;
-		default:
-			item->data->InitCustomEntity();
-			break;
-		}
-		item = item->next;
-	}
+		assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
+		tank_texture = app->tex->Load("Assets/textures/Tanque.png");
+		healer_texture = app->tex->Load("Assets/textures/Healer.png");
+		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
+		curandero = app->tex->Load("Assets/textures/curandero.png");
+		herrero = app->tex->Load("Assets/textures/herrero.png");
+		granjero = app->tex->Load("Assets/textures/granjero.png");
+		aldeano = app->tex->Load("Assets/textures/aldeano.png");
+		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
+		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
+		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
+		goblin = app->tex->Load("Assets/textures/goblin_b.png");
+		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
+		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
 
-	app->entities->CreateEntity(ENTITY_TYPE::PLAYER, 500, 500);
+		freeze = false;
+	}
 
 	return ret;
 }
@@ -104,6 +95,24 @@ bool Entities::PreUpdate()
 			case ENTITY_TYPE::GRANJERO:
 				entity->InitCustomEntity(4);
 				break;
+			case ENTITY_TYPE::ALDEANO:
+				entity->InitCustomEntity(5);
+				break;
+			case ENTITY_TYPE::W_TEMPLAR:
+				entity->InitCustomEntity(1);
+				break;
+			case ENTITY_TYPE::MUSHROOM:
+				entity->InitCustomEntity(2);
+				break;
+			case ENTITY_TYPE::GOBLIN:
+				entity->InitCustomEntity(3);
+				break;
+			case ENTITY_TYPE::SKELETON:
+				entity->InitCustomEntity(4);
+				break;
+			case ENTITY_TYPE::R_TEMPLAR:
+				entity->InitCustomEntity(5);
+				break;
 			default:
 				entity->InitCustomEntity();
 				break;
@@ -114,6 +123,12 @@ bool Entities::PreUpdate()
 		{
 			ret = item->data->PreUpdate();
 		}
+	}
+
+	if (!player_init)
+	{
+		app->entities->CreateEntity(ENTITY_TYPE::PLAYER, app->entities->GetPlayerSavedPos().x, app->entities->GetPlayerSavedPos().y);
+		player_init = true;
 	}
 
 	return ret;
@@ -154,50 +169,76 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-	if (!app->scene->GetStartScreenState())
+
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
 	{
-		ListItem<Entity*>* item;
-		Entity* entity = NULL;
+		entity = item->data;
 
-		for (item = entities.start; item != NULL && ret == true; item = item->next)
+		if (entity->alive == false)
 		{
-			entity = item->data;
-
-			if (entity->alive == false) {
-				continue;
-			}
-
-			if (entity->init)
+			if (entity->plan_to_delete)
 			{
-				ret = item->data->Draw();
+				app->physics->world->DestroyBody(entity->body);
+				entity->plan_to_delete = false;
 			}
+			continue;
 		}
 
-		sprintf_s(numCoins, 4, "%03d", ncoins);
-		sprintf_s(numLifes, 4, "%03d", nlifes);
-	}
+		if (entity->init)
+		{
+			ret = item->data->Draw();
+		}
+	}	
 
 	return ret;
 }
 
-// Called before quitting
 bool Entities::CleanUp()
 {
-	if (!app->scene->GetStartScreenState())
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	for (item = entities.start; item != NULL; item = item->next)
 	{
-		ListItem<Entity*>* item;
-		Entity* entity = NULL;
+		entity = item->data;
 
-		for (item = entities.start; item != NULL; item = item->next)
+		if (entity->entity_type != ENTITY_TYPE::PLAYER)
 		{
-			entity = item->data;
-
-			if (entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO || entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
-			{
-				entities.Del(item);
-			}
+			entities.Del(item);
 		}
 	}
+
+	// clean textures
+	app->tex->UnLoad(assassin_texture);
+	assassin_texture = NULL;
+	app->tex->UnLoad(tank_texture);
+	tank_texture = NULL;
+	app->tex->UnLoad(healer_texture);
+	healer_texture = NULL;
+	app->tex->UnLoad(wizard_texture);
+	wizard_texture = NULL;
+	app->tex->UnLoad(curandero);
+	curandero = NULL;
+	app->tex->UnLoad(herrero);
+	herrero = NULL;
+	app->tex->UnLoad(granjero);
+	granjero = NULL;
+	curandero = NULL;
+	app->tex->UnLoad(renato_bueno);
+	renato_bueno = NULL;
+	app->tex->UnLoad(white_templar);
+	white_templar = NULL;
+	app->tex->UnLoad(mushroom);
+	mushroom = NULL;
+	app->tex->UnLoad(goblin);
+	goblin = NULL;
+	app->tex->UnLoad(skeleton);
+	skeleton = NULL;
+	app->tex->UnLoad(red_templar);
+	red_templar = NULL;
 
 	return true;
 }
@@ -228,7 +269,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
-
+	
 	for (item = entities.start; item != NULL && ret == true; item = item->next)
 	{
 		entity = item->data;
@@ -242,7 +283,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
+void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index, int en1, int en2, int en3, int en4)
 {
 	fPoint p = { x, y };
 
@@ -278,28 +319,40 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
-	case ENTITY_TYPE::GROUND_ENEMY:
+	case ENTITY_TYPE::ALDEANO:
 	{
-		Ground_Enemies* g_enemy = new Ground_Enemies();
-		AddEntity(g_enemy, ENTITY_TYPE::GROUND_ENEMY, p);
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::ALDEANO, p);
 	}
 		break;
-	/*case ENTITY_TYPE::AIR_ENEMY:
+	case ENTITY_TYPE::W_TEMPLAR:
 	{
-		Air_Enemies* a_enemy = new Air_Enemies();
-		AddEntity(a_enemy, ENTITY_TYPE::AIR_ENEMY, p);
-	}
-		break;*/
-	case ENTITY_TYPE::COIN:
-	{
-		Coins* coin = new Coins();
-		AddEntity(coin, ENTITY_TYPE::COIN, p);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::W_TEMPLAR, p);
 	}
 		break;
-	case ENTITY_TYPE::HEART:
+	case ENTITY_TYPE::MUSHROOM:
 	{
-		Hearts* heart = new Hearts();
-		AddEntity(heart, ENTITY_TYPE::HEART, p);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::MUSHROOM, p);
+	}
+		break;
+	case ENTITY_TYPE::GOBLIN:
+	{
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::GOBLIN, p);
+	}
+		break;
+	case ENTITY_TYPE::SKELETON:
+	{
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::SKELETON, p);
+	}
+		break;
+	case ENTITY_TYPE::R_TEMPLAR:
+	{
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		AddEntity(enemy, ENTITY_TYPE::R_TEMPLAR, p);
 	}
 		break;
 	default:
@@ -307,39 +360,159 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y)
 	}
 }
 
-void Entities::PickCoin(fPoint pos)
+int Entities::FindNPC()
 {
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
+
+	float max = 9999;
+	int ret = -1;
 
 	for (item = entities.start; item != NULL; item = item->next)
 	{
 		entity = item->data;
 
-		if (pos.x + 1.5f > entity->position.x && pos.x - 1.5f < entity->position.x && pos.y + 2.0f > entity->position.y && pos.y - 2.0f < entity->position.y && entity->entity_type == ENTITY_TYPE::COIN)
+		if ((entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO
+			|| entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
-			entity->DeleteEntity();
+			switch (entity->entity_type)
+			{
+			case ENTITY_TYPE::RENATO: ret = 1;
+				break;
+			case ENTITY_TYPE::CURANDERO: ret = 2;
+				break;
+			case ENTITY_TYPE::HERRERO: ret = 3;
+				break;
+			case ENTITY_TYPE::GRANJERO: ret = 4;
+				break;
+			case ENTITY_TYPE::ALDEANO: ret = 5;
+				break;
+			}
 
-			break;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
 		}
+	}
+
+	return ret;
+}
+
+fPoint Entities::GetEnemyPos()
+{
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	float max = 9999;
+	Entity* combat_entity = NULL;
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		entity = item->data;
+
+		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
+		{
+			combat_entity = entity;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
+		}
+	}
+
+	if (combat_entity != NULL)
+	{
+		return combat_entity->position;
+	}
+	else
+	{
+		return { 0, 0 };
 	}
 }
 
-void Entities::PickHeart(fPoint pos)
+void Entities::StartCombat()
 {
+	app->frontground->SaveDirection();
+	freeze = true;
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
+
+	float max = 9999;
+	Entity* combat_entity = NULL;
 
 	for (item = entities.start; item != NULL; item = item->next)
 	{
 		entity = item->data;
 
-		if (pos.x + 1.5f > entity->position.x && pos.x - 1.5f < entity->position.x && pos.y + 2.0f > entity->position.y && pos.y - 2.0f < entity->position.y && entity->entity_type == ENTITY_TYPE::HEART)
+		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
-			entity->DeleteEntity();
+			combat_entity = entity;
+			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
+		}
+	}
 
+	if (combat_entity != NULL)
+	{
+		ENEMIES enemies[4];
+		enemies[0] = combat_entity->GetCombatEnemy(0);
+		enemies[1] = combat_entity->GetCombatEnemy(1);
+		enemies[2] = combat_entity->GetCombatEnemy(2);
+		enemies[3] = combat_entity->GetCombatEnemy(3);
+		switch (app->frontground->current_level)
+		{
+		case 1: app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
+			break;
+		case 2: app->frontground->move_to = MOVE_TO::TOWN2_COMBAT;
+			break;
+		case 3: app->frontground->move_to = MOVE_TO::FOREST_COMBAT;
+			break;
+		case 4: app->frontground->move_to = MOVE_TO::BATTLEFIELD_COMBAT;
+			break;
+		case 5: app->frontground->move_to = MOVE_TO::DUNGEON_COMBAT;
+			break;
+		case 6: app->frontground->move_to = MOVE_TO::OUTSIDE_COMBAT;
+			break;
+		case 7: app->frontground->move_to = MOVE_TO::INSIDE_COMBAT;
+			break;
+		default:
 			break;
 		}
+		app->frontground->FadeInCombat(enemies);
+	}
+}
+
+void Entities::KillEnemy()
+{
+	ListItem<Entity*>* item;
+	Entity* entity = NULL;
+
+	float max = 9999;
+	Entity* combat_entity = NULL;
+
+	fPoint pos = { GetPlayer()->GetPlayerPosition().x, GetPlayer()->GetPlayerPosition().y };
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		entity = item->data;
+
+		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
+			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			&& (abs(pos.DistanceTo(entity->position)) < max))
+		{
+			combat_entity = entity;
+			max = abs(pos.DistanceTo(entity->position));
+		}
+	}
+	
+	if (combat_entity != NULL)
+	{
+		combat_entity->alive = false;
+		combat_entity->plan_to_delete = true;
+		combat_entity->SaveSingleEnemy();
+		app->menu->kill_enemy = false;
 	}
 }
 
@@ -371,28 +544,9 @@ void Entity::Init(ENTITY_TYPE type, fPoint p)
 	body = NULL;
 
 	alive = true;
+	plan_to_delete = false;
 
 	init = false;
-
-	switch (type)
-	{
-	case ENTITY_TYPE::GROUND_ENEMY:
-		p_in_array = app->entities->ground_lenght;
-		app->entities->ground_lenght++;
-		break;
-	/*case ENTITY_TYPE::AIR_ENEMY:
-		p_in_array = app->entities->air_lenght;
-		app->entities->air_lenght++;
-		break;*/
-	case ENTITY_TYPE::COIN:
-		p_in_array = app->entities->coins_lenght;
-		app->entities->coins_lenght++;
-		break;
-	case ENTITY_TYPE::HEART:
-		break;
-	default:
-		break;
-	}
 }
 
 void Entity::InitCustomEntity(int npc)
@@ -445,9 +599,52 @@ void Entity::SetPlayerPosition(int new_x, int new_y)
 
 }
 
-void Entity::PlayerDeath()
+void Entity::SetPlayerLookDir(int lookDir)
 {
+}
 
+fPoint Entity::GetCompanion0Position()
+{
+	return { 0,0 };
+}
+
+fPoint Entity::GetCompanion1Position()
+{
+	return { 0,0 };
+}
+
+fPoint Entity::GetCompanion2Position()
+{
+	return { 0,0 };
+}
+
+void Entity::SetCompanion0Position(int new_x, int new_y)
+{
+}
+
+void Entity::SetCompanion1Position(int new_x, int new_y)
+{
+}
+
+void Entity::SetCompanion2Position(int new_x, int new_y)
+{
+}
+
+void Entity::SetCompanion0LookDir(int lookDir)
+{
+}
+
+void Entity::SetCompanion1LookDir(int lookDir)
+{
+}
+
+void Entity::SetCompanion2LookDir(int lookDir)
+{
+}
+
+bool Entity::IsPlayerEnabled()
+{
+	return true;
 }
 
 void Entity::ImpulsePlayer()
@@ -455,7 +652,49 @@ void Entity::ImpulsePlayer()
 
 }
 
-void Entity::SwitchDirection()
+ENEMIES Entity::GetCombatEnemy(int n)
 {
+	return ENEMIES::NOTHING;
+}
 
+bool Entity::SaveSingleEnemy()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+
+	Save(saveGame.child("game_state").child("entities"));
+	saveGame.save_file(SAVE_STATE_FILENAME);
+
+	return result;
+}
+
+fPoint Entities::GetPlayerSavedPos()
+{
+	pugi::xml_document saveGame;
+	saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node player = saveGame.child("game_state").child("entities").child("player");
+
+	fPoint p;
+	p.x = METERS_TO_PIXELS(player.child("position").attribute("x").as_int());
+	p.y = METERS_TO_PIXELS(player.child("position").attribute("y").as_int());
+
+	return p;
+}
+
+void Entities::SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y)
+{
+	pugi::xml_document saveGame;
+	saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node player = saveGame.child("game_state").child("entities").child("player");
+
+	player.child("position").attribute("x").set_value(x);
+	player.child("position").attribute("y").set_value(y);
+	player.child("comp0").attribute("x").set_value(c0x);
+	player.child("comp0").attribute("y").set_value(c0y);
+	player.child("comp1").attribute("x").set_value(c1x);
+	player.child("comp1").attribute("y").set_value(c1y);
+	player.child("comp2").attribute("x").set_value(c2x);
+	player.child("comp2").attribute("y").set_value(c2y);
+
+	saveGame.save_file(SAVE_STATE_FILENAME);
 }
