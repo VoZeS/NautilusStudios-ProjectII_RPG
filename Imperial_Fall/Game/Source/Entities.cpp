@@ -56,6 +56,8 @@ bool Entities::Start()
 		goblin = app->tex->Load("Assets/textures/goblin_b.png");
 		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
+
+		freeze = false;
 	}
 
 	return ret;
@@ -430,7 +432,7 @@ fPoint Entities::GetEnemyPos()
 void Entities::StartCombat()
 {
 	app->frontground->SaveDirection();
-
+	freeze = true;
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
 

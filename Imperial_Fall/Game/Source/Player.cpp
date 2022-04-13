@@ -492,6 +492,11 @@ void Player::HandleInput(float dt)
 			currentAnimation->Update();
 		}
 
+		if (app->entities->freeze)
+		{
+			body->SetLinearVelocity({ 0, 0 });
+		}
+
 
 		// Charge character
 		/*if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)

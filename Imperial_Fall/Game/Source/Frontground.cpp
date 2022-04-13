@@ -276,7 +276,8 @@ bool Frontground::ReturnToField()
 
 	FadeToBlack();
 	MovePlayer();
-	
+	app->entities->freeze = false;
+
 	return true;
 }
 
@@ -360,13 +361,13 @@ void Frontground::MovePlayer()
 {
 	switch (direction)
 	{
-	case 0: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y + 3);
+	case 0: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y + 1);
 		break;
-	case 1: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y - 3);
+	case 1: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y - 1);
 		break;
-	case 2: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 3, app->entities->GetPlayer()->GetPlayerPosition().y);
+	case 2: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 1, app->entities->GetPlayer()->GetPlayerPosition().y);
 		break;
-	case 3: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x + 3, app->entities->GetPlayer()->GetPlayerPosition().y);
+	case 3: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x + 1, app->entities->GetPlayer()->GetPlayerPosition().y);
 		break;
 	}
 
