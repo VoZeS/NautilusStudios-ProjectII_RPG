@@ -77,10 +77,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(outside);
 	AddModule(inside);
 	AddModule(combat_scene);
-	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);
+	AddModule(map);
 	AddModule(fonts);
 	AddModule(combat_manager);
 	AddModule(combat_menu);

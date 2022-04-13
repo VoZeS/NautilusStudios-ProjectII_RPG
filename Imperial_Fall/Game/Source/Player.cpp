@@ -211,7 +211,7 @@ void Player::InitCustomEntity(int npc)
 	b2BodyDef c0_body;
 	c0_body.type = b2_kinematicBody;
 	c0_body.fixedRotation = true;
-	c0_body.position.Set(position.x, position.y + 5);
+	c0_body.position.Set(position.x - 2, position.y);
 
 	c0.body = app->physics->world->CreateBody(&c0_body);
 
@@ -225,7 +225,7 @@ void Player::InitCustomEntity(int npc)
 	b2BodyDef c1_body;
 	c1_body.type = b2_kinematicBody;
 	c1_body.fixedRotation = true;
-	c1_body.position.Set(position.x, position.y + 10);
+	c1_body.position.Set(position.x - 4, position.y);
 
 	c1.body = app->physics->world->CreateBody(&c1_body);
 
@@ -239,7 +239,7 @@ void Player::InitCustomEntity(int npc)
 	b2BodyDef c2_body;
 	c2_body.type = b2_dynamicBody;
 	c2_body.fixedRotation = true;
-	c2_body.position.Set(position.x, position.y + 15);
+	c2_body.position.Set(position.x - 6, position.y);
 
 	c2.body = app->physics->world->CreateBody(&c2_body);
 

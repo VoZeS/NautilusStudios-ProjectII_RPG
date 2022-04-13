@@ -1313,7 +1313,7 @@ bool Menu::Update(float dt)
 	{
 		app->ToggleFPS();
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_F12) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		app->frontground->fast_combat = !app->frontground->fast_combat;
 	}

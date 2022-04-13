@@ -53,8 +53,6 @@ bool Map::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		collision_loaded = false;
-
-		combat_map = false;
 	}
 
 	return true;
@@ -64,13 +62,6 @@ bool Map::Start()
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-
-	int c_x = 0, c_y = 0;
-	if (combat_map)
-	{
-		//c_x = -app->render->camera.x;
-		//c_y = -app->render->camera.y;
-	}
 	
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
@@ -96,8 +87,8 @@ void Map::Draw()
 							(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
 						{
 							app->render->DrawTexture(tileset->texture,
-								pos.x + c_x,
-								pos.y + c_y,
+								pos.x,
+								pos.y,
 								&r);
 						}
 					}
