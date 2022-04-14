@@ -256,7 +256,10 @@ void Combat_Entities::ShieldEntity(int amount, int turns)
 		shield = amount;
 	}
 	
-	shield_turns += turns;
+	if (turns > shield_turns)
+	{
+		shield_turns = turns;
+	}
 }
 
 void Combat_Entities::HealEntity(int amount)
@@ -267,12 +270,6 @@ void Combat_Entities::HealEntity(int amount)
 	{
 		actual_health = max_health;
 	}
-}
-
-
-void Combat_Entities::CleanDebuffedEntity()
-{
-	RemoveAllDebuffs();
 }
 
 void Combat_Entities::UpdateShield()
@@ -320,6 +317,10 @@ void Combat_Entities::AddBuff(BUFF_TYPE type, int turns)
 		{
 			SetPower(0);
 		}
+		else if (type == BUFF_TYPE::GODMODE_STRONG)
+		{
+			SetGodModePower(0);
+		}
 	}
 	else
 	{
@@ -363,7 +364,10 @@ void Combat_Entities::UpdateBuffs()
 			{
 				SetPower(1);
 			}
-
+			else if (item->data.buff_type == BUFF_TYPE::GODMODE_STRONG)
+			{
+				SetGodModePower(1);
+			}
 
 			buffs.Del(item);
 		}
@@ -376,7 +380,38 @@ void Combat_Entities::RemoveAllBuffs()
 
 	for (item = buffs.start; item != NULL; item = item->next)
 	{
+		if (item->data.buff_type == BUFF_TYPE::QUICK)
+		{
+			SetSpeed(1);
+		}
+		else if (item->data.buff_type == BUFF_TYPE::STRONG)
+		{
+			SetPower(1);
+		}
+		else if (item->data.buff_type == BUFF_TYPE::GODMODE_STRONG)
+		{
+			SetGodModePower(1);
+		}
+
 		buffs.Del(item);
+	}
+}
+
+void Combat_Entities::RemoveGodModeBuffs()
+{
+	ListItem<BUFF>* item;
+
+	for (item = buffs.start; item != NULL; item = item->next)
+	{
+		if (item->data.buff_type == BUFF_TYPE::GODMODE_STRONG)
+		{
+			if (item->data.buff_type == BUFF_TYPE::GODMODE_STRONG)
+			{
+				SetGodModePower(1);
+			}
+
+			buffs.Del(item);
+		}
 	}
 }
 
@@ -477,11 +512,20 @@ void Combat_Entities::UpdateDebuffs()
 
 void Combat_Entities::RemoveAllDebuffs()
 {
-	ListItem<BUFF>* item;
+	ListItem<DEBUFF>* item;
 
-	for (item = buffs.start; item != NULL; item = item->next)
+	for (item = debuffs.start; item != NULL; item = item->next)
 	{
-		buffs.Del(item);
+		if (item->data.debuff_type == DEBUFF_TYPE::ANTI_QUICK)
+		{
+			SetSpeed(0);
+		}
+		else if (item->data.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+		{
+			SetPower(0);
+		}
+
+		debuffs.Del(item);
 	}
 }
 

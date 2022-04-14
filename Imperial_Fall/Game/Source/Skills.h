@@ -57,7 +57,8 @@ enum class BUFF_TYPE // self
 	TAUNT,
 	QUICK,
 	STRONG,
-	RELAX // progresive heal
+	RELAX, // progresive heal
+	GODMODE_STRONG
 };
 
 enum class DEBUFF_TYPE

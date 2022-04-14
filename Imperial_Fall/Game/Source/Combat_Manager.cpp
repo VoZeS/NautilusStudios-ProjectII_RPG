@@ -118,6 +118,32 @@ bool Combat_Manager::PreUpdate()
 		}
 	}
 
+
+	BUFF b;
+	b.buff_type = BUFF_TYPE::GODMODE_STRONG;
+	if (app->frontground->godmode)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (allies[i]->FindBuff(b) == -1)
+			{
+				allies[i]->AddBuff(BUFF_TYPE::GODMODE_STRONG, 99);
+			}
+		}
+	}
+	else
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (allies[i]->FindBuff(b) != -1)
+			{
+				allies[i]->RemoveGodModeBuffs();
+			}
+		}
+	}
+
+	LOG("%d", allies[0]->FindBuff(b));
+
 	preupdatedone = true;
 
 	return true;
@@ -679,7 +705,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->CleanDebuffedEntity();
+								allies[i]->RemoveAllDebuffs();
 							}
 						}
 					}
@@ -689,7 +715,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->CleanDebuffedEntity();
+								enemies[i]->RemoveAllDebuffs();
 							}
 						}
 					}
@@ -754,7 +780,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					user->CleanDebuffedEntity();
+					user->RemoveAllDebuffs();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -891,7 +917,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->CleanDebuffedEntity();
+								allies[i]->RemoveAllDebuffs();
 							}
 						}
 					}
@@ -901,7 +927,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->CleanDebuffedEntity();
+								enemies[i]->RemoveAllDebuffs();
 							}
 						}
 					}
@@ -966,7 +992,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					user->CleanDebuffedEntity();
+					user->RemoveAllDebuffs();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -995,7 +1021,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					objective->CleanDebuffedEntity();
+					objective->RemoveAllDebuffs();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
@@ -1069,7 +1095,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->CleanDebuffedEntity();
+								allies[i]->RemoveAllDebuffs();
 							}
 						}
 					}
@@ -1079,7 +1105,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->CleanDebuffedEntity();
+								enemies[i]->RemoveAllDebuffs();
 							}
 						}
 					}
@@ -1144,7 +1170,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else if (skill.support_type == SUPPORT_TYPE::CLEAN_DEBUFFS)
 				{
-					user->CleanDebuffedEntity();
+					user->RemoveAllDebuffs();
 				}
 				else if (skill.support_type == SUPPORT_TYPE::RELOAD)
 				{
