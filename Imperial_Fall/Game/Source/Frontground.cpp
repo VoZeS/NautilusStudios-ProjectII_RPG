@@ -51,6 +51,8 @@ bool Frontground::Start()
 	r = { 0, 0, 1280, 720 };
 	a = 0;
 
+	SDL_ShowCursor(false);
+
 	return true;
 }
 

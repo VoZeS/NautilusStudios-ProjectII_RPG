@@ -26,12 +26,12 @@ Player::Player() : Entity()
 	idleAnimU.PushBack({ 65, 242, 50, 72 });
 	idleAnimU.speed = 0.03f;
 
-	idleAnimL.PushBack({ 5, 84, 50, 72 });
-	idleAnimL.PushBack({ 65, 84, 50, 72 });
+	idleAnimL.PushBack({ 5, 82, 50, 72 });
+	idleAnimL.PushBack({ 65, 82, 50, 72 });
 	idleAnimL.speed = 0.03f;
 
-	idleAnimR.PushBack({ 5, 164, 50, 72 });
-	idleAnimR.PushBack({ 65, 164, 50, 72 });
+	idleAnimR.PushBack({ 5, 161, 50, 72 });
+	idleAnimR.PushBack({ 65, 161, 50, 72 });
 	idleAnimR.speed = 0.03f;
 
 	// main walk animation
@@ -45,14 +45,14 @@ Player::Player() : Entity()
 	walkAnimU.PushBack({ 125, 242, 50, 72 });
 	walkAnimU.speed = 0.1f;
 
-	walkAnimL.PushBack({ 5, 84, 50, 72 });
-	walkAnimL.PushBack({ 65, 84, 50, 72 });
-	walkAnimL.PushBack({ 125, 84, 50, 72 });
+	walkAnimL.PushBack({ 5, 82, 50, 72 });
+	walkAnimL.PushBack({ 65, 82, 50, 72 });
+	walkAnimL.PushBack({ 125, 82, 50, 72 });
 	walkAnimL.speed = 0.1f;
 
-	walkAnimR.PushBack({ 5, 164, 50, 72 });
-	walkAnimR.PushBack({ 65, 164, 50, 72 });
-	walkAnimR.PushBack({ 125, 164, 50, 72 });
+	walkAnimR.PushBack({ 5, 161, 50, 72 });
+	walkAnimR.PushBack({ 65, 161, 50, 72 });
+	walkAnimR.PushBack({ 125, 161, 50, 72 });
 	walkAnimR.speed = 0.1f;
 
 	// c0 idle animation
@@ -64,12 +64,12 @@ Player::Player() : Entity()
 	c0_idleAnimU.PushBack({ 65, 242, 50, 72 });
 	c0_idleAnimU.speed = 0.03f;
 
-	c0_idleAnimL.PushBack({ 5, 84, 50, 72 });
-	c0_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c0_idleAnimL.PushBack({ 5, 82, 50, 72 });
+	c0_idleAnimL.PushBack({ 65, 82, 50, 72 });
 	c0_idleAnimL.speed = 0.03f;
 
-	c0_idleAnimR.PushBack({ 5, 164, 50, 72 });
-	c0_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c0_idleAnimR.PushBack({ 5, 161, 50, 72 });
+	c0_idleAnimR.PushBack({ 65, 161, 50, 72 });
 	c0_idleAnimR.speed = 0.03f;
 
 	// c0 walk animation
@@ -83,14 +83,14 @@ Player::Player() : Entity()
 	c0_walkAnimU.PushBack({ 125, 242, 50, 72 });
 	c0_walkAnimU.speed = 0.1f;
 
-	c0_walkAnimL.PushBack({ 5, 84, 50, 72 });
-	c0_walkAnimL.PushBack({ 65, 84, 50, 72 });
-	c0_walkAnimL.PushBack({ 125, 84, 50, 72 });
+	c0_walkAnimL.PushBack({ 5, 82, 50, 72 });
+	c0_walkAnimL.PushBack({ 65, 82, 50, 72 });
+	c0_walkAnimL.PushBack({ 125, 82, 50, 72 });
 	c0_walkAnimL.speed = 0.1f;
 
-	c0_walkAnimR.PushBack({ 5, 164, 50, 72 });
-	c0_walkAnimR.PushBack({ 65, 164, 50, 72 });
-	c0_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c0_walkAnimR.PushBack({ 5, 161, 50, 72 });
+	c0_walkAnimR.PushBack({ 65, 161, 50, 72 });
+	c0_walkAnimR.PushBack({ 125, 161, 50, 72 });
 	c0_walkAnimR.speed = 0.1f;
 
 	// c1 idle animation
@@ -102,12 +102,12 @@ Player::Player() : Entity()
 	c1_idleAnimU.PushBack({ 65, 242, 50, 72 });
 	c1_idleAnimU.speed = 0.03f;
 
-	c1_idleAnimL.PushBack({ 5, 84, 50, 72 });
-	c1_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c1_idleAnimL.PushBack({ 5, 82, 50, 72 });
+	c1_idleAnimL.PushBack({ 65, 82, 50, 72 });
 	c1_idleAnimL.speed = 0.03f;
 
-	c1_idleAnimR.PushBack({ 5, 164, 50, 72 });
-	c1_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c1_idleAnimR.PushBack({ 5, 161, 50, 72 });
+	c1_idleAnimR.PushBack({ 65, 161, 50, 72 });
 	c1_idleAnimR.speed = 0.03f;
 
 	// c1 walk animation
@@ -120,15 +120,15 @@ Player::Player() : Entity()
 	c1_walkAnimU.PushBack({ 65, 242, 50, 72 });
 	c1_walkAnimU.PushBack({ 125, 242, 50, 72 });
 	c1_walkAnimU.speed = 0.1f;
-	
-	c1_walkAnimL.PushBack({ 5, 84, 50, 72 });
-	c1_walkAnimL.PushBack({ 65, 84, 50, 72 });
-	c1_walkAnimL.PushBack({ 125, 84, 50, 72 });
+
+	c1_walkAnimL.PushBack({ 5, 82, 50, 72 });
+	c1_walkAnimL.PushBack({ 65, 82, 50, 72 });
+	c1_walkAnimL.PushBack({ 125, 82, 50, 72 });
 	c1_walkAnimL.speed = 0.1f;
 
-	c1_walkAnimR.PushBack({ 5, 164, 50, 72 });
-	c1_walkAnimR.PushBack({ 65, 164, 50, 72 });
-	c1_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c1_walkAnimR.PushBack({ 5, 161, 50, 72 });
+	c1_walkAnimR.PushBack({ 65, 161, 50, 72 });
+	c1_walkAnimR.PushBack({ 125, 161, 50, 72 });
 	c1_walkAnimR.speed = 0.1f;
 
 	// c2 idle animation
@@ -140,12 +140,12 @@ Player::Player() : Entity()
 	c2_idleAnimU.PushBack({ 65, 242, 50, 72 });
 	c2_idleAnimU.speed = 0.03f;
 
-	c2_idleAnimL.PushBack({ 5, 84, 50, 72 });
-	c2_idleAnimL.PushBack({ 65, 84, 50, 72 });
+	c2_idleAnimL.PushBack({ 5, 82, 50, 72 });
+	c2_idleAnimL.PushBack({ 65, 82, 50, 72 });
 	c2_idleAnimL.speed = 0.03f;
 
-	c2_idleAnimR.PushBack({ 5, 164, 50, 72 });
-	c2_idleAnimR.PushBack({ 65, 164, 50, 72 });
+	c2_idleAnimR.PushBack({ 5, 161, 50, 72 });
+	c2_idleAnimR.PushBack({ 65, 161, 50, 72 });
 	c2_idleAnimR.speed = 0.03f;
 
 	// c2 walk animation
@@ -159,14 +159,14 @@ Player::Player() : Entity()
 	c2_walkAnimU.PushBack({ 125, 242, 50, 72 });
 	c2_walkAnimU.speed = 0.1f;
 
-	c2_walkAnimL.PushBack({ 5, 84, 50, 72 });
-	c2_walkAnimL.PushBack({ 65, 84, 50, 72 });
-	c2_walkAnimL.PushBack({ 125, 84, 50, 72 });
+	c2_walkAnimL.PushBack({ 5, 82, 50, 72 });
+	c2_walkAnimL.PushBack({ 65, 82, 50, 72 });
+	c2_walkAnimL.PushBack({ 125, 82, 50, 72 });
 	c2_walkAnimL.speed = 0.1f;
 
-	c2_walkAnimR.PushBack({ 5, 164, 50, 72 });
-	c2_walkAnimR.PushBack({ 65, 164, 50, 72 });
-	c2_walkAnimR.PushBack({ 125, 164, 50, 72 });
+	c2_walkAnimR.PushBack({ 5, 161, 50, 72 });
+	c2_walkAnimR.PushBack({ 65, 161, 50, 72 });
+	c2_walkAnimR.PushBack({ 125, 161, 50, 72 });
 	c2_walkAnimR.speed = 0.1f;
 }
 
