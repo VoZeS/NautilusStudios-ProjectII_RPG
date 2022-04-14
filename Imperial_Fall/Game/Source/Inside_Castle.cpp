@@ -45,7 +45,7 @@ bool Inside_Castle::Start()
 		app->map->Load("inside_castle.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/inside_castle.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -56,8 +56,6 @@ bool Inside_Castle::Start()
 
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200),
 			PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
-
-		app->audio->PlayMusic("Assets/audio/music/inside_castle.ogg");
 
 		int w, h;
 		uchar* data = NULL;

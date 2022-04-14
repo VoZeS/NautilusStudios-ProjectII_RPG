@@ -45,7 +45,7 @@ bool Forest::Start()
 		app->map->Load("forest.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -56,8 +56,6 @@ bool Forest::Start()
 
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500), PIXELS_TO_METERS(450), PIXELS_TO_METERS(300),
 			PIXELS_TO_METERS(450), PIXELS_TO_METERS(200), PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
-
-		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
 
 		int w, h;
 		uchar* data = NULL;

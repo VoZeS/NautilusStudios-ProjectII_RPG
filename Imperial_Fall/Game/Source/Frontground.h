@@ -100,6 +100,8 @@ public:
 
 	MOVE_TO move_to = MOVE_TO::NOTHING;
 
+	void SetController();
+
 private:
 	SDL_Rect r;
 	Uint8 a;

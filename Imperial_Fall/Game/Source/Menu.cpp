@@ -132,8 +132,6 @@ bool Menu::Start()
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
 
-		menu_music = app->audio->PlayMusic("Assets/audio/music/menu.ogg");
-
 		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
 			pause_buttons[i].rect.x = ((int)win_w / 2) - (pause_buttons[i].rect.w / 2);
@@ -281,7 +279,7 @@ bool Menu::PreUpdate()
 
 	if (!app->frontground->controller) // keyboard
 	{
-		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
+		//app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
 		{
@@ -1880,6 +1878,7 @@ bool Menu::PostUpdate()
 	// draw cursor
 	if (!app->frontground->controller)
 	{
+		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 		app->render->DrawTexture(cursor.tex, cursor.pos.x + c_x, cursor.pos.y + c_y);
 	}
 

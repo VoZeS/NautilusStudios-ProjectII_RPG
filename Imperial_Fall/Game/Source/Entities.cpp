@@ -58,6 +58,7 @@ bool Entities::Start()
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
 
 		freeze = false;
+		in_boss = false;
 	}
 
 	return ret;
@@ -450,6 +451,10 @@ void Entities::StartCombat()
 		{
 			combat_entity = entity;
 			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
+			if (entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			{
+				in_boss = true;
+			}
 		}
 	}
 

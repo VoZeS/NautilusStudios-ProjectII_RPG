@@ -45,7 +45,7 @@ bool Town1::Start()
 		app->map->Load("town_1.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/gameplay.ogg");
+		app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -69,8 +69,6 @@ bool Town1::Start()
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950), PIXELS_TO_METERS(750), PIXELS_TO_METERS(950),
 				PIXELS_TO_METERS(700), PIXELS_TO_METERS(950), PIXELS_TO_METERS(650), PIXELS_TO_METERS(950));
 		}
-
-		app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
 
 		int w, h;
 		uchar* data = NULL;

@@ -45,7 +45,7 @@ bool Town2::Start()
 		app->map->Load("town_2.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
 
 		//Enable Player &
 		app->menu->Enable();

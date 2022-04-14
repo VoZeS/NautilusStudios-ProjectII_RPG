@@ -186,8 +186,6 @@ private:
 	uint hover_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
-
-	uint menu_music;
 	
 };
 

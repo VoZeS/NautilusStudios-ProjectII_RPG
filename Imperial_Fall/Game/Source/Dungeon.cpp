@@ -45,7 +45,7 @@ bool Dungeon::Start()
 		app->map->Load("dungeon.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -57,7 +57,6 @@ bool Dungeon::Start()
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
 			PIXELS_TO_METERS(950), PIXELS_TO_METERS(200), PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
 
-		app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
 
 		int w, h;
 		uchar* data = NULL;

@@ -45,7 +45,7 @@ bool Battlefield::Start()
 		app->map->Load("battlefield.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -56,8 +56,6 @@ bool Battlefield::Start()
 
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000),
 			PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
-
-		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
 
 		int w, h;
 		uchar* data = NULL;

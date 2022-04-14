@@ -46,7 +46,14 @@ bool Combat_Scene::Start()
 		app->map->Load("combat.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		if (!app->entities->in_boss)
+		{
+			app->audio->PlayMusic("Assets/audio/music/combat.ogg");
+		}
+		else
+		{
+			app->audio->PlayMusic("Assets/audio/music/boss.ogg");
+		}
 
 		//Enable combat
 		app->menu->Enable();
@@ -55,8 +62,6 @@ bool Combat_Scene::Start()
 		app->combat_manager->Enable();
 		app->combat_menu->Enable();
 		app->particles->Enable();
-
-		app->audio->PlayMusic("Assets/audio/music/combat.ogg");
 	}
 
 

@@ -44,6 +44,8 @@ bool Scene::Start()
 		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 
+		app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+
 		if (!app->menu->Enabled())
 		{
 			app->menu->Enable();

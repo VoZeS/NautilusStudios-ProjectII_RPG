@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Window.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -100,10 +101,13 @@ bool Input::PreUpdate()
 		{
 			case SDL_CONTROLLERDEVICEADDED:
 				HandleDeviceConnection(event.cdevice.which);
+				app->frontground->controller = true;
+				app->frontground->SetController();
 			break;
 
 			case SDL_CONTROLLERDEVICEREMOVED:
 				HandleDeviceRemoval(event.cdevice.which);
+				app->frontground->controller = false;
 			break;
 
 			case SDL_QUIT:
