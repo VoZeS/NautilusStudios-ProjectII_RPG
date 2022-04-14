@@ -154,7 +154,7 @@ bool Menu::Start()
 
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
 
-		win_button.rect.w = 600;
+		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
 		win_button.rect.y = (int)win_h / 2 + 200;
 
@@ -233,8 +233,10 @@ bool Menu::Start()
 		lose_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Try again
 		lose_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
 
-		combat_win = app->tex->Load("Assets/textures/Game_Over.png");
-		combat_lose = app->tex->Load("Assets/textures/Dead_Image.png");
+		combat_back = app->tex->Load("Assets/textures/Temporal_Background.png");
+		combat_win = app->tex->Load("Assets/textures/win_text.png");
+		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
+		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
 
 
 		torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
@@ -1769,9 +1771,8 @@ bool Menu::PostUpdate()
 	SDL_Rect rect;
 	if (win)
 	{
-		app->render->DrawRectangle(r, 0, 0, 0, 200);
-
-		//app->render->DrawTexture(combat_win, c_x, c_y);
+		app->render->DrawTexture(combat_back, c_x, c_y);
+		app->render->DrawTexture(combat_win, c_x, c_y);
 
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x;
 		win_button.rect.y = (int)win_h / 2 + 200 + c_y;
@@ -1797,9 +1798,8 @@ bool Menu::PostUpdate()
 
 	if (lose)
 	{
-		app->render->DrawRectangle(r, 0, 0, 0, 200);
-
-		//app->render->DrawTexture(combat_lose, c_x, c_y);
+		app->render->DrawTexture(combat_back, c_x, c_y);
+		app->render->DrawTexture(combat_lose, c_x, c_y);
 
 		lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) - 300 + c_x;
 		lose_buttons[0].rect.y = (int)win_h / 2 + 200 + c_y;
@@ -1831,9 +1831,8 @@ bool Menu::PostUpdate()
 
 	if (scape)
 	{
-		app->render->DrawRectangle(r, 0, 0, 0, 200);
-
-		//app->render->DrawTexture(combat_scape, c_x, c_y);
+		app->render->DrawTexture(combat_back, c_x, c_y);
+		app->render->DrawTexture(combat_scape, c_x, c_y);
 
 		scape_buttons[0].rect.x = ((int)win_w / 2) - (scape_buttons[0].rect.w / 2) - 300 + c_x;
 		scape_buttons[0].rect.y = (int)win_h / 2 + 200 + c_y;

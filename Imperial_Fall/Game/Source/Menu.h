@@ -148,6 +148,7 @@ private:
 	Button lose_buttons[NUM_LOSE_BUTTONS];
 	Button scape_buttons[NUM_SCAPE_BUTTONS];
 
+	SDL_Texture* combat_back = NULL;
 	SDL_Texture* combat_win = NULL;
 	SDL_Texture* combat_lose = NULL;
 	SDL_Texture* combat_scape = NULL;
