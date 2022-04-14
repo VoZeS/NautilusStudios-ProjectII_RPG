@@ -6,17 +6,17 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="-160" y="-500" />
+		<camera x="0" y="0" />
 	</renderer>
 	<entities>
 		<player>
-			<position x="8" y="32" />
-			<comp0 x="4" y="32" />
-			<comp1 x="2" y="32" />
-			<comp2 x="0" y="32" />
+			<position x="25" y="30" />
+			<comp0 x="24.5730095" y="31.7297611" />
+			<comp1 x="22.5731373" y="30.9172535" />
+			<comp2 x="20.6526413" y="30.7225952" />
 		</player>
 		<enemies>
-			<enemy0 state="true" />
+			<enemy0 state="false" />
 			<enemy1 state="true" />
 			<enemy2 state="true" />
 			<enemy3 state="true" />

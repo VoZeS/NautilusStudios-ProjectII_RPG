@@ -44,7 +44,9 @@ bool Combat_Manager::Start()
 		enemies_icons = app->tex->Load("Assets/textures/enemies_icons.png");
 		turn_icon = app->tex->Load("Assets/textures/turn_icon.png");
 		dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
+		turns_icons = app->tex->Load("Assets/textures/turns_icons.png");
 		whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
+		whitemark_32x32 = app->tex->Load("Assets/textures/32x32_whitemark.png");
 
 		//init allies
 		int health, mana, speed, power, skill1, skill2, skill3, skill4;
@@ -141,8 +143,6 @@ bool Combat_Manager::PreUpdate()
 			}
 		}
 	}
-
-	LOG("%d", allies[0]->FindBuff(b));
 
 	preupdatedone = true;
 
@@ -280,8 +280,12 @@ bool Combat_Manager::CleanUp()
 	heroes_icons = NULL;
 	app->tex->UnLoad(dead_icon);
 	dead_icon = NULL;
+	app->tex->UnLoad(turns_icons);
+	turns_icons = NULL;
 	app->tex->UnLoad(whitemark_64x64);
 	whitemark_64x64 = NULL;
+	app->tex->UnLoad(whitemark_32x32);
+	whitemark_32x32 = NULL;
 
 	// clean pointers
 	for (uint i = 0; i < 8; ++i)
@@ -574,6 +578,78 @@ void Combat_Manager::UpdateHUD()
 		{
 			app->render->DrawTexture(turn_icon, 8 + cx + 250 + 800, 8 + cy + 67);
 		}
+	}
+
+	DisplayOrder(cx, cy);
+}
+
+void Combat_Manager::DisplayOrder(int cx, int cy)
+{
+	// turns order indicators
+	app->render->DrawTexture(whitemark_64x64, 608 + cx, 30 + cy);
+	app->render->DrawTexture(whitemark_32x32, 624 + cx, 95 + cy);
+	app->render->DrawTexture(whitemark_32x32, 624 + cx, 128 + cy);
+	app->render->DrawTexture(whitemark_32x32, 624 + cx, 161 + cy);
+
+	int t = turn;
+	SDL_Rect rect;
+
+	switch (turn_order[t]->GetType())
+	{
+	case 0:
+		rect = { 0, 0, 64, 64 };
+		app->render->DrawTexture(heroes_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 1:
+		rect = { 64, 0, 64, 64 };
+		app->render->DrawTexture(heroes_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 2:
+		rect = { 128, 0, 64, 64 };
+		app->render->DrawTexture(heroes_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 3:
+		rect = { 192, 0, 64, 64 };
+		app->render->DrawTexture(heroes_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 4:
+		rect = { 0, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 5:
+		rect = { 192, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 6:
+		rect = { 64, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 7:
+		rect = { 128, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 8:
+		rect = { 256, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	}
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		do
+		{
+			if (t == 7)
+			{
+				t = 0;
+			}
+			else
+			{
+				t++;
+			}
+		} while (turn_order[t]->GetEntityState() != 1);
+
+		rect = { 32 * turn_order[t]->GetType(), 0, 32, 32 };
+		app->render->DrawTexture(turns_icons, 624 + cx, 95 + cy + (i * 33), &rect);
 	}
 }
 

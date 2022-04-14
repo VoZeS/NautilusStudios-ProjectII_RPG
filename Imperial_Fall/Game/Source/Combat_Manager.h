@@ -34,6 +34,7 @@ public:
 	bool InArray(int length, Combat_Entities* check);
 
 	void UpdateHUD();
+	void DisplayOrder(int c_x, int c_y);
 
 	Combat_Entities* GetActualEntity()
 	{
@@ -126,7 +127,9 @@ private:
 	SDL_Texture* enemies_icons = NULL;
 	SDL_Texture* turn_icon = NULL;
 	SDL_Texture* dead_icon = NULL;
+	SDL_Texture* turns_icons = NULL;
 	SDL_Texture* whitemark_64x64 = NULL;
+	SDL_Texture* whitemark_32x32 = NULL;
 
 	// enemy casting skill
 	bool casting = false;
