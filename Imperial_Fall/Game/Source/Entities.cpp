@@ -513,6 +513,10 @@ void Entities::KillEnemy()
 		combat_entity->plan_to_delete = true;
 		combat_entity->SaveSingleEnemy();
 		app->menu->kill_enemy = false;
+		if (combat_entity->entity_type == ENTITY_TYPE::R_TEMPLAR) 
+		{
+			app->menu->redtemplar_killed = true;
+		}
 	}
 }
 

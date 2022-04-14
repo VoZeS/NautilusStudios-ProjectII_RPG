@@ -114,6 +114,9 @@ public:
 		scape_buttons[0].state = 1;
 	}
 
+	//Dialog checker
+	bool redtemplar_killed = false;
+
 private:
 
 	bool description_disabled = true;
@@ -176,6 +179,7 @@ private:
 	bool InAnyButton();
 
 	uint menu_music;
+	
 };
 
 #endif

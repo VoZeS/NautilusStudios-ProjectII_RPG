@@ -57,7 +57,10 @@ bool Dialog::Start()
 	linea1String_Renato[3] = dialog.child("renato").child("text4").attribute("linea1").as_string();
 	linea2String_Renato[3] = dialog.child("renato").child("text4").attribute("linea2").as_string();
 
-	for (int i = 0; i < 4; i++)
+	linea1String_Renato[4] = dialog.child("renato").child("text5").attribute("linea1").as_string();
+	linea2String_Renato[4] = dialog.child("renato").child("text5").attribute("linea2").as_string();
+
+	for (int i = 0; i < 5; i++)
 	{
 		linea1Char_Renato[i] = linea1String_Renato[i].c_str();
 		linea2Char_Renato[i] = linea2String_Renato[i].c_str();
@@ -132,19 +135,40 @@ bool Dialog::Update(float dt)
 	{
 		if (app->physics->GetInNPC(1))
 		{
-			if (ContinueDialog(renato_text, renato_maxtext))
+			if (!app->menu->redtemplar_killed)
 			{
-				letlengh = 0;
-				letlengh2 = 0;
+				if (ContinueDialog(renato_text, renato_maxtext - 1))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
 
-				inDialog = true;
-				actual_dialog = DIALOGS::RENATO;
-				SetPressE_Hide(true);
+					inDialog = true;
+					actual_dialog = DIALOGS::RENATO;
+					SetPressE_Hide(true);
+				}
+				else
+				{
+					inDialog = false;
+					actual_dialog = DIALOGS::NO_ONE;
+				}
 			}
 			else
 			{
-				inDialog = false;
-				actual_dialog = DIALOGS::NO_ONE;
+				renato_text = 4;
+				if (ContinueDialog(renato_text, renato_maxtext))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::RENATO;
+					SetPressE_Hide(true);
+				}
+				else
+				{
+					inDialog = false;
+					actual_dialog = DIALOGS::NO_ONE;
+				}
 			}
 		}
 		else if (app->physics->GetInNPC(2))
