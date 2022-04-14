@@ -70,6 +70,7 @@ private:
 	const char* linea2Char_Renato[5];
 	int renato_text = -1;
 	int renato_maxtext = 5;
+	bool dialog_finish = false;
 
 	std::string linea1String_Herrero;
 	std::string linea2String_Herrero;

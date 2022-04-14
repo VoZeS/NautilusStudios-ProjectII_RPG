@@ -154,20 +154,22 @@ bool Dialog::Update(float dt)
 			}
 			else
 			{
-				renato_text = 4;
-				if (ContinueDialog(renato_text, renato_maxtext))
+				if (!dialog_finish)
 				{
+					renato_text = 4;
 					letlengh = 0;
 					letlengh2 = 0;
 
 					inDialog = true;
 					actual_dialog = DIALOGS::RENATO;
 					SetPressE_Hide(true);
+					dialog_finish = true;
 				}
 				else
 				{
 					inDialog = false;
 					actual_dialog = DIALOGS::NO_ONE;
+					dialog_finish = false;
 				}
 			}
 		}
