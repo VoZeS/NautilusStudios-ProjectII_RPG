@@ -1015,6 +1015,7 @@ bool Menu::Update(float dt)
 				case 2:
 					if (!subplaymenu)
 					{
+						app->audio->PlayMusic("Assets/audio/music/credits.ogg");
 						credits = true;
 						settings = false;
 					}
