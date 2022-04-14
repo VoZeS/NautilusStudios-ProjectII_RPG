@@ -55,6 +55,8 @@ bool Combat_Scene::Start()
 		app->combat_manager->Enable();
 		app->combat_menu->Enable();
 		app->particles->Enable();
+
+		app->audio->PlayMusic("Assets/audio/music/combat.ogg");
 	}
 
 

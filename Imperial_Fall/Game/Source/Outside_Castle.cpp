@@ -65,6 +65,8 @@ bool Outside_Castle::Start()
 				PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(0));
 		}
 
+		app->audio->PlayMusic("Assets/audio/music/outside_castle.ogg");
+
 		int w, h;
 		uchar* data = NULL;
 

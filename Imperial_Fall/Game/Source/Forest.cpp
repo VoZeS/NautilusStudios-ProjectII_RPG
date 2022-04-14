@@ -57,6 +57,8 @@ bool Forest::Start()
 		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500), PIXELS_TO_METERS(450), PIXELS_TO_METERS(300),
 			PIXELS_TO_METERS(450), PIXELS_TO_METERS(200), PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
 
+		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
+
 		int w, h;
 		uchar* data = NULL;
 
