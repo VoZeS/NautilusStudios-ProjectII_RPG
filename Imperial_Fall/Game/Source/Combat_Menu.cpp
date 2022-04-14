@@ -18,8 +18,8 @@ Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 {
 	name.Create("combat_menu");
 
-	idleAnim.PushBack({ 5, 164, 50, 72 });
-	idleAnim.PushBack({ 65, 164, 50, 72 });
+	idleAnim.PushBack({ 7, 161, 46, 71 });
+	idleAnim.PushBack({ 67, 161, 46, 71 });
 	idleAnim.speed = 0.03f;
 
 	templarAnim.PushBack({ 0, 0, 100, 102 });

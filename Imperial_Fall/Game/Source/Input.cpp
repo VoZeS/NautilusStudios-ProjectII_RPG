@@ -64,7 +64,7 @@ bool Input::Start()
 bool Input::PreUpdate()
 {
 	static SDL_Event event;
-
+	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	for(int i = 0; i < MAX_KEYS; ++i)

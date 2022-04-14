@@ -258,6 +258,7 @@ bool Menu::Start()
 		team_photo = app->tex->Load("Assets/textures/TeamPhoto.png");
 
 		hover_playing = false;
+		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
 	}
 
 	return true;
@@ -280,6 +281,8 @@ bool Menu::PreUpdate()
 
 	if (!app->frontground->controller) // keyboard
 	{
+		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
+
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
 		{
 			paused = !paused;
@@ -1872,6 +1875,12 @@ bool Menu::PostUpdate()
 	{
 		app->tex->UnLoad(app->combat_menu->description);
 		app->combat_menu->description = NULL;
+	}
+
+	// draw cursor
+	if (!app->frontground->controller)
+	{
+		app->render->DrawTexture(cursor.tex, cursor.pos.x + c_x, cursor.pos.y + c_y);
 	}
 
 	return true;
