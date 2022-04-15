@@ -848,7 +848,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			{
 				if (skill.support_type == SUPPORT_TYPE::SHIELD)
 				{
-					user->ShieldEntity(support * 2, skill.buff_turns);
+					user->ShieldEntity(support * 2, skill.shield_turns);
 				}
 				else if (skill.support_type == SUPPORT_TYPE::HEAL)
 				{
@@ -947,7 +947,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->ShieldEntity(support * 2, skill.buff_turns);
+								allies[i]->ShieldEntity(support * 2, skill.shield_turns);
 							}
 						}
 					}
@@ -957,7 +957,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->ShieldEntity(support * 2, skill.buff_turns);
+								enemies[i]->ShieldEntity(support * 2, skill.shield_turns);
 							}
 						}
 					}
@@ -1060,7 +1060,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			{
 				if (skill.support_type == SUPPORT_TYPE::SHIELD)
 				{
-					user->ShieldEntity(support * 2, skill.buff_turns);
+					user->ShieldEntity(support * 2, skill.shield_turns);
 				}
 				else if (skill.support_type == SUPPORT_TYPE::HEAL)
 				{
@@ -1089,7 +1089,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			{
 				if (skill.support_type == SUPPORT_TYPE::SHIELD)
 				{
-					objective->ShieldEntity(support * 2, skill.buff_turns);
+					objective->ShieldEntity(support * 2, skill.shield_turns);
 				}
 				else if (skill.support_type == SUPPORT_TYPE::HEAL)
 				{
@@ -1124,7 +1124,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (allies[i]->GetEntityState())
 							{
-								allies[i]->ShieldEntity(support * 2, skill.buff_turns);
+								allies[i]->ShieldEntity(support * 2, skill.shield_turns);
 							}
 						}
 					}
@@ -1134,7 +1134,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						{
 							if (enemies[i]->GetEntityState())
 							{
-								enemies[i]->ShieldEntity(support * 2, skill.buff_turns);
+								enemies[i]->ShieldEntity(support * 2, skill.shield_turns);
 							}
 						}
 					}
@@ -1238,7 +1238,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			{
 				if (skill.support_type == SUPPORT_TYPE::SHIELD)
 				{
-					user->ShieldEntity(support * 2, skill.buff_turns);
+					user->ShieldEntity(support * 2, skill.shield_turns);
 				}
 				else if (skill.support_type == SUPPORT_TYPE::HEAL)
 				{
@@ -1280,7 +1280,7 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int objective, skill, rounds = 0;
+	int objective, skill = 0, rounds = 0;
 
 	DEBUFF b;
 	b.debuff_type = DEBUFF_TYPE::STUN;
@@ -1293,11 +1293,11 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		return;
 	}
 
-	do
+	/*do
 	{
 		skill = rand() % 4;
 		rounds++;
-	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);
+	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);*/
 	
 	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{

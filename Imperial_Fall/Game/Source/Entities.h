@@ -125,6 +125,7 @@ public:
 	bool freeze = false;
 
 	bool in_boss = false;
+	fPoint enter_combat_pos;
 
 	SDL_Texture* assassin_texture = NULL;
 	SDL_Texture* tank_texture = NULL;

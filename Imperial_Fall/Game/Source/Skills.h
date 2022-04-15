@@ -104,10 +104,11 @@ public:
 
 	// support type
 	SUPPORT_TYPE support_type = SUPPORT_TYPE::NOTHING;
+	int shield_turns = 0;
 	// buff type
 	BUFF_TYPE buff_type = BUFF_TYPE::NOTHING;
 	DEBUFF_TYPE debuff_type = DEBUFF_TYPE::NOTHING;
-	int buff_turns = 0; // used with shield too
+	int buff_turns = 0;
 	// skill bonus
 	SKILL_BONUS skill_bonus = SKILL_BONUS::NOTHING;
 

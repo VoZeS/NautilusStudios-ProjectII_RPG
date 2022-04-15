@@ -798,7 +798,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 2:
 			skill.owner = owner;
@@ -840,7 +840,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 6:
 			skill.owner = owner;
@@ -919,7 +919,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 14:
 			skill.owner = owner;
@@ -1007,7 +1007,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 5: // level 2 skills
 			skill.owner = owner;
@@ -1021,7 +1021,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_strenght = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 6:
 			skill.owner = owner;
@@ -1033,7 +1033,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
 			skill.buff_type = BUFF_TYPE::TAUNT;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 7:
 			skill.owner = owner;
@@ -1054,7 +1054,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 9: // level 3 up root skills
 			skill.owner = owner;
@@ -1068,7 +1068,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_strenght = 1;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 10:
 			skill.owner = owner;
@@ -1099,7 +1099,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 2;
+			skill.shield_turns = 2;
 			break;
 		case 13: // level 3 down root skills
 			skill.owner = owner;
@@ -1119,6 +1119,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 1;
 			skill.buff_type = BUFF_TYPE::TAUNT;
 			skill.buff_turns = 1;
 			break;
@@ -1481,7 +1482,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.buff_turns = 1;
+			skill.shield_turns = 1;
 			break;
 		case 2:
 			skill.owner = owner;
@@ -1520,6 +1521,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 2;
 			skill.buff_type = BUFF_TYPE::STRONG;
 			skill.buff_turns = 2;
 			break;
