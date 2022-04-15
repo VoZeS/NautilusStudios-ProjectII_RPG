@@ -535,11 +535,7 @@ bool Menu::PreUpdate()
 						pause_buttons[0].state = 0;
 						pause_buttons[1].state = 1;
 						chosed = 1;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (pause_buttons[1].state == 1)
@@ -551,22 +547,14 @@ bool Menu::PreUpdate()
 							pause_buttons[1].state = 0;
 							pause_buttons[3].state = 1;
 							chosed = 3;
-							if (!hover_playing)
-							{
-								app->audio->PlayFx(hover_sound);
-								hover_playing = true;
-							}
+							app->audio->PlayFx(hover_sound);
 						}
 						else
 						{
 							pause_buttons[1].state = 0;
 							pause_buttons[2].state = 1;
 							chosed = 2;
-							if (!hover_playing)
-							{
-								app->audio->PlayFx(hover_sound);
-								hover_playing = true;
-							}
+							app->audio->PlayFx(hover_sound);
 						}
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
@@ -574,11 +562,7 @@ bool Menu::PreUpdate()
 						pause_buttons[1].state = 0;
 						pause_buttons[0].state = 1;
 						chosed = 0;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (pause_buttons[2].state == 1)
@@ -588,22 +572,14 @@ bool Menu::PreUpdate()
 						pause_buttons[2].state = 0;
 						pause_buttons[1].state = 1;
 						chosed = 1;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
 					{
 						pause_buttons[2].state = 0;
 						pause_buttons[3].state = 1;
 						chosed = 3;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (pause_buttons[3].state == 1)
@@ -615,22 +591,14 @@ bool Menu::PreUpdate()
 							pause_buttons[3].state = 0;
 							pause_buttons[1].state = 1;
 							chosed = 1;
-							if (!hover_playing)
-							{
-								app->audio->PlayFx(hover_sound);
-								hover_playing = true;
-							}
+							app->audio->PlayFx(hover_sound);
 						}
 						else
 						{
 							pause_buttons[3].state = 0;
 							pause_buttons[2].state = 1;
 							chosed = 2;
-							if (!hover_playing)
-							{
-								app->audio->PlayFx(hover_sound);
-								hover_playing = true;
-							}
+							app->audio->PlayFx(hover_sound);
 						}
 					}
 				}
@@ -644,11 +612,7 @@ bool Menu::PreUpdate()
 						menu_buttons[0].state = 0;
 						menu_buttons[1].state = 1;
 						chosed = 1;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (menu_buttons[1].state == 1)
@@ -658,61 +622,41 @@ bool Menu::PreUpdate()
 						menu_buttons[1].state = 0;
 						menu_buttons[2].state = 1;
 						chosed = 2;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
 					{
 						menu_buttons[1].state = 0;
 						menu_buttons[0].state = 1;
 						chosed = 0;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (menu_buttons[2].state == 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 					{
 						menu_buttons[2].state = 0;
 						menu_buttons[3].state = 1;
 						chosed = 3;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
 					{
 						menu_buttons[2].state = 0;
 						menu_buttons[1].state = 1;
 						chosed = 1;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (menu_buttons[3].state == 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 					{
 						menu_buttons[3].state = 0;
 						menu_buttons[2].state = 1;
 						chosed = 2;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 			}
@@ -725,11 +669,7 @@ bool Menu::PreUpdate()
 						menu_buttons[4].state = 0;
 						menu_buttons[5].state = 1;
 						chosed = 5;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (menu_buttons[5].state == 1)
@@ -739,11 +679,7 @@ bool Menu::PreUpdate()
 						menu_buttons[5].state = 0;
 						menu_buttons[4].state = 1;
 						chosed = 4;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 			}
@@ -757,11 +693,7 @@ bool Menu::PreUpdate()
 						settings_buttons[0].state = 0;
 						settings_buttons[1].state = 1;
 						chosed = 1;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (settings_buttons[1].state == 1)
@@ -771,22 +703,14 @@ bool Menu::PreUpdate()
 						settings_buttons[1].state = 0;
 						settings_buttons[2].state = 1;
 						chosed = 2;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
 					{
 						settings_buttons[1].state = 0;
 						settings_buttons[0].state = 1;
 						chosed = 0;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (settings_buttons[2].state == 1)
@@ -796,22 +720,14 @@ bool Menu::PreUpdate()
 						settings_buttons[2].state = 0;
 						settings_buttons[3].state = 1;
 						chosed = 3;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
 					{
 						settings_buttons[2].state = 0;
 						settings_buttons[1].state = 1;
 						chosed = 1;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 				else if (settings_buttons[3].state == 1)
@@ -821,11 +737,7 @@ bool Menu::PreUpdate()
 						settings_buttons[3].state = 0;
 						settings_buttons[2].state = 1;
 						chosed = 2;
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
+						app->audio->PlayFx(hover_sound);
 					}
 				}
 			}
@@ -1013,7 +925,6 @@ bool Menu::Update(float dt)
 				case 2:
 					if (!subplaymenu)
 					{
-						app->audio->PlayMusic("Assets/audio/music/credits.ogg");
 						credits = true;
 						settings = false;
 					}
