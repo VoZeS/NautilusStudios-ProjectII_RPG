@@ -45,7 +45,7 @@ bool Town1::Start()
 		app->map->Load("town_1.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/gameplay.ogg");
+		app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();

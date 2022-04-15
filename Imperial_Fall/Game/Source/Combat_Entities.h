@@ -44,8 +44,6 @@ public:
 	void ReloadMana(int amount = -1);
 	void ShieldEntity(int amount, int turns);
 	void HealEntity(int amount);
-	void CleanDebuffedEntity();
-	void CleanBuffedEntity();
 
 	int CheckMana()
 	{
@@ -109,6 +107,19 @@ public:
 		}
 	}
 
+	// n == 0 --> more power, n == 1 --> less power
+	void SetGodModePower(int n)
+	{
+		if (n == 0)
+		{
+			power *= 5.0f;
+		}
+		else
+		{
+			power /= 5.0f;
+		}
+	}
+
 	int GetShield()
 	{
 		return shield;
@@ -147,6 +158,7 @@ public:
 	void AddBuffTurns(BUFF buff, int turns_to_add);
 	void UpdateBuffs();
 	void RemoveAllBuffs();
+	void RemoveGodModeBuffs();
 	List<BUFF> GetBuffList()
 	{
 		return buffs;

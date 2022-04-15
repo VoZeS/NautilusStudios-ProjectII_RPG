@@ -45,7 +45,7 @@ bool Battlefield::Start()
 		app->map->Load("battlefield.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();

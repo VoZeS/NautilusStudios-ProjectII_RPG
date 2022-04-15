@@ -45,7 +45,7 @@ bool Town2::Start()
 		app->map->Load("town_2.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
 
 		//Enable Player &
 		app->menu->Enable();
@@ -75,6 +75,8 @@ bool Town2::Start()
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850),
 				PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
 		}
+
+		app->audio->PlayMusic("Assets/audio/music/town2.ogg");
 
 		int w, h;
 		uchar* data = NULL;

@@ -124,6 +124,8 @@ public:
 	bool player_init = true;
 	bool freeze = false;
 
+	bool in_boss = false;
+
 	SDL_Texture* assassin_texture = NULL;
 	SDL_Texture* tank_texture = NULL;
 	SDL_Texture* healer_texture = NULL;

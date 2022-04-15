@@ -45,7 +45,7 @@ bool Forest::Start()
 		app->map->Load("forest.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();

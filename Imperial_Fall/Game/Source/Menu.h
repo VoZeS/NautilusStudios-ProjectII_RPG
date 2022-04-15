@@ -23,6 +23,12 @@ struct Button {
 	int state = 0; // 0 --> idle, 1 --> above, 2 --> pressed
 };
 
+struct Cursor
+{
+	SDL_Texture* tex = NULL;
+	iPoint pos;
+};
+
 class Menu : public Module
 {
 public:
@@ -114,7 +120,12 @@ public:
 		scape_buttons[0].state = 1;
 	}
 
+	//Dialog checker
+	bool redtemplar_killed = false;
+
 private:
+
+	Cursor cursor;
 
 	bool description_disabled = true;
 	
@@ -145,6 +156,7 @@ private:
 	Button lose_buttons[NUM_LOSE_BUTTONS];
 	Button scape_buttons[NUM_SCAPE_BUTTONS];
 
+	SDL_Texture* combat_back = NULL;
 	SDL_Texture* combat_win = NULL;
 	SDL_Texture* combat_lose = NULL;
 	SDL_Texture* combat_scape = NULL;
@@ -174,8 +186,7 @@ private:
 	uint hover_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
-
-	uint menu_music;
+	
 };
 
 #endif

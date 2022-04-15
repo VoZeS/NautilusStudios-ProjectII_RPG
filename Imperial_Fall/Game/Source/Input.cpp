@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Window.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -64,7 +65,7 @@ bool Input::Start()
 bool Input::PreUpdate()
 {
 	static SDL_Event event;
-
+	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	for(int i = 0; i < MAX_KEYS; ++i)
@@ -100,10 +101,13 @@ bool Input::PreUpdate()
 		{
 			case SDL_CONTROLLERDEVICEADDED:
 				HandleDeviceConnection(event.cdevice.which);
+				app->frontground->controller = true;
+				app->frontground->SetController();
 			break;
 
 			case SDL_CONTROLLERDEVICEREMOVED:
 				HandleDeviceRemoval(event.cdevice.which);
+				app->frontground->controller = false;
 			break;
 
 			case SDL_QUIT:

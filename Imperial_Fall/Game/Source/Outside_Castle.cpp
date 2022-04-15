@@ -45,7 +45,7 @@ bool Outside_Castle::Start()
 		app->map->Load("outside_castle.tmx");
 
 		// Load music
-		//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+		app->audio->PlayMusic("Assets/audio/music/outside_castle.ogg");
 
 		//Enable Player & map
 		app->menu->Enable();

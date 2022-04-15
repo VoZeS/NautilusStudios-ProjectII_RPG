@@ -51,6 +51,8 @@ bool Frontground::Start()
 	r = { 0, 0, 1280, 720 };
 	a = 0;
 
+	SDL_ShowCursor(false);
+
 	return true;
 }
 
@@ -361,15 +363,21 @@ void Frontground::MovePlayer()
 {
 	switch (direction)
 	{
-	case 0: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y + 1);
+	case 0: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y + 2);
 		break;
-	case 1: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y - 1);
+	case 1: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x, app->entities->GetPlayer()->GetPlayerPosition().y - 2);
 		break;
-	case 2: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 1, app->entities->GetPlayer()->GetPlayerPosition().y);
+	case 2: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x - 2, app->entities->GetPlayer()->GetPlayerPosition().y);
 		break;
-	case 3: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x + 1, app->entities->GetPlayer()->GetPlayerPosition().y);
+	case 3: app->entities->GetPlayer()->SetPlayerPosition(app->entities->GetPlayer()->GetPlayerPosition().x + 2, app->entities->GetPlayer()->GetPlayerPosition().y);
 		break;
 	}
 
 	direction = -1;
+}
+
+void Frontground::SetController()
+{
+	app->menu->SetController();
+	app->combat_menu->SetController();
 }

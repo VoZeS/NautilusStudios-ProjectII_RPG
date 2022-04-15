@@ -64,12 +64,13 @@ private:
 	pugi::xml_node renato;
 	pugi::xml_node text1;
 
-	std::string linea1String_Renato[4];
-	std::string linea2String_Renato[4];
-	const char* linea1Char_Renato[4];
-	const char* linea2Char_Renato[4];
+	std::string linea1String_Renato[5];
+	std::string linea2String_Renato[5];
+	const char* linea1Char_Renato[5];
+	const char* linea2Char_Renato[5];
 	int renato_text = -1;
-	int renato_maxtext = 4;
+	int renato_maxtext = 5;
+	bool dialog_finish = false;
 
 	std::string linea1String_Herrero;
 	std::string linea2String_Herrero;
