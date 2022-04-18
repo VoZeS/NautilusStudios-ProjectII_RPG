@@ -12,6 +12,7 @@
 ## CONTROLS:
 
   * WASD: Move Characters
+  * Mouse: Menu navigation and hability tree
   
 ## DEBUG FEATURES:
 
