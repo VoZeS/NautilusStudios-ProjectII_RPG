@@ -28,5 +28,5 @@
 Must features can only be activatide while God Mode is enabled
 ## GAME DESCRIPTION:
   
-  Enjoy the history of an awesome revenge of this 4 powerfull characters.
+  Enjoy this amazing RPG that tells a story of 4 adventurers who want to take revenge from the templar kings of his town.
 
