@@ -12,11 +12,12 @@
 ## CONTROLS:
 
   * WASD: Move Characters
-  * Mouse: Menu navigation and hability tree
+  * Mouse: Menu navigation and choosing options
+  * Mouse: Right click in hability tree to see descriptions
   
 ## DEBUG FEATURES:
 
-  * F1: x2 enemy animation in combat
+  * F1: skip enemy delay in combat
   * Shift + 1: Go to the main town
   * Shift + 2: Go to the town exit
   * Shift + 4: Go to the battlefield
