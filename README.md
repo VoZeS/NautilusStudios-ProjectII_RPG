@@ -13,7 +13,7 @@
 
   * WASD: Move Characters
   * Mouse: Left click for menu navigation and choosing options
-  * Mouse: Right click in hability tree to see descriptions
+  * Mouse: Right click in combat attacks to see descriptions
   
 ## DEBUG FEATURES:
 
