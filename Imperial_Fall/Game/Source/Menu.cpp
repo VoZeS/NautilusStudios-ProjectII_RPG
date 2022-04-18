@@ -975,7 +975,7 @@ bool Menu::Update(float dt)
 						saving = false;
 						intro = false;
 						paused = false;
-						//started = true;
+						app->menu->redtemplar_killed = false;
 						subplaymenu = false;
 					}
 					break;
