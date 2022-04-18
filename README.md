@@ -20,7 +20,7 @@
   * Shift + 1: Go to the main town
   * Shift + 2: Go to the town exit
   * Shift + 4: Go to the battlefield
-  * F5 SAve the current game state
+  * F5 Save the current game state
   * F6 Load the previous game state
   * F9 Enable hitbox vision
   * F10 God Mode
