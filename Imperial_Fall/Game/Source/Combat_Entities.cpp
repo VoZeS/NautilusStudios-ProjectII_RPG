@@ -1573,3 +1573,4 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 
 	return skill;
 }
+

@@ -46,7 +46,8 @@ bool Combat_Manager::Start()
 		dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
 		turns_icons = app->tex->Load("Assets/textures/turns_icons.png");
 		whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
-		whitemark_32x32 = app->tex->Load("Assets/textures/32x32_whitemark.png");
+		whitemark_32x32 = app->tex->Load("Assets/textures/32x32_whitemark.png"); 
+		status_effects = app->tex->Load("Assets/textures/status_effects.png");
 
 		//init allies
 		int health, mana, speed, power, skill1, skill2, skill3, skill4;
@@ -1572,4 +1573,94 @@ bool Combat_Manager::LoadHeroesStats()
 	}
 
 	return ret;
+}
+
+void Combat_Manager::DisplayEntityStatusEffects(Combat_Entities* entity, int cx, int cy)
+{
+	int i = 0;
+	SDL_Rect rect;
+
+	if (entity->GetBuffList().Count() > 0)
+	{
+		ListItem<BUFF>* item;
+
+		for (item = entity->GetBuffList().start; item != NULL && i < 4; item = item->next)
+		{
+			switch (item->data.buff_type)
+			{
+			case BUFF_TYPE::STEALTH:
+				rect = { 16, 32, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::DODGE:
+				rect = { 0, 32, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::DAMAGE_INMUNITY:
+				rect = { 32, 16, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::DEBUFF_INMUNITY:
+				rect = { 48, 16, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::TAUNT:
+				rect = { 0, 48, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::QUICK:
+				rect = { 48, 32, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::STRONG:
+				rect = { 16, 48, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case BUFF_TYPE::RELAX:
+				rect = { 16, 16, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			default:
+				break;
+			}
+
+			i++;
+		}
+	}
+
+	if (entity->GetDebuffList().Count() > 0)
+	{
+		ListItem<DEBUFF>* item;
+
+		for (item = entity->GetDebuffList().start; item != NULL && i < 4; item = item->next)
+		{
+			switch (item->data.debuff_type)
+			{
+			case DEBUFF_TYPE::BURN:
+				rect = { 0, 16, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case DEBUFF_TYPE::DEF_REDUCC:
+				rect = { 16, 0, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case DEBUFF_TYPE::STUN:
+				rect = { 0, 0, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case DEBUFF_TYPE::ANTI_QUICK:
+				rect = { 32, 32, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			case DEBUFF_TYPE::ANTI_STRONG:
+				rect = { 0, 48, 16, 16 };
+				app->render->DrawTexture(status_effects, cx + (16 * i) + 1, cy, &rect);
+				break;
+			default:
+				break;
+			}
+
+			i++;
+		}
+	}
 }
