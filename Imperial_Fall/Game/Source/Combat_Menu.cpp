@@ -74,6 +74,8 @@ bool Combat_Menu::Start()
 		skill_prepared_is_item = -1;
 
 		chosed = 0;
+		enemy_chosed = -1;
+		ally_chosed = -1;
 		app->win->GetWindowSize(win_w, win_h);
 
 		// textures
@@ -96,7 +98,6 @@ bool Combat_Menu::Start()
 		items = app->tex->Load("Assets/textures/Objects/items.png");
 		casting = app->tex->Load("Assets/textures/casting.png");
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
-		description = NULL;
 
 		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
@@ -413,6 +414,38 @@ bool Combat_Menu::PreUpdate()
 					{
 						allies_buttons[i].state = 0;
 					}
+				}
+			}
+
+			// enemy description
+			int e = 0;
+			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+			{
+				SDL_Rect rect = enemies_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					enemy_chosed = i;
+					e++;
+				}
+				else if (e == 0)
+				{
+					enemy_chosed = -1;
+				}
+			}
+
+			// ally description
+			int a = 0;
+			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+			{
+				SDL_Rect rect = allies_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					ally_chosed = i;
+					a++;
+				}
+				else if (a == 0)
+				{
+					ally_chosed = -1;
 				}
 			}
 		}
@@ -1385,22 +1418,26 @@ bool Combat_Menu::Update(float dt)
 				case 0:
 					//attack 1 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(0).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(0);
 					break;
 				case 1:
 					//attack 2 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(1).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(1);
 					break;
 				case 2:
 					//attack 3 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(2).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(2);
 					break;
 				case 3:
 					//attack 4 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(3).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(3);
 					break;
 				}
 			}
@@ -1477,6 +1514,33 @@ bool Combat_Menu::Update(float dt)
 
 				prep_in_items = 1;
 				items_buttons[chosed].state = 2;
+			}
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && general_buttons[chosed].state == 1)
+			{
+				/*app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					//attack 1 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(0).skill_description);
+					break;
+				case 1:
+					//attack 2 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(1).skill_description);
+					break;
+				case 2:
+					//attack 3 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(2).skill_description);
+					break;
+				case 3:
+					//attack 4 description
+					in_description = true;
+					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(3).skill_description);
+					break;
+				}*/
 			}
 		}
 
@@ -1593,6 +1657,69 @@ bool Combat_Menu::Update(float dt)
 
 				prep_in_allies = 1;
 				allies_buttons[chosed].state = 2;
+			}
+		}
+
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && enemy_chosed != -1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (enemy_chosed)
+			{
+			case 0:
+				//enemy 1 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(0);
+				break;
+			case 1:
+				//enemy 2 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(1);
+				break;
+			case 2:
+				//enemy 3 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(2);
+				break;
+			case 3:
+				//enemy 4 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(3);
+				break;
+			}
+		}
+		else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && ally_chosed != -1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (ally_chosed)
+			{
+			case 0:
+				//ally 1 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(0);
+				break;
+			case 1:
+				//ally 2 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(1);
+				break;
+			case 2:
+				//ally 3 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(2);
+				break;
+			case 3:
+				//ally 4 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(3);
+				break;
 			}
 		}
 	}
@@ -2178,8 +2305,6 @@ bool Combat_Menu::CleanUp()
 	special_buttons = NULL;
 	app->tex->UnLoad(items);
 	items = NULL;
-	app->tex->UnLoad(description);
-	description = NULL;
 
 	return true;
 }

@@ -151,6 +151,8 @@ bool Menu::Start()
 		}
 
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
+		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
+		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -1776,15 +1778,15 @@ bool Menu::PostUpdate()
 	}
 
 	// skills descriptions
-	if (app->combat_menu->in_description)
+	if (!description_disabled)
 	{
-		app->render->DrawRectangle({ c_x, c_y, 1280, 720 }, 0, 0, 0, 200);
-		app->render->DrawTexture(app->combat_menu->description, c_x + 20, c_y + 20);
-	}
-	else if (app->combat_menu->description != NULL)
-	{
-		app->tex->UnLoad(app->combat_menu->description);
-		app->combat_menu->description = NULL;
+		switch (app->combat_menu->description_type)
+		{
+		case 0: DisplayEntityInfo(app->combat_menu->desc_entity);
+			break;
+		case 1: DisplaySkillInfo(app->combat_menu->desc_skill);
+			break;
+		}
 	}
 
 	// draw cursor
@@ -1878,6 +1880,183 @@ void Menu::InitPlayer()
 
 	// after fadeout
 	started = true;
+}
+
+void Menu::DisplayEntityInfo(Combat_Entities* entity)
+{
+	app->render->DrawTexture(whitemark_1240x680, 20, 20);
+
+	// Name
+	std::string a;
+	switch (entity->GetType())
+	{
+	case 0: a = "Assassin"; break;
+	case 1: a = "Healer"; break;
+	case 2: a = "Tank"; break;
+	case 3: a = "Wizard"; break;
+	case 4: a = "Templar"; break;
+	case 5: a = "Mushroom"; break;
+	case 6: a = "Goblin"; break;
+	case 7: a = "Skeleton"; break;
+	case 8: a = "Templar Master"; break;
+	default: a = " "; break;
+	}
+	const char* res = a.c_str();
+	app->fonts->BlitText(50, 50, app->fonts->textFont1, res);
+
+	// Health
+	a = "Health: ";
+	std::string b = std::to_string(entity->GetActualHealth());
+	std::string c = " / ";
+	std::string d = std::to_string(entity->GetMaxHealth());
+	std::string r = a + b + c + d;
+	res = r.c_str();
+	app->fonts->BlitText(50, 100, app->fonts->textFont1, res);
+
+	// Mana
+	a = "Mana: ";
+	b = std::to_string(entity->GetActualMana());
+	d = std::to_string(entity->GetMaxMana());
+	r = a + b + c + d;
+	res = r.c_str();
+	app->fonts->BlitText(700, 100, app->fonts->textFont1, res);
+
+	// Speed
+	a = "Speed: ";
+	b = std::to_string(entity->GetSpeed());
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(50, 150, app->fonts->textFont1, res);
+
+	// Power
+	a = "Power: ";
+	b = std::to_string(entity->GetPower());
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(700, 150, app->fonts->textFont1, res);
+
+	// Shield
+	a = "Shield: ";
+	b = std::to_string(entity->GetShield());
+	c = ", ";
+	d = std::to_string(entity->GetShieldTurns());
+	std::string e = " turns remaining";
+	r = a + b + c + d + e;
+	res = r.c_str();
+	app->fonts->BlitText(50, 200, app->fonts->textFont1, res);
+
+	// Weakness
+	a = "Weakness: ";
+	switch (entity->GetWeakness())
+	{
+	case -1: b = "No weakness"; break;
+	case 0: b = "Physic"; break;
+	case 1: b = "Fire"; break;
+	case 2: b = "Lightning"; break;
+	case 3: b = "Water"; break;
+	default: b = " "; break;
+	}
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(700, 200, app->fonts->textFont1, res);
+
+	// Buffs and Debuffs
+	entity->DisplayStatusDescription(50, 275);
+}
+
+void Menu::DisplaySkillInfo(Skill skill)
+{
+	app->render->DrawTexture(whitemark_1240x680, 20, 20);
+
+	// Name
+	std::string a = "Skill Name: ";
+	std::string b = skill.skill_name;
+	std::string r = a + b;
+	const char* res = r.c_str();
+	app->fonts->BlitText(50, 50, app->fonts->textFont1, res);
+
+	// Element
+	a = "Element: ";
+	switch (skill.element)
+	{
+	case 0: b = "Physic"; break;
+	case 1: b = "Fire"; break;
+	case 2: b = "Lightning"; break;
+	case 3: b = "Water"; break;
+	default: b = " "; break;
+	}
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(50, 120, app->fonts->textFont1, res);
+
+	// Objective
+	SDL_Rect rect;
+	if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+	{
+		rect = { 40, 0, 40, 40 };
+		b = "Single Enemy";
+	}
+	else if (skill.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+	{
+		rect = { 0, 0, 40, 40 };
+		b = "Multiple Enemies";
+	}
+	else if (skill.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+	{
+		rect = { 120, 0, 40, 40 };
+		b = "Single Ally";
+	}
+	else if (skill.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+	{
+		rect = { 80, 0, 40, 40 };
+		b = "Multiple Allies";
+	}
+	else if (skill.ally_objective == ALLY_OBJECTIVE::SELF)
+	{
+		rect = { 160, 0, 40, 40 };
+		b = "Self";
+	}
+	app->render->DrawTexture(skills_icons, 50, 170, &rect);
+	a = "Objective: ";
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(90, 175, app->fonts->textFont1, res);
+
+	// Mana cost
+	a = "Mana Cost: ";
+	b = std::to_string(skill.mana_cost);
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(50, 225, app->fonts->textFont1, res);
+
+	// Attack Strenght
+	a = "Attack Strenght: ";
+	switch (skill.att_strenght)
+	{
+	case -1: b = "No damage"; break;
+	case 0: b = "Low damage"; break;
+	case 1: b = "Medium damage"; break;
+	case 2: b = "High damage"; break;
+	}
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(50, 275, app->fonts->textFont1, res);
+
+	// Support Strenght
+	a = "Support Strenght: ";
+	switch (skill.supp_strenght)
+	{
+	case -1: b = "No support strenght"; break;
+	case 0: b = "Low strenght"; break;
+	case 1: b = "Medium strenght"; break;
+	case 2: b = "High strenght"; break;
+	}
+	r = a + b;
+	res = r.c_str();
+	app->fonts->BlitText(50, 325, app->fonts->textFont1, res);
+
+	// Buffs mand Debuffs
+	
 }
 
 bool Menu::InAnyButton()

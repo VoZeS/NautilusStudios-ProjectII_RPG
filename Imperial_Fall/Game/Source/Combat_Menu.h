@@ -69,7 +69,11 @@ public:
 
 	// description
 	bool in_description;
-	SDL_Texture* description = NULL;
+	int description_type = 0; // 0 --> entity, 1 --> skill
+	Combat_Entities* desc_entity = NULL;
+	int enemy_chosed;
+	int ally_chosed;
+	Skill desc_skill;
 
 private:
 	bool preupdatedone = false;

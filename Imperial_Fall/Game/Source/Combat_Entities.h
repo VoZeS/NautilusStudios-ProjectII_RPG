@@ -125,6 +125,11 @@ public:
 		return shield;
 	}
 
+	int GetShieldTurns()
+	{
+		return shield_turns;
+	}
+
 	void DestroyShield()
 	{
 		shield = 0;
@@ -187,6 +192,7 @@ public:
 	}
 
 	void DisplayStatus(int cx, int cy);
+	void DisplayStatusDescription(int cx, int cy);
 
 private:
 	Skill SetSkill(int owner, int skill_number);
@@ -204,6 +210,7 @@ private:
 	int weak_to = -1;
 
 	int alive; // 0 --> dead, 1 --> alive, 2 --> no exist
+
 	// 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard, 4 --> white templar, 5 --> mushroom, 6 --> goblin, 7 --> skeleton
 	// 8 --> red templar
 	int entity_type;
