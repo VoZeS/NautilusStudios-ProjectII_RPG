@@ -8,18 +8,6 @@
   * Juan de Dios García
   * Adrián Martín 
   * Erik Martín
-
-## FEATURES:
-
-* Player navigation
-* Sound and music
-* Title art and animation
-* Interface with feedback
-* Save and load system
-* 3 map locations
-* Combat system (turn administration, 4 playable characters, 5 enemies, skills, items, status effects)
-* 5 types of NPCs
-* Controller and keyboard support
  
 ## CONTROLS:
 
