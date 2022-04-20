@@ -8,6 +8,7 @@
 #include "Combat_Entities.h"
 
 #define CASTING_TIME 2 // in seconds
+#define MAX_EFFECTS_DISPLAYED 4
 
 class Combat_Entities;
 
@@ -93,6 +94,8 @@ public:
 	{
 		return casting_rect;
 	}
+
+	SDL_Texture* status_effects = NULL;
 
 private:
 	bool preupdatedone = false;

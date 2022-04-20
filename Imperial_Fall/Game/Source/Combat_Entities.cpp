@@ -1,4 +1,7 @@
+#include "App.h"
+#include "Render.h"
 #include "Combat_Entities.h"
+#include "Combat_Manager.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -538,7 +541,7 @@ void Combat_Entities::UpdateDamageDebuffs()
 	
 	if (FindDebuff(b) != -1)
 	{
-		DamageEntity(max_health / 10, SKILL_BONUS::NOTHING);
+		DamageEntity(max_health / 10, SKILL_BONUS::IGNORE_SHIELD);
 	}
 }
 
@@ -1574,4 +1577,88 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 	}
 
 	return skill;
+}
+
+void Combat_Entities::DisplayStatus(int cx, int cy)
+{
+	int i = 0;
+	SDL_Rect rect;
+
+	if (buffs.Count() > 0)
+	{
+		ListItem<BUFF>* item;
+
+		for (item = buffs.start; item != NULL; item = item->next)
+		{
+			switch (item->data.buff_type)
+			{
+			case BUFF_TYPE::STEALTH:
+				rect = { 32, 64, 32, 32 };
+				break;
+			case BUFF_TYPE::DODGE:
+				rect = { 0, 64, 32, 32 };
+				break;
+			case BUFF_TYPE::DAMAGE_INMUNITY:
+				rect = { 64, 32, 32, 32 };
+				break;
+			case BUFF_TYPE::DEBUFF_INMUNITY:
+				rect = { 96, 32, 32, 32 };
+				break;
+			case BUFF_TYPE::TAUNT:
+				rect = { 96, 0, 32, 32 };
+				break;
+			case BUFF_TYPE::QUICK:
+				rect = { 96, 64, 32, 32 };
+				break;
+			case BUFF_TYPE::STRONG:
+				rect = { 32, 96, 32, 32 };
+				break;
+			case BUFF_TYPE::RELAX:
+				rect = { 32, 32, 32, 32 };
+				break;
+			case BUFF_TYPE::GODMODE_STRONG:
+				rect = { 64, 96, 32, 32 };
+				break;
+			default:
+				break;
+			}
+
+			app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+			app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+			i++;
+		}
+	}
+
+	if (debuffs.Count() > 0)
+	{
+		ListItem<DEBUFF>* item;
+
+		for (item = debuffs.start; item != NULL && i < MAX_EFFECTS_DISPLAYED; item = item->next)
+		{
+			switch (item->data.debuff_type)
+			{
+			case DEBUFF_TYPE::BURN:
+				rect = { 0, 32, 32, 32 };
+				break;
+			case DEBUFF_TYPE::DEF_REDUCC:
+				rect = { 32, 0, 32, 32 };
+				break;
+			case DEBUFF_TYPE::STUN:
+				rect = { 0, 0, 32, 32 };
+				break;
+			case DEBUFF_TYPE::ANTI_QUICK:
+				rect = { 64, 64, 32, 32 };
+				break;
+			case DEBUFF_TYPE::ANTI_STRONG:
+				rect = { 0, 96, 32, 32 };
+				break;
+			default:
+				break;
+			}
+
+			app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
+			app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+			i++;
+		}
+	}
 }
