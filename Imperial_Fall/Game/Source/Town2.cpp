@@ -75,6 +75,11 @@ bool Town2::Start()
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850),
 				PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
 		}
+		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN2)
+		{
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
+				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
+		}
 
 		app->audio->PlayMusic("Assets/audio/music/town2.ogg");
 

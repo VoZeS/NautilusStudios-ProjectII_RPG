@@ -437,6 +437,8 @@ void Entities::StartCombat()
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
 
+	enter_combat_pos = { GetPlayer()->GetPlayerPosition().x, GetPlayer()->GetPlayerPosition().y };
+
 	float max = 9999;
 	Entity* combat_entity = NULL;
 
@@ -496,7 +498,7 @@ void Entities::KillEnemy()
 	float max = 9999;
 	Entity* combat_entity = NULL;
 
-	fPoint pos = { GetPlayer()->GetPlayerPosition().x, GetPlayer()->GetPlayerPosition().y };
+	fPoint pos = enter_combat_pos;
 
 	for (item = entities.start; item != NULL; item = item->next)
 	{
