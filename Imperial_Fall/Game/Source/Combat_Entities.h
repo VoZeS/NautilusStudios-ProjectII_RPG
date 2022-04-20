@@ -186,6 +186,8 @@ public:
 		prepared_to_die = false;
 	}
 
+	void DisplayStatus(int cx, int cy);
+
 private:
 	Skill SetSkill(int owner, int skill_number);
 
