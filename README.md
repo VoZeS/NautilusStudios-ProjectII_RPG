@@ -8,14 +8,26 @@
   * Juan de Dios García
   * Adrián Martín 
   * Erik Martín
+
+## FEATURES:
+
+* Player navigation
+* Sound and music
+* Title art and animation
+* Interface with feedback
+* Save and load system
+* 3 map locations
+* Combat system (turn administration, 4 playable characters, 5 enemies, skills, items, status effects)
+* 5 types of NPCs
+* Controller and keyboard support
  
 ## CONTROLS:
 
   * WASD: Move Characters
   * Mouse: Left click for menu navigation and choosing options
   * Mouse: Right click in combat attacks to see descriptions
-  
-## DEBUG FEATURES:
+
+## DEBUG CONTROLS:
 
   * F1: skip enemy delay in combat
   * Shift + 1: Go to the main town
