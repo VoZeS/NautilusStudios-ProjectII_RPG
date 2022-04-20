@@ -1936,14 +1936,17 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	app->fonts->BlitText(700, 150, app->fonts->textFont1, res);
 
 	// Shield
-	a = "Shield: ";
-	b = std::to_string(entity->GetShield());
-	c = ", ";
-	d = std::to_string(entity->GetShieldTurns());
-	std::string e = " turns remaining";
-	r = a + b + c + d + e;
-	res = r.c_str();
-	app->fonts->BlitText(50, 200, app->fonts->textFont1, res);
+	if (entity->GetShield() > 0)
+	{
+		a = "Shield: ";
+		b = std::to_string(entity->GetShield());
+		c = ", ";
+		d = std::to_string(entity->GetShieldTurns());
+		std::string e = " turns remaining";
+		r = a + b + c + d + e;
+		res = r.c_str();
+		app->fonts->BlitText(50, 200, app->fonts->textFont1, res);
+	}
 
 	// Weakness
 	a = "Weakness: ";
@@ -1969,14 +1972,13 @@ void Menu::DisplaySkillInfo(Skill skill)
 	app->render->DrawTexture(whitemark_1240x680, 20, 20);
 
 	// Name
-	std::string a = "Skill Name: ";
-	std::string b = skill.skill_name;
-	std::string r = a + b;
-	const char* res = r.c_str();
+	std::string a = skill.skill_name;
+	const char* res = a.c_str();
 	app->fonts->BlitText(50, 50, app->fonts->textFont1, res);
 
 	// Element
 	a = "Element: ";
+	std::string b;
 	switch (skill.element)
 	{
 	case 0: b = "Physic"; break;
@@ -1985,7 +1987,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	case 3: b = "Water"; break;
 	default: b = " "; break;
 	}
-	r = a + b;
+	std::string r = a + b;
 	res = r.c_str();
 	app->fonts->BlitText(50, 120, app->fonts->textFont1, res);
 
@@ -2027,7 +2029,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	b = std::to_string(skill.mana_cost);
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 225, app->fonts->textFont1, res);
+	app->fonts->BlitText(800, 120, app->fonts->textFont1, res);
 
 	// Attack Strenght
 	a = "Attack Strenght: ";
@@ -2040,7 +2042,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	}
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 275, app->fonts->textFont1, res);
+	app->fonts->BlitText(50, 225, app->fonts->textFont1, res);
 
 	// Support Strenght
 	a = "Support Strenght: ";
@@ -2053,10 +2055,27 @@ void Menu::DisplaySkillInfo(Skill skill)
 	}
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 325, app->fonts->textFont1, res);
+	app->fonts->BlitText(50, 275, app->fonts->textFont1, res);
 
 	// Buffs mand Debuffs
-	
+	app->combat_menu->DisplaySkillEffects(skill, 50, 350);
+
+	// Description
+	r = "Description:";
+	res = r.c_str();
+	app->fonts->BlitText(50, 550 - 32, app->fonts->textFont1, res);
+	r = skill.skill_description0;
+	res = r.c_str();
+	app->fonts->BlitText(50, 550, app->fonts->textFont1, res);
+	r = skill.skill_description1;
+	res = r.c_str();
+	app->fonts->BlitText(50, 550 + 32, app->fonts->textFont1, res);
+	r = skill.skill_description2;
+	res = r.c_str();
+	app->fonts->BlitText(50, 550 + 64, app->fonts->textFont1, res);
+	r = skill.skill_description3;
+	res = r.c_str();
+	app->fonts->BlitText(50, 550 + 96, app->fonts->textFont1, res);
 }
 
 bool Menu::InAnyButton()

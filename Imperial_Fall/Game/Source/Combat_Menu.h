@@ -74,6 +74,7 @@ public:
 	int enemy_chosed;
 	int ally_chosed;
 	Skill desc_skill;
+	void DisplaySkillEffects(Skill skill, int cx, int cy);
 
 private:
 	bool preupdatedone = false;

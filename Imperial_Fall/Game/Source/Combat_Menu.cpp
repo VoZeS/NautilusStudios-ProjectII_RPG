@@ -1515,32 +1515,36 @@ bool Combat_Menu::Update(float dt)
 				prep_in_items = 1;
 				items_buttons[chosed].state = 2;
 			}
-			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && general_buttons[chosed].state == 1)
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && items_buttons[chosed].state == 1 && chosed != 4)
 			{
-				/*app->audio->PlayFx(click_sound);
+				app->audio->PlayFx(click_sound);
 				switch (chosed)
 				{
 				case 0:
 					//attack 1 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(0).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(0);
 					break;
 				case 1:
 					//attack 2 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(1).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(1);
 					break;
 				case 2:
 					//attack 3 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(2).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(2);
 					break;
 				case 3:
 					//attack 4 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(3).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(3);
 					break;
-				}*/
+				}
 			}
 		}
 
@@ -2380,5 +2384,117 @@ void Combat_Menu::PlaySkillFx(int n)
 		break;
 	case 5: app->audio->PlayFx(buff_fx);
 		break;
+	}
+}
+
+void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
+{
+	int i = 0;
+	SDL_Rect rect;
+	std::string description0;
+	std::string description1;
+	const char* res;
+
+	if (skill.buff_type != BUFF_TYPE::NOTHING)
+	{
+		switch (skill.buff_type)
+		{
+		case BUFF_TYPE::STEALTH:
+			rect = { 32, 64, 32, 32 };
+			description0 = "Stealth, makes the enemy unable to target the user with";
+			description1 = "single target skills.";
+			break;
+		case BUFF_TYPE::DODGE:
+			rect = { 0, 64, 32, 32 };
+			description0 = "Dodge, the user avoid multi-target attacks.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::DAMAGE_INMUNITY:
+			rect = { 64, 32, 32, 32 };
+			description0 = "Damage Inmunity, the user can't take damage.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::DEBUFF_INMUNITY:
+			rect = { 96, 32, 32, 32 };
+			description0 = "Debuff Inmunity, the user can't obtain debuffs.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::TAUNT:
+			rect = { 96, 0, 32, 32 };
+			description0 = "Taunt, the user provoke enemies. Enemies single target";
+			description1 = "attacks will hit the user.";
+			break;
+		case BUFF_TYPE::QUICK:
+			rect = { 96, 64, 32, 32 };
+			description0 = "Quick, increases 2 times the user speed.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::STRONG:
+			rect = { 32, 96, 32, 32 };
+			description0 = "Strong, increases 1.5 times the user power.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::RELAX:
+			rect = { 32, 32, 32, 32 };
+			description0 = "Relax, each turn the user will be healed by a 25%";
+			description1 = "of this max health.";
+			break;
+		case BUFF_TYPE::GODMODE_STRONG:
+			rect = { 64, 96, 32, 32 };
+			description0 = "Power of the Gods, increases 5 times the user power.";
+			description1 = "Only the real gods can use it.";
+			break;
+		default:
+			break;
+		}
+
+		app->render->DrawRectangle({ cx + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+		app->render->DrawTexture(app->combat_manager->status_effects, cx, cy, &rect);
+		res = description0.c_str();
+		app->fonts->BlitText(cx + 33, cy, app->fonts->textFont1, res);
+		res = description1.c_str();
+		app->fonts->BlitText(cx + 33, cy + 32, app->fonts->textFont1, res);
+		i++;
+	}
+
+	if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+	{
+		switch (skill.debuff_type)
+		{
+		case DEBUFF_TYPE::BURN:
+			rect = { 0, 32, 32, 32 };
+			description0 = "Burn, the user takes a 10% of his max health";
+			description1 = "as damage each turn.";
+			break;
+		case DEBUFF_TYPE::DEF_REDUCC:
+			rect = { 32, 0, 32, 32 };
+			description0 = "Defense Reduction, user will receive extra damage from";
+			description1 = "physic damage.";
+			break;
+		case DEBUFF_TYPE::STUN:
+			rect = { 0, 0, 32, 32 };
+			description0 = "Stun, user is unable to act.";
+			description1 = "";
+			break;
+		case DEBUFF_TYPE::ANTI_QUICK:
+			rect = { 64, 64, 32, 32 };
+			description0 = "Slow, decreases by 50% the user speed.";
+			description1 = "";
+			break;
+		case DEBUFF_TYPE::ANTI_STRONG:
+			rect = { 0, 96, 32, 32 };
+			description0 = "Weak, decreases by 30% the user power.";
+			description1 = "";
+			break;
+		default:
+			break;
+		}
+
+		app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
+		app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+		res = description0.c_str();
+		app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+		res = description1.c_str();
+		app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
 	}
 }
