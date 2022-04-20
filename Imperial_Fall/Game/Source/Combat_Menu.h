@@ -151,6 +151,7 @@ private:
 	SDL_Texture* special_buttons = NULL;
 	SDL_Texture* items = NULL;
 	SDL_Texture* casting = NULL;
+	SDL_Texture* skills_icons = NULL;
 
 	void BlittAttackText(int c_x, int c_y);
 

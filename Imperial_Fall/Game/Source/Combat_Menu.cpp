@@ -95,6 +95,7 @@ bool Combat_Menu::Start()
 		special_buttons = app->tex->Load("Assets/textures/special_buttons.png");
 		items = app->tex->Load("Assets/textures/Objects/items.png");
 		casting = app->tex->Load("Assets/textures/casting.png");
+		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 		description = NULL;
 
 		// sounds
@@ -1737,22 +1738,18 @@ bool Combat_Menu::PostUpdate()
 				{
 					if (general_buttons[i].state == 1 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
 						g_rect = { 0, 50, 400, 50 };
 					}
 					else if (general_buttons[i].state == 2 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 						g_rect = { 0, 100, 400, 50 };
 					}
 					else if (general_buttons[i].state == 3)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 						g_rect = { 0, 100, 400, 50 };
 					}
 					else if (general_buttons[i].state == 0)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
 						switch (app->combat_manager->GetActualEntity()->GetSkill(i).element)
 						{
 						case 0: g_rect = { 0, 0, 400, 50 };
@@ -1765,18 +1762,17 @@ bool Combat_Menu::PostUpdate()
 							  break;
 						}
 					}
+
 					texture = whitemark_400x50;
 				}
 				else
 				{
 					if (general_buttons[i].state == 1 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
 						g_rect = { 0, 110, 110, 110 };
 					}
 					else if (general_buttons[i].state == 2 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 						g_rect = { 0, 220, 110, 110 };
 					}
 					else if (general_buttons[i].state == 0)
@@ -1795,6 +1791,28 @@ bool Combat_Menu::PostUpdate()
 				general_buttons[i].rect.y = action_pos[i].y + c_y;
 
 				app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont1, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
+				
+				if (app->combat_manager->GetActualEntity()->GetSkill(i).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+				{
+					sp_rect = { 40, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+				{
+					sp_rect = { 0, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+				{
+					sp_rect = { 120, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+				{
+					sp_rect = { 80, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).ally_objective == ALLY_OBJECTIVE::SELF)
+				{
+					sp_rect = { 160, 0, 40, 40 };
+				}
+				app->render->DrawTexture(skills_icons, general_buttons[i].rect.x + 350, general_buttons[i].rect.y + 5, &sp_rect);
 			}
 			for (size_t i = 4; i < 7; i++)
 			{
