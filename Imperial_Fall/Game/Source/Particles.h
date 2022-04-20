@@ -44,6 +44,8 @@ public:
 	Particle heal;
 	Particle buff;
 	Particle anti_heal;
+	Particle weak;
+	Particle null;
 };
 
 #endif
