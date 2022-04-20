@@ -1933,6 +1933,28 @@ bool Combat_Menu::PostUpdate()
 				if (i == 4)
 				{
 					app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, app->fonts->textFont1, skill_prepared.skill_name);
+				
+					if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+					{
+						e_rect = { 40, 0, 40, 40 };
+					}
+					else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+					{
+						e_rect = { 0, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+					{
+						e_rect = { 120, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+					{
+						e_rect = { 80, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
+					{
+						e_rect = { 160, 0, 40, 40 };
+					}
+					app->render->DrawTexture(skills_icons, enemies_buttons[i].rect.x + 350, enemies_buttons[i].rect.y + 5, &e_rect);
 				}
 			}
 		}
@@ -1992,6 +2014,28 @@ bool Combat_Menu::PostUpdate()
 				if (i == 4)
 				{
 					app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, app->fonts->textFont1, skill_prepared.skill_name);
+				
+					if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+					{
+						a_rect = { 40, 0, 40, 40 };
+					}
+					else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+					{
+						a_rect = { 0, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+					{
+						a_rect = { 120, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+					{
+						a_rect = { 80, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
+					{
+						a_rect = { 160, 0, 40, 40 };
+					}
+					app->render->DrawTexture(skills_icons, allies_buttons[i].rect.x + 350, allies_buttons[i].rect.y + 5, &a_rect);
 				}
 			}
 		}
