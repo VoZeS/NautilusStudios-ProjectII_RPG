@@ -1710,8 +1710,8 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			{
 			case BUFF_TYPE::STEALTH:
 				rect = { 32, 64, 32, 32 };
-				description0 = "Stealth, makes the enemy unable to target the user with";
-				description1 = "single target skills.";
+				description0 = "Stealth, makes the enemy unable to target the";
+				description1 = "user with single target skills.";
 				break;
 			case BUFF_TYPE::DODGE:
 				rect = { 0, 64, 32, 32 };
@@ -1730,8 +1730,8 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				break;
 			case BUFF_TYPE::TAUNT:
 				rect = { 96, 0, 32, 32 };
-				description0 = "Taunt, the user provoke enemies. Enemies single target";
-				description1 = "attacks will hit the user.";
+				description0 = "Taunt, the user provoke enemies. Enemies single";
+				description1 = "target attacks will hit the user.";
 				break;
 			case BUFF_TYPE::QUICK:
 				rect = { 96, 64, 32, 32 };
@@ -1745,13 +1745,13 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				break;
 			case BUFF_TYPE::RELAX:
 				rect = { 32, 32, 32, 32 };
-				description0 = "Relax, each turn the user will be healed by a 25%";
-				description1 = "of this max health.";
+				description0 = "Relax, each turn the user will be healed by a";
+				description1 = "25% of this max health.";
 				break;
 			case BUFF_TYPE::GODMODE_STRONG:
 				rect = { 64, 96, 32, 32 };
-				description0 = "Power of the Gods, increases 5 times the user power.";
-				description1 = "Only the real gods can use it.";
+				description0 = "Grace of the Gods, increases 5 times the user";
+				description1 = "power. Only the real gods can use it.";
 				break;
 			default:
 				break;
@@ -1764,9 +1764,9 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
 					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 					res = description0.c_str();
-					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
 					res = description1.c_str();
-					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
 					i++;
 				}
 			}
@@ -1775,9 +1775,9 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
 				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 				res = description0.c_str();
-				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
 				res = description1.c_str();
-				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
 				i++;
 			}
 		}
@@ -1827,9 +1827,9 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
 					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 					res = description0.c_str();
-					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
 					res = description1.c_str();
-					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
 					i++;
 				}
 			}
@@ -1838,9 +1838,9 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
 				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 				res = description0.c_str();
-				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
 				res = description1.c_str();
-				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
 				i++;
 			}
 		}

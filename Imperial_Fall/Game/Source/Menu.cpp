@@ -1708,7 +1708,7 @@ bool Menu::PostUpdate()
 			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 		}
 
-		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		app->fonts->BlitCombatText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (lose)
@@ -1740,8 +1740,8 @@ bool Menu::PostUpdate()
 			}
 		}
 		
-		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
-		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
+		app->fonts->BlitCombatText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
+		app->fonts->BlitCombatText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (scape)
@@ -1773,8 +1773,8 @@ bool Menu::PostUpdate()
 			}
 		}
 
-		app->fonts->BlitText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
-		app->fonts->BlitText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
+		app->fonts->BlitCombatText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
+		app->fonts->BlitCombatText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
 	}
 
 	// skills descriptions
@@ -1902,7 +1902,7 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	default: a = " "; break;
 	}
 	const char* res = a.c_str();
-	app->fonts->BlitText(50, 50, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 50, app->fonts->textFont2, res);
 
 	// Health
 	a = "Health: ";
@@ -1911,7 +1911,7 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	std::string d = std::to_string(entity->GetMaxHealth());
 	std::string r = a + b + c + d;
 	res = r.c_str();
-	app->fonts->BlitText(50, 100, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 100, app->fonts->textFont2, res);
 
 	// Mana
 	a = "Mana: ";
@@ -1919,21 +1919,21 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	d = std::to_string(entity->GetMaxMana());
 	r = a + b + c + d;
 	res = r.c_str();
-	app->fonts->BlitText(700, 100, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(700, 100, app->fonts->textFont2, res);
 
 	// Speed
 	a = "Speed: ";
 	b = std::to_string(entity->GetSpeed());
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 150, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 150, app->fonts->textFont2, res);
 
 	// Power
 	a = "Power: ";
 	b = std::to_string(entity->GetPower());
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(700, 150, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(700, 150, app->fonts->textFont2, res);
 
 	// Shield
 	if (entity->GetShield() > 0)
@@ -1945,7 +1945,7 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 		std::string e = " turns remaining";
 		r = a + b + c + d + e;
 		res = r.c_str();
-		app->fonts->BlitText(50, 200, app->fonts->textFont1, res);
+		app->fonts->BlitCombatText(50, 200, app->fonts->textFont2, res);
 	}
 
 	// Weakness
@@ -1961,7 +1961,7 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	}
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(700, 200, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(700, 200, app->fonts->textFont2, res);
 
 	// Buffs and Debuffs
 	entity->DisplayStatusDescription(50, 275);
@@ -1974,7 +1974,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	// Name
 	std::string a = skill.skill_name;
 	const char* res = a.c_str();
-	app->fonts->BlitText(50, 50, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 50, app->fonts->textFont2, res);
 
 	// Element
 	a = "Element: ";
@@ -1989,7 +1989,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	}
 	std::string r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 120, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 120, app->fonts->textFont2, res);
 
 	// Objective
 	SDL_Rect rect;
@@ -2022,14 +2022,14 @@ void Menu::DisplaySkillInfo(Skill skill)
 	a = "Objective: ";
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(90, 175, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(90, 175, app->fonts->textFont2, res);
 
 	// Mana cost
 	a = "Mana Cost: ";
 	b = std::to_string(skill.mana_cost);
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(800, 120, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(800, 120, app->fonts->textFont2, res);
 
 	// Attack Strenght
 	a = "Attack Strenght: ";
@@ -2042,7 +2042,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	}
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 225, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 225, app->fonts->textFont2, res);
 
 	// Support Strenght
 	a = "Support Strenght: ";
@@ -2055,7 +2055,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	}
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitText(50, 275, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 275, app->fonts->textFont2, res);
 
 	// Buffs mand Debuffs
 	app->combat_menu->DisplaySkillEffects(skill, 50, 350);
@@ -2063,19 +2063,19 @@ void Menu::DisplaySkillInfo(Skill skill)
 	// Description
 	r = "Description:";
 	res = r.c_str();
-	app->fonts->BlitText(50, 550 - 32, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 550 - 34, app->fonts->textFont2, res);
 	r = skill.skill_description0;
 	res = r.c_str();
-	app->fonts->BlitText(50, 550, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 550, app->fonts->textFont2, res);
 	r = skill.skill_description1;
 	res = r.c_str();
-	app->fonts->BlitText(50, 550 + 32, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 550 + 34, app->fonts->textFont2, res);
 	r = skill.skill_description2;
 	res = r.c_str();
-	app->fonts->BlitText(50, 550 + 64, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 550 + 68, app->fonts->textFont2, res);
 	r = skill.skill_description3;
 	res = r.c_str();
-	app->fonts->BlitText(50, 550 + 96, app->fonts->textFont1, res);
+	app->fonts->BlitCombatText(50, 550 + 102, app->fonts->textFont2, res);
 }
 
 bool Menu::InAnyButton()
