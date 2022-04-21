@@ -47,6 +47,7 @@ public:
 	Particle stun;
 	Particle weak;
 	Particle null;
+	Particle blood_smoke;
 };
 
 #endif

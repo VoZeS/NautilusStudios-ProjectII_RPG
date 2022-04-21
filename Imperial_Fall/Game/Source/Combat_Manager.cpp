@@ -1530,14 +1530,14 @@ void Combat_Manager::KillPreparedEntities()
 {
 	for (size_t i = 0; i < 4; i++)
 	{
-		if (allies[i]->prepared_to_die == true)
+		if (allies[i]->prepared_to_die)
 		{
 			allies[i]->KillEntity();
 			allies[i]->RemoveAllBuffs();
 			allies[i]->RemoveAllDebuffs();
 			allies[i]->DestroyShield();
 		}
-		if (enemies[i]->prepared_to_die == true)
+		if (enemies[i]->prepared_to_die)
 		{
 			enemies[i]->KillEntity();
 			enemies[i]->RemoveAllBuffs();

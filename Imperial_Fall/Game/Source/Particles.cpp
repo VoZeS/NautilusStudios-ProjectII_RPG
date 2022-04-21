@@ -121,6 +121,22 @@ Particles::Particles(bool enabled) : Module(enabled)
 	null.anim.PushBack({ pix * 5, pix * 9, pix, pix });
 	null.anim.loop = false;
 	null.anim.speed = speed;
+
+	// blood_smoke
+	blood_smoke.anim.PushBack({ pix * 0, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 1, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 2, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 3, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 4, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 5, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 0, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 1, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 2, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 3, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 4, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 5, pix * 11, pix, pix });
+	blood_smoke.anim.loop = false;
+	blood_smoke.anim.speed = speed;
 }
 
 Particles::~Particles()

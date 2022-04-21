@@ -5,6 +5,7 @@
 #include "Combat_Manager.h"
 #include "Defs.h"
 #include "Log.h"
+#include "Particles.h"
 
 Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int owner, int skill1, int skill2, int skill3, int skill4)
 {
@@ -227,6 +228,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 	{
 		actual_health = 0;
 		prepared_to_die = true;
+		app->particles->AddParticle(app->particles->blood_smoke, position.x - 32, position.y - 35);
 	}
 
 	return true;
