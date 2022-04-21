@@ -151,7 +151,6 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 		}
 
 
-
 		/*
 		else if (text[i] == 'I') {
 
