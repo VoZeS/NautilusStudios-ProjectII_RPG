@@ -610,12 +610,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
 			skill.att_strenght = 0;
-			skill.buff_type = BUFF_TYPE::DODGE;
-			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
-			skill.buff_turns = 3;
 			break;
 		case 1:
 			skill.owner = owner;

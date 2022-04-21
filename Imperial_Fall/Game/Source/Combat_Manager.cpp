@@ -171,6 +171,7 @@ bool Combat_Manager::Update(float dt)
 			if (turn_order[turn]->FindDebuff(b) != -1)
 			{
 				in_animation = 1;
+				app->particles->AddParticle(app->particles->stun, turn_order[turn]->position.x - 32, turn_order[turn]->position.y - 100);
 			}
 		}
 		else // enemies
@@ -709,12 +710,12 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			if (objective->GetWeakness() == skill.element)
 			{
 				damage *= 1.5f;
-				app->particles->AddParticle(app->particles->weak, objective->position.x - 50, objective->position.y - 100);
+				app->particles->AddParticle(app->particles->weak, objective->position.x - 32, objective->position.y - 100);
 			}
 			else if (objective->FindDebuff(d) != -1 && skill.element == 0)
 			{
 				damage *= 1.5f;
-				app->particles->AddParticle(app->particles->weak, objective->position.x - 50, objective->position.y - 100);
+				app->particles->AddParticle(app->particles->weak, objective->position.x - 32, objective->position.y - 100);
 			}
 
 			BUFF b;
@@ -722,7 +723,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			if (objective->FindBuff(b) != -1)
 			{
 				damage = 0;
-				app->particles->AddParticle(app->particles->null, objective->position.x - 50, objective->position.y - 100);
+				app->particles->AddParticle(app->particles->null, objective->position.x - 32, objective->position.y - 100);
 			}
 
 			objective->DamageEntity(damage, skill.skill_bonus);
@@ -899,12 +900,12 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						if (enemies[i]->FindBuff(b2) != -1)
 						{
 							damage = 0;
-							app->particles->AddParticle(app->particles->null, enemies[i]->position.x - 50, enemies[i]->position.y - 100);
+							app->particles->AddParticle(app->particles->null, enemies[i]->position.x - 32, enemies[i]->position.y - 100);
 						}
 						else if ((enemies[i]->GetWeakness() == skill.element) || (enemies[i]->FindDebuff(d) != -1 && skill.element == 0))
 						{
 							enemies[i]->DamageEntity(damage * 1.5f, skill.skill_bonus);
-							app->particles->AddParticle(app->particles->weak, enemies[i]->position.x - 50, enemies[i]->position.y - 100);
+							app->particles->AddParticle(app->particles->weak, enemies[i]->position.x - 32, enemies[i]->position.y - 100);
 						}
 						else
 						{
@@ -1305,6 +1306,7 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		null.skill_name = "null";
 		app->combat_menu->SetSkillPrepared(null);
 		in_animation = 1;
+		app->particles->AddParticle(app->particles->stun, turn_order[turn]->position.x - 32, turn_order[turn]->position.y - 100);
 		return;
 	}
 
