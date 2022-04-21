@@ -1628,9 +1628,21 @@ void Combat_Entities::DisplayStatus(int cx, int cy)
 				break;
 			}
 
-			app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
-			app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
-			i++;
+			if (item->data.buff_type == BUFF_TYPE::QUICK || item->data.buff_type == BUFF_TYPE::STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+				i++;
+			}
 		}
 	}
 
@@ -1661,9 +1673,21 @@ void Combat_Entities::DisplayStatus(int cx, int cy)
 				break;
 			}
 
-			app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
-			app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
-			i++;
+			if (item->data.debuff_type == DEBUFF_TYPE::STUN || item->data.debuff_type == DEBUFF_TYPE::ANTI_QUICK || item->data.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+				i++;
+			}
 		}
 	}
 }
@@ -1733,13 +1757,29 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				break;
 			}
 
-			app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
-			app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
-			res = description0.c_str();
-			app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
-			res = description1.c_str();
-			app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
-			i++;
+			if (item->data.buff_type == BUFF_TYPE::QUICK || item->data.buff_type == BUFF_TYPE::STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+					res = description0.c_str();
+					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+					res = description1.c_str();
+					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+				res = description0.c_str();
+				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+				res = description1.c_str();
+				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+				i++;
+			}
 		}
 	}
 
@@ -1780,13 +1820,29 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				break;
 			}
 
-			app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
-			app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
-			res = description0.c_str();
-			app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
-			res = description1.c_str();
-			app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
-			i++;
+			if (item->data.debuff_type == DEBUFF_TYPE::STUN || item->data.debuff_type == DEBUFF_TYPE::ANTI_QUICK || item->data.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+					res = description0.c_str();
+					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+					res = description1.c_str();
+					app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+				res = description0.c_str();
+				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont1, res);
+				res = description1.c_str();
+				app->fonts->BlitText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont1, res);
+				i++;
+			}
 		}
 	}
 }
