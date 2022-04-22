@@ -13,6 +13,9 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 Dialog::Dialog(bool enabled) : Module(enabled)
 {
 	name.Create("dialog");
@@ -43,6 +46,9 @@ bool Dialog::Start()
 	anim = &idle_e;
 
 	LoadDialog();
+	letter_fx = app->audio->LoadFx("Assets/audio/fx/letter.wav");
+	letterA_fx = app->audio->LoadFx("Assets/audio/fx/letter_a.wav");
+	letterG_fx = app->audio->LoadFx("Assets/audio/fx/letter_g.wav");
 
 	//Text 1
 	linea1String_Renato[0] = dialog.child("renato").child("text1").attribute("linea1").as_string();
@@ -114,6 +120,7 @@ bool Dialog::Start()
 // Called each loop iteration
 bool Dialog::PreUpdate()
 {
+	srand(time(NULL));
 
 	return true;
 }
@@ -262,7 +269,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
 			letlengh++;
-
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -271,7 +278,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
 			letlengh++;
-			
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -281,7 +288,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
 			letlengh2++;
-
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -290,7 +297,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
 			letlengh2++;
-
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -410,6 +417,18 @@ bool Dialog::LoadDialog()
 	}
 
 	return ret;
+}
+
+void Dialog::PlayLetterSound()
+{
+	int r = rand() % 3;
+
+	switch (r)
+	{
+	case 0: app->audio->PlayFx(letter_fx); break;
+	case 1: app->audio->PlayFx(letterA_fx); break;
+	case 2: app->audio->PlayFx(letterG_fx); break;
+	}
 }
 
 bool Dialog::ContinueDialog(int& actual_text, int max_text)

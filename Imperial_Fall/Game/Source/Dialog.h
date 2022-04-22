@@ -114,6 +114,10 @@ private:
 	const char* linea2Char_Seta;
 	*/
 	bool LoadDialog();
+	uint letter_fx; // normal
+	uint letterA_fx; // agudo
+	uint letterG_fx; // grave
+	void PlayLetterSound();
 
 	SDL_Texture* whitemark_300x80 = NULL;
 	SDL_Texture* whitemark_1200x140 = NULL;
