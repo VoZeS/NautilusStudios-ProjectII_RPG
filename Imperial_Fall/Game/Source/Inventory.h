@@ -4,6 +4,11 @@
 #include "Module.h"
 #include "Animation.h"
 
+#define NUM_GEAR_BUTTONS 4
+
+struct Button;
+struct Cursor;
+
 class Inventory : public Module
 {
 public:
@@ -24,10 +29,12 @@ public:
 	bool CleanUp();
 
 public:
-	bool hide;
+	bool hide = true;
 	
 
 private:
+	Cursor cursor;
+
 	// book
 	Animation* book;
 	Animation open;
@@ -49,11 +56,26 @@ private:
 	SDL_Texture* book_tex;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
+	int text_cd;
+	bool count;
+	bool show_info;
 
 	// display
 	void DisplayHero(int n);
-	SDL_Texture* whitemark128x128;
+	SDL_Texture* whitemark_128x128;
+	SDL_Texture* whitemark_250x70;
 	SDL_Texture* hero_tex;
+
+	// buttons
+	int chosed;
+	Button skill_button;
+	Button gear_buttons[NUM_GEAR_BUTTONS];
+
+	// sound
+	uint click_sound;
+	uint hover_sound;
+	bool hover_playing = false;
+	bool InAnyButton();
 	
 };
 

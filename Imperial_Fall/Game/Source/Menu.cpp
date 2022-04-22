@@ -289,7 +289,8 @@ bool Menu::PreUpdate()
 			paused = !paused;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && !paused && !settings && description_disabled && app->inventory->hide)
+		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && !paused && !settings && description_disabled
+			&& app->inventory->hide && app->inventory->Enabled())
 		{
 			app->inventory->hide = false;
 		}
@@ -1796,7 +1797,7 @@ bool Menu::PostUpdate()
 	}
 
 	// draw cursor
-	if (!app->frontground->controller)
+	if (!app->frontground->controller && app->inventory->hide)
 	{
 		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 		app->render->DrawTexture(cursor.tex, cursor.pos.x + c_x, cursor.pos.y + c_y);
