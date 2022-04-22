@@ -8,6 +8,7 @@
 #include "Fonts.h"
 #include "Frontground.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Player.h"
 #include "Defs.h"
@@ -286,6 +287,11 @@ bool Menu::PreUpdate()
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
 		{
 			paused = !paused;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && description_disabled && app->inventory->hide)
+		{
+			app->inventory->hide = false;
 		}
 
 		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -1708,7 +1714,7 @@ bool Menu::PostUpdate()
 			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 		}
 
-		app->fonts->BlitCombatText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (lose)
@@ -1740,8 +1746,8 @@ bool Menu::PostUpdate()
 			}
 		}
 		
-		app->fonts->BlitCombatText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
-		app->fonts->BlitCombatText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
+		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
+		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (scape)
@@ -1773,8 +1779,8 @@ bool Menu::PostUpdate()
 			}
 		}
 
-		app->fonts->BlitCombatText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
-		app->fonts->BlitCombatText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
+		app->fonts->BlitText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
+		app->fonts->BlitText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
 	}
 
 	// skills descriptions

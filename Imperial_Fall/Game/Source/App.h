@@ -29,6 +29,7 @@ class Fonts;
 class Combat_Manager;
 class Combat_Menu;
 class Menu;
+class Inventory;
 class Particles;
 class Frontground;
 class Town1;
@@ -120,6 +121,7 @@ public:
 	Combat_Manager* combat_manager;
 	Combat_Menu* combat_menu;
 	Menu* menu;
+	Inventory* inventory;
 	Particles* particles;
 	Frontground* frontground;
 	Town1* town1;

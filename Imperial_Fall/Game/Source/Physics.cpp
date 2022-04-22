@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Enemies.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Frontground.h"
 #include "Town1.h"
 #include "Town2.h"
@@ -65,7 +66,7 @@ bool Physics::Start()
 bool Physics::PreUpdate()
 {
 	
-	if (!app->menu->GetGameState())
+	if (!app->menu->GetGameState() && app->inventory->hide)
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
 	}
