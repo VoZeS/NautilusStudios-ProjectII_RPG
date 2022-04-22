@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -49,6 +50,7 @@ bool Town2::Start()
 
 		//Enable Player &
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -134,6 +136,7 @@ bool Town2::CleanUp()
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
+	app->inventory->Disable();
 	app->entities->Disable();
 
 	// clean textures

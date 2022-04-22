@@ -284,12 +284,12 @@ bool Menu::PreUpdate()
 	{
 		//app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide)
 		{
 			paused = !paused;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && description_disabled && app->inventory->hide)
+		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && !paused && !settings && description_disabled && app->inventory->hide)
 		{
 			app->inventory->hide = false;
 		}

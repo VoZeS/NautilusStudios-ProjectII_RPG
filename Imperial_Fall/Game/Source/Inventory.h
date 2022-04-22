@@ -28,6 +28,7 @@ public:
 	
 
 private:
+	// book
 	Animation* book;
 	Animation open;
 	Animation page1;
@@ -48,6 +49,11 @@ private:
 	SDL_Texture* book_tex;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
+
+	// display
+	void DisplayHero(int n);
+	SDL_Texture* whitemark128x128;
+	SDL_Texture* hero_tex;
 	
 };
 

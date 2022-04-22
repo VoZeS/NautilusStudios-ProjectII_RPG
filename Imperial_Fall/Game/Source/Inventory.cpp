@@ -20,6 +20,8 @@ Inventory::Inventory(bool enabled) : Module(enabled)
 	int py = 720;
 
 	// open
+	open.PushBack({ 0 * px, 0 * py, px, py });
+	open.PushBack({ 0 * px, 0 * py, px, py });
 	for (int i = 0; i < 2; i++)
 	{
 		for (int j = 0; j < 9; j++)
@@ -191,6 +193,8 @@ bool Inventory::Start()
 		hide = true;
 
 		book_tex = app->tex->Load("Assets/textures/book_tex.png");
+		whitemark128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
+		hero_tex = app->tex->Load("Assets/textures/heroes_icons.png");
 	}
 
 	return true;
@@ -369,6 +373,15 @@ bool Inventory::PostUpdate()
 		SDL_Rect rect = book->GetCurrentFrame();
 
 		app->render->DrawTexture(book_tex, cx, cy, &rect);
+
+		switch (book_pos)
+		{
+		case 1: DisplayHero(0); break;
+		case 2: DisplayHero(1); break;
+		case 3: DisplayHero(2); break;
+		case 4: DisplayHero(3); break;
+		default: break;
+		}
 	}
 
 	return true;
@@ -381,4 +394,46 @@ bool Inventory::CleanUp()
 	book_tex = NULL;
 
 	return true;
+}
+
+void Inventory::DisplayHero(int n)
+{
+	int cx = -app->render->camera.x;
+	int cy = -app->render->camera.y;
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node hero;
+	SDL_Rect hero_rect;
+	const char* name = "";
+
+	switch (n)
+	{
+	case 0:
+		hero = saveGame.child("heroes_stats").child("assassin");
+		hero_rect = { 0, 0, 64, 64 };
+		name = "Igol";
+		break;
+	case 1:
+		hero = saveGame.child("heroes_stats").child("healer");
+		hero_rect = { 64, 0, 64, 64 };
+		name = "Gera";
+		break;
+	case 2:
+		hero = saveGame.child("heroes_stats").child("tank");
+		hero_rect = { 128, 0, 64, 64 };
+		name = "Asteriol";
+		break;
+	case 3:
+		hero = saveGame.child("heroes_stats").child("wizard");
+		hero_rect = { 192, 0, 64, 64 };
+		name = "Fernan";
+		break;
+	}
+
+	SDL_Rect r = { 0, 0, 128, 128 };
+	app->render->DrawTexture(whitemark128x128, 150 + cx, 100 + cy, &r);
+	app->render->DrawTexture(hero_tex, 150 + cx, 100 + cy, &hero_rect);
+
+	app->fonts->BlitCombatText(150 + cx, 250 + cy, app->fonts->textFont2, name);
 }
