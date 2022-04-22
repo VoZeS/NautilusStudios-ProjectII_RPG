@@ -190,7 +190,14 @@ bool Entities::PostUpdate()
 
 		if (entity->init)
 		{
+			
 			ret = item->data->Draw();
+
+			if (item->next != NULL && item != NULL && item->data->position.y > item->next->data->position.y)
+			{
+				swap(item->data, item->next->data);
+			}
+
 		}
 	}	
 
