@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Pathfinding.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Frontground.h"
 
 #include "Defs.h"
@@ -443,7 +444,7 @@ void Player::HandleInput(float dt)
 			}
 
 
-			if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
+			if ((body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0) && !app->menu->GetGameState() && app->inventory->hide)
 			{
 				walk_cd -= dt;
 				if (walk_cd <= 0)

@@ -170,6 +170,7 @@ bool Inventory::Start()
 		hero_tex = app->tex->Load("Assets/textures/heroes_icons.png");
 		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
 		gear_tex = app->tex->Load("Assets/textures/gear.png");
+		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
 
 		skill_button.rect.w = 250;
 		skill_button.rect.h = 70;
@@ -468,13 +469,20 @@ bool Inventory::PreUpdate()
 				SDL_Rect rect = gear_select_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					if (!hover_playing)
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
 					{
-						app->audio->PlayFx(hover_sound);
-						hover_playing = true;
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						gear_select_buttons[i].state = 1;
 					}
-					chosed = i;
-					gear_select_buttons[i].state = 1;
+					else
+					{
+						gear_select_buttons[i].state = 0;
+					}
 				}
 				else
 				{
@@ -830,8 +838,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					rect = { i * 128, 0, 128, 128 };
-					app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					{
+						rect = { i * 128, 0, 128, 128 };
+						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					}
+					else
+					{
+						app->render->DrawTexture(unknow_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y);
+					}
 				}
 			}
 			else if (submenu == SUB_INV::CHESTPLATE)
@@ -854,8 +869,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					rect = { i * 128, 128, 128, 128 };
-					app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					{
+						rect = { i * 128, 0, 128, 128 };
+						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					}
+					else
+					{
+						app->render->DrawTexture(unknow_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y);
+					}
 				}
 			}
 			else if (submenu == SUB_INV::BOOTS)
@@ -878,8 +900,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					rect = { i * 128, 256, 128, 128 };
-					app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					{
+						rect = { i * 128, 0, 128, 128 };
+						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					}
+					else
+					{
+						app->render->DrawTexture(unknow_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y);
+					}
 				}
 			}
 			else if (submenu == SUB_INV::WEAPON)
@@ -902,8 +931,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					rect = { i * 128, 384, 128, 128 };
-					app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					{
+						rect = { i * 128, 0, 128, 128 };
+						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
+					}
+					else
+					{
+						app->render->DrawTexture(unknow_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y);
+					}
 				}
 			}
 		}
@@ -1977,6 +2013,438 @@ int Inventory::SumGearStats(int user, int stat)
 	}
 
 	return value;
+}
+
+bool Inventory::CheckGearUnlocked(int user, int piece, int level)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node hero;
+	pugi::xml_node set;
+	bool res = false;
+
+	if (user == 0) // assassin
+	{
+		hero = saveGame.child("objects").child("assassin");
+		if (piece == 0) // helmet
+		{
+			set = hero.child("helmet");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			set = hero.child("chest");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 2) // boots
+		{
+			set = hero.child("boots");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 3) // weapon
+		{
+			set = hero.child("weapon");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+	}
+	else if (user == 1) // healer
+	{
+		hero = saveGame.child("objects").child("healer");
+		if (piece == 0) // helmet
+		{
+			set = hero.child("helmet");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			set = hero.child("chest");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 2) // boots
+		{
+			set = hero.child("boots");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 3) // weapon
+		{
+			set = hero.child("weapon");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+	}
+	else if (user == 1) // healer
+	{
+		hero = saveGame.child("objects").child("healer");
+		if (piece == 0) // helmet
+		{
+			set = hero.child("helmet");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			set = hero.child("chest");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 2) // boots
+		{
+			set = hero.child("boots");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 3) // weapon
+		{
+			set = hero.child("weapon");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+	}
+	else if (user == 2) // tank
+	{
+		hero = saveGame.child("objects").child("tank");
+		if (piece == 0) // helmet
+		{
+			set = hero.child("helmet");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			set = hero.child("chest");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 2) // boots
+		{
+			set = hero.child("boots");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 3) // weapon
+		{
+			set = hero.child("weapon");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+	}
+	else if (user == 3) // wizard
+	{
+		hero = saveGame.child("objects").child("tank");
+		if (piece == 0) // helmet
+		{
+			set = hero.child("helmet");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			set = hero.child("chest");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 2) // boots
+		{
+			set = hero.child("boots");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+		else if (piece == 3) // weapon
+		{
+			set = hero.child("weapon");
+			if (level == 1)
+			{
+				res = set.attribute("gear1").as_bool();
+			}
+			else if (level == 2)
+			{
+				res = set.attribute("gear2").as_bool();
+			}
+			else if (level == 3)
+			{
+				res = set.attribute("gear3").as_bool();
+			}
+			else if (level == 4)
+			{
+				res = set.attribute("gear4").as_bool();
+			}
+		}
+	}
+
+	return res;
 }
 
 bool Inventory::InAnyButton()

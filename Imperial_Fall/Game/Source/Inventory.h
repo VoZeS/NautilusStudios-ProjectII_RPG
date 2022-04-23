@@ -106,11 +106,13 @@ private:
 	SDL_Texture* hero_tex;
 	SDL_Texture* items_tex;
 	SDL_Texture* gear_tex;
+	SDL_Texture* unknow_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
 	void SaveItemChange(int n, int change);
 	bool CheckItemEquiped(int n);
 	void SaveGearChange(int n, int change, SUB_INV submenu);
+	bool CheckGearUnlocked(int user, int piece, int level);
 
 	// buttons
 	int chosed;

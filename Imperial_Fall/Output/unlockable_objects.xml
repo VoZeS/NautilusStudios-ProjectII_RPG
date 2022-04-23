@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<objects>
+	<items>
+		<unlocked item0="false" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
+		<uses item0="0" item1="0" item2="0" item3="0" item4="0" item5="0" item6="0" item7="0" />
+	</items>
+	<assassin>
+		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
+		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
+		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
+		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+	</assassin>
+	<healer>
+		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
+		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
+		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
+		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+	</healer>
+	<tank>
+		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
+		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
+		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
+		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+	</tank>
+	<wizard>
+		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
+		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
+		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
+		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+	</wizard>
+</heroes_stats>
