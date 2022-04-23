@@ -293,6 +293,7 @@ bool Menu::PreUpdate()
 			&& app->inventory->hide && app->inventory->Enabled())
 		{
 			app->inventory->hide = false;
+			app->inventory->SetTextCd(70);
 		}
 
 		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -986,6 +987,7 @@ bool Menu::Update(float dt)
 						paused = false;
 						app->menu->redtemplar_killed = false;
 						subplaymenu = false;
+						app->inventory->ResetGear();
 					}
 					break;
 				}
