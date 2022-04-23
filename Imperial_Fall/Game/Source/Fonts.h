@@ -45,6 +45,7 @@ public:
 
 	int textFont1 = -1; // dialog
 	int textFont2 = -1; // combat
+	int textFont3 = -1; // combat
 
 private:
 

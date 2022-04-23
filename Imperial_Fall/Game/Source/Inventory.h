@@ -62,6 +62,7 @@ public:
 	// piece: 0 --> helmet, 1 --> chestplate, 2 --> boots, 3 --> weapon
 	// user: 0 --> unequiped, 1 --> level 1, 2 --> level 2, 3 --> level 3, 4 --> level 4
 	Gear GetGearPiece(int user, int piece, int level);
+	int SumGearStats(int user, int stat); // stat: 0 --> health, 1 --> mana, 2 --> speed, 3 --> power
 
 private:
 	Cursor cursor;
@@ -103,7 +104,6 @@ private:
 	SDL_Texture* gear_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
-	int SumGearStats(int user, int stat); // stat: 0 --> health, 1 --> mana, 2 --> speed, 3 --> power
 	void SaveGearChange(int n, int change, SUB_INV submenu);
 
 	// buttons

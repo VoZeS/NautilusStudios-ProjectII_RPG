@@ -924,26 +924,42 @@ void Inventory::DisplayHero(int n)
 
 	app->fonts->BlitCombatText(300 + cx, 100 + cy, app->fonts->textFont2, name);
 	app->fonts->BlitCombatText(150 + cx, 250 + cy, app->fonts->textFont2, "Stats");
+	// health
 	std::string s = hero.child("basic_stats").attribute("health").as_string();
 	std::string g = std::to_string(SumGearStats(n, 0));
-	std::string c = "Health: " + s + " + " + g;
+	std::string c = "Health: " + s;
 	const char* print = c.c_str();
 	app->fonts->BlitCombatText(160 + cx, 300 + cy, app->fonts->textFont2, print);
+	c = "+ " + g;
+	print = c.c_str();
+	app->fonts->BlitCombatText(402 + cx, 300 + cy, app->fonts->textFont3, print);
+	// mana
 	s = hero.child("basic_stats").attribute("mana").as_string();
 	g = std::to_string(SumGearStats(n, 1));
-	c = "Mana: " + s + " + " + g;
+	c = "Mana: " + s;
 	print = c.c_str();
 	app->fonts->BlitCombatText(160 + cx, 350 + cy, app->fonts->textFont2, print);
+	c = "+ " + g;
+	print = c.c_str();
+	app->fonts->BlitCombatText(370 + cx, 350 + cy, app->fonts->textFont3, print);
+	// speed
 	s = hero.child("basic_stats").attribute("speed").as_string();
 	g = std::to_string(SumGearStats(n, 2));
-	c = "Speed: " + s + " + " + g;
+	c = "Speed: " + s;
 	print = c.c_str();
 	app->fonts->BlitCombatText(160 + cx, 400 + cy, app->fonts->textFont2, print);
+	c = "+ " + g;
+	print = c.c_str();
+	app->fonts->BlitCombatText(392 + cx, 400 + cy, app->fonts->textFont3, print);
+	// power
 	s = hero.child("basic_stats").attribute("power").as_string();
 	g = std::to_string(SumGearStats(n, 3));
-	c = "Power: " + s + " + " + g;
+	c = "Power: " + s;
 	print = c.c_str();
 	app->fonts->BlitCombatText(160 + cx, 450 + cy, app->fonts->textFont2, print);
+	c = "+ " + g;
+	print = c.c_str();
+	app->fonts->BlitCombatText(388 + cx, 450 + cy, app->fonts->textFont3, print);
 }
 
 void Inventory::DisplayItems()
@@ -1245,10 +1261,10 @@ void Inventory::ResetGear()
 			break;
 		}
 
-		hero.child("gear").attribute("helmet").set_value(0); break;
-		hero.child("gear").attribute("chest").set_value(0); break;
-		hero.child("gear").attribute("boots").set_value(0); break;
-		hero.child("gear").attribute("weapon").set_value(0); break;
+		hero.child("gear").attribute("helmet").set_value(0);
+		hero.child("gear").attribute("chest").set_value(0);
+		hero.child("gear").attribute("boots").set_value(0);
+		hero.child("gear").attribute("weapon").set_value(0);
 	}
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
@@ -1267,515 +1283,517 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 		return new_gear;
 	}
 
-	if (user == 0)
+	if (user == 0) // assassin
 	{
-		if (piece == 0)
+		if (piece == 0) // helmet
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 5;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.mana = 10;
+				new_gear.speed = 10;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.mana = 18;
+				new_gear.speed = 18;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.mana = 30;
+				new_gear.speed = 30;
 				new_gear.power = 0;
 			}
 		}
-		else if (piece == 1)
+		else if (piece == 1) // chestplate
 		{
 			if (level == 1)
 			{
-				new_gear.health = 0;
+				new_gear.health = 5;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 5;
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 0;
+				new_gear.health = 10;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 0;
+				new_gear.health = 18;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 25;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 0;
+				new_gear.health = 30;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 40;
 			}
 		}
-		else if (piece == 2)
+		else if (piece == 2) // boots
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.speed = 5;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 10;
+				new_gear.power = 10;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 18;
+				new_gear.power = 18;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 30;
+				new_gear.power = 30;
 			}
 		}
-		else if (piece == 3)
+		else if (piece == 3) // weapon
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 10;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 10;
+				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 20;
+				new_gear.power = 30;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 40;
+				new_gear.power = 65;
 			}
 		}
 	}
-	else if (user == 1)
+	else if (user == 1) // healer
 	{
-		if (piece == 0)
+		if (piece == 0) // helmet
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 5;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 20;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 36;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 60;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 		}
-		else if (piece == 1)
+		else if (piece == 1) // chestplate
+		{
+			if (level == 1)
+			{
+				new_gear.health = 5;
+				new_gear.mana = 0;
+				new_gear.speed = 0;
+				new_gear.power = 5;
+			}
+			else if (level == 2)
+			{
+				new_gear.health = 10;
+				new_gear.mana = 0;
+				new_gear.speed = 0;
+				new_gear.power = 15;
+			}
+			else if (level == 3)
+			{
+				new_gear.health = 18;
+				new_gear.mana = 0;
+				new_gear.speed = 0;
+				new_gear.power = 25;
+			}
+			else if (level == 4)
+			{
+				new_gear.health = 30;
+				new_gear.mana = 0;
+				new_gear.speed = 0;
+				new_gear.power = 40;
+			}
+		}
+		else if (piece == 2) // boots
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.speed = 5;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.mana = 10;
+				new_gear.speed = 10;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.mana = 18;
+				new_gear.speed = 18;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.mana = 30;
+				new_gear.speed = 30;
 				new_gear.power = 0;
 			}
 		}
-		else if (piece == 2)
+		else if (piece == 3) // weapon
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 10;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 10;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 20;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 30;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 40;
 				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-		}
-		else if (piece == 3)
-		{
-			if (level == 1)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 2)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 3)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 4)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 65;
 			}
 		}
 	}
-	else if (user == 2)
+	else if (user == 2) // tank
 	{
-		if (piece == 0)
+		if (piece == 0) // helmet
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
+				new_gear.mana = 5;
+				new_gear.speed = 0;
+				new_gear.power = 0;
+			}
+			else if (level == 2)
+			{
+				new_gear.health = 10;
+				new_gear.mana = 10;
+				new_gear.speed = 0;
+				new_gear.power = 0;
+			}
+			else if (level == 3)
+			{
+				new_gear.health = 18;
+				new_gear.mana = 18;
+				new_gear.speed = 0;
+				new_gear.power = 0;
+			}
+			else if (level == 4)
+			{
+				new_gear.health = 30;
+				new_gear.mana = 30;
+				new_gear.speed = 0;
+				new_gear.power = 0;
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			if (level == 1)
+			{
+				new_gear.health = 10;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 0;
+				new_gear.health = 25;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 0;
+				new_gear.health = 43;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 0;
+				new_gear.health = 70;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 		}
-		else if (piece == 1)
+		else if (piece == 2) // boots
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.speed = 5;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 10;
+				new_gear.power = 10;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 18;
+				new_gear.power = 18;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 30;
+				new_gear.power = 30;
 			}
 		}
-		else if (piece == 2)
+		else if (piece == 3) // weapon
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 10;
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 0;
+				new_gear.health = 10;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 0;
+				new_gear.health = 15;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 35;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 0;
+				new_gear.health = 25;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-		}
-		else if (piece == 3)
-		{
-			if (level == 1)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 2)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 3)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 4)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 80;
 			}
 		}
 	}
 
-	else if (user == 3)
+	else if (user == 3) // wizard
 	{
-		if (piece == 0)
+		if (piece == 0) // helmet
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 5;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 10;
+				new_gear.speed = 0;
+				new_gear.power = 10;
+			}
+			else if (level == 3)
+			{
+				new_gear.health = 0;
+				new_gear.mana = 18;
+				new_gear.speed = 0;
+				new_gear.power = 18;
+			}
+			else if (level == 4)
+			{
+				new_gear.health = 0;
+				new_gear.mana = 30;
+				new_gear.speed = 0;
+				new_gear.power = 30;
+			}
+		}
+		else if (piece == 1) // chestplate
+		{
+			if (level == 1)
+			{
+				new_gear.health = 5;
+				new_gear.mana = 5;
+				new_gear.speed = 0;
+				new_gear.power = 0;
+			}
+			else if (level == 2)
+			{
+				new_gear.health = 10;
+				new_gear.mana = 15;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.health = 18;
+				new_gear.mana = 25;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.health = 30;
+				new_gear.mana = 40;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 		}
-		else if (piece == 1)
+		else if (piece == 2) // boots
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
+				new_gear.speed = 5;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 10;
+				new_gear.power = 10;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 18;
+				new_gear.power = 18;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.speed = 30;
+				new_gear.power = 30;
 			}
 		}
-		else if (piece == 2)
+		else if (piece == 3) // weapon
 		{
 			if (level == 1)
 			{
 				new_gear.health = 0;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 10;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 10;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 20;
 				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 40;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 0;
+				new_gear.mana = 40;
 				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-		}
-		else if (piece == 3)
-		{
-			if (level == 1)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 2)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 3)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
-			}
-			else if (level == 4)
-			{
-				new_gear.health = 0;
-				new_gear.mana = 0;
-				new_gear.speed = 0;
-				new_gear.power = 0;
+				new_gear.power = 65;
 			}
 		}
 	}
+
+	return new_gear;
 }
 
 int Inventory::SumGearStats(int user, int stat)
