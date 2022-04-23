@@ -193,7 +193,6 @@ bool Inventory::Start()
 		hide = true;
 		count = true;
 		show_left = false;
-		show_right = false;
 		page_display = 1;
 
 		submenu = SUB_INV::NOTHING;
@@ -392,7 +391,7 @@ bool Inventory::PreUpdate()
 
 			if (show_left && book_pos == 1)
 			{
-				for (size_t i = 0; i < 2; i++)
+				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 				{
 					SDL_Rect rect = items_buttons[i].rect;
 					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -444,27 +443,6 @@ bool Inventory::PreUpdate()
 					else
 					{
 						gear_buttons[i].state = 0;
-					}
-				}
-			}
-			if (show_right && book_pos == 1)
-			{
-				for (size_t i = 2; i < 4; i++)
-				{
-					SDL_Rect rect = items_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-					{
-						if (!hover_playing)
-						{
-							app->audio->PlayFx(hover_sound);
-							hover_playing = true;
-						}
-						chosed = i;
-						items_buttons[i].state = 1;
-					}
-					else
-					{
-						items_buttons[i].state = 0;
 					}
 				}
 			}

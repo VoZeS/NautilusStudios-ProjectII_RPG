@@ -293,8 +293,7 @@ bool Menu::PreUpdate()
 			&& app->inventory->hide && app->inventory->Enabled())
 		{
 			app->inventory->hide = false;
-			app->inventory->SetLeftCd(70);
-			app->inventory->SetRightCd(70);
+			app->inventory->SetTextCd(70);
 		}
 
 		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)

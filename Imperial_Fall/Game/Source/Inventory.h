@@ -52,13 +52,9 @@ public:
 public:
 	bool hide = true;
 
-	void SetLeftCd(int n)
+	void SetTextCd(int n)
 	{
 		left_cd = n;
-	}
-	void SetRightCd(int n)
-	{
-		right_cd = n;
 	}
 	
 	void ResetGear();
