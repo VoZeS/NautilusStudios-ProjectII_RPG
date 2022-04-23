@@ -22,155 +22,119 @@ Inventory::Inventory(bool enabled) : Module(enabled)
 	// open
 	open.PushBack({ 0 * px, 0 * py, px, py });
 	open.PushBack({ 0 * px, 0 * py, px, py });
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			open.PushBack({ j * px, i * py, px, py });
-		}
-	}
-	open.PushBack({ 0 * px, 2 * py, px, py });
-	open.PushBack({ 1 * px, 2 * py, px, py });
-	open.PushBack({ 2 * px, 2 * py, px, py });
-	open.PushBack({ 3 * px, 2 * py, px, py });
+	open.PushBack({ 0 * px, 0 * py, px, py });
+	open.PushBack({ 1 * px, 0 * py, px, py });
+	open.PushBack({ 2 * px, 0 * py, px, py });
+	open.PushBack({ 3 * px, 0 * py, px, py });
+	open.PushBack({ 4 * px, 0 * py, px, py });
+	open.PushBack({ 5 * px, 0 * py, px, py });
+	open.PushBack({ 6 * px, 0 * py, px, py });
+	open.PushBack({ 7 * px, 0 * py, px, py });
+	open.PushBack({ 8 * px, 0 * py, px, py });
 	open.speed = 0.3f;
 	open.loop = false;
 
-	// page1
-	page1.PushBack({ 3 * px, 2 * py, px, py });
+	//page1
+	page1.PushBack({ 8 * px, 0 * py, px, py });
 	page1.speed = 0.1f;
 	page1.loop = false;
 
 	// page2
-	page2.PushBack({ 3 * px, 3 * py, px, py });
+	page2.PushBack({ 1 * px, 1 * py, px, py });
 	page2.speed = 0.1f;
 	page2.loop = false;
 
 	// page3
-	page3.PushBack({ 3 * px, 4 * py, px, py });
+	page3.PushBack({ 4 * px, 1 * py, px, py });
 	page3.speed = 0.1f;
 	page3.loop = false;
 
 	// page4
-	page4.PushBack({ 2 * px, 5 * py, px, py });
+	page4.PushBack({ 7 * px, 1 * py, px, py });
 	page4.speed = 0.1f;
 	page4.loop = false;
 
 	// page5
-	page5.PushBack({ 2 * px, 6 * py, px, py });
+	page5.PushBack({ 0 * px, 2 * py, px, py });
 	page5.speed = 0.1f;
 	page5.loop = false;
 
 	// 1 to 2
-	for (int i = 4; i < 9; i++)
-	{
-		pass_page1_2.PushBack({ i * px, 2 * py, px, py });
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		pass_page1_2.PushBack({ i * px, 3 * py, px, py });
-	}
-	pass_page1_2.speed = 0.3f;
+	pass_page1_2.PushBack({ 8 * px, 0 * py, px, py });
+	pass_page1_2.PushBack({ 9 * px, 0 * py, px, py });
+	pass_page1_2.PushBack({ 0 * px, 1 * py, px, py });
+	pass_page1_2.PushBack({ 1 * px, 1 * py, px, py });
+	pass_page1_2.speed = PAGE_SPEED;
 	pass_page1_2.loop = false;
 
 	// 2 to 3
-	for (int i = 4; i < 9; i++)
-	{
-		pass_page2_3.PushBack({ i * px, 3 * py, px, py });
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		pass_page2_3.PushBack({ i * px, 4 * py, px, py });
-	}
-	pass_page2_3.speed = 0.3f;
+	pass_page2_3.PushBack({ 1 * px, 1 * py, px, py });
+	pass_page2_3.PushBack({ 2 * px, 1 * py, px, py });
+	pass_page2_3.PushBack({ 3 * px, 1 * py, px, py });
+	pass_page2_3.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page2_3.speed = PAGE_SPEED;
 	pass_page2_3.loop = false;
 
 	// 3 to 4
-	for (int i = 4; i < 9; i++)
-	{
-		pass_page3_4.PushBack({ i * px, 4 * py, px, py });
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		pass_page3_4.PushBack({ i * px, 5 * py, px, py });
-	}
-	pass_page3_4.speed = 0.3f;
+	pass_page3_4.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page3_4.PushBack({ 5 * px, 1 * py, px, py });
+	pass_page3_4.PushBack({ 6 * px, 1 * py, px, py });
+	pass_page3_4.PushBack({ 7 * px, 1 * py, px, py });
+	pass_page3_4.speed = PAGE_SPEED;
 	pass_page3_4.loop = false;
 
 	// 4 to 5
-	for (int i = 3; i < 9; i++)
-	{
-		pass_page4_5.PushBack({ i * px, 5 * py, px, py });
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		pass_page4_5.PushBack({ i * px, 6 * py, px, py });
-	}
-	pass_page4_5.speed = 0.3f;
+	pass_page4_5.PushBack({ 7 * px, 1 * py, px, py });
+	pass_page4_5.PushBack({ 8 * px, 1 * py, px, py });
+	pass_page4_5.PushBack({ 9 * px, 1 * py, px, py });
+	pass_page4_5.PushBack({ 0 * px, 2 * py, px, py });
+	pass_page4_5.speed = PAGE_SPEED;
 	pass_page4_5.loop = false;
 
 	// close
-	for (int i = 3; i < 9; i++)
-	{
-		close.PushBack({ i * px, 6 * py, px, py });
-	}
-	for (int i = 0; i < 8; i++)
-	{
-		close.PushBack({ i * px, 7 * py, px, py });
-	}
-	close.PushBack({ 0 * px, 8 * py, px, py });
-	close.PushBack({ 9 * px, 7 * py, px, py });
-	close.PushBack({ 9 * px, 7 * py, px, py });
-	close.PushBack({ 9 * px, 7 * py, px, py });
+	close.PushBack({ 0 * px, 2 * py, px, py });
+	close.PushBack({ 1 * px, 2 * py, px, py });
+	close.PushBack({ 2 * px, 2 * py, px, py });
+	close.PushBack({ 3 * px, 2 * py, px, py });
+	close.PushBack({ 4 * px, 2 * py, px, py });
+	close.PushBack({ 5 * px, 2 * py, px, py });
+	close.PushBack({ 6 * px, 2 * py, px, py });
+	close.PushBack({ 7 * px, 2 * py, px, py });
+	close.PushBack({ 7 * px, 2 * py, px, py });
+	close.PushBack({ 7 * px, 2 * py, px, py });
 	close.speed = 0.3f;
 	close.loop = false;
 
 	// 2 to 1
-	for (int i = 3; i >= 0; i--)
-	{
-		pass_page2_1.PushBack({ i * px, 3 * py, px, py });
-	}
-	for (int i = 9; i >= 4; i--)
-	{
-		pass_page2_1.PushBack({ i * px, 2 * py, px, py });
-	}
-	pass_page2_1.speed = 0.3f;
+	pass_page2_1.PushBack({ 1 * px, 1 * py, px, py });
+	pass_page2_1.PushBack({ 0 * px, 1 * py, px, py });
+	pass_page2_1.PushBack({ 9 * px, 0 * py, px, py });
+	pass_page2_1.PushBack({ 8 * px, 0 * py, px, py });
+	pass_page2_1.speed = PAGE_SPEED;
 	pass_page2_1.loop = false;
 
 	// 3 to 2
-	for (int i = 3; i >= 0; i--)
-	{
-		pass_page3_2.PushBack({ i * px, 4 * py, px, py });
-	}
-	for (int i = 9; i >= 4; i--)
-	{
-		pass_page3_2.PushBack({ i * px, 3 * py, px, py });
-	}
-	pass_page3_2.speed = 0.3f;
+	pass_page3_2.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page3_2.PushBack({ 3 * px, 1 * py, px, py });
+	pass_page3_2.PushBack({ 2 * px, 1 * py, px, py });
+	pass_page3_2.PushBack({ 1 * px, 1 * py, px, py });
+	pass_page3_2.speed = PAGE_SPEED;
 	pass_page3_2.loop = false;
 
 	// 4 to 3
-	for (int i = 2; i >= 0; i--)
-	{
-		pass_page4_3.PushBack({ i * px, 5 * py, px, py });
-	}
-	for (int i = 9; i >= 4; i--)
-	{
-		pass_page4_3.PushBack({ i * px, 4 * py, px, py });
-	}
-	pass_page4_3.speed = 0.3f;
+	pass_page4_3.PushBack({ 7 * px, 1 * py, px, py });
+	pass_page4_3.PushBack({ 6 * px, 1 * py, px, py });
+	pass_page4_3.PushBack({ 5 * px, 1 * py, px, py });
+	pass_page4_3.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page4_3.speed = PAGE_SPEED;
 	pass_page4_3.loop = false;
 
 	// 5 to 4
-	for (int i = 2; i >= 0; i--)
-	{
-		pass_page5_4.PushBack({ i * px, 6 * py, px, py });
-	}
-	for (int i = 9; i >= 3; i--)
-	{
-		pass_page5_4.PushBack({ i * px, 5 * py, px, py });
-	}
-	pass_page5_4.speed = 0.3f;
+	pass_page5_4.PushBack({ 0 * px, 2 * py, px, py });
+	pass_page5_4.PushBack({ 9 * px, 1 * py, px, py });
+	pass_page5_4.PushBack({ 8 * px, 1 * py, px, py });
+	pass_page5_4.PushBack({ 7 * px, 1 * py, px, py });
+	pass_page5_4.speed = PAGE_SPEED;
 	pass_page5_4.loop = false;
 }
 
@@ -191,9 +155,6 @@ bool Inventory::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		hide = true;
-		count = true;
-		show_left = false;
-		page_display = 1;
 
 		submenu = SUB_INV::NOTHING;
 
@@ -202,7 +163,7 @@ bool Inventory::Start()
 		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
 		unequip_sound = app->audio->LoadFx("Assets/audio/fx/unequip.wav");
 
-		book_tex = app->tex->Load("Assets/textures/book_tex.png");
+		book_tex = app->tex->Load("Assets/textures/book_tex (1).png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_250x70 = app->tex->Load("Assets/textures/250x70_whitemark.png");
 		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
@@ -255,7 +216,6 @@ bool Inventory::PreUpdate()
 			{
 				book = &page1;
 				book_pos = 1;
-				//count = true;
 			}
 			else if (book_pos == 1 && page1.HasFinished())
 			{
@@ -264,7 +224,7 @@ bool Inventory::PreUpdate()
 					book = &pass_page1_2;
 					page1.Reset();
 					count = true;
-					left_cd = 20;
+					info_cd = 15;
 				}
 			}
 			else if (book_pos == 1 && pass_page1_2.HasFinished())
@@ -280,14 +240,14 @@ bool Inventory::PreUpdate()
 					book = &pass_page2_3;
 					page2.Reset();
 					count = true;
-					left_cd = 20;
+					info_cd = 15;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
 					book = &pass_page2_1;
 					page2.Reset();
 					count = true;
-					left_cd = 10;
+					info_cd = 10;
 				}
 			}
 			else if (book_pos == 2 && pass_page2_3.HasFinished())
@@ -303,14 +263,14 @@ bool Inventory::PreUpdate()
 					book = &pass_page3_4;
 					page3.Reset();
 					count = true;
-					left_cd = 20;
+					info_cd = 15;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
 					book = &pass_page3_2;
 					page3.Reset();
 					count = true;
-					left_cd = 10;
+					info_cd = 10;
 				}
 			}
 			else if (book_pos == 3 && pass_page3_4.HasFinished())
@@ -326,14 +286,14 @@ bool Inventory::PreUpdate()
 					book = &pass_page4_5;
 					page4.Reset();
 					count = true;
-					left_cd = 20;
+					info_cd = 15;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
 					book = &pass_page4_3;
 					page4.Reset();
 					count = true;
-					left_cd = 10;
+					info_cd = 10;
 				}
 			}
 			else if (book_pos == 4 && pass_page4_5.HasFinished())
@@ -349,7 +309,7 @@ bool Inventory::PreUpdate()
 					book = &pass_page5_4;
 					page5.Reset();
 					count = true;
-					left_cd = 10;
+					info_cd = 10;
 				}
 			}
 			else if (book_pos == 2 && pass_page2_1.HasFinished())
@@ -389,7 +349,7 @@ bool Inventory::PreUpdate()
 				hide = true;
 			}
 
-			if (show_left && book_pos == 1)
+			if (show_info && book_pos == 1)
 			{
 				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 				{
@@ -410,7 +370,7 @@ bool Inventory::PreUpdate()
 					}
 				}
 			}
-			else if (show_left && book_pos != 1)
+			else if (show_info && book_pos != 1)
 			{
 				SDL_Rect rect = skill_button.rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -499,6 +459,9 @@ bool Inventory::PreUpdate()
 	{
 		book = &open;
 		book_pos = 0;
+		count = true;
+		show_info = false;
+		page_display = 1;
 	}
 
 	return true;
@@ -513,14 +476,14 @@ bool Inventory::Update(float dt)
 		{
 			if (count)
 			{
-				left_cd--;
-				if (left_cd <= 0)
+				info_cd--;
+				if (info_cd <= 0)
 				{
-					show_left = !show_left;
-					count = !show_left;
-					left_cd = 10;
+					show_info = !show_info;
+					count = !show_info;
+					info_cd = 10;
 
-					if (!show_left)
+					if (!show_info)
 					{
 						if (book == &pass_page2_1)
 						{
@@ -544,14 +507,14 @@ bool Inventory::Update(float dt)
 						}
 						else if (book == &close)
 						{
-							show_left = false;
+							show_info = false;
 							count = false;
 						}
 					}
 				}
 			}
 
-			if (show_left && book_pos == 1)
+			if (show_info && book_pos == 1)
 			{
 				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && items_buttons[chosed].state == 1)
 				{
@@ -561,7 +524,7 @@ bool Inventory::Update(float dt)
 					items_buttons[chosed].state = 2;
 				}
 			}
-			else if (show_left && book_pos != 1)
+			else if (show_info && book_pos != 1)
 			{
 				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_button.state == 1)
 				{
@@ -654,7 +617,7 @@ bool Inventory::PostUpdate()
 
 		app->render->DrawTexture(book_tex, cx, cy, &rect);
 
-		if (show_left && page_display == 1)
+		if (show_info && page_display == 1)
 		{
 			//items
 			SDL_Rect rect;
@@ -689,7 +652,7 @@ bool Inventory::PostUpdate()
 				
 			}
 		}
-		else if (show_left && page_display != 1)
+		else if (show_info && page_display != 1)
 		{
 			switch (page_display)
 			{

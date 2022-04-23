@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Animation.h"
 
+#define PAGE_SPEED 0.15f
+
 #define NUM_ITEMS_BUTTONS 4
 #define NUM_GEAR_BUTTONS 4
 #define NUM_GEAR_SELECT_BUTTONS 4
@@ -54,7 +56,7 @@ public:
 
 	void SetTextCd(int n)
 	{
-		left_cd = n;
+		info_cd = n;
 	}
 	
 	void ResetGear();
@@ -88,11 +90,9 @@ private:
 	SDL_Texture* book_tex;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
-	int left_cd;
-	int right_cd;
+	int info_cd;
 	bool count;
-	bool show_left;
-	bool show_right;
+	bool show_info;
 	int page_display; // 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5
 	int page_gear[4];
 
