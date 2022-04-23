@@ -7,6 +7,7 @@
 #define PAGE_SPEED 0.15f
 
 #define NUM_ITEMS_BUTTONS 4
+#define NUM_ITEMS_SELECT_BUTTONS 8
 #define NUM_GEAR_BUTTONS 4
 #define NUM_GEAR_SELECT_BUTTONS 4
 
@@ -59,6 +60,7 @@ public:
 		info_cd = n;
 	}
 	
+	void ResetItems();
 	void ResetGear();
 	// user: 0 --> assassin, 1 --> healer, 2 --> tank, 3 --> wizard
 	// piece: 0 --> helmet, 1 --> chestplate, 2 --> boots, 3 --> weapon
@@ -106,12 +108,15 @@ private:
 	SDL_Texture* gear_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
+	void SaveItemChange(int n, int change);
+	bool CheckItemEquiped(int n);
 	void SaveGearChange(int n, int change, SUB_INV submenu);
 
 	// buttons
 	int chosed;
 	Button skill_button;
 	Button items_buttons[NUM_ITEMS_BUTTONS];
+	Button items_select_buttons[NUM_ITEMS_SELECT_BUTTONS];
 	int item_submenu; // indica que item se cambia
 	Button gear_buttons[NUM_GEAR_BUTTONS];
 	Button gear_select_buttons[NUM_GEAR_SELECT_BUTTONS];

@@ -987,6 +987,7 @@ bool Menu::Update(float dt)
 						paused = false;
 						app->menu->redtemplar_killed = false;
 						subplaymenu = false;
+						app->inventory->ResetItems();
 						app->inventory->ResetGear();
 					}
 					break;

@@ -174,14 +174,16 @@ bool Inventory::Start()
 		skill_button.rect.w = 250;
 		skill_button.rect.h = 70;
 
+		for (size_t i = 0; i < NUM_ITEMS_SELECT_BUTTONS; i++)
+		{
+			items_select_buttons[i].rect.w = 128;
+			items_select_buttons[i].rect.h = 128;
+		}
+
 		for (size_t i = 0; i < NUM_GEAR_BUTTONS; i++)
 		{
 			gear_buttons[i].rect.w = 128;
 			gear_buttons[i].rect.h = 128;
-		}
-
-		for (size_t i = 0; i < NUM_GEAR_SELECT_BUTTONS; i++)
-		{
 			gear_select_buttons[i].rect.w = 128;
 			gear_select_buttons[i].rect.h = 128;
 			items_buttons[i].rect.w = 128;
@@ -422,6 +424,32 @@ bool Inventory::PreUpdate()
 			{
 				items_buttons[i].state = 0;
 			}
+
+			for (size_t i = 0; i < NUM_ITEMS_SELECT_BUTTONS; i++)
+			{
+				SDL_Rect rect = items_select_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					if (!CheckItemEquiped(i))
+					{
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						items_select_buttons[i].state = 1;
+					}
+					else
+					{
+						items_select_buttons[i].state = 0;
+					}
+				}
+				else
+				{
+					items_select_buttons[i].state = 0;
+				}
+			}
 		}
 		else
 		{
@@ -523,6 +551,13 @@ bool Inventory::Update(float dt)
 
 					items_buttons[chosed].state = 2;
 				}
+				else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_U) == KEY_UP) && items_buttons[chosed].state == 1)
+				{
+					app->audio->PlayFx(unequip_sound);
+					SaveItemChange(chosed, -1);
+
+					items_buttons[chosed].state = 2;
+				}
 			}
 			else if (show_info && book_pos != 1)
 			{
@@ -548,6 +583,7 @@ bool Inventory::Update(float dt)
 						break;
 					case 3:
 						submenu = SUB_INV::WEAPON;
+						break;
 					}
 
 					gear_buttons[chosed].state = 2;
@@ -567,7 +603,14 @@ bool Inventory::Update(float dt)
 		}
 		else if (submenu == SUB_INV::ITEMS)
 		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && items_select_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(equip_sound);
+				SaveItemChange(item_submenu, chosed);
+				submenu = SUB_INV::NOTHING;
 
+				items_select_buttons[chosed].state = 2;
+			}
 		}
 		else
 		{
@@ -649,7 +692,53 @@ bool Inventory::PostUpdate()
 
 			if (submenu == SUB_INV::ITEMS)
 			{
-				
+				items_select_buttons[0].rect.x = 232 + cx;
+				items_select_buttons[0].rect.y = 120 + cy;
+				items_select_buttons[1].rect.x = items_select_buttons[0].rect.x + 200;
+				items_select_buttons[1].rect.y = items_select_buttons[0].rect.y;
+				items_select_buttons[2].rect.x = items_select_buttons[0].rect.x;
+				items_select_buttons[2].rect.y = items_select_buttons[0].rect.y + 200;
+				items_select_buttons[3].rect.x = items_select_buttons[0].rect.x + 200;
+				items_select_buttons[3].rect.y = items_select_buttons[0].rect.y + 200;
+				items_select_buttons[4].rect.x = 720 + cx;
+				items_select_buttons[4].rect.y = 120 + cy;
+				items_select_buttons[5].rect.x = items_select_buttons[4].rect.x + 200;
+				items_select_buttons[5].rect.y = items_select_buttons[4].rect.y;
+				items_select_buttons[6].rect.x = items_select_buttons[4].rect.x;
+				items_select_buttons[6].rect.y = items_select_buttons[4].rect.y + 200;
+				items_select_buttons[7].rect.x = items_select_buttons[4].rect.x + 200;
+				items_select_buttons[7].rect.y = items_select_buttons[4].rect.y + 200;
+
+				for (size_t i = 0; i < NUM_ITEMS_SELECT_BUTTONS; i++)
+				{
+					if (items_select_buttons[i].state == 0)
+					{
+						rect = { 0, 0, 128, 128 };
+					}
+					else if (items_select_buttons[i].state == 1)
+					{
+						rect = { 0, 128, 128, 128 };
+					}
+					else if (items_select_buttons[i].state == 2)
+					{
+						rect = { 0, 256, 128, 128 };
+					}
+					app->render->DrawTexture(whitemark_128x128, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y, &rect);
+
+					switch (i)
+					{
+					case 0: rect = { 256, 0, 128, 128 }; break;
+					case 1: rect = { 384, 0, 128, 128 }; break;
+					case 2: rect = { 512, 0, 128, 128 }; break;
+					case 3: rect = { 0, 128, 128, 128 }; break;
+					case 4: rect = { 128, 128, 128, 128 }; break;
+					case 5: rect = { 256, 128, 128, 128 }; break;
+					case 6: rect = { 384, 128, 128, 128 }; break;
+					case 7: rect = { 512, 128, 128, 128 }; break;
+					}
+					
+					app->render->DrawTexture(items_tex, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y, &rect);
+				}
 			}
 		}
 		else if (show_info && page_display != 1)
@@ -936,40 +1025,60 @@ void Inventory::DisplayItems()
 	// item 0
 	switch (items.attribute("item0").as_int())
 	{
-	case 0: rect = { 0, 0, 128, 128 }; break;
-	case 1: rect = { 128, 0, 128, 128 }; break;
-	case 2: rect = { 256, 0, 128, 128 }; break;
-	case 3: rect = { 384, 0, 128, 128 }; break;
+	case -1: rect = { 128, 0, 128, 128 }; break;
+	case 0: rect = { 256, 0, 128, 128 }; break;
+	case 1: rect = { 384, 0, 128, 128 }; break;
+	case 2: rect = { 512, 0, 128, 128 }; break;
+	case 3: rect = { 0, 128, 128, 128 }; break;
+	case 4: rect = { 128, 128, 128, 128 }; break;
+	case 5: rect = { 256, 128, 128, 128 }; break;
+	case 6: rect = { 384, 128, 128, 128 }; break;
+	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[0].rect.x, items_buttons[0].rect.y, &rect);
 	
 	// item 1
 	switch (items.attribute("item1").as_int())
 	{
-	case 0: rect = { 0, 0, 128, 128 }; break;
-	case 1: rect = { 128, 0, 128, 128 }; break;
-	case 2: rect = { 256, 0, 128, 128 }; break;
-	case 3: rect = { 384, 0, 128, 128 }; break;
+	case -1: rect = { 128, 0, 128, 128 }; break;
+	case 0: rect = { 256, 0, 128, 128 }; break;
+	case 1: rect = { 384, 0, 128, 128 }; break;
+	case 2: rect = { 512, 0, 128, 128 }; break;
+	case 3: rect = { 0, 128, 128, 128 }; break;
+	case 4: rect = { 128, 128, 128, 128 }; break;
+	case 5: rect = { 256, 128, 128, 128 }; break;
+	case 6: rect = { 384, 128, 128, 128 }; break;
+	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[1].rect.x, items_buttons[1].rect.y, &rect);
 
 	// item 2
 	switch (items.attribute("item2").as_int())
 	{
-	case 0: rect = { 0, 0, 128, 128 }; break;
-	case 1: rect = { 128, 0, 128, 128 }; break;
-	case 2: rect = { 256, 0, 128, 128 }; break;
-	case 3: rect = { 384, 0, 128, 128 }; break;
+	case -1: rect = { 128, 0, 128, 128 }; break;
+	case 0: rect = { 256, 0, 128, 128 }; break;
+	case 1: rect = { 384, 0, 128, 128 }; break;
+	case 2: rect = { 512, 0, 128, 128 }; break;
+	case 3: rect = { 0, 128, 128, 128 }; break;
+	case 4: rect = { 128, 128, 128, 128 }; break;
+	case 5: rect = { 256, 128, 128, 128 }; break;
+	case 6: rect = { 384, 128, 128, 128 }; break;
+	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[2].rect.x, items_buttons[2].rect.y, &rect);
 
 	// item 3
 	switch (items.attribute("item3").as_int())
 	{
-	case 0: rect = { 0, 0, 128, 128 }; break;
-	case 1: rect = { 128, 0, 128, 128 }; break;
-	case 2: rect = { 256, 0, 128, 128 }; break;
-	case 3: rect = { 384, 0, 128, 128 }; break;
+	case -1: rect = { 128, 0, 128, 128 }; break;
+	case 0: rect = { 256, 0, 128, 128 }; break;
+	case 1: rect = { 384, 0, 128, 128 }; break;
+	case 2: rect = { 512, 0, 128, 128 }; break;
+	case 3: rect = { 0, 128, 128, 128 }; break;
+	case 4: rect = { 128, 128, 128, 128 }; break;
+	case 5: rect = { 256, 128, 128, 128 }; break;
+	case 6: rect = { 384, 128, 128, 128 }; break;
+	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[3].rect.x, items_buttons[3].rect.y, &rect);
 }
@@ -1196,6 +1305,62 @@ void Inventory::SaveGearChange(int n, int change, SUB_INV submenu)
 	case SUB_INV::BOOTS: hero.child("gear").attribute("boots").set_value(change); break;
 	case SUB_INV::WEAPON: hero.child("gear").attribute("weapon").set_value(change); break;
 	}
+
+	saveGame.save_file(HEROES_STATS_FILENAME);
+}
+
+void Inventory::SaveItemChange(int n, int change)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node items_stored = saveGame.child("heroes_stats").child("items_stored").child("equiped");
+
+	switch (n)
+	{
+	case 0:
+		items_stored.attribute("item0").set_value(change);
+		break;
+	case 1:
+		items_stored.attribute("item1").set_value(change);
+		break;
+	case 2:
+		items_stored.attribute("item2").set_value(change);
+		break;
+	case 3:
+		items_stored.attribute("item3").set_value(change);
+		break;
+	}
+
+	saveGame.save_file(HEROES_STATS_FILENAME);
+}
+
+bool Inventory::CheckItemEquiped(int n)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node items_stored = saveGame.child("heroes_stats").child("items_stored").child("equiped");
+
+	if (items_stored.attribute("item0").as_int() == n || items_stored.attribute("item1").as_int() == n ||
+		items_stored.attribute("item2").as_int() == n || items_stored.attribute("item3").as_int() == n)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Inventory::ResetItems()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node items_stored = saveGame.child("heroes_stats").child("items_stored").child("equiped");
+
+	items_stored.attribute("item0").set_value(-1);
+	items_stored.attribute("item1").set_value(-1);
+	items_stored.attribute("item2").set_value(-1);
+	items_stored.attribute("item3").set_value(-1);
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
 }
@@ -1819,6 +1984,13 @@ bool Inventory::InAnyButton()
 	for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 	{
 		if (items_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
+	for (size_t i = 0; i < NUM_ITEMS_SELECT_BUTTONS; i++)
+	{
+		if (items_select_buttons[i].state == 1)
 		{
 			return true;
 		}

@@ -302,7 +302,7 @@ bool Combat_Menu::PreUpdate()
 				{
 					SDL_Rect rect = items_buttons[i].rect;
 					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h 
-						&& app->combat_manager->GetItemsUses(i) > 0)
+						&& app->combat_manager->GetItemsUses(i) > 0 && app->combat_manager->GetItemList()->GetSkill(i).mana_cost != 999)
 					{
 						chosed = i;
 						items_buttons[i].state = 1;
@@ -1984,20 +1984,52 @@ bool Combat_Menu::PostUpdate()
 				}
 				app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
 
-				switch (i)
+				if (i == 4)
 				{
-				case 0: e_rect = { 0, 0, 128, 128 }; break;
-				case 1: e_rect = { 128, 0, 128, 128 }; break;
-				case 2: e_rect = { 256, 0, 128, 128 }; break;
-				case 3: e_rect = { 384, 0, 128, 128 }; break;
-				case 4: e_rect = { 512, 0, 128, 128 }; break;
+					e_rect = { 0, 0, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "NONE")
+				{
+					e_rect = { 128, 0, 128, 128 };
+				}
+				else if(app->combat_manager->GetItemList()->GetSkill(i).skill_name == "HP Potion")
+				{
+					e_rect = { 256, 0, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "MP Potion")
+				{
+					e_rect = { 384, 0, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Fire Jar")
+				{
+					e_rect = { 512, 0, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Lightning Jar")
+				{
+					e_rect = { 0, 128, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "HP Potion0")
+				{
+					e_rect = { 128, 128, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "MP Potion0")
+				{
+					e_rect = { 256, 128, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Fire Jar0")
+				{
+					e_rect = { 384, 128, 128, 128 };
+				}
+				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Lightning Jar0")
+				{
+					e_rect = { 512, 128, 128, 128 };
 				}
 
 				app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 
 				if (app->combat_manager->GetItemsUses(i) == 0)
 				{
-					e_rect = { 640, 0, 128, 128 };
+					e_rect = { 128, 0, 128, 128 };
 					app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 				}
 			}
