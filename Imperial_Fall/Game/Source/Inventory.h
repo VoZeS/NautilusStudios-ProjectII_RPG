@@ -52,9 +52,13 @@ public:
 public:
 	bool hide = true;
 
-	void SetTextCd(int n)
+	void SetLeftCd(int n)
 	{
-		text_cd = n;
+		left_cd = n;
+	}
+	void SetRightCd(int n)
+	{
+		right_cd = n;
 	}
 	
 	void ResetGear();
@@ -88,9 +92,11 @@ private:
 	SDL_Texture* book_tex;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
-	int text_cd;
+	int left_cd;
+	int right_cd;
 	bool count;
-	bool show_info;
+	bool show_left;
+	bool show_right;
 	int page_display; // 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5
 	int page_gear[4];
 

@@ -192,7 +192,8 @@ bool Inventory::Start()
 	{
 		hide = true;
 		count = true;
-		show_info = false;
+		show_left = false;
+		show_right = false;
 		page_display = 1;
 
 		submenu = SUB_INV::NOTHING;
@@ -264,7 +265,7 @@ bool Inventory::PreUpdate()
 					book = &pass_page1_2;
 					page1.Reset();
 					count = true;
-					text_cd = 20;
+					left_cd = 20;
 				}
 			}
 			else if (book_pos == 1 && pass_page1_2.HasFinished())
@@ -280,14 +281,14 @@ bool Inventory::PreUpdate()
 					book = &pass_page2_3;
 					page2.Reset();
 					count = true;
-					text_cd = 20;
+					left_cd = 20;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
 					book = &pass_page2_1;
 					page2.Reset();
 					count = true;
-					text_cd = 10;
+					left_cd = 10;
 				}
 			}
 			else if (book_pos == 2 && pass_page2_3.HasFinished())
@@ -303,14 +304,14 @@ bool Inventory::PreUpdate()
 					book = &pass_page3_4;
 					page3.Reset();
 					count = true;
-					text_cd = 20;
+					left_cd = 20;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
 					book = &pass_page3_2;
 					page3.Reset();
 					count = true;
-					text_cd = 10;
+					left_cd = 10;
 				}
 			}
 			else if (book_pos == 3 && pass_page3_4.HasFinished())
@@ -326,14 +327,14 @@ bool Inventory::PreUpdate()
 					book = &pass_page4_5;
 					page4.Reset();
 					count = true;
-					text_cd = 20;
+					left_cd = 20;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
 					book = &pass_page4_3;
 					page4.Reset();
 					count = true;
-					text_cd = 10;
+					left_cd = 10;
 				}
 			}
 			else if (book_pos == 4 && pass_page4_5.HasFinished())
@@ -349,7 +350,7 @@ bool Inventory::PreUpdate()
 					book = &pass_page5_4;
 					page5.Reset();
 					count = true;
-					text_cd = 10;
+					left_cd = 10;
 				}
 			}
 			else if (book_pos == 2 && pass_page2_1.HasFinished())
@@ -389,9 +390,9 @@ bool Inventory::PreUpdate()
 				hide = true;
 			}
 
-			if (show_info && book_pos == 1)
+			if (show_left && book_pos == 1)
 			{
-				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+				for (size_t i = 0; i < 2; i++)
 				{
 					SDL_Rect rect = items_buttons[i].rect;
 					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -410,7 +411,7 @@ bool Inventory::PreUpdate()
 					}
 				}
 			}
-			else if (show_info && book_pos != 1)
+			else if (show_left && book_pos != 1)
 			{
 				SDL_Rect rect = skill_button.rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -443,6 +444,27 @@ bool Inventory::PreUpdate()
 					else
 					{
 						gear_buttons[i].state = 0;
+					}
+				}
+			}
+			if (show_right && book_pos == 1)
+			{
+				for (size_t i = 2; i < 4; i++)
+				{
+					SDL_Rect rect = items_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						items_buttons[i].state = 1;
+					}
+					else
+					{
+						items_buttons[i].state = 0;
 					}
 				}
 			}
@@ -513,14 +535,14 @@ bool Inventory::Update(float dt)
 		{
 			if (count)
 			{
-				text_cd--;
-				if (text_cd <= 0)
+				left_cd--;
+				if (left_cd <= 0)
 				{
-					show_info = !show_info;
-					count = !show_info;
-					text_cd = 10;
+					show_left = !show_left;
+					count = !show_left;
+					left_cd = 10;
 
-					if (!show_info)
+					if (!show_left)
 					{
 						if (book == &pass_page2_1)
 						{
@@ -544,14 +566,14 @@ bool Inventory::Update(float dt)
 						}
 						else if (book == &close)
 						{
-							show_info = false;
+							show_left = false;
 							count = false;
 						}
 					}
 				}
 			}
 
-			if (show_info && book_pos == 1)
+			if (show_left && book_pos == 1)
 			{
 				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && items_buttons[chosed].state == 1)
 				{
@@ -561,7 +583,7 @@ bool Inventory::Update(float dt)
 					items_buttons[chosed].state = 2;
 				}
 			}
-			else if (show_info && book_pos != 1)
+			else if (show_left && book_pos != 1)
 			{
 				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_button.state == 1)
 				{
@@ -654,7 +676,7 @@ bool Inventory::PostUpdate()
 
 		app->render->DrawTexture(book_tex, cx, cy, &rect);
 
-		if (show_info && page_display == 1)
+		if (show_left && page_display == 1)
 		{
 			//items
 			SDL_Rect rect;
@@ -689,7 +711,7 @@ bool Inventory::PostUpdate()
 				
 			}
 		}
-		else if (show_info && page_display != 1)
+		else if (show_left && page_display != 1)
 		{
 			switch (page_display)
 			{
