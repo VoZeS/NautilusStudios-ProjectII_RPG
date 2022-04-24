@@ -40,6 +40,8 @@ bool Fonts::Start()
 bool Fonts::CleanUp()
 {
 	UnLoad(textFont1);
+	UnLoad(textFont2);
+	UnLoad(textFont3);
 
 	return true;
 }

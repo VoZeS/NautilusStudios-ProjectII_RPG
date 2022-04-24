@@ -469,7 +469,7 @@ bool Inventory::PreUpdate()
 				SDL_Rect rect = gear_select_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i + 1))
 					{
 						if (!hover_playing)
 						{
@@ -845,9 +845,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i + 1))
 					{
-						rect = { i * 128, 0, 128, 128 };
+						switch (page_display)
+						{
+						case 2: rect = { i * 128, 0, 128, 128 }; break;
+						case 3: rect = { i * 128, 512, 128, 128 }; break;
+						case 4: rect = { i * 128, 1024, 128, 128 }; break;
+						case 5: rect = { i * 128, 1536, 128, 128 }; break;
+						}
 						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 					}
 					else
@@ -876,9 +882,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i + 1))
 					{
-						rect = { i * 128, 0, 128, 128 };
+						switch (page_display)
+						{
+						case 2: rect = { i * 128, 128, 128, 128 }; break;
+						case 3: rect = { i * 128, 640, 128, 128 }; break;
+						case 4: rect = { i * 128, 1152, 128, 128 }; break;
+						case 5: rect = { i * 128, 1664, 128, 128 }; break;
+						}
 						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 					}
 					else
@@ -907,9 +919,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i + 1))
 					{
-						rect = { i * 128, 0, 128, 128 };
+						switch (page_display)
+						{
+						case 2: rect = { i * 128, 256, 128, 128 }; break;
+						case 3: rect = { i * 128, 768, 128, 128 }; break;
+						case 4: rect = { i * 128, 1280, 128, 128 }; break;
+						case 5: rect = { i * 128, 1792, 128, 128 }; break;
+						}
 						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 					}
 					else
@@ -938,9 +956,15 @@ bool Inventory::PostUpdate()
 					}
 					app->render->DrawTexture(whitemark_128x128, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 
-					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i))
+					if (CheckGearUnlocked(page_display - 2, (int)submenu - 3, i + 1))
 					{
-						rect = { i * 128, 0, 128, 128 };
+						switch (page_display)
+						{
+						case 2: rect = { i * 128, 384, 128, 128 }; break;
+						case 3: rect = { i * 128, 896, 128, 128 }; break;
+						case 4: rect = { i * 128, 1408, 128, 128 }; break;
+						case 5: rect = { i * 128, 1920, 128, 128 }; break;
+						}
 						app->render->DrawTexture(gear_tex, gear_select_buttons[i].rect.x, gear_select_buttons[i].rect.y, &rect);
 					}
 					else
@@ -1392,6 +1416,102 @@ bool Inventory::CheckItemEquiped(int n)
 	{
 		return false;
 	}
+}
+
+void Inventory::BlockAll()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node hero;
+	pugi::xml_node set;
+
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		switch (i)
+		{
+		case 0: hero = saveGame.child("objects").child("assassin"); break;
+		case 1: hero = saveGame.child("objects").child("healer"); break;
+		case 2: hero = saveGame.child("objects").child("tank"); break;
+		case 3: hero = saveGame.child("objects").child("wizard"); break;
+		}
+
+		for (size_t j = 0; j < 4; j++)
+		{
+			switch (j)
+			{
+			case 0: set = hero.child("helmet"); break;
+			case 1: set = hero.child("chest"); break;
+			case 2: set = hero.child("boots"); break;
+			case 3: set = hero.child("weapon"); break;
+			}
+
+			set.attribute("gear1").set_value(false);
+			set.attribute("gear2").set_value(false);
+			set.attribute("gear3").set_value(false);
+			set.attribute("gear4").set_value(false);
+		}
+	}
+
+	set = saveGame.child("objects").child("items").child("unlocked");
+	set.attribute("item0").set_value(false);
+	set.attribute("item1").set_value(false);
+	set.attribute("item2").set_value(false);
+	set.attribute("item3").set_value(false);
+	set.attribute("item4").set_value(false);
+	set.attribute("item5").set_value(false);
+	set.attribute("item6").set_value(false);
+	set.attribute("item7").set_value(false);
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
+void Inventory::UnlockAll()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node hero;
+	pugi::xml_node set;
+
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		switch (i)
+		{
+		case 0: hero = saveGame.child("objects").child("assassin"); break;
+		case 1: hero = saveGame.child("objects").child("healer"); break;
+		case 2: hero = saveGame.child("objects").child("tank"); break;
+		case 3: hero = saveGame.child("objects").child("wizard"); break;
+		}
+
+		for (size_t j = 0; j < 4; j++)
+		{
+			switch (j)
+			{
+			case 0: set = hero.child("helmet"); break;
+			case 1: set = hero.child("chest"); break;
+			case 2: set = hero.child("boots"); break;
+			case 3: set = hero.child("weapon"); break;
+			}
+
+			set.attribute("gear1").set_value(true);
+			set.attribute("gear2").set_value(true);
+			set.attribute("gear3").set_value(true);
+			set.attribute("gear4").set_value(true);
+		}
+	}
+
+	set = saveGame.child("objects").child("items").child("unlocked");
+	set.attribute("item0").set_value(true);
+	set.attribute("item1").set_value(true);
+	set.attribute("item2").set_value(true);
+	set.attribute("item3").set_value(true);
+	set.attribute("item4").set_value(true);
+	set.attribute("item5").set_value(true);
+	set.attribute("item6").set_value(true);
+	set.attribute("item7").set_value(true);
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
 void Inventory::ResetItems()
@@ -2022,6 +2142,374 @@ int Inventory::SumGearStats(int user, int stat)
 	return value;
 }
 
+void Inventory::UnlockObject(const char* aei)
+{
+	if (aei == "999")
+	{
+		return;
+	}
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node hero;
+	pugi::xml_node set;
+
+	if (aei[0] == '0') // assassin
+	{
+		hero = saveGame.child("objects").child("assassin");
+		if (aei[1] == '0') // helmet
+		{
+			set = hero.child("helmet");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+	}
+	else if (aei[0] == '1') // healer
+	{
+		hero = saveGame.child("objects").child("healer");
+		if (aei[1] == '0') // helmet
+		{
+			set = hero.child("helmet");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+	}
+	else if (aei[0] == '2') // tank
+	{
+		hero = saveGame.child("objects").child("tank");
+		if (aei[1] == '0') // helmet
+		{
+			set = hero.child("helmet");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+	}
+	else if (aei[0] == '3') // wizard
+	{
+		hero = saveGame.child("objects").child("wizard");
+		if (aei[1] == '0') // helmet
+		{
+			set = hero.child("helmet");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			set = hero.child("chest");
+			if (aei[2] == '1')
+			{
+				set.attribute("gear1").set_value(true);
+			}
+			else if (aei[2] == '2')
+			{
+				set.attribute("gear2").set_value(true);
+			}
+			else if (aei[2] == '3')
+			{
+				set.attribute("gear3").set_value(true);
+			}
+			else if (aei[2] == '4')
+			{
+				set.attribute("gear4").set_value(true);
+			}
+		}
+	}
+	else if (aei[0] == '4') // items
+	{
+		hero = saveGame.child("objects").child("items");
+
+		switch (aei[1])
+		{
+		case '0': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '1': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '2': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '3': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '4': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '5': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '6': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '7': hero.child("unlocked").attribute("item0").set_value(true); break;
+		}
+	}
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
 bool Inventory::CheckGearUnlocked(int user, int piece, int level)
 {
 	pugi::xml_document saveGame;
@@ -2457,8 +2945,8 @@ bool Inventory::CheckGearUnlocked(int user, int piece, int level)
 bool Inventory::CheckItemUnlocked(int n)
 {
 	pugi::xml_document saveGame;
-	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
-	pugi::xml_node items_stored = saveGame.child("heroes_stats").child("items_stored").child("equiped");
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node items_stored = saveGame.child("objects").child("items").child("unlocked");
 
 	std::string p = "item";
 	std::string s = std::to_string(n);

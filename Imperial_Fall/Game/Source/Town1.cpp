@@ -112,7 +112,7 @@ bool Town1::Update(float dt)
 		enemies[2] = ENEMIES::MUSHROOM;
 		enemies[3] = ENEMIES::MUSHROOM;
 		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
-		app->frontground->FadeInCombat(enemies);
+		app->frontground->FadeInCombat(enemies, "011");
 	}
 
 	return true;

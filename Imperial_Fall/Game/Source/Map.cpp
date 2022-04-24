@@ -138,7 +138,8 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
@@ -151,6 +152,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -164,6 +166,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -177,6 +180,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -190,6 +194,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -320,6 +325,29 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	}
 
 	return set;
+}
+
+std::string Map::IntToString(int n)
+{
+	std::string s;
+	std::string r;
+
+	if (n < 10)
+	{
+		s = std::to_string(n);
+		r = "00" + s;
+	}
+	else if (n < 100)
+	{
+		s = std::to_string(n);
+		r = "0" + s;
+	}
+	else
+	{
+		r = std::to_string(n);
+	}
+
+	return r;
 }
 
 // Get relative Tile rectangle

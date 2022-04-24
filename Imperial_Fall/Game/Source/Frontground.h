@@ -80,10 +80,11 @@ public:
 
 	bool FadeFromBlack();
 
-	bool FadeInCombat(ENEMIES enemies[]); // start combat
+	bool FadeInCombat(ENEMIES enemies[], std::string rew); // start combat
 
 
 	ENEMIES enemies_to_fight[4];
+	std::string reward = "999"; // default
 
 	ENEMIES GetEnemiesToFight(int n)
 	{

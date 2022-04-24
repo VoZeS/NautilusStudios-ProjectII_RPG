@@ -259,7 +259,7 @@ bool Frontground::FadeFromBlack()
 	return true;
 }
 
-bool Frontground::FadeInCombat(ENEMIES enemies[])
+bool Frontground::FadeInCombat(ENEMIES enemies[], std::string rew)
 {
 	go_black = true;
 
@@ -267,6 +267,8 @@ bool Frontground::FadeInCombat(ENEMIES enemies[])
 	{
 		enemies_to_fight[i] = enemies[i];
 	}
+
+	reward = rew;
 
 	return true;
 }

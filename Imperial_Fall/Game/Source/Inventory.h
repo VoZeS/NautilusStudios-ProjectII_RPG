@@ -60,6 +60,8 @@ public:
 		info_cd = n;
 	}
 	
+	void BlockAll();
+	void UnlockAll();
 	void ResetItems();
 	void ResetGear();
 	// user: 0 --> assassin, 1 --> healer, 2 --> tank, 3 --> wizard
@@ -67,6 +69,11 @@ public:
 	// user: 0 --> unequiped, 1 --> level 1, 2 --> level 2, 3 --> level 3, 4 --> level 4
 	Gear GetGearPiece(int user, int piece, int level);
 	int SumGearStats(int user, int stat); // stat: 0 --> health, 1 --> mana, 2 --> speed, 3 --> power
+
+	// a --> user, if a == 4 --> item
+	// e --> piece of gear, or whitch item
+	// i --> level of gear
+	void UnlockObject(const char* aei);
 
 private:
 	Cursor cursor;

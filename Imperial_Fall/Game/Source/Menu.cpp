@@ -987,6 +987,7 @@ bool Menu::Update(float dt)
 						paused = false;
 						app->menu->redtemplar_killed = false;
 						subplaymenu = false;
+						app->inventory->BlockAll();
 						app->inventory->ResetItems();
 						app->inventory->ResetGear();
 					}
@@ -1108,6 +1109,7 @@ bool Menu::Update(float dt)
 			{
 				app->audio->PlayFx(click_sound);
 				app->frontground->ReturnToField();
+				app->inventory->UnlockObject(app->frontground->reward.c_str());
 				win_button.state = 2;
 				kill_enemy = true;
 			}
@@ -1133,6 +1135,7 @@ bool Menu::Update(float dt)
 				case 1:
 					// return field
 					app->frontground->ReturnToField();
+					app->frontground->reward = "999";
 					break;
 				}
 
@@ -1156,6 +1159,7 @@ bool Menu::Update(float dt)
 				case 0:
 					// sure to scape
 					app->frontground->ReturnToField();
+					app->frontground->reward = "999";
 					break;
 				case 1:
 					// cancel scape
@@ -1243,6 +1247,10 @@ bool Menu::Update(float dt)
 	else if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		app->frontground->fast_combat = !app->frontground->fast_combat;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		app->inventory->UnlockAll();
 	}
 
 	return true;
