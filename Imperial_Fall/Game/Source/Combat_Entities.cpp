@@ -161,6 +161,14 @@ Combat_Entities::Combat_Entities()
 	skills[3] = SetSkill(-1, items_stored.attribute("item3").as_int()); // read from xml
 }
 
+Combat_Entities::Combat_Entities(int owner, int set)
+{
+	skills[0] = SetSkill(owner, set * 4);
+	skills[1] = SetSkill(owner, 1 + set * 4);
+	skills[2] = SetSkill(owner, 2 + set * 4);
+	skills[3] = SetSkill(owner, 3 + set * 4);
+}
+
 Combat_Entities::~Combat_Entities()
 {
 

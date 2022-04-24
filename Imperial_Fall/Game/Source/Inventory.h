@@ -10,6 +10,7 @@
 #define NUM_ITEMS_SELECT_BUTTONS 8
 #define NUM_GEAR_BUTTONS 4
 #define NUM_GEAR_SELECT_BUTTONS 4
+#define NUM_SKILL_TREE_BUTTONS 17
 
 struct Button;
 struct Cursor;
@@ -128,6 +129,7 @@ private:
 	SDL_Texture* unknow_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
+	void DisplayGearHover(int user, int piece, int level);
 	void SaveItemChange(int n, int change);
 	bool CheckItemEquiped(int n);
 	bool CheckItemUnlocked(int n);
@@ -142,6 +144,7 @@ private:
 	int item_submenu; // indica que item se cambia
 	Button gear_buttons[NUM_GEAR_BUTTONS];
 	Button gear_select_buttons[NUM_GEAR_SELECT_BUTTONS];
+	Button skill_tree_buttons[NUM_SKILL_TREE_BUTTONS];
 	SUB_INV submenu;
 
 	// sound
@@ -151,6 +154,8 @@ private:
 	uint unequip_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
+
+	Skill GetSkillForInv(int owner, int skill);
 	
 };
 

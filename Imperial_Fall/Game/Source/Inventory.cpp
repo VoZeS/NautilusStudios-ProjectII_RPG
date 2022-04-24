@@ -219,6 +219,12 @@ bool Inventory::Start()
 			items_buttons[i].rect.h = 128;
 		}
 
+		for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+		{
+			skill_tree_buttons[i].rect.w = 128;
+			skill_tree_buttons[i].rect.h = 128;
+		}
+
 		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
 
 		left_arrow = &l_arrow;
@@ -456,6 +462,25 @@ bool Inventory::PreUpdate()
 				open_skill.Reset();
 				submenu = SUB_INV::NOTHING;
 			}
+
+			for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+			{
+				SDL_Rect rect = skill_tree_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					if (!hover_playing)
+					{
+						app->audio->PlayFx(hover_sound);
+						hover_playing = true;
+					}
+					chosed = i;
+					skill_tree_buttons[i].state = 1;
+				}
+				else
+				{
+					skill_tree_buttons[i].state = 0;
+				}
+			}
 		}
 		else if (submenu == SUB_INV::ITEMS)
 		{
@@ -653,7 +678,13 @@ bool Inventory::Update(float dt)
 		}
 		else if (submenu == SUB_INV::SKILL_TREE)
 		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_tree_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				// check skill points
 
+				skill_tree_buttons[chosed].state = 2;
+			}
 		}
 		else if (submenu == SUB_INV::ITEMS)
 		{
@@ -907,11 +938,8 @@ bool Inventory::PostUpdate()
 				gear_select_buttons[i].rect.y = 500 + cy;
 			}
 
-			if (submenu == SUB_INV::SKILL_TREE)
-			{
-
-			}
-			else if (submenu == SUB_INV::HELMET)
+			
+			if (submenu == SUB_INV::HELMET)
 			{
 				app->render->DrawTexture(whitemark_800x150, gear_select_buttons[0].rect.x - 36, gear_select_buttons[0].rect.y - 11);
 
@@ -924,6 +952,7 @@ bool Inventory::PostUpdate()
 					else if (gear_select_buttons[i].state == 1)
 					{
 						rect = { 0, 128, 128, 128 };
+						DisplayGearHover(page_display - 2, (int)submenu - 3, i + 1);
 					}
 					else if (gear_select_buttons[i].state == 2)
 					{
@@ -961,6 +990,7 @@ bool Inventory::PostUpdate()
 					else if (gear_select_buttons[i].state == 1)
 					{
 						rect = { 0, 128, 128, 128 };
+						DisplayGearHover(page_display - 2, (int)submenu - 3, i + 1);
 					}
 					else if (gear_select_buttons[i].state == 2)
 					{
@@ -998,6 +1028,7 @@ bool Inventory::PostUpdate()
 					else if (gear_select_buttons[i].state == 1)
 					{
 						rect = { 0, 128, 128, 128 };
+						DisplayGearHover(page_display - 2, (int)submenu - 3, i + 1);
 					}
 					else if (gear_select_buttons[i].state == 2)
 					{
@@ -1035,6 +1066,7 @@ bool Inventory::PostUpdate()
 					else if (gear_select_buttons[i].state == 1)
 					{
 						rect = { 0, 128, 128, 128 };
+						DisplayGearHover(page_display - 2, (int)submenu - 3, i + 1);
 					}
 					else if (gear_select_buttons[i].state == 2)
 					{
@@ -1064,6 +1096,91 @@ bool Inventory::PostUpdate()
 		if (show_info && page_display != 1 && in_skill_tree)
 		{
 			app->render->DrawTexture(skill_tree_tex, cx, cy, &s_rect);
+
+			if (submenu == SUB_INV::SKILL_TREE)
+			{
+				// row 1
+				skill_tree_buttons[0].rect.x = 576 + cx;
+				skill_tree_buttons[0].rect.y = 42 + cy;
+				// row 2
+				skill_tree_buttons[1].rect.x = 154 + cx;
+				skill_tree_buttons[1].rect.y = skill_tree_buttons[0].rect.y + 180;
+				skill_tree_buttons[2].rect.x = skill_tree_buttons[1].rect.x + 282;
+				skill_tree_buttons[2].rect.y = skill_tree_buttons[1].rect.y;
+				skill_tree_buttons[3].rect.x = skill_tree_buttons[2].rect.x + 282;
+				skill_tree_buttons[3].rect.y = skill_tree_buttons[2].rect.y;
+				skill_tree_buttons[4].rect.x = skill_tree_buttons[3].rect.x + 282;
+				skill_tree_buttons[4].rect.y = skill_tree_buttons[3].rect.y;
+				// row 3
+				skill_tree_buttons[5].rect.x = skill_tree_buttons[1].rect.x;
+				skill_tree_buttons[5].rect.y = skill_tree_buttons[1].rect.y + 170;
+				skill_tree_buttons[6].rect.x = skill_tree_buttons[2].rect.x;
+				skill_tree_buttons[6].rect.y = skill_tree_buttons[2].rect.y + 170;
+				skill_tree_buttons[7].rect.x = skill_tree_buttons[3].rect.x;
+				skill_tree_buttons[7].rect.y = skill_tree_buttons[3].rect.y + 170;
+				skill_tree_buttons[8].rect.x = skill_tree_buttons[4].rect.x;
+				skill_tree_buttons[8].rect.y = skill_tree_buttons[4].rect.y + 170;
+				// row 4
+				skill_tree_buttons[9].rect.x = 28 + cx;
+				skill_tree_buttons[9].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[10].rect.x = skill_tree_buttons[9].rect.x + 156;
+				skill_tree_buttons[10].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[11].rect.x = skill_tree_buttons[10].rect.x + 156;
+				skill_tree_buttons[11].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[12].rect.x = skill_tree_buttons[11].rect.x + 156;
+				skill_tree_buttons[12].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[13].rect.x = skill_tree_buttons[12].rect.x + 156;
+				skill_tree_buttons[13].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[14].rect.x = skill_tree_buttons[13].rect.x + 156;
+				skill_tree_buttons[14].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[15].rect.x = skill_tree_buttons[14].rect.x + 156;
+				skill_tree_buttons[15].rect.y = skill_tree_buttons[5].rect.y + 170;
+				skill_tree_buttons[16].rect.x = skill_tree_buttons[15].rect.x + 156;
+				skill_tree_buttons[16].rect.y = skill_tree_buttons[5].rect.y + 170;
+
+				for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+				{
+					if (skill_tree_buttons[i].state == 0)
+					{
+						rect = { 0, 0, 128, 128 };
+					}
+					else if (skill_tree_buttons[i].state == 1)
+					{
+						rect = { 0, 128, 128, 128 };
+					}
+					else if (skill_tree_buttons[i].state == 2)
+					{
+						rect = { 0, 256, 128, 128 };
+					}
+					app->render->DrawTexture(whitemark_128x128, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+				}
+
+				// lines
+				for (size_t i = 1; i < 5; i++)
+				{
+					app->render->DrawLine(skill_tree_buttons[0].rect.x + 64, skill_tree_buttons[0].rect.y + 128, skill_tree_buttons[i].rect.x + 64, skill_tree_buttons[i].rect.y, 0, 0, 0);
+				}
+				for (size_t i = 1; i < 5; i++)
+				{
+					app->render->DrawLine(skill_tree_buttons[i].rect.x + 64, skill_tree_buttons[i].rect.y + 128, skill_tree_buttons[i + 4].rect.x + 64, skill_tree_buttons[i + 4].rect.y, 0, 0, 0);
+				}
+				app->render->DrawLine(skill_tree_buttons[5].rect.x + 64, skill_tree_buttons[5].rect.y + 128, skill_tree_buttons[9].rect.x + 64, skill_tree_buttons[9].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[5].rect.x + 64, skill_tree_buttons[5].rect.y + 128, skill_tree_buttons[10].rect.x + 64, skill_tree_buttons[10].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[6].rect.x + 64, skill_tree_buttons[6].rect.y + 128, skill_tree_buttons[11].rect.x + 64, skill_tree_buttons[11].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[6].rect.x + 64, skill_tree_buttons[6].rect.y + 128, skill_tree_buttons[12].rect.x + 64, skill_tree_buttons[12].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[13].rect.x + 64, skill_tree_buttons[13].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[14].rect.x + 64, skill_tree_buttons[14].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[15].rect.x + 64, skill_tree_buttons[15].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[16].rect.x + 64, skill_tree_buttons[16].rect.y, 0, 0, 0);
+			
+				// skill names
+				Skill skill;
+				for (int i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+				{
+					skill = GetSkillForInv(page_display - 2, i);
+					app->fonts->BlitCombatText(skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, app->fonts->textFont2, skill.skill_name);
+				}
+			}
 		}
 
 		// draw cursor
@@ -1482,6 +1599,25 @@ void Inventory::SaveGearChange(int n, int change, SUB_INV submenu)
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
 }
+void Inventory::DisplayGearHover(int user, int piece, int level)
+{
+	int cx = -app->render->camera.x;
+	int cy = -app->render->camera.y;
+
+	std::string s = std::to_string(GetGearPiece(user, piece, level).health);
+	std::string c = "[" + s + "]";
+	app->fonts->BlitCombatText(500 + cx, 300 + cy, app->fonts->textFont4, c.c_str());
+	s = std::to_string(GetGearPiece(user, piece, level).mana);
+	c = "[" + s + "]";
+	app->fonts->BlitCombatText(500 + cx, 350 + cy, app->fonts->textFont4, c.c_str());
+	s = std::to_string(GetGearPiece(user, piece, level).speed);
+	c = "[" + s + "]";
+	app->fonts->BlitCombatText(500 + cx, 400 + cy, app->fonts->textFont4, c.c_str());
+	s = std::to_string(GetGearPiece(user, piece, level).power);
+	c = "[" + s + "]";
+	app->fonts->BlitCombatText(500 + cx, 450 + cy, app->fonts->textFont4, c.c_str());
+}
+
 
 void Inventory::SaveItemChange(int n, int change)
 {
@@ -3226,6 +3362,27 @@ bool Inventory::InAnyButton()
 	{
 		return true;
 	}
+	for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+	{
+		if (skill_tree_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
 
 	return false;
+}
+
+Skill Inventory::GetSkillForInv(int owner, int skill)
+{
+	Combat_Entities comb = Combat_Entities(owner, skill / 4);
+
+	int ns = skill;
+
+	while (ns >= 4)
+	{
+		ns -= 4;
+	}
+
+	return comb.GetSkill(ns);
 }

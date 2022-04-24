@@ -32,6 +32,7 @@ bool Fonts::Start()
 		textFont1 = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
 		textFont2 = app->fonts->Load("Assets/textures/my_font.png", lookupTableChars, 8);
 		textFont3 = app->fonts->Load("Assets/textures/my_font_red.png", lookupTableChars, 8);
+		textFont4 = app->fonts->Load("Assets/textures/my_font_green.png", lookupTableChars, 8);
 	}
 
 	return true;
@@ -42,6 +43,7 @@ bool Fonts::CleanUp()
 	UnLoad(textFont1);
 	UnLoad(textFont2);
 	UnLoad(textFont3);
+	UnLoad(textFont4);
 
 	return true;
 }
