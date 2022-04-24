@@ -272,6 +272,8 @@ bool Menu::Start()
 		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
 		object_buttons[0].rect.w = 500;
 		object_buttons[1].rect.w = 500;
+		unlock_fx = app->audio->LoadFx("Assets/audio/fx/unlock.wav");
+		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
 	}
 
 	return true;
@@ -292,10 +294,11 @@ bool Menu::PreUpdate()
 		app->entities->KillEnemy();
 	}
 
-	if (object_obtained && app->inventory->Enabled() && app->frontground->GetA() <= 25)
+	if (object_obtained && app->inventory->Enabled() && app->frontground->GetA() <= 50)
 	{
 		unlock_state = 1;
 		object_obtained = false;
+		app->audio->PlayFx(unlock_fx);
 	}
 
 	if (!app->frontground->controller) // keyboard
@@ -1233,6 +1236,7 @@ bool Menu::Update(float dt)
 				case 0:
 					// equip and close
 					app->inventory->EquipGear(app->frontground->reward.c_str());
+					app->audio->PlayFx(equip_sound);
 					break;
 				case 1:
 					// only close

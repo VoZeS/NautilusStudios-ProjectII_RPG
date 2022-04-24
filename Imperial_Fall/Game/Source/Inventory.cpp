@@ -136,6 +136,16 @@ Inventory::Inventory(bool enabled) : Module(enabled)
 	pass_page5_4.PushBack({ 7 * px, 1 * py, px, py });
 	pass_page5_4.speed = PAGE_SPEED;
 	pass_page5_4.loop = false;
+
+	// left arrow
+	l_arrow.PushBack({ 256, 0, 128, 128 });
+	l_arrow.PushBack({ 384, 0, 128, 128 });
+	l_arrow.speed = 0.02f;
+
+	// right arrow
+	r_arrow.PushBack({ 0, 0, 128, 128 });
+	r_arrow.PushBack({ 128, 0, 128, 128 });
+	r_arrow.speed = 0.02f;
 }
 
 // Destructor
@@ -163,7 +173,8 @@ bool Inventory::Start()
 		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
 		unequip_sound = app->audio->LoadFx("Assets/audio/fx/unequip.wav");
 
-		book_tex = app->tex->Load("Assets/textures/book_tex (1).png");
+		book_tex = app->tex->Load("Assets/textures/book_tex.png");
+		arrows_tex = app->tex->Load("Assets/textures/book_arrows.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_250x70 = app->tex->Load("Assets/textures/250x70_whitemark.png");
 		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
@@ -192,6 +203,9 @@ bool Inventory::Start()
 		}
 
 		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
+
+		left_arrow = &l_arrow;
+		right_arrow = &r_arrow;
 	}
 
 	return true;
@@ -633,6 +647,8 @@ bool Inventory::Update(float dt)
 		}
 
 		book->Update();
+		left_arrow->Update();
+		right_arrow->Update();
 	}
 	else if (hide)
 	{
@@ -665,8 +681,35 @@ bool Inventory::PostUpdate()
 		int cy = -app->render->camera.y;
 
 		SDL_Rect rect = book->GetCurrentFrame();
+		SDL_Rect l_rect = left_arrow->GetCurrentFrame();
+		SDL_Rect r_rect = right_arrow->GetCurrentFrame();
 
 		app->render->DrawTexture(book_tex, cx, cy, &rect);
+
+		if (submenu == SUB_INV::NOTHING && (book == &page1 || book == &page2 || book == &page3 || book == &page4 || book == &page5))
+		{
+			switch (page_display)
+			{
+			case 1:
+				app->render->DrawTexture(arrows_tex, 1102 + cx, 550 + cy, &r_rect);
+				break;
+			case 2:
+				app->render->DrawTexture(arrows_tex, 1102 + cx, 550 + cy, &r_rect);
+				app->render->DrawTexture(arrows_tex, 50 + cx, 550 + cy, &l_rect);
+				break;
+			case 3:
+				app->render->DrawTexture(arrows_tex, 1102 + cx, 550 + cy, &r_rect);
+				app->render->DrawTexture(arrows_tex, 50 + cx, 550 + cy, &l_rect);
+				break;
+			case 4:
+				app->render->DrawTexture(arrows_tex, 1102 + cx, 550 + cy, &r_rect);
+				app->render->DrawTexture(arrows_tex, 50 + cx, 550 + cy, &l_rect);
+				break;
+			case 5:
+				app->render->DrawTexture(arrows_tex, 50 + cx, 550 + cy, &l_rect);
+				break;
+			}
+		}
 
 		if (show_info && page_display == 1)
 		{

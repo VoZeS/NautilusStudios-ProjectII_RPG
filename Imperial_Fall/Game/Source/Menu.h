@@ -203,6 +203,8 @@ private:
 	int unlock_cd;
 	iPoint unlock_pos;
 	SDL_Rect unlock_rect;
+	uint unlock_fx;
+	uint equip_sound;
 	SDL_Rect GetUnlockRect(std::string aei);
 	SDL_Texture* unknow_tex;
 	SDL_Texture* gear_tex;

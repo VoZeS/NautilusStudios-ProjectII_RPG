@@ -98,6 +98,11 @@ private:
 	Animation close;
 
 	SDL_Texture* book_tex;
+	SDL_Texture* arrows_tex;
+	Animation* left_arrow;
+	Animation* right_arrow;
+	Animation l_arrow;
+	Animation r_arrow;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
 	int info_cd;
