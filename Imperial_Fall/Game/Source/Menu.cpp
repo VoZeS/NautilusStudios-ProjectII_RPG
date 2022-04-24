@@ -151,6 +151,7 @@ bool Menu::Start()
 			settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1);
 		}
 
+		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
 		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
@@ -260,6 +261,17 @@ bool Menu::Start()
 
 		hover_playing = false;
 		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
+
+		// unlock animation
+		unlock_cd = 120;
+		unlock_state = 0;
+		unlock_pos = { 576, 200 };
+		unlock_rect = { 0, 0, 128, 128 };
+		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
+		gear_tex = app->tex->Load("Assets/textures/gear.png");
+		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
+		object_buttons[0].rect.w = 500;
+		object_buttons[1].rect.w = 500;
 	}
 
 	return true;
@@ -280,17 +292,21 @@ bool Menu::PreUpdate()
 		app->entities->KillEnemy();
 	}
 
+	if (object_obtained && app->inventory->Enabled() && app->frontground->GetA() <= 25)
+	{
+		unlock_state = 1;
+		object_obtained = false;
+	}
+
 	if (!app->frontground->controller) // keyboard
 	{
-		//app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
-
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide && unlock_state == 0)
 		{
 			paused = !paused;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && !paused && !settings && description_disabled
-			&& app->inventory->hide && app->inventory->Enabled())
+			&& app->inventory->hide && app->inventory->Enabled() && unlock_state == 0)
 		{
 			app->inventory->hide = false;
 			app->inventory->SetTextCd(30);
@@ -461,6 +477,33 @@ bool Menu::PreUpdate()
 					else
 					{
 						scape_buttons[i].state = 0;
+					}
+				}
+			}
+
+			if (unlock_state == 2)
+			{
+				for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+				{
+					SDL_Rect rect = object_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (i == 0 && app->frontground->reward[0] == '4')
+						{}
+						else
+						{
+							if (!hover_playing)
+							{
+								app->audio->PlayFx(hover_sound);
+								hover_playing = true;
+							}
+							chosed = i;
+							object_buttons[i].state = 1;
+						}
+					}
+					else
+					{
+						object_buttons[i].state = 0;
 					}
 				}
 			}
@@ -1109,7 +1152,7 @@ bool Menu::Update(float dt)
 			{
 				app->audio->PlayFx(click_sound);
 				app->frontground->ReturnToField();
-				app->inventory->UnlockObject(app->frontground->reward.c_str());
+				object_obtained = true;
 				win_button.state = 2;
 				kill_enemy = true;
 			}
@@ -1177,6 +1220,28 @@ bool Menu::Update(float dt)
 			{
 				scape_buttons[0].state = 1;
 				chosed = 0;
+			}
+		}
+
+		if (unlock_state == 2)
+		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && object_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					// equip and close
+					app->inventory->EquipGear(app->frontground->reward.c_str());
+					break;
+				case 1:
+					// only close
+					break;
+				}
+
+				app->frontground->reward = "999";
+				unlock_state = 0;
+				object_buttons[chosed].state = 2;
 			}
 		}
 	}
@@ -1777,17 +1842,17 @@ bool Menu::PostUpdate()
 			if (scape_buttons[i].state == 0)
 			{
 				rect = { 0, 0, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 			else if (scape_buttons[i].state == 1)
 			{
 				rect = { 0, 70, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 			else if (scape_buttons[i].state == 2)
 			{
 				rect = { 0, 140, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 		}
 
@@ -1804,6 +1869,89 @@ bool Menu::PostUpdate()
 			break;
 		case 1: DisplaySkillInfo(app->combat_menu->desc_skill);
 			break;
+		}
+	}
+
+	if (unlock_state != 0)
+	{
+		SDL_Rect or = { 0, 0, 128, 128 };
+		unlock_cd--;
+		if (unlock_cd <= 0)
+		{
+			unlock_state = 2;
+			unlock_cd = 120;
+
+			app->inventory->UnlockObject(app->frontground->reward.c_str());
+		}
+		if (unlock_state == 1)
+		{
+			if (unlock_cd % 4 == 0)
+			{
+				unlock_pos.x += 2;
+			}
+			else if (unlock_cd % 4 == 1)
+			{
+				unlock_pos.x -= 2;
+			}
+			else if (unlock_cd % 4 == 2)
+			{
+				unlock_pos.y += 2;
+			}
+			else if (unlock_cd % 4 == 3)
+			{
+				unlock_pos.y -= 2;
+			}
+
+			app->render->DrawTexture(whitemark_128x128, unlock_pos.x + c_x, unlock_pos.y + c_y, &or);
+			app->render->DrawTexture(unknow_tex, unlock_pos.x + c_x, unlock_pos.y + c_y);
+		}
+		else
+		{
+			app->render->DrawTexture(whitemark_128x128, unlock_pos.x + c_x, unlock_pos.y + c_y, &or );
+
+			if (app->frontground->reward[0] != '4')
+			{
+				app->render->DrawTexture(gear_tex, unlock_pos.x + c_x, unlock_pos.y + c_y, &GetUnlockRect(app->frontground->reward));
+			}
+			else if (app->frontground->reward[0] == '4')
+			{
+				app->render->DrawTexture(items_tex, unlock_pos.x + c_x, unlock_pos.y + c_y, &GetUnlockRect(app->frontground->reward));
+			}
+
+			object_buttons[0].rect.x = (640 - (object_buttons[0].rect.w / 2) + c_x);
+			object_buttons[0].rect.y = unlock_pos.y + 200 + c_y;
+			object_buttons[1].rect.x = (640 - (object_buttons[0].rect.w / 2) + c_x);
+			object_buttons[1].rect.y = unlock_pos.y + 300 + c_y;
+
+			for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+			{
+				if (object_buttons[i].state == 0)
+				{
+					or = { 0, 0, 500, 70 };
+				}
+				else if (object_buttons[i].state == 1)
+				{
+					or = { 0, 70, 500, 70 };
+				}
+				else if (object_buttons[i].state == 2)
+				{
+					or = { 0, 140, 500, 70 };
+				}
+
+				if (i == 0 && app->frontground->reward[0] == '4')
+				{}
+				else
+				{
+					app->render->DrawTexture(whitemark_500x70, object_buttons[i].rect.x, object_buttons[i].rect.y, &or );
+				}
+			}
+
+			if (app->frontground->reward[0] != '4')
+			{
+				app->fonts->BlitText(object_buttons[0].rect.x, object_buttons[0].rect.y + 15, app->fonts->textFont1, "Equip and close");
+			}
+			
+			app->fonts->BlitText(object_buttons[1].rect.x, object_buttons[1].rect.y + 15, app->fonts->textFont1, "Close");
 		}
 	}
 
@@ -2137,6 +2285,356 @@ bool Menu::InAnyButton()
 			return true;
 		}
 	}
+	for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+	{
+		if (object_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
 
 	return false;
+}
+
+SDL_Rect Menu::GetUnlockRect(std::string aei)
+{
+	SDL_Rect res = { -128, 0, 128, 128 };
+
+	if (aei == "999")
+	{
+		return res;
+	}
+
+	if (aei[0] == '0') // assassin
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 0, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 0, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 0, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 0, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 128, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 128, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 128, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 128, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 256, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 256, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 256, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 256, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 384, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 384, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 384, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 384, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '1') // healer
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 512, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 512, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 512, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 512, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 640, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 640, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 640, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 640, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 768, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 768, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 768, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 768, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 896, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 896, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 896, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 896, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '2') // tank
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1024, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1024, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1024, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1024, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1152, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1152, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1152, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1152, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1280, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1280, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1280, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1280, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1408, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1408, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1408, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1408, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '3') // wizard
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1536, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1536, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1536, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1536, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1664, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1664, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1664, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1664, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1792, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1792, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1792, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1792, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1920, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1920, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1920, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1920, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '4') // items
+	{
+		switch (aei[1])
+		{
+		case '0': res = { 256, 0, 128, 128 }; break;
+		case '1': res = { 384, 0, 128, 128 }; break;
+		case '2': res = { 512, 0, 128, 128 }; break;
+		case '3': res = { 0, 128, 128, 128 }; break;
+		case '4': res = { 128, 128, 128, 128 }; break;
+		case '5': res = { 256, 128, 128, 128 }; break;
+		case '6': res = { 384, 128, 128, 128 }; break;
+		case '7': res = { 512, 128, 128, 128 }; break;
+		}
+	}
+
+	return res;
 }

@@ -11,6 +11,7 @@
 #define NUM_LOSE_BUTTONS 2
 #define NUM_SCAPE_BUTTONS 2
 #define NUM_SETTINGS_BUTTONS 4
+#define NUM_OBJECT_BUTTONS 2
 
 struct Button {
 	SDL_Rect rect = { 0, 0, 220, 70 };
@@ -127,6 +128,10 @@ public:
 	void DisplayEntityInfo(Combat_Entities* entity);
 	void DisplaySkillInfo(Skill skill);
 
+	// unlock object animation
+	bool object_obtained = false;
+	int unlock_state; // 0 --> none, 1 --> moving, 2 --> stoped
+
 private:
 
 	Cursor cursor;
@@ -165,6 +170,7 @@ private:
 	SDL_Texture* combat_lose = NULL;
 	SDL_Texture* combat_scape = NULL;
 
+	SDL_Texture* whitemark_128x128 = NULL;
 	SDL_Texture* whitemark_500x70 = NULL;
 	SDL_Texture* whitemark_1240x680 = NULL;
 	SDL_Texture* skills_icons = NULL;
@@ -192,6 +198,16 @@ private:
 	uint hover_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
+
+	// unlock object animation
+	int unlock_cd;
+	iPoint unlock_pos;
+	SDL_Rect unlock_rect;
+	SDL_Rect GetUnlockRect(std::string aei);
+	SDL_Texture* unknow_tex;
+	SDL_Texture* gear_tex;
+	SDL_Texture* items_tex;
+	Button object_buttons[NUM_OBJECT_BUTTONS];
 	
 };
 

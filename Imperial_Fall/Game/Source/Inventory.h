@@ -74,6 +74,7 @@ public:
 	// e --> piece of gear, or whitch item
 	// i --> level of gear
 	void UnlockObject(const char* aei);
+	void EquipGear(const char* aei);
 
 private:
 	Cursor cursor;

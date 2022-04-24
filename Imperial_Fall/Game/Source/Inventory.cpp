@@ -1191,7 +1191,7 @@ void Inventory::DisplayGear(int n)
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[2].rect.x, gear_buttons[2].rect.y, &rect);
 
-			// helmet
+			// weapon
 			switch (page_gear[3])
 			{
 			case 0: rect = { 512, 384, 128, 128 }; break;
@@ -1207,44 +1207,44 @@ void Inventory::DisplayGear(int n)
 			// helmet
 			switch (page_gear[0])
 			{
-			case 0: rect = { 512, 0, 128, 128 }; break;
-			case 1: rect = { 0, 0, 128, 128 }; break;
-			case 2: rect = { 128, 0, 128, 128 }; break;
-			case 3: rect = { 256, 0, 128, 128 }; break;
-			case 4: rect = { 384, 0, 128, 128 }; break;
+			case 0: rect = { 512, 512, 128, 128 }; break;
+			case 1: rect = { 0, 512, 128, 128 }; break;
+			case 2: rect = { 128, 512, 128, 128 }; break;
+			case 3: rect = { 256, 512, 128, 128 }; break;
+			case 4: rect = { 384, 512, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[0].rect.x, gear_buttons[0].rect.y, &rect);
 
 			// chestplate
 			switch (page_gear[1])
 			{
-			case 0: rect = { 512, 128, 128, 128 }; break;
-			case 1: rect = { 0, 128, 128, 128 }; break;
-			case 2: rect = { 128, 128, 128, 128 }; break;
-			case 3: rect = { 256, 128, 128, 128 }; break;
-			case 4: rect = { 384, 128, 128, 128 }; break;
+			case 0: rect = { 512, 640, 128, 128 }; break;
+			case 1: rect = { 0, 640, 128, 128 }; break;
+			case 2: rect = { 128, 640, 128, 128 }; break;
+			case 3: rect = { 256, 640, 128, 128 }; break;
+			case 4: rect = { 384, 640, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[1].rect.x, gear_buttons[1].rect.y, &rect);
 
 			// boots
 			switch (page_gear[2])
 			{
-			case 0: rect = { 512, 256, 128, 128 }; break;
-			case 1: rect = { 0, 256, 128, 128 }; break;
-			case 2: rect = { 128, 256, 128, 128 }; break;
-			case 3: rect = { 256, 256, 128, 128 }; break;
-			case 4: rect = { 384, 256, 128, 128 }; break;
+			case 0: rect = { 512, 768, 128, 128 }; break;
+			case 1: rect = { 0, 768, 128, 128 }; break;
+			case 2: rect = { 128, 768, 128, 128 }; break;
+			case 3: rect = { 256, 768, 128, 128 }; break;
+			case 4: rect = { 384, 768, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[2].rect.x, gear_buttons[2].rect.y, &rect);
 
-			// helmet
+			// weapon
 			switch (page_gear[3])
 			{
-			case 0: rect = { 512, 384, 128, 128 }; break;
-			case 1: rect = { 0, 384, 128, 128 }; break;
-			case 2: rect = { 128, 384, 128, 128 }; break;
-			case 3: rect = { 256, 384, 128, 128 }; break;
-			case 4: rect = { 384, 384, 128, 128 }; break;
+			case 0: rect = { 512, 896, 128, 128 }; break;
+			case 1: rect = { 0, 896, 128, 128 }; break;
+			case 2: rect = { 128, 896, 128, 128 }; break;
+			case 3: rect = { 256, 896, 128, 128 }; break;
+			case 4: rect = { 384, 896, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[3].rect.x, gear_buttons[3].rect.y, &rect);
 		}
@@ -1253,92 +1253,92 @@ void Inventory::DisplayGear(int n)
 			// helmet
 			switch (page_gear[0])
 			{
-			case 0: rect = { 512, 0, 128, 128 }; break;
-			case 1: rect = { 0, 0, 128, 128 }; break;
-			case 2: rect = { 128, 0, 128, 128 }; break;
-			case 3: rect = { 256, 0, 128, 128 }; break;
-			case 4: rect = { 384, 0, 128, 128 }; break;
+			case 0: rect = { 512, 1024, 128, 128 }; break;
+			case 1: rect = { 0, 0, 1024, 128 }; break;
+			case 2: rect = { 128, 0, 1024, 128 }; break;
+			case 3: rect = { 256, 0, 1024, 128 }; break;
+			case 4: rect = { 384, 0, 1024, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[0].rect.x, gear_buttons[0].rect.y, &rect);
 
 			// chestplate
 			switch (page_gear[1])
 			{
-			case 0: rect = { 512, 128, 128, 128 }; break;
-			case 1: rect = { 0, 128, 128, 128 }; break;
-			case 2: rect = { 128, 128, 128, 128 }; break;
-			case 3: rect = { 256, 128, 128, 128 }; break;
-			case 4: rect = { 384, 128, 128, 128 }; break;
+			case 0: rect = { 512, 1152, 128, 128 }; break;
+			case 1: rect = { 0, 1152, 128, 128 }; break;
+			case 2: rect = { 128, 1152, 128, 128 }; break;
+			case 3: rect = { 256, 1152, 128, 128 }; break;
+			case 4: rect = { 384, 1152, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[1].rect.x, gear_buttons[1].rect.y, &rect);
 
 			// boots
 			switch (page_gear[2])
 			{
-			case 0: rect = { 512, 256, 128, 128 }; break;
-			case 1: rect = { 0, 256, 128, 128 }; break;
-			case 2: rect = { 128, 256, 128, 128 }; break;
-			case 3: rect = { 256, 256, 128, 128 }; break;
-			case 4: rect = { 384, 256, 128, 128 }; break;
+			case 0: rect = { 512, 1280, 128, 128 }; break;
+			case 1: rect = { 0, 1280, 128, 128 }; break;
+			case 2: rect = { 128, 1280, 128, 128 }; break;
+			case 3: rect = { 256, 1280, 128, 128 }; break;
+			case 4: rect = { 384, 1280, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[2].rect.x, gear_buttons[2].rect.y, &rect);
 
-			// helmet
+			// weapon
 			switch (page_gear[3])
 			{
-			case 0: rect = { 512, 384, 128, 128 }; break;
-			case 1: rect = { 0, 384, 128, 128 }; break;
-			case 2: rect = { 128, 384, 128, 128 }; break;
-			case 3: rect = { 256, 384, 128, 128 }; break;
-			case 4: rect = { 384, 384, 128, 128 }; break;
+			case 0: rect = { 512, 1408, 128, 128 }; break;
+			case 1: rect = { 0, 1408, 128, 128 }; break;
+			case 2: rect = { 128, 1408, 128, 128 }; break;
+			case 3: rect = { 256, 1408, 128, 128 }; break;
+			case 4: rect = { 384, 1408, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[3].rect.x, gear_buttons[3].rect.y, &rect);
 		}
 		else if (n == 5) // wizard
 		{
-		// helmet
-		switch (page_gear[0])
-		{
-		case 0: rect = { 512, 0, 128, 128 }; break;
-		case 1: rect = { 0, 0, 128, 128 }; break;
-		case 2: rect = { 128, 0, 128, 128 }; break;
-		case 3: rect = { 256, 0, 128, 128 }; break;
-		case 4: rect = { 384, 0, 128, 128 }; break;
-		}
-		app->render->DrawTexture(gear_tex, gear_buttons[0].rect.x, gear_buttons[0].rect.y, &rect);
+			// helmet
+			switch (page_gear[0])
+			{
+			case 0: rect = { 512, 1536, 128, 128 }; break;
+			case 1: rect = { 0, 1536, 128, 128 }; break;
+			case 2: rect = { 128, 1536, 128, 128 }; break;
+			case 3: rect = { 256, 1536, 128, 128 }; break;
+			case 4: rect = { 384, 1536, 128, 128 }; break;
+			}
+			app->render->DrawTexture(gear_tex, gear_buttons[0].rect.x, gear_buttons[0].rect.y, &rect);
 
-		// chestplate
-		switch (page_gear[1])
-		{
-		case 0: rect = { 512, 128, 128, 128 }; break;
-		case 1: rect = { 0, 128, 128, 128 }; break;
-		case 2: rect = { 128, 128, 128, 128 }; break;
-		case 3: rect = { 256, 128, 128, 128 }; break;
-		case 4: rect = { 384, 128, 128, 128 }; break;
-		}
-		app->render->DrawTexture(gear_tex, gear_buttons[1].rect.x, gear_buttons[1].rect.y, &rect);
+			// chestplate
+			switch (page_gear[1])
+			{
+			case 0: rect = { 512, 1664, 128, 128 }; break;
+			case 1: rect = { 0, 1664, 128, 128 }; break;
+			case 2: rect = { 128, 1664, 128, 128 }; break;
+			case 3: rect = { 256, 1664, 128, 128 }; break;
+			case 4: rect = { 384, 1664, 128, 128 }; break;
+			}
+			app->render->DrawTexture(gear_tex, gear_buttons[1].rect.x, gear_buttons[1].rect.y, &rect);
 
-		// boots
-		switch (page_gear[2])
-		{
-		case 0: rect = { 512, 256, 128, 128 }; break;
-		case 1: rect = { 0, 256, 128, 128 }; break;
-		case 2: rect = { 128, 256, 128, 128 }; break;
-		case 3: rect = { 256, 256, 128, 128 }; break;
-		case 4: rect = { 384, 256, 128, 128 }; break;
-		}
-		app->render->DrawTexture(gear_tex, gear_buttons[2].rect.x, gear_buttons[2].rect.y, &rect);
+			// boots
+			switch (page_gear[2])
+			{
+			case 0: rect = { 512, 1792, 128, 128 }; break;
+			case 1: rect = { 0, 1792, 128, 128 }; break;
+			case 2: rect = { 128, 1792, 128, 128 }; break;
+			case 3: rect = { 256, 1792, 128, 128 }; break;
+			case 4: rect = { 384, 1792, 128, 128 }; break;
+			}
+			app->render->DrawTexture(gear_tex, gear_buttons[2].rect.x, gear_buttons[2].rect.y, &rect);
 
-		// helmet
-		switch (page_gear[3])
-		{
-		case 0: rect = { 512, 384, 128, 128 }; break;
-		case 1: rect = { 0, 384, 128, 128 }; break;
-		case 2: rect = { 128, 384, 128, 128 }; break;
-		case 3: rect = { 256, 384, 128, 128 }; break;
-		case 4: rect = { 384, 384, 128, 128 }; break;
-		}
-		app->render->DrawTexture(gear_tex, gear_buttons[3].rect.x, gear_buttons[3].rect.y, &rect);
+			// weapon
+			switch (page_gear[3])
+			{
+			case 0: rect = { 512, 1920, 128, 128 }; break;
+			case 1: rect = { 0, 1920, 128, 128 }; break;
+			case 2: rect = { 128, 1920, 128, 128 }; break;
+			case 3: rect = { 256, 1920, 128, 128 }; break;
+			case 4: rect = { 384, 1920, 128, 128 }; break;
+			}
+			app->render->DrawTexture(gear_tex, gear_buttons[3].rect.x, gear_buttons[3].rect.y, &rect);
 		}
 	}
 }
@@ -2508,6 +2508,101 @@ void Inventory::UnlockObject(const char* aei)
 	}
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
+void Inventory::EquipGear(const char* aei)
+{
+	if (aei == "999")
+	{
+		return;
+	}
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node hero;
+
+	if (aei[0] == '0') // assassin
+	{
+		hero = saveGame.child("heroes_stats").child("assassin").child("gear");
+		if (aei[1] == '0') // helmet
+		{
+			hero.attribute("helmet").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			hero.attribute("chest").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '2') // boots
+		{
+			hero.attribute("boots").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			hero.attribute("weapon").set_value(aei[2] - '0');
+		}
+	}
+	else if (aei[0] == '1') // healer
+	{
+		hero = saveGame.child("heroes_stats").child("healer").child("gear");
+		if (aei[1] == '0') // helmet
+		{
+			hero.attribute("helmet").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			hero.attribute("chest").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '2') // boots
+		{
+			hero.attribute("boots").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			hero.attribute("weapon").set_value(aei[2] - '0');
+		}
+	}
+	else if (aei[0] == '2') // tank
+	{
+		hero = saveGame.child("heroes_stats").child("tank").child("gear");
+		if (aei[1] == '0') // helmet
+		{
+			hero.attribute("helmet").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			hero.attribute("chest").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '2') // boots
+		{
+			hero.attribute("boots").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			hero.attribute("weapon").set_value(aei[2] - '0');
+		}
+	}
+	else if (aei[0] == '3') // wizard
+	{
+		hero = saveGame.child("heroes_stats").child("wizard").child("gear");
+		if (aei[1] == '0') // helmet
+		{
+			hero.attribute("helmet").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			hero.attribute("chest").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '2') // boots
+		{
+			hero.attribute("boots").set_value(aei[2] - '0');
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			hero.attribute("weapon").set_value(aei[2] - '0');
+		}
+	}
+
+	saveGame.save_file(HEROES_STATS_FILENAME);
 }
 
 bool Inventory::CheckGearUnlocked(int user, int piece, int level)

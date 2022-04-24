@@ -76,6 +76,11 @@ public:
 		a = 0;
 	}
 
+	int GetA()
+	{
+		return a;
+	}
+
 	bool FadeToBlack();
 
 	bool FadeFromBlack();

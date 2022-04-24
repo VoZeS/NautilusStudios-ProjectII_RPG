@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <objects>
 	<items>
-		<unlocked item0="false" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
+		<unlocked item0="true" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
 		<uses item0="0" item1="0" item2="0" item3="0" item4="0" item5="0" item6="0" item7="0" />
 	</items>
 	<assassin>

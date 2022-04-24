@@ -6,14 +6,14 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="-160" y="-500" />
+		<camera x="0" y="0" />
 	</renderer>
 	<entities>
 		<player>
 			<position x="16" y="19" />
-			<comp0 x="15" y="19" />
-			<comp1 x="14" y="19" />
-			<comp2 x="13" y="19" />
+			<comp0 x="15.0020571" y="18.9509983" />
+			<comp1 x="14.0537367" y="18.8853168" />
+			<comp2 x="13.1392784" y="18.8047466" />
 		</player>
 		<enemies>
 			<enemy0 state="true" />
