@@ -104,6 +104,10 @@ private:
 	Animation* right_arrow;
 	Animation l_arrow;
 	Animation r_arrow;
+	SDL_Texture* skill_tree_tex;
+	Animation* skill_page;
+	Animation open_skill;
+	Animation close_skill;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
 	int info_cd;
@@ -111,6 +115,7 @@ private:
 	bool show_info;
 	int page_display; // 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5
 	int page_gear[4];
+	bool in_skill_tree;
 
 	// display
 	void DisplayHero(int n);

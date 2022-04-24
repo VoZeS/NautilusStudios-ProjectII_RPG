@@ -146,6 +146,22 @@ Inventory::Inventory(bool enabled) : Module(enabled)
 	r_arrow.PushBack({ 0, 0, 128, 128 });
 	r_arrow.PushBack({ 128, 0, 128, 128 });
 	r_arrow.speed = 0.02f;
+
+	// open skill
+	open_skill.PushBack({ 0, 0, 1280, 720 });
+	open_skill.PushBack({ 1280, 0, 1280, 720 });
+	open_skill.PushBack({ 2560, 0, 1280, 720 });
+	open_skill.PushBack({ 3840, 0, 1280, 720 });
+	open_skill.speed = 0.3f;
+	open_skill.loop = false;
+
+	// open skill
+	close_skill.PushBack({ 3840, 0, 1280, 720 });
+	close_skill.PushBack({ 2560, 0, 1280, 720 });
+	close_skill.PushBack({ 1280, 0, 1280, 720 });
+	close_skill.PushBack({ 0, 0, 1280, 720 });
+	close_skill.speed = 0.3f;
+	close_skill.loop = false;
 }
 
 // Destructor
@@ -174,7 +190,8 @@ bool Inventory::Start()
 		unequip_sound = app->audio->LoadFx("Assets/audio/fx/unequip.wav");
 
 		book_tex = app->tex->Load("Assets/textures/book_tex.png");
-		arrows_tex = app->tex->Load("Assets/textures/book_arrows.png");
+		arrows_tex = app->tex->Load("Assets/textures/book_arrows.png"); 
+		skill_tree_tex = app->tex->Load("Assets/textures/skill_tree_page.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_250x70 = app->tex->Load("Assets/textures/250x70_whitemark.png");
 		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
@@ -206,6 +223,8 @@ bool Inventory::Start()
 
 		left_arrow = &l_arrow;
 		right_arrow = &r_arrow;
+
+		in_skill_tree = false;
 	}
 
 	return true;
@@ -354,6 +373,11 @@ bool Inventory::PreUpdate()
 				pass_page5_4.Reset();
 			}
 
+			if (in_skill_tree && close_skill.HasFinished())
+			{
+				in_skill_tree = false;
+			}
+
 			if ((app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 				&& (book_pos == 1 || book_pos == 2 || book_pos == 3 || book_pos == 4 || book_pos == 5))
 			{
@@ -366,7 +390,7 @@ bool Inventory::PreUpdate()
 				hide = true;
 			}
 
-			if (show_info && book_pos == 1)
+			if (show_info && book_pos == 1 && !in_skill_tree)
 			{
 				for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
 				{
@@ -387,7 +411,7 @@ bool Inventory::PreUpdate()
 					}
 				}
 			}
-			else if (show_info && book_pos != 1)
+			else if (show_info && book_pos != 1 && !in_skill_tree)
 			{
 				SDL_Rect rect = skill_button.rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -426,7 +450,12 @@ bool Inventory::PreUpdate()
 		}
 		else if (submenu == SUB_INV::SKILL_TREE)
 		{
-
+			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			{
+				skill_page = &close_skill;
+				open_skill.Reset();
+				submenu = SUB_INV::NOTHING;
+			}
 		}
 		else if (submenu == SUB_INV::ITEMS)
 		{
@@ -586,8 +615,11 @@ bool Inventory::Update(float dt)
 				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_button.state == 1)
 				{
 					app->audio->PlayFx(click_sound);
-					// open skill tree
+					skill_page = &open_skill;
+					close_skill.Reset();
+					in_skill_tree = true;
 					skill_button.state = 2;
+					submenu = SUB_INV::SKILL_TREE;
 				}
 				else if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && gear_buttons[chosed].state == 1)
 				{
@@ -649,6 +681,10 @@ bool Inventory::Update(float dt)
 		book->Update();
 		left_arrow->Update();
 		right_arrow->Update();
+		if (in_skill_tree)
+		{
+			skill_page->Update();
+		}
 	}
 	else if (hide)
 	{
@@ -683,10 +719,16 @@ bool Inventory::PostUpdate()
 		SDL_Rect rect = book->GetCurrentFrame();
 		SDL_Rect l_rect = left_arrow->GetCurrentFrame();
 		SDL_Rect r_rect = right_arrow->GetCurrentFrame();
+		SDL_Rect s_rect = { 0, 0, 0, 0 };
+		if (in_skill_tree)
+		{
+			s_rect = skill_page->GetCurrentFrame();
+		}
 
 		app->render->DrawTexture(book_tex, cx, cy, &rect);
 
-		if (submenu == SUB_INV::NOTHING && (book == &page1 || book == &page2 || book == &page3 || book == &page4 || book == &page5))
+		// arrows
+		if (submenu == SUB_INV::NOTHING && (book == &page1 || book == &page2 || book == &page3 || book == &page4 || book == &page5) && !in_skill_tree)
 		{
 			switch (page_display)
 			{
@@ -787,7 +829,7 @@ bool Inventory::PostUpdate()
 					case 6: rect = { 384, 128, 128, 128 }; break;
 					case 7: rect = { 512, 128, 128, 128 }; break;
 					}
-					
+
 					if (CheckItemUnlocked(i))
 					{
 						app->render->DrawTexture(items_tex, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y, &rect);
@@ -800,7 +842,7 @@ bool Inventory::PostUpdate()
 				}
 			}
 		}
-		else if (show_info && page_display != 1)
+		else if (show_info && page_display != 1 && (!open_skill.HasFinished() || (skill_page == &close_skill && !close_skill.HasFinished())))
 		{
 			switch (page_display)
 			{
@@ -830,7 +872,7 @@ bool Inventory::PostUpdate()
 			}
 			app->render->DrawTexture(whitemark_250x70, skill_button.rect.x, skill_button.rect.y, &rect);
 			app->fonts->BlitCombatText(skill_button.rect.x + 7, skill_button.rect.y + 15, app->fonts->textFont2, "Skill Tree");
-			
+
 			gear_buttons[0].rect.x = 720 + cx;
 			gear_buttons[0].rect.y = 120 + cy;
 			gear_buttons[1].rect.x = gear_buttons[0].rect.x + 200;
@@ -1017,6 +1059,11 @@ bool Inventory::PostUpdate()
 					}
 				}
 			}
+		}
+
+		if (show_info && page_display != 1 && in_skill_tree)
+		{
+			app->render->DrawTexture(skill_tree_tex, cx, cy, &s_rect);
 		}
 
 		// draw cursor
