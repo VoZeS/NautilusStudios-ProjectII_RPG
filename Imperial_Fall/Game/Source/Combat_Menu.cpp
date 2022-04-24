@@ -9,6 +9,7 @@
 #include "Frontground.h"
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
+#include "Inventory.h"
 #include "Particles.h"
 #include "Player.h"
 #include "Defs.h"
@@ -301,11 +302,17 @@ bool Combat_Menu::PreUpdate()
 				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 				{
 					SDL_Rect rect = items_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h 
-						&& app->combat_manager->GetItemsUses(i) > 0 && app->combat_manager->GetItemList()->GetSkill(i).mana_cost != 999)
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 					{
-						chosed = i;
-						items_buttons[i].state = 1;
+						if (i == 4 || app->inventory->GetItemUses(GetItemByName(app->combat_manager->GetItemList()->GetSkill(i).skill_name)) > 0)
+						{
+							chosed = i;
+							items_buttons[i].state = 1;
+						}
+						else
+						{
+							items_buttons[i].state = 0;
+						}
 					}
 					else
 					{
@@ -1561,7 +1568,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(0));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1570,7 +1577,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(1));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1579,7 +1586,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(2));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1588,7 +1595,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(3));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1619,7 +1626,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(0));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1628,7 +1635,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(1));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1637,7 +1644,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(2));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1646,7 +1653,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(3));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1984,53 +1991,59 @@ bool Combat_Menu::PostUpdate()
 				}
 				app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
 
+				int item_num = GetItemByName(app->combat_manager->GetItemList()->GetSkill(i).skill_name);
 				if (i == 4)
 				{
 					e_rect = { 0, 0, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "NONE")
+				else if (item_num == -1)
 				{
 					e_rect = { 128, 0, 128, 128 };
 				}
-				else if(app->combat_manager->GetItemList()->GetSkill(i).skill_name == "HP Potion")
+				else if(item_num == 0)
 				{
 					e_rect = { 256, 0, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "MP Potion")
+				else if (item_num == 1)
 				{
 					e_rect = { 384, 0, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Fire Jar")
+				else if (item_num == 2)
 				{
 					e_rect = { 512, 0, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Lightning Jar")
+				else if (item_num == 3)
 				{
 					e_rect = { 0, 128, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "HP Potion0")
+				else if (item_num == 4)
 				{
 					e_rect = { 128, 128, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "MP Potion0")
+				else if (item_num == 5)
 				{
 					e_rect = { 256, 128, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Fire Jar0")
+				else if (item_num == 6)
 				{
 					e_rect = { 384, 128, 128, 128 };
 				}
-				else if (app->combat_manager->GetItemList()->GetSkill(i).skill_name == "Lightning Jar0")
+				else if (item_num == 7)
 				{
 					e_rect = { 512, 128, 128, 128 };
 				}
 
 				app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 
-				if (app->combat_manager->GetItemsUses(i) == 0)
+				if (i != 4 && app->inventory->GetItemUses(item_num) == 0)
 				{
 					e_rect = { 128, 0, 128, 128 };
 					app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
+				}
+
+				if (item_num > -1 && app->inventory->GetItemUses(item_num) > 0)
+				{
+					app->fonts->BlitCombatText(items_buttons[i].rect.x + 100, items_buttons[i].rect.y + 100, app->fonts->textFont2, std::to_string(app->inventory->GetItemUses(item_num)).c_str());
 				}
 			}
 		}
@@ -2205,7 +2218,6 @@ bool Combat_Menu::PostUpdate()
 	}
 	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 	{
-		BlittAttackText(240 + c_x, 590 + c_y);
 		if (skill_att_effect != ATT_EFFECT::EMPTY)
 		{
 			// fx
@@ -2363,43 +2375,6 @@ iPoint Combat_Menu::GetEntityPosition(bool ally, int n)
 	return pos;
 }
 
-void Combat_Menu::BlittAttackText(int c_x, int c_y)
-{
-	app->render->DrawTexture(whitemark_800x50, c_x, c_y - 10);
-	switch (app->combat_manager->GetActualEntity()->GetType())
-	{
-	case 0:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 1:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 2:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 3:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 4:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 5:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 6:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 7:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 8:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-
-	}
-	
-}
-
 void Combat_Menu::PlaySkillFx(int n)
 {
 	switch (n)
@@ -2529,4 +2504,61 @@ void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
 		res = description1.c_str();
 		app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont2, res);
 	}
+}
+int Combat_Menu::GetItemByName(const char* skill_name)
+{
+	if (skill_name == "HP Potion")
+	{
+		return 0;
+	}
+	else if (skill_name == "MP Potion")
+	{
+		return 1;
+	}
+	else if (skill_name == "Fire Jar")
+	{
+		return 2;
+	}
+	else if (skill_name == "Lightning Jar")
+	{
+		return 3;
+	}
+	else if (skill_name == "HP Potion0")
+	{
+		return 4;
+	}
+	else if (skill_name == "MP Potion0")
+	{
+		return 5;
+	}
+	else if (skill_name == "Fire Jar0")
+	{
+		return 6;
+	}
+	else if (skill_name == "Lightning Jar0")
+	{
+		return 7;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+void Combat_Menu::UseItem(int n)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node set = saveGame.child("objects").child("items").child("uses");
+	int uses;
+
+	std::string p = "item";
+	std::string s = std::to_string(n);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	uses = set.attribute(c).as_int();
+	set.attribute(c).set_value(uses - 1);
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }

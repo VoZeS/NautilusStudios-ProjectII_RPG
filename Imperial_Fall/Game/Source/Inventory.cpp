@@ -368,7 +368,7 @@ bool Inventory::PreUpdate()
 
 			if (show_info && book_pos == 1)
 			{
-				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+				for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
 				{
 					SDL_Rect rect = items_buttons[i].rect;
 					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -435,7 +435,7 @@ bool Inventory::PreUpdate()
 				submenu = SUB_INV::NOTHING;
 			}
 
-			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+			for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
 			{
 				items_buttons[i].state = 0;
 			}
@@ -716,13 +716,13 @@ bool Inventory::PostUpdate()
 			//items
 			SDL_Rect rect;
 
-			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+			for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
 			{
 				items_buttons[i].rect.x = 280 + cx + (200 * i);
 				items_buttons[i].rect.y = 500 + cy;
 			}
 
-			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+			for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
 			{
 				if (items_buttons[i].state == 0)
 				{
@@ -791,6 +791,7 @@ bool Inventory::PostUpdate()
 					if (CheckItemUnlocked(i))
 					{
 						app->render->DrawTexture(items_tex, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y, &rect);
+						app->fonts->BlitCombatText(items_select_buttons[i].rect.x + 100, items_select_buttons[i].rect.y + 100, app->fonts->textFont2, std::to_string(GetItemUses(i)).c_str());
 					}
 					else
 					{
@@ -1146,6 +1147,10 @@ void Inventory::DisplayItems()
 	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[0].rect.x, items_buttons[0].rect.y, &rect);
+	if (items.attribute("item0").as_int() > -1)
+	{
+		app->fonts->BlitCombatText(items_buttons[0].rect.x + 100, items_buttons[0].rect.y + 100, app->fonts->textFont2, std::to_string(GetItemUses(items.attribute("item0").as_int())).c_str());
+	}
 	
 	// item 1
 	switch (items.attribute("item1").as_int())
@@ -1161,6 +1166,10 @@ void Inventory::DisplayItems()
 	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[1].rect.x, items_buttons[1].rect.y, &rect);
+	if (items.attribute("item1").as_int() > -1)
+	{
+		app->fonts->BlitCombatText(items_buttons[1].rect.x + 100, items_buttons[1].rect.y + 100, app->fonts->textFont2, std::to_string(GetItemUses(items.attribute("item1").as_int())).c_str());
+	}
 
 	// item 2
 	switch (items.attribute("item2").as_int())
@@ -1176,6 +1185,10 @@ void Inventory::DisplayItems()
 	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[2].rect.x, items_buttons[2].rect.y, &rect);
+	if (items.attribute("item2").as_int() > -1)
+	{
+		app->fonts->BlitCombatText(items_buttons[2].rect.x + 100, items_buttons[2].rect.y + 100, app->fonts->textFont2, std::to_string(GetItemUses(items.attribute("item2").as_int())).c_str());
+	}
 
 	// item 3
 	switch (items.attribute("item3").as_int())
@@ -1191,6 +1204,10 @@ void Inventory::DisplayItems()
 	case 7: rect = { 512, 128, 128, 128 }; break;
 	}
 	app->render->DrawTexture(items_tex, items_buttons[3].rect.x, items_buttons[3].rect.y, &rect);
+	if (items.attribute("item3").as_int() > -1)
+	{
+		app->fonts->BlitCombatText(items_buttons[3].rect.x + 100, items_buttons[3].rect.y + 100, app->fonts->textFont2, std::to_string(GetItemUses(items.attribute("item3").as_int())).c_str());
+	}
 }
 
 void Inventory::DisplayGear(int n)
@@ -1506,6 +1523,16 @@ void Inventory::BlockAll()
 	set.attribute("item6").set_value(false);
 	set.attribute("item7").set_value(false);
 
+	set = saveGame.child("objects").child("items").child("uses");
+	set.attribute("item0").set_value(0);
+	set.attribute("item1").set_value(0);
+	set.attribute("item2").set_value(0);
+	set.attribute("item3").set_value(0);
+	set.attribute("item4").set_value(0);
+	set.attribute("item5").set_value(0);
+	set.attribute("item6").set_value(0);
+	set.attribute("item7").set_value(0);
+
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
@@ -1553,6 +1580,16 @@ void Inventory::UnlockAll()
 	set.attribute("item5").set_value(true);
 	set.attribute("item6").set_value(true);
 	set.attribute("item7").set_value(true);
+
+	set = saveGame.child("objects").child("items").child("uses");
+	set.attribute("item0").set_value(3);
+	set.attribute("item1").set_value(3);
+	set.attribute("item2").set_value(3);
+	set.attribute("item3").set_value(3);
+	set.attribute("item4").set_value(3);
+	set.attribute("item5").set_value(3);
+	set.attribute("item6").set_value(3);
+	set.attribute("item7").set_value(3);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
@@ -1602,6 +1639,20 @@ void Inventory::ResetGear()
 	}
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
+}
+
+int Inventory::GetItemUses(int n)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node items_stored = saveGame.child("objects").child("items").child("uses");
+
+	std::string p = "item";
+	std::string s = std::to_string(n);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	return items_stored.attribute(c).as_int();
 }
 
 Gear Inventory::GetGearPiece(int user, int piece, int level)
@@ -3096,7 +3147,7 @@ bool Inventory::CheckItemUnlocked(int n)
 
 bool Inventory::InAnyButton()
 {
-	for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+	for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
 	{
 		if (items_buttons[i].state == 1)
 		{

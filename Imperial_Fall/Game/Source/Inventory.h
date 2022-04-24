@@ -6,7 +6,7 @@
 
 #define PAGE_SPEED 0.15f
 
-#define NUM_ITEMS_BUTTONS 4
+#define NUM_ITEMS_BUTTONS_INV 4
 #define NUM_ITEMS_SELECT_BUTTONS 8
 #define NUM_GEAR_BUTTONS 4
 #define NUM_GEAR_SELECT_BUTTONS 4
@@ -64,6 +64,7 @@ public:
 	void UnlockAll();
 	void ResetItems();
 	void ResetGear();
+	int GetItemUses(int n);
 	// user: 0 --> assassin, 1 --> healer, 2 --> tank, 3 --> wizard
 	// piece: 0 --> helmet, 1 --> chestplate, 2 --> boots, 3 --> weapon
 	// user: 0 --> unequiped, 1 --> level 1, 2 --> level 2, 3 --> level 3, 4 --> level 4
@@ -131,7 +132,7 @@ private:
 	// buttons
 	int chosed;
 	Button skill_button;
-	Button items_buttons[NUM_ITEMS_BUTTONS];
+	Button items_buttons[NUM_ITEMS_BUTTONS_INV];
 	Button items_select_buttons[NUM_ITEMS_SELECT_BUTTONS];
 	int item_submenu; // indica que item se cambia
 	Button gear_buttons[NUM_GEAR_BUTTONS];
