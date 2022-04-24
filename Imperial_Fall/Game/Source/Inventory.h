@@ -111,6 +111,7 @@ private:
 	void DisplayGear(int n);
 	void SaveItemChange(int n, int change);
 	bool CheckItemEquiped(int n);
+	bool CheckItemUnlocked(int n);
 	void SaveGearChange(int n, int change, SUB_INV submenu);
 	bool CheckGearUnlocked(int user, int piece, int level);
 

@@ -431,7 +431,7 @@ bool Inventory::PreUpdate()
 				SDL_Rect rect = items_select_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					if (!CheckItemEquiped(i))
+					if (!CheckItemEquiped(i) && CheckItemUnlocked(i))
 					{
 						if (!hover_playing)
 						{
@@ -745,7 +745,14 @@ bool Inventory::PostUpdate()
 					case 7: rect = { 512, 128, 128, 128 }; break;
 					}
 					
-					app->render->DrawTexture(items_tex, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y, &rect);
+					if (CheckItemUnlocked(i))
+					{
+						app->render->DrawTexture(items_tex, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y, &rect);
+					}
+					else
+					{
+						app->render->DrawTexture(unknow_tex, items_select_buttons[i].rect.x, items_select_buttons[i].rect.y);
+					}
 				}
 			}
 		}
@@ -2445,6 +2452,20 @@ bool Inventory::CheckGearUnlocked(int user, int piece, int level)
 	}
 
 	return res;
+}
+
+bool Inventory::CheckItemUnlocked(int n)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node items_stored = saveGame.child("heroes_stats").child("items_stored").child("equiped");
+
+	std::string p = "item";
+	std::string s = std::to_string(n);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	return items_stored.attribute(c).as_bool();
 }
 
 bool Inventory::InAnyButton()
