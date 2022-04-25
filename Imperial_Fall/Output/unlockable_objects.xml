@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <objects>
 	<items>
-		<unlocked item0="false" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
+		<unlocked item0="true" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
 		<uses item0="0" item1="0" item2="0" item3="0" item4="0" item5="0" item6="0" item7="0" />
 	</items>
 	<assassin>
 		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
 		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
 		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
-		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+		<weapon gear1="true" gear2="false" gear3="false" gear4="false" />
 		<skills skill0="false" skill1="false" skill2="false" skill3="false" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skil11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
 	</assassin>
 	<healer>

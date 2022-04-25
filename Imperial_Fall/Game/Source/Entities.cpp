@@ -3,6 +3,7 @@
 #include "Entities.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Dialog.h"
 #include "Frontground.h"
 
 #include "Player.h"
@@ -524,6 +525,7 @@ void Entities::KillEnemy()
 		if (combat_entity->entity_type == ENTITY_TYPE::R_TEMPLAR) 
 		{
 			app->frontground->adventure_phase = 1;
+			app->dialog->UpdateShop();
 		}
 	}
 }

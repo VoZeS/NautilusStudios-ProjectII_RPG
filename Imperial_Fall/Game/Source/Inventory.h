@@ -82,6 +82,11 @@ public:
 	void UnlockSkill(int owner, int skill);
 	void AddSkillPoint(int owner, int amount);
 
+	SDL_Texture* items_tex;
+	SDL_Texture* gear_tex;
+	SDL_Texture* unknow_tex;
+	SDL_Texture* accept_tex;
+
 	// coins
 	int GetCoins();
 	void AddCoins(int amount);
@@ -132,10 +137,6 @@ private:
 	SDL_Texture* whitemark_250x70;
 	SDL_Texture* whitemark_800x150;
 	SDL_Texture* hero_tex;
-	SDL_Texture* items_tex;
-	SDL_Texture* gear_tex;
-	SDL_Texture* unknow_tex;
-	SDL_Texture* accept_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
 	void DisplayGearHover(int user, int piece, int level);

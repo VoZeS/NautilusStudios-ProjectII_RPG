@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Fonts.h"
 #include "Physics.h"
 #include "Frontground.h"
@@ -116,11 +117,18 @@ bool Dialog::Start()
 	*/
 
 	in_shop = 0;
+	item_saved = NULL;
 
 	for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 	{
 		shop_buttons[i].rect.w = 128;
 		shop_buttons[i].rect.h = 128;
+	}
+
+	for (size_t i = 0; i < NUM_SHOP_INTERACT_BUTTONS; i++)
+	{
+		shop_interact_buttons[i].rect.w = 128;
+		shop_interact_buttons[i].rect.h = 128;
 	}
 
 	if (app->frontground->adventure_phase == 0)
@@ -189,9 +197,8 @@ bool Dialog::Start()
 	}
 	
 	whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
+	whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
 	whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
-	gear_tex = app->tex->Load("Assets/textures/gear.png");
-	items_tex = app->tex->Load("Assets/textures/Objects/items.png");
 
 	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 	hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
@@ -211,11 +218,43 @@ bool Dialog::PreUpdate()
 	float cx = -app->render->camera.x;
 	float cy = -app->render->camera.y;
 
-	if (in_shop != 0)
+	if (in_shop != 0 && item_saved == NULL)
 	{
 		for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 		{
+			bool selled = false;
 			SDL_Rect rect = shop_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			{
+				switch (in_shop)
+				{
+				case 1: selled = shop1[i].selled; break;
+				case 2: selled = shop2[i].selled; break;
+				case 3: selled = shop3[i].selled; break;
+				}
+
+				if (!selled)
+				{
+					if (!hover_playing)
+					{
+						app->audio->PlayFx(hover_sound);
+						hover_playing = true;
+					}
+					chosed = i;
+					shop_buttons[i].state = 1;
+				}
+			}
+			else
+			{
+				shop_buttons[i].state = 0;
+			}
+		}
+	}
+	else if (in_shop != 0)
+	{
+		for (size_t i = 0; i < NUM_SHOP_INTERACT_BUTTONS; i++)
+		{
+			SDL_Rect rect = shop_interact_buttons[i].rect;
 			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
 				if (!hover_playing)
@@ -224,11 +263,11 @@ bool Dialog::PreUpdate()
 					hover_playing = true;
 				}
 				chosed = i;
-				shop_buttons[i].state = 1;
+				shop_interact_buttons[i].state = 1;
 			}
 			else
 			{
-				shop_buttons[i].state = 0;
+				shop_interact_buttons[i].state = 0;
 			}
 		}
 	}
@@ -371,7 +410,7 @@ bool Dialog::Update(float dt)
 			}
 		}
 	}
-	else if (in_shop == 1)
+	else if (in_shop != 0 && item_saved == NULL)
 	{
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
@@ -381,72 +420,39 @@ bool Dialog::Update(float dt)
 		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
-			switch (chosed)
+			switch (in_shop)
 			{
-			case 0: 
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
+			case 1: item_saved = &shop1[chosed]; break;
+			case 2: item_saved = &shop2[chosed]; break;
+			case 3: item_saved = &shop3[chosed]; break;
 			}
 
 			shop_buttons[chosed].state = 2;
 		}
 	}
-	else if (in_shop == 2)
+	else if (in_shop != 0)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		{
-			in_shop = 0;
-		}
-
-		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_interact_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
-			switch (chosed)
+			if (item_saved->cost > app->inventory->GetCoins())
 			{
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
+				item_saved = NULL;
+			}
+			else
+			{
+				if (chosed == 0)
+				{
+					app->inventory->UnlockObject(item_saved->item.c_str());
+					app->inventory->AddCoins(-item_saved->cost);
+					item_saved->selled = true;
+				}
+				item_saved = NULL;
 			}
 
-			shop_buttons[chosed].state = 2;
+			shop_interact_buttons[chosed].state = 2;
 		}
-	}
-	else if (in_shop == 3)
-	{
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		{
-			in_shop = 0;
-		}
-
-		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
-		{
-			app->audio->PlayFx(click_sound);
-			switch (chosed)
-			{
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			}
-
-			shop_buttons[chosed].state = 2;
-		}
-	}
-	
+	}	
 
 	letter_cd += dt;
 
@@ -611,14 +617,19 @@ bool Dialog::PostUpdate()
 					s_rect = app->menu->GetUnlockRect(shop1[i].item);
 					if (shop1[i].item[0] != '4')
 					{
-						app->render->DrawTexture(gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+						app->render->DrawTexture(app->inventory->gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
 					else if (shop1[i].item[0] == '4')
 					{
-						app->render->DrawTexture(items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
 					object_cost = "Cost: " + std::to_string(shop1[i].cost) + " coins";
 					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+					if (shop1[i].selled)
+					{
+						s_rect = { 256, 0, 128, 128 };
+						app->render->DrawTexture(app->inventory->accept_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
 				}
 			}
 			else if (in_shop == 2)
@@ -628,14 +639,19 @@ bool Dialog::PostUpdate()
 					s_rect = app->menu->GetUnlockRect(shop2[i].item);
 					if (shop2[i].item[0] != '4')
 					{
-						app->render->DrawTexture(gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+						app->render->DrawTexture(app->inventory->gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
 					else if (shop2[i].item[0] == '4')
 					{
-						app->render->DrawTexture(items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
 					object_cost = "Cost: " + std::to_string(shop2[i].cost) + " coins";
 					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+					if (shop2[i].selled)
+					{
+						s_rect = { 256, 0, 128, 128 };
+						app->render->DrawTexture(app->inventory->accept_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
 				}
 			}
 			else if (in_shop == 3)
@@ -645,14 +661,79 @@ bool Dialog::PostUpdate()
 					s_rect = app->menu->GetUnlockRect(shop3[i].item);
 					if (shop3[i].item[0] != '4')
 					{
-						app->render->DrawTexture(gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+						app->render->DrawTexture(app->inventory->gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
 					else if (shop3[i].item[0] == '4')
 					{
-						app->render->DrawTexture(items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
 					object_cost = "Cost: " + std::to_string(shop3[i].cost) + " coins";
 					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+					if (shop3[i].selled)
+					{
+						s_rect = { 256, 0, 128, 128 };
+						app->render->DrawTexture(app->inventory->accept_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+				}
+			}
+
+			if (item_saved != NULL)
+			{
+				app->render->DrawTexture(whitemark_800x150, 240 + c_x, 300 + c_y);
+
+				SDL_Rect b0;
+				if (shop_interact_buttons[0].state == 0)
+				{
+					b0 = { 0, 0, 128, 128 };
+				}
+				else if (shop_interact_buttons[0].state == 1)
+				{
+					b0 = { 0, 128, 128, 128 };
+				}
+				else if (shop_interact_buttons[0].state == 2)
+				{
+					b0 = { 0, 256, 128, 128 };
+				}
+
+				SDL_Rect b1;
+				if (shop_interact_buttons[1].state == 0)
+				{
+					b1 = { 0, 0, 128, 128 };
+				}
+				else if (shop_interact_buttons[1].state == 1)
+				{
+					b1 = { 0, 128, 128, 128 };
+				}
+				else if (shop_interact_buttons[1].state == 2)
+				{
+					b1 = { 0, 256, 128, 128 };
+				}
+
+				SDL_Rect a_rect = { 0, 0, 128, 128 };
+				std::string p_siting;
+
+				if (item_saved->cost > app->inventory->GetCoins())
+				{
+					shop_interact_buttons[0].rect.x = 576 + c_x;
+					shop_interact_buttons[0].rect.y = 380 + c_y;
+					app->render->DrawTexture(whitemark_128x128, shop_interact_buttons[0].rect.x, shop_interact_buttons[0].rect.y, &b0);
+					app->render->DrawTexture(app->inventory->accept_tex, shop_interact_buttons[0].rect.x, shop_interact_buttons[0].rect.y, &a_rect);
+					p_siting = "Imposible, item cost is " + std::to_string(item_saved->cost) + " coins";
+					app->fonts->BlitCombatText(300 + c_x, 310 + c_y, app->fonts->textFont2, p_siting.c_str());
+				}
+				else
+				{
+					shop_interact_buttons[0].rect.x = 400 + c_x;
+					shop_interact_buttons[0].rect.y = 380 + c_y;
+					shop_interact_buttons[1].rect.x = shop_interact_buttons[0].rect.x + 300;
+					shop_interact_buttons[1].rect.y = shop_interact_buttons[0].rect.y;
+					app->render->DrawTexture(whitemark_128x128, shop_interact_buttons[0].rect.x, shop_interact_buttons[0].rect.y, &b0);
+					app->render->DrawTexture(whitemark_128x128, shop_interact_buttons[1].rect.x, shop_interact_buttons[1].rect.y, &b1);
+					app->render->DrawTexture(app->inventory->accept_tex, shop_interact_buttons[0].rect.x, shop_interact_buttons[0].rect.y, &a_rect);
+					a_rect = { 128, 0, 128, 128 };
+					app->render->DrawTexture(app->inventory->accept_tex, shop_interact_buttons[1].rect.x, shop_interact_buttons[1].rect.y, &a_rect);
+					p_siting = "Buy Item using " + std::to_string(item_saved->cost) + " coins?";
+					app->fonts->BlitCombatText(320 + c_x, 310 + c_y, app->fonts->textFont2, p_siting.c_str());
 				}
 			}
 		}
@@ -679,6 +760,9 @@ bool Dialog::CleanUp()
 	app->tex->UnLoad(press_e);
 	press_e = NULL;
 	anim = NULL;
+
+	item_saved = NULL;
+
 	return true;
 }
 
@@ -727,11 +811,93 @@ bool Dialog::ContinueDialog(int& actual_text, int max_text)
 	}
 }
 
+void Dialog::UpdateShop()
+{
+	for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+	{
+		shop1[0].selled = false;
+		shop2[0].selled = false;
+		shop3[0].selled = false;
+	}
+
+	if (app->frontground->adventure_phase == 0)
+	{
+		// herrero
+		shop1[0].item = "031";
+		shop1[0].cost = 15;
+		shop1[1].item = "131";
+		shop1[1].cost = 15;
+		shop1[2].item = "231";
+		shop1[2].cost = 15;
+		shop1[3].item = "331";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "40";
+		shop2[0].cost = 5;
+		shop2[1].item = "41";
+		shop2[1].cost = 8;
+		shop2[2].item = "44";
+		shop2[2].cost = 5;
+		shop2[3].item = "45";
+		shop2[3].cost = 8;
+
+		// granjero
+		shop3[0].item = "40";
+		shop3[0].cost = 5;
+		shop3[1].item = "40";
+		shop3[1].cost = 5;
+		shop3[2].item = "40";
+		shop3[2].cost = 5;
+		shop3[3].item = "40";
+		shop3[3].cost = 5;
+	}
+	else if (app->frontground->adventure_phase == 1)
+	{
+		// herrero
+		shop1[0].item = "032";
+		shop1[0].cost = 15;
+		shop1[1].item = "132";
+		shop1[1].cost = 15;
+		shop1[2].item = "232";
+		shop1[2].cost = 15;
+		shop1[3].item = "332";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "40";
+		shop2[0].cost = 5;
+		shop2[1].item = "41";
+		shop2[1].cost = 8;
+		shop2[2].item = "44";
+		shop2[2].cost = 5;
+		shop2[3].item = "45";
+		shop2[3].cost = 8;
+
+		// granjero
+		shop2[0].item = "40";
+		shop2[0].cost = 5;
+		shop2[1].item = "40";
+		shop2[1].cost = 5;
+		shop2[2].item = "40";
+		shop2[2].cost = 5;
+		shop2[3].item = "40";
+		shop2[3].cost = 5;
+	}
+}
+
 bool Dialog::InAnyButton()
 {
 	for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 	{
 		if (shop_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
+	for (size_t i = 0; i < NUM_SHOP_INTERACT_BUTTONS; i++)
+	{
+		if (shop_interact_buttons[i].state == 1)
 		{
 			return true;
 		}

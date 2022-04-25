@@ -2776,7 +2776,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '2') // boots
 		{
-			set = hero.child("chest");
+			set = hero.child("boots");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -2796,7 +2796,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '3') // weapon
 		{
-			set = hero.child("chest");
+			set = hero.child("weapon");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -3964,7 +3964,7 @@ void Inventory::DisplayCoins()
 
 	if (coins_obtained != 0)
 	{
-		if (coins > 0)
+		if (coins_obtained > 0)
 		{
 			if (coins_obtained < 100)
 			{
@@ -3982,7 +3982,7 @@ void Inventory::DisplayCoins()
 				s = "+" + std::to_string(coins_obtained);
 			}
 			
-			app->fonts->BlitCombatText(1094 + cx, 80 + cy, app->fonts->textFont4, s.c_str());
+			app->fonts->BlitCombatText(1094 + cx, 85 + cy, app->fonts->textFont4, s.c_str());
 		}
 		else
 		{
@@ -4001,7 +4001,7 @@ void Inventory::DisplayCoins()
 			{
 				s = "-" + std::to_string(abs(coins_obtained));
 			}
-			app->fonts->BlitCombatText(1100 + cx, 80 + cy, app->fonts->textFont3, s.c_str());
+			app->fonts->BlitCombatText(1100 + cx, 85 + cy, app->fonts->textFont3, s.c_str());
 		}
 
 		coins_cd++;
