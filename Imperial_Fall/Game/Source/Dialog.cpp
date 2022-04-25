@@ -114,6 +114,89 @@ bool Dialog::Start()
 	linea1Char_Seta = linea1String_Seta.c_str();
 	linea2Char_Seta = linea2String_Seta.c_str();
 	*/
+
+	in_shop = 0;
+
+	for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+	{
+		shop_buttons[i].rect.w = 128;
+		shop_buttons[i].rect.h = 128;
+	}
+
+	if (app->frontground->adventure_phase == 0)
+	{
+		// herrero
+		shop1[0].item = "031";
+		shop1[0].cost = 15;
+		shop1[1].item = "131";
+		shop1[1].cost = 15;
+		shop1[2].item = "231";
+		shop1[2].cost = 15;
+		shop1[3].item = "331";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "40";
+		shop2[0].cost = 5;
+		shop2[1].item = "41";
+		shop2[1].cost = 8;
+		shop2[2].item = "44";
+		shop2[2].cost = 5;
+		shop2[3].item = "45";
+		shop2[3].cost = 8;
+
+		// granjero
+		shop3[0].item = "40";
+		shop3[0].cost = 5;
+		shop3[1].item = "40";
+		shop3[1].cost = 5;
+		shop3[2].item = "40";
+		shop3[2].cost = 5;
+		shop3[3].item = "40";
+		shop3[3].cost = 5;
+	}
+	else if (app->frontground->adventure_phase == 1)
+	{
+		// herrero
+		shop1[0].item = "032";
+		shop1[0].cost = 15;
+		shop1[1].item = "132";
+		shop1[1].cost = 15;
+		shop1[2].item = "232";
+		shop1[2].cost = 15;
+		shop1[3].item = "332";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "40";
+		shop2[0].cost = 5;
+		shop2[1].item = "41";
+		shop2[1].cost = 8;
+		shop2[2].item = "44";
+		shop2[2].cost = 5;
+		shop2[3].item = "45";
+		shop2[3].cost = 8;
+
+		// granjero
+		shop2[0].item = "40";
+		shop2[0].cost = 5;
+		shop2[1].item = "40";
+		shop2[1].cost = 5;
+		shop2[2].item = "40";
+		shop2[2].cost = 5;
+		shop2[3].item = "40";
+		shop2[3].cost = 5;
+	}
+	
+	whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
+	whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
+	gear_tex = app->tex->Load("Assets/textures/gear.png");
+	items_tex = app->tex->Load("Assets/textures/Objects/items.png");
+
+	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
+	hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
+	hover_playing = false;
+
 	return true;
 }
 
@@ -121,6 +204,34 @@ bool Dialog::Start()
 bool Dialog::PreUpdate()
 {
 	srand(time(NULL));
+
+	int x, y;
+	app->input->GetMousePosition(x, y);
+
+	float cx = -app->render->camera.x;
+	float cy = -app->render->camera.y;
+
+	if (in_shop != 0)
+	{
+		for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+		{
+			SDL_Rect rect = shop_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+			{
+				if (!hover_playing)
+				{
+					app->audio->PlayFx(hover_sound);
+					hover_playing = true;
+				}
+				chosed = i;
+				shop_buttons[i].state = 1;
+			}
+			else
+			{
+				shop_buttons[i].state = 0;
+			}
+		}
+	}
 
 	return true;
 }
@@ -138,19 +249,113 @@ bool Dialog::Update(float dt)
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
+	if (in_shop == 0)
 	{
-		if (app->physics->GetInNPC(1))
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
 		{
-			if (!app->menu->redtemplar_killed)
+			if (app->physics->GetInNPC(1))
 			{
-				if (ContinueDialog(renato_text, renato_maxtext - 1))
+				if (app->frontground->adventure_phase == 0)
+				{
+					if (ContinueDialog(renato_text, renato_maxtext - 1))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+					}
+				}
+				else if (app->frontground->adventure_phase == 1)
+				{
+					if (!dialog_finish)
+					{
+						renato_text = 4;
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+						dialog_finish = true;
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						dialog_finish = false;
+					}
+				}
+			}
+			else if (app->physics->GetInNPC(2))
+			{
+				if (ContinueDialog(medico_text, medico_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
 
 					inDialog = true;
-					actual_dialog = DIALOGS::RENATO;
+					actual_dialog = DIALOGS::MEDICO;
+					SetPressE_Hide(true);
+				}
+				else
+				{
+					inDialog = false;
+					actual_dialog = DIALOGS::NO_ONE;
+					in_shop = 2;
+				}
+			}
+			else if (app->physics->GetInNPC(3))
+			{
+				if (ContinueDialog(herrero_text, herrero_maxtext))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::HERRERO;
+					SetPressE_Hide(true);
+				}
+				else
+				{
+					inDialog = false;
+					actual_dialog = DIALOGS::NO_ONE;
+					in_shop = 1;
+				}
+			}
+			else if (app->physics->GetInNPC(4))
+			{
+				if (ContinueDialog(granjero_text, granjero_maxtext))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::GRANJERO;
+					SetPressE_Hide(true);
+				}
+				else
+				{
+					inDialog = false;
+					actual_dialog = DIALOGS::NO_ONE;
+					in_shop = 3;
+				}
+			}
+			else if (app->physics->GetInNPC(5))
+			{
+				if (ContinueDialog(aldeano_text, aldeano_maxtext))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::ALDEANO;
 					SetPressE_Hide(true);
 				}
 				else
@@ -161,99 +366,87 @@ bool Dialog::Update(float dt)
 			}
 			else
 			{
-				if (!dialog_finish)
-				{
-					renato_text = 4;
-					letlengh = 0;
-					letlengh2 = 0;
-
-					inDialog = true;
-					actual_dialog = DIALOGS::RENATO;
-					SetPressE_Hide(true);
-					dialog_finish = true;
-				}
-				else
-				{
-					inDialog = false;
-					actual_dialog = DIALOGS::NO_ONE;
-					dialog_finish = false;
-				}
-			}
-		}
-		else if (app->physics->GetInNPC(2))
-		{
-			if (ContinueDialog(medico_text, medico_maxtext))
-			{
-				letlengh = 0;
-				letlengh2 = 0;
-
-				inDialog = true;
-				actual_dialog = DIALOGS::MEDICO;
-				SetPressE_Hide(true);
-			}
-			else
-			{
 				inDialog = false;
 				actual_dialog = DIALOGS::NO_ONE;
 			}
-		}
-		else if (app->physics->GetInNPC(3))
-		{
-			if (ContinueDialog(herrero_text, herrero_maxtext))
-			{
-				letlengh = 0;
-				letlengh2 = 0;
-
-				inDialog = true;
-				actual_dialog = DIALOGS::HERRERO;
-				SetPressE_Hide(true);
-			}
-			else
-			{
-				inDialog = false;
-				actual_dialog = DIALOGS::NO_ONE;
-			}
-		}
-		else if (app->physics->GetInNPC(4))
-		{
-			if (ContinueDialog(granjero_text, granjero_maxtext))
-			{
-				letlengh = 0;
-				letlengh2 = 0;
-
-				inDialog = true;
-				actual_dialog = DIALOGS::GRANJERO;
-				SetPressE_Hide(true);
-			}
-			else
-			{
-				inDialog = false;
-				actual_dialog = DIALOGS::NO_ONE;
-			}
-		}
-		else if (app->physics->GetInNPC(5))
-		{
-			if (ContinueDialog(aldeano_text, aldeano_maxtext))
-			{
-				letlengh = 0;
-				letlengh2 = 0;
-
-				inDialog = true;
-				actual_dialog = DIALOGS::ALDEANO;
-				SetPressE_Hide(true);
-			}
-			else
-			{
-				inDialog = false;
-				actual_dialog = DIALOGS::NO_ONE;
-			}
-		}
-		else
-		{
-			inDialog = false;
-			actual_dialog = DIALOGS::NO_ONE;
 		}
 	}
+	else if (in_shop == 1)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			in_shop = 0;
+		}
+
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (chosed)
+			{
+			case 0: 
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			}
+
+			shop_buttons[chosed].state = 2;
+		}
+	}
+	else if (in_shop == 2)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			in_shop = 0;
+		}
+
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (chosed)
+			{
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			}
+
+			shop_buttons[chosed].state = 2;
+		}
+	}
+	else if (in_shop == 3)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			in_shop = 0;
+		}
+
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (chosed)
+			{
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			}
+
+			shop_buttons[chosed].state = 2;
+		}
+	}
+	
 
 	letter_cd += dt;
 
@@ -374,6 +567,95 @@ bool Dialog::PostUpdate()
 	else
 	{
 		letlengh = 0;
+
+		if (in_shop != 0)
+		{
+			app->render->DrawTexture(whitemark_1240x680, 20 + c_x, 20 + c_y);
+
+			for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+			{
+				shop_buttons[0].rect.x = 280 + c_x;
+				shop_buttons[0].rect.y = 70 + c_y;
+				shop_buttons[1].rect.x = shop_buttons[0].rect.x;
+				shop_buttons[1].rect.y = shop_buttons[0].rect.y + 150;
+				shop_buttons[2].rect.x = shop_buttons[1].rect.x;
+				shop_buttons[2].rect.y = shop_buttons[1].rect.y + 150;
+				shop_buttons[3].rect.x = shop_buttons[2].rect.x;
+				shop_buttons[3].rect.y = shop_buttons[2].rect.y + 150;
+			}
+
+			SDL_Rect rect;
+			for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+			{
+				if (shop_buttons[i].state == 0)
+				{
+					rect = { 0, 0, 128, 128 };
+				}
+				else if (shop_buttons[i].state == 1)
+				{
+					rect = { 0, 128, 128, 128 };
+				}
+				else if (shop_buttons[i].state == 2)
+				{
+					rect = { 0, 256, 128, 128 };
+				}
+				app->render->DrawTexture(whitemark_128x128, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &rect);
+			}
+
+			SDL_Rect s_rect;
+			std::string object_cost;
+			if (in_shop == 1)
+			{
+				for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+				{
+					s_rect = app->menu->GetUnlockRect(shop1[i].item);
+					if (shop1[i].item[0] != '4')
+					{
+						app->render->DrawTexture(gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+					else if (shop1[i].item[0] == '4')
+					{
+						app->render->DrawTexture(items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+					object_cost = "Cost: " + std::to_string(shop1[i].cost) + " coins";
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+				}
+			}
+			else if (in_shop == 2)
+			{
+				for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+				{
+					s_rect = app->menu->GetUnlockRect(shop2[i].item);
+					if (shop2[i].item[0] != '4')
+					{
+						app->render->DrawTexture(gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+					else if (shop2[i].item[0] == '4')
+					{
+						app->render->DrawTexture(items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+					object_cost = "Cost: " + std::to_string(shop2[i].cost) + " coins";
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+				}
+			}
+			else if (in_shop == 3)
+			{
+				for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+				{
+					s_rect = app->menu->GetUnlockRect(shop3[i].item);
+					if (shop3[i].item[0] != '4')
+					{
+						app->render->DrawTexture(gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+					else if (shop3[i].item[0] == '4')
+					{
+						app->render->DrawTexture(items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
+					}
+					object_cost = "Cost: " + std::to_string(shop3[i].cost) + " coins";
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+				}
+			}
+		}
 	}
 
 	SDL_Rect rect = anim->GetCurrentFrame();
@@ -443,4 +725,17 @@ bool Dialog::ContinueDialog(int& actual_text, int max_text)
 		actual_text = -1;
 		return false;
 	}
+}
+
+bool Dialog::InAnyButton()
+{
+	for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+	{
+		if (shop_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

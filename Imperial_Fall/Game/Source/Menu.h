@@ -121,9 +121,6 @@ public:
 		scape_buttons[0].state = 1;
 	}
 
-	//Dialog checker
-	bool redtemplar_killed = false;
-
 	//Descriptions
 	void DisplayEntityInfo(Combat_Entities* entity);
 	void DisplaySkillInfo(Skill skill);
@@ -131,6 +128,7 @@ public:
 	// unlock object animation
 	bool object_obtained = false;
 	int unlock_state; // 0 --> none, 1 --> moving, 2 --> stoped
+	SDL_Rect GetUnlockRect(std::string aei);
 
 private:
 
@@ -205,7 +203,6 @@ private:
 	SDL_Rect unlock_rect;
 	uint unlock_fx;
 	uint equip_sound;
-	SDL_Rect GetUnlockRect(std::string aei);
 	SDL_Texture* unknow_tex;
 	SDL_Texture* gear_tex;
 	SDL_Texture* items_tex;

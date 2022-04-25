@@ -130,6 +130,9 @@ public:
 
 	// 0 --> scene, 1 --> town1, 2 --> town2, 3 --> forest, 4 --> battlefield, 5 --> dungeon, 6 --> outside, 7 --> inside
 	int current_level = 0;
+
+	// adventure phase
+	int adventure_phase = 0;
 };
 
 #endif

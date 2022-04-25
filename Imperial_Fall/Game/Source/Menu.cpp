@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Dialog.h"
 #include "Menu.h"
 #include "Inventory.h"
 #include "Map.h"
@@ -303,7 +304,8 @@ bool Menu::PreUpdate()
 
 	if (!app->frontground->controller) // keyboard
 	{
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide && unlock_state == 0)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide && unlock_state == 0
+			&& !app->dialog->InDialog())
 		{
 			paused = !paused;
 		}
@@ -1031,7 +1033,7 @@ bool Menu::Update(float dt)
 						saving = false;
 						intro = false;
 						paused = false;
-						app->menu->redtemplar_killed = false;
+						app->frontground->adventure_phase = 0;
 						subplaymenu = false;
 						app->inventory->BlockAll();
 						app->inventory->ResetItems();

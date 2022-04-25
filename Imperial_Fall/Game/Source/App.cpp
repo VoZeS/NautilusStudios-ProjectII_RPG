@@ -88,8 +88,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(combat_menu);
 	AddModule(particles);
 	AddModule(menu);
-	AddModule(inventory);
 	AddModule(dialog);
+	AddModule(inventory);
 	AddModule(logo);
 	AddModule(frontground);
 
