@@ -199,6 +199,7 @@ bool Inventory::Start()
 		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
 		gear_tex = app->tex->Load("Assets/textures/gear.png");
 		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
+		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
 
 		skill_button.rect.w = 250;
 		skill_button.rect.h = 70;
@@ -239,6 +240,10 @@ bool Inventory::Start()
 		in_skill_tree = false;
 		skill_win = 0;
 		skill_saved = -1;
+		skill_image0 = app->tex->Load("Assets/textures/skill_images0.png");
+		skill_image1 = app->tex->Load("Assets/textures/skill_images1.png");
+		skill_image2 = app->tex->Load("Assets/textures/skill_images2.png");
+		skill_image3 = app->tex->Load("Assets/textures/skill_images3.png");
 	}
 
 	return true;
@@ -497,6 +502,11 @@ bool Inventory::PreUpdate()
 			}
 			else
 			{
+				if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && skill_win == 1)
+				{
+					skill_win = 0;
+				}
+
 				for (size_t i = 0; i < NUM_SKILL_INTERACT_BUTTONS; i++)
 				{
 					SDL_Rect rect = skill_interact_buttons[i].rect;
@@ -733,6 +743,7 @@ bool Inventory::Update(float dt)
 						else
 						{
 							skill_win = 3;
+							skill_saved = chosed;
 						}
 					}
 
@@ -767,6 +778,7 @@ bool Inventory::Update(float dt)
 					else
 					{
 						skill_win = 0;
+						skill_saved = -1;
 					}
 
 					skill_interact_buttons[chosed].state = 2;
@@ -1249,6 +1261,25 @@ bool Inventory::PostUpdate()
 						rect = { 0, 0, 128, 128 };
 					}
 					app->render->DrawTexture(whitemark_128x128, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+					switch (page_display)
+					{
+					case 2: 
+						rect = GetSkillRect(i, CheckSkillUnlocked(0, i));
+						app->render->DrawTexture(skill_image0, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+						break;
+					case 3:
+						rect = GetSkillRect(i, CheckSkillUnlocked(1, i));
+						app->render->DrawTexture(skill_image1, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+						break;
+					case 4:
+						rect = GetSkillRect(i, CheckSkillUnlocked(2, i));
+						app->render->DrawTexture(skill_image2, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+						break;
+					case 5:
+						rect = GetSkillRect(i, CheckSkillUnlocked(3, i));
+						app->render->DrawTexture(skill_image3, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+						break;
+					}
 				}
 
 				// lines
@@ -1268,14 +1299,6 @@ bool Inventory::PostUpdate()
 				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[14].rect.x + 64, skill_tree_buttons[14].rect.y, 0, 0, 0);
 				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[15].rect.x + 64, skill_tree_buttons[15].rect.y, 0, 0, 0);
 				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[16].rect.x + 64, skill_tree_buttons[16].rect.y, 0, 0, 0);
-			
-				// skill names
-				Skill skill;
-				for (int i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
-				{
-					skill = GetSkillForInv(page_display - 2, i);
-					app->fonts->BlitCombatText(skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, app->fonts->textFont2, skill.skill_name);
-				}
 
 				// skill win
 				if (skill_win != 0)
@@ -1338,6 +1361,8 @@ bool Inventory::PostUpdate()
 						b3 = { 0, 256, 128, 128 };
 					}
 
+					SDL_Rect a_rect = { 0, 0, 128, 128 };
+					std::string p_siting;
 					switch (skill_win)
 					{
 					case 1:
@@ -1353,7 +1378,7 @@ bool Inventory::PostUpdate()
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[2].rect.x, skill_interact_buttons[2].rect.y, &b2);
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[3].rect.x, skill_interact_buttons[3].rect.y, &b3);
-						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Chose slot to equip");
+						app->fonts->BlitCombatText(300 + cx, 310 + cy, app->fonts->textFont2, "Choose slot to equip the skill");
 						break;
 					case 2:
 						skill_interact_buttons[0].rect.x = 400 + cx;
@@ -1362,16 +1387,19 @@ bool Inventory::PostUpdate()
 						skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
-						// check app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
-						// cross app->render->DrawTexture(whitemark_128x128, 700 + cx, 400 + cy);
-						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Unlock Skill?");
+						app->render->DrawTexture(accept_tex, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &a_rect);
+						a_rect = { 128, 0, 128, 128 };
+						app->render->DrawTexture(accept_tex, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &a_rect);
+						p_siting = "Unlock Skill using " + std::to_string(GetSkillPoints(skill_saved)) + " points?";
+						app->fonts->BlitCombatText(320 + cx, 310 + cy, app->fonts->textFont2, p_siting.c_str());
 						break;
 					case 3:
 						skill_interact_buttons[0].rect.x = 576 + cx;
 						skill_interact_buttons[0].rect.y = 380 + cy;
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
-						// cross app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
-						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Points Insufficients");
+						app->render->DrawTexture(accept_tex, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &a_rect);
+						p_siting = "Imposible, skill cost is " + std::to_string(GetSkillPoints(skill_saved)) + " points";
+						app->fonts->BlitCombatText(300 + cx, 310 + cy, app->fonts->textFont2, p_siting.c_str());
 						break;
 					}
 				}
@@ -1495,7 +1523,7 @@ void Inventory::DisplayItems()
 	// item 0
 	switch (items.attribute("item0").as_int())
 	{
-	case -1: rect = { 128, 0, 128, 128 }; break;
+	case -1: rect = { 0, 256, 128, 128 }; break;
 	case 0: rect = { 256, 0, 128, 128 }; break;
 	case 1: rect = { 384, 0, 128, 128 }; break;
 	case 2: rect = { 512, 0, 128, 128 }; break;
@@ -1514,7 +1542,7 @@ void Inventory::DisplayItems()
 	// item 1
 	switch (items.attribute("item1").as_int())
 	{
-	case -1: rect = { 128, 0, 128, 128 }; break;
+	case -1: rect = { 0, 256, 128, 128 }; break;
 	case 0: rect = { 256, 0, 128, 128 }; break;
 	case 1: rect = { 384, 0, 128, 128 }; break;
 	case 2: rect = { 512, 0, 128, 128 }; break;
@@ -1533,7 +1561,7 @@ void Inventory::DisplayItems()
 	// item 2
 	switch (items.attribute("item2").as_int())
 	{
-	case -1: rect = { 128, 0, 128, 128 }; break;
+	case -1: rect = { 0, 256, 128, 128 }; break;
 	case 0: rect = { 256, 0, 128, 128 }; break;
 	case 1: rect = { 384, 0, 128, 128 }; break;
 	case 2: rect = { 512, 0, 128, 128 }; break;
@@ -1552,7 +1580,7 @@ void Inventory::DisplayItems()
 	// item 3
 	switch (items.attribute("item3").as_int())
 	{
-	case -1: rect = { 128, 0, 128, 128 }; break;
+	case -1: rect = { 0, 256, 128, 128 }; break;
 	case 0: rect = { 256, 0, 128, 128 }; break;
 	case 1: rect = { 384, 0, 128, 128 }; break;
 	case 2: rect = { 512, 0, 128, 128 }; break;
@@ -3175,7 +3203,7 @@ void Inventory::UnlockSkill(int owner, int skill)
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
-void Inventory::GetSkillPoint(int owner, int amount)
+void Inventory::AddSkillPoint(int owner, int amount)
 {
 	pugi::xml_document saveGame;
 	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
@@ -3802,6 +3830,13 @@ bool Inventory::InAnyButton()
 			return true;
 		}
 	}
+	for (size_t i = 0; i < NUM_SKILL_INTERACT_BUTTONS; i++)
+	{
+		if (skill_interact_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -3870,4 +3905,20 @@ int Inventory::GetSkillPoints(int skill)
 	}
 
 	return res;
+}
+
+SDL_Rect Inventory::GetSkillRect(int skill, bool unlocked)
+{
+	SDL_Rect rect;
+
+	if (unlocked)
+	{
+		rect = { skill * 128, 128, 128, 128 };
+	}
+	else
+	{
+		rect = { skill * 128, 0, 128, 128 };
+	}
+	
+	return rect;
 }

@@ -116,7 +116,7 @@ bool Town1::Update(float dt)
 	}
 	else if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
-		app->inventory->GetSkillPoint(0, 3);
+		app->inventory->AddSkillPoint(0, 3);
 	}
 
 	return true;

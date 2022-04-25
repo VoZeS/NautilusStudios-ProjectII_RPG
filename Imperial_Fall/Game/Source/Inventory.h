@@ -80,7 +80,7 @@ public:
 	void UnlockObject(const char* aei);
 	void EquipGear(const char* aei);
 	void UnlockSkill(int owner, int skill);
-	void GetSkillPoint(int owner, int amount);
+	void AddSkillPoint(int owner, int amount);
 
 private:
 	Cursor cursor;
@@ -131,6 +131,7 @@ private:
 	SDL_Texture* items_tex;
 	SDL_Texture* gear_tex;
 	SDL_Texture* unknow_tex;
+	SDL_Texture* accept_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
 	void DisplayGearHover(int user, int piece, int level);
@@ -171,6 +172,11 @@ private:
 	int GetSkillPoints(int skill);
 	int skill_win; // 0 --> disabled, 1 --> what to equip, 2 --> unlock skill, 2 --> dont have points
 	int skill_saved;
+	SDL_Rect GetSkillRect(int skill, bool unlocked);
+	SDL_Texture* skill_image0; // assassin
+	SDL_Texture* skill_image1; // healer
+	SDL_Texture* skill_image2; // tank
+	SDL_Texture* skill_image3; // wizard
 	
 };
 
