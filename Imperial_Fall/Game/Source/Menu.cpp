@@ -1036,6 +1036,7 @@ bool Menu::Update(float dt)
 						app->inventory->BlockAll();
 						app->inventory->ResetItems();
 						app->inventory->ResetGear();
+						app->inventory->ResetSkills();
 					}
 					break;
 				}

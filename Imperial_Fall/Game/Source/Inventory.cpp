@@ -217,6 +217,10 @@ bool Inventory::Start()
 			gear_select_buttons[i].rect.h = 128;
 			items_buttons[i].rect.w = 128;
 			items_buttons[i].rect.h = 128;
+		}
+
+		for (size_t i = 0; i < NUM_SKILL_INTERACT_BUTTONS; i++)
+		{
 			skill_interact_buttons[i].rect.w = 128;
 			skill_interact_buttons[i].rect.h = 128;
 		}
@@ -234,6 +238,7 @@ bool Inventory::Start()
 
 		in_skill_tree = false;
 		skill_win = 0;
+		skill_saved = -1;
 	}
 
 	return true;
@@ -716,12 +721,14 @@ bool Inventory::Update(float dt)
 					if (CheckSkillUnlocked(page_display - 2, chosed))
 					{
 						skill_win = 1;
+						skill_saved = chosed;
 					}
-					else if (CheckSkillUnlocked(page_display - 2, GetSkillParent(chosed)))
+					else if (GetSkillParent(chosed) == -1 || CheckSkillUnlocked(page_display - 2, GetSkillParent(chosed)))
 					{
 						if (CheckSkillPoints(page_display - 2, chosed))
 						{
 							skill_win = 2;
+							skill_saved = chosed;
 						}
 						else
 						{
@@ -738,10 +745,24 @@ bool Inventory::Update(float dt)
 				{
 					app->audio->PlayFx(click_sound);
 
-					if (chosed == 0)
+					if (skill_win == 1)
 					{
-						// aceptar
+						SaveSkillChange(page_display - 2, chosed, skill_saved);
 						skill_win = 0;
+						skill_saved = -1;
+					}
+					else if (skill_win == 2)
+					{
+						switch (chosed)
+						{
+						case 0:
+							UnlockSkill(page_display - 2, skill_saved);
+							skill_win = 1;
+							break;
+						case 1:
+							skill_win = 0;
+							break;
+						}
 					}
 					else
 					{
@@ -1165,6 +1186,8 @@ bool Inventory::PostUpdate()
 
 			if (submenu == SUB_INV::SKILL_TREE)
 			{
+				DisplaySkillPoints(page_display - 2);
+
 				// row 1
 				skill_tree_buttons[0].rect.x = 576 + cx;
 				skill_tree_buttons[0].rect.y = 42 + cy;
@@ -1213,6 +1236,8 @@ bool Inventory::PostUpdate()
 					else if (skill_tree_buttons[i].state == 1)
 					{
 						rect = { 0, 128, 128, 128 };
+						app->fonts->BlitCombatText(50 + cx, 100 + cy, app->fonts->textFont3, "Skill Name:");
+						app->fonts->BlitCombatText(278 + cx, 100 + cy, app->fonts->textFont3, GetSkillForInv(page_display - 2, i).skill_name);
 					}
 					else if (skill_tree_buttons[i].state == 2)
 					{
@@ -1257,11 +1282,6 @@ bool Inventory::PostUpdate()
 				{
 					app->render->DrawTexture(whitemark_800x150, 240 + cx, 300 + cy);
 
-					skill_interact_buttons[0].rect.x = 400 + cx;
-					skill_interact_buttons[0].rect.y = 400 + cy;
-					skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 300;
-					skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
-
 					SDL_Rect b0;
 					if (skill_interact_buttons[0].state == 0)
 					{
@@ -1290,16 +1310,56 @@ bool Inventory::PostUpdate()
 						b1 = { 0, 256, 128, 128 };
 					}
 
+					SDL_Rect b2;
+					if (skill_interact_buttons[2].state == 0)
+					{
+						b2 = { 0, 0, 128, 128 };
+					}
+					else if (skill_interact_buttons[2].state == 1)
+					{
+						b2 = { 0, 128, 128, 128 };
+					}
+					else if (skill_interact_buttons[2].state == 2)
+					{
+						b2 = { 0, 256, 128, 128 };
+					}
+
+					SDL_Rect b3;
+					if (skill_interact_buttons[3].state == 0)
+					{
+						b3 = { 0, 0, 128, 128 };
+					}
+					else if (skill_interact_buttons[3].state == 1)
+					{
+						b3 = { 0, 128, 128, 128 };
+					}
+					else if (skill_interact_buttons[3].state == 2)
+					{
+						b3 = { 0, 256, 128, 128 };
+					}
+
 					switch (skill_win)
 					{
 					case 1:
+						skill_interact_buttons[0].rect.x = 300 + cx;
+						skill_interact_buttons[0].rect.y = 380 + cy;
+						skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 170;
+						skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
+						skill_interact_buttons[2].rect.x = skill_interact_buttons[1].rect.x + 170;
+						skill_interact_buttons[2].rect.y = skill_interact_buttons[0].rect.y;
+						skill_interact_buttons[3].rect.x = skill_interact_buttons[2].rect.x + 170;
+						skill_interact_buttons[3].rect.y = skill_interact_buttons[0].rect.y;
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
-						// check app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
-						// cross app->render->DrawTexture(whitemark_128x128, 700 + cx, 400 + cy);
-						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Equip Skill?");
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[2].rect.x, skill_interact_buttons[2].rect.y, &b2);
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[3].rect.x, skill_interact_buttons[3].rect.y, &b3);
+						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Chose slot to equip");
 						break;
 					case 2:
+						skill_interact_buttons[0].rect.x = 400 + cx;
+						skill_interact_buttons[0].rect.y = 380 + cy;
+						skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 300;
+						skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
 						// check app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
@@ -1307,9 +1367,9 @@ bool Inventory::PostUpdate()
 						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Unlock Skill?");
 						break;
 					case 3:
-						skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 150;
-						skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
-						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
+						skill_interact_buttons[0].rect.x = 576 + cx;
+						skill_interact_buttons[0].rect.y = 380 + cy;
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
 						// cross app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
 						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Points Insufficients");
 						break;
@@ -1842,6 +1902,7 @@ void Inventory::BlockAll()
 		}
 	}
 
+	set = saveGame.child("objects").child("items").child("unlocked");
 	set.attribute("item0").set_value(false);
 	set.attribute("item1").set_value(false);
 	set.attribute("item2").set_value(false);
@@ -1860,6 +1921,12 @@ void Inventory::BlockAll()
 	set.attribute("item5").set_value(0);
 	set.attribute("item6").set_value(0);
 	set.attribute("item7").set_value(0);
+
+	set = saveGame.child("objects").child("currency");
+	set.attribute("assassin_points").set_value(0);
+	set.attribute("healer_points").set_value(0);
+	set.attribute("tank_points").set_value(0);
+	set.attribute("wizard_points").set_value(0);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
@@ -1930,6 +1997,12 @@ void Inventory::UnlockAll()
 	set.attribute("item6").set_value(3);
 	set.attribute("item7").set_value(3);
 
+	set = saveGame.child("objects").child("currency");
+	set.attribute("assassin_points").set_value(99);
+	set.attribute("healer_points").set_value(99);
+	set.attribute("tank_points").set_value(99);
+	set.attribute("wizard_points").set_value(99);
+
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
@@ -1975,6 +2048,39 @@ void Inventory::ResetGear()
 		hero.child("gear").attribute("chest").set_value(0);
 		hero.child("gear").attribute("boots").set_value(0);
 		hero.child("gear").attribute("weapon").set_value(0);
+	}
+
+	saveGame.save_file(HEROES_STATS_FILENAME);
+}
+
+void Inventory::ResetSkills()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node hero;
+
+	for (size_t i = 2; i < 6; i++)
+	{
+		switch (i)
+		{
+		case 2:
+			hero = saveGame.child("heroes_stats").child("assassin");
+			break;
+		case 3:
+			hero = saveGame.child("heroes_stats").child("healer");
+			break;
+		case 4:
+			hero = saveGame.child("heroes_stats").child("tank");
+			break;
+		case 5:
+			hero = saveGame.child("heroes_stats").child("wizard");
+			break;
+		}
+
+		hero.child("equiped_skills").attribute("skill1").set_value(-1);
+		hero.child("equiped_skills").attribute("skill2").set_value(-1);
+		hero.child("equiped_skills").attribute("skill3").set_value(-1);
+		hero.child("equiped_skills").attribute("skill4").set_value(-1);
 	}
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
@@ -3043,13 +3149,18 @@ void Inventory::UnlockSkill(int owner, int skill)
 	pugi::xml_document saveGame;
 	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
 	pugi::xml_node skills;
+	pugi::xml_attribute points;
 
 	switch (owner)
 	{
-	case 0: skills = saveGame.child("objects").child("assassin").child("skills"); break;
-	case 1: skills = saveGame.child("objects").child("healer").child("skills"); break;
-	case 2: skills = saveGame.child("objects").child("tank").child("skills"); break;
-	case 3: skills = saveGame.child("objects").child("wizard").child("skills"); break;
+	case 0: skills = saveGame.child("objects").child("assassin").child("skills");
+		points = saveGame.child("objects").child("currency").attribute("assassin_points");  break;
+	case 1: skills = saveGame.child("objects").child("healer").child("skills");
+		points = saveGame.child("objects").child("currency").attribute("healer_points");  break;
+	case 2: skills = saveGame.child("objects").child("tank").child("skills");
+		points = saveGame.child("objects").child("currency").attribute("tank_points");  break;
+	case 3: skills = saveGame.child("objects").child("wizard").child("skills");
+		points = saveGame.child("objects").child("currency").attribute("wizard_points");  break;
 	}
 
 	std::string p = "skill";
@@ -3058,6 +3169,27 @@ void Inventory::UnlockSkill(int owner, int skill)
 	const char* c = t.c_str();
 
 	skills.attribute(c).set_value(true);
+
+	points.set_value(points.as_int() - GetSkillPoints(skill));
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
+void Inventory::GetSkillPoint(int owner, int amount)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_attribute points;
+
+	switch (owner)
+	{
+	case 0: points = saveGame.child("objects").child("currency").attribute("assassin_points"); break;
+	case 1: points = saveGame.child("objects").child("currency").attribute("healer_points"); break;
+	case 2: points = saveGame.child("objects").child("currency").attribute("tank_points"); break;
+	case 3: points = saveGame.child("objects").child("currency").attribute("wizard_points"); break;
+	}
+
+	points.set_value(points.as_int() + amount);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
@@ -3522,46 +3654,44 @@ bool Inventory::CheckSkillPoints(int owner, int skill)
 	bool res = false;
 	pugi::xml_document saveGame;
 	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
-	pugi::xml_node skills;
-	int points;
+	int points = 0;
 
 	switch (owner)
 	{
-	case 0: skills.child("assassin").child("skills"); break;
-	case 1: skills.child("healer").child("skills"); break;
-	case 2: skills.child("tank").child("skills"); break;
-	case 3: skills.child("wizard").child("skills"); break;
+	case 0: points = saveGame.child("objects").child("currency").attribute("assassin_points").as_int(); break;
+	case 1: points = saveGame.child("objects").child("currency").attribute("healer_points").as_int(); break;
+	case 2: points = saveGame.child("objects").child("currency").attribute("tank_points").as_int(); break;
+	case 3: points = saveGame.child("objects").child("currency").attribute("wizard_points").as_int(); break;
 	}
 
-	std::string p = "skill";
-	std::string s = std::to_string(skill);
-	std::string t = p + s;
-	const char* c = t.c_str();
-	points = skills.attribute(c).as_int();
-
-	if (skill == 0 || skill == 1 || skill == 2 || skill == 3 || skill == 4)
+	if (points >= GetSkillPoints(skill))
 	{
-		if (points >= 1)
-		{
-			res = true;
-		}
-	}
-	else if (skill == 5 || skill == 6 || skill == 7 || skill == 8)
-	{
-		if (points >= 2)
-		{
-			res = true;
-		}
-	}
-	else if (skill == 9 || skill == 10 || skill == 11 || skill == 12 || skill == 13 || skill == 14 || skill == 15 || skill == 16)
-	{
-		if (points >= 3)
-		{
-			res = true;
-		}
+		res = true;
 	}
 
 	return res;
+}
+
+void Inventory::DisplaySkillPoints(int owner)
+{
+	float cx = -app->render->camera.x;
+	float cy = -app->render->camera.y;
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	int points = 0;
+
+	switch (owner)
+	{
+	case 0: points = saveGame.child("objects").child("currency").attribute("assassin_points").as_int(); break;
+	case 1: points = saveGame.child("objects").child("currency").attribute("healer_points").as_int(); break;
+	case 2: points = saveGame.child("objects").child("currency").attribute("tank_points").as_int(); break;
+	case 3: points = saveGame.child("objects").child("currency").attribute("wizard_points").as_int(); break;
+	}
+
+	std::string s = "Skill Points: " + std::to_string(points);
+
+	app->fonts->BlitCombatText(50 + cx, 50 + cy, app->fonts->textFont3, s.c_str());
 }
 
 bool Inventory::CheckSkillEquiped(int owner, int skill)
@@ -3587,6 +3717,34 @@ bool Inventory::CheckSkillEquiped(int owner, int skill)
 	{
 		return false;
 	}
+}
+
+void Inventory::SaveSkillChange(int owner, int skill_slot, int skill_to_insert)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node hero;
+	pugi::xml_attribute slot;
+
+	switch (owner)
+	{
+	case 0: hero = saveGame.child("heroes_stats").child("assassin"); break;
+	case 1: hero = saveGame.child("heroes_stats").child("healer"); break;
+	case 2: hero = saveGame.child("heroes_stats").child("tank"); break;
+	case 3: hero = saveGame.child("heroes_stats").child("wizard"); break;
+	}
+
+	switch (skill_slot)
+	{
+	case 0: slot = hero.child("equiped_skills").attribute("skill1"); break;
+	case 1: slot = hero.child("equiped_skills").attribute("skill2"); break;
+	case 2: slot = hero.child("equiped_skills").attribute("skill3"); break;
+	case 3: slot = hero.child("equiped_skills").attribute("skill4"); break;
+	}
+
+	slot.set_value(skill_to_insert);
+
+	saveGame.save_file(HEROES_STATS_FILENAME);
 }
 
 bool Inventory::CheckItemUnlocked(int n)
@@ -3689,6 +3847,26 @@ int Inventory::GetSkillParent(int skill)
 	else if (skill == 15 || skill == 16)
 	{
 		res = 8;
+	}
+
+	return res;
+}
+
+int Inventory::GetSkillPoints(int skill)
+{
+	int res = 0;
+
+	if (skill == 0 || skill == 1 || skill == 2 || skill == 3 || skill == 4)
+	{
+		res = 1;
+	}
+	else if (skill == 5 || skill == 6 || skill == 7 || skill == 8)
+	{
+		res = 2;
+	}
+	else if (skill == 9 || skill == 10 || skill == 11 || skill == 12 || skill == 13 || skill == 14 || skill == 15 || skill == 16)
+	{
+		res = 3;
 	}
 
 	return res;

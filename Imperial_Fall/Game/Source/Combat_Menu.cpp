@@ -277,6 +277,10 @@ bool Combat_Menu::PreUpdate()
 						{
 							general_buttons[i].state = 3;
 						}
+						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+						{
+							general_buttons[i].state = 0;
+						}
 						else
 						{
 							chosed = i;

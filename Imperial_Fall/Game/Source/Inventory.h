@@ -11,7 +11,7 @@
 #define NUM_GEAR_BUTTONS 4
 #define NUM_GEAR_SELECT_BUTTONS 4
 #define NUM_SKILL_TREE_BUTTONS 17
-#define NUM_SKILL_INTERACT_BUTTONS 2
+#define NUM_SKILL_INTERACT_BUTTONS 4
 
 struct Button;
 struct Cursor;
@@ -66,6 +66,7 @@ public:
 	void UnlockAll();
 	void ResetItems();
 	void ResetGear();
+	void ResetSkills();
 	int GetItemUses(int n);
 	// user: 0 --> assassin, 1 --> healer, 2 --> tank, 3 --> wizard
 	// piece: 0 --> helmet, 1 --> chestplate, 2 --> boots, 3 --> weapon
@@ -79,6 +80,7 @@ public:
 	void UnlockObject(const char* aei);
 	void EquipGear(const char* aei);
 	void UnlockSkill(int owner, int skill);
+	void GetSkillPoint(int owner, int amount);
 
 private:
 	Cursor cursor;
@@ -139,7 +141,9 @@ private:
 	bool CheckGearUnlocked(int user, int piece, int level);
 	bool CheckSkillUnlocked(int owner, int skill);
 	bool CheckSkillPoints(int owner, int skill);
+	void DisplaySkillPoints(int owner);
 	bool CheckSkillEquiped(int owner, int skill);
+	void SaveSkillChange(int owner, int skill_slot, int skill_to_insert);
 
 	// buttons
 	int chosed;
@@ -164,7 +168,9 @@ private:
 	// skill tree
 	Skill GetSkillForInv(int owner, int skill);
 	int GetSkillParent(int skill);
+	int GetSkillPoints(int skill);
 	int skill_win; // 0 --> disabled, 1 --> what to equip, 2 --> unlock skill, 2 --> dont have points
+	int skill_saved;
 	
 };
 
