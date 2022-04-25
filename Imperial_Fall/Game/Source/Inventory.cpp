@@ -217,6 +217,8 @@ bool Inventory::Start()
 			gear_select_buttons[i].rect.h = 128;
 			items_buttons[i].rect.w = 128;
 			items_buttons[i].rect.h = 128;
+			skill_interact_buttons[i].rect.w = 128;
+			skill_interact_buttons[i].rect.h = 128;
 		}
 
 		for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
@@ -231,6 +233,7 @@ bool Inventory::Start()
 		right_arrow = &r_arrow;
 
 		in_skill_tree = false;
+		skill_win = 0;
 	}
 
 	return true;
@@ -456,29 +459,56 @@ bool Inventory::PreUpdate()
 		}
 		else if (submenu == SUB_INV::SKILL_TREE)
 		{
-			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			if (skill_win == 0)
 			{
-				skill_page = &close_skill;
-				open_skill.Reset();
-				submenu = SUB_INV::NOTHING;
-			}
-
-			for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
-			{
-				SDL_Rect rect = skill_tree_buttons[i].rect;
-				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 				{
-					if (!hover_playing)
-					{
-						app->audio->PlayFx(hover_sound);
-						hover_playing = true;
-					}
-					chosed = i;
-					skill_tree_buttons[i].state = 1;
+					skill_page = &close_skill;
+					open_skill.Reset();
+					submenu = SUB_INV::NOTHING;
 				}
-				else
+
+				for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
 				{
-					skill_tree_buttons[i].state = 0;
+					SDL_Rect rect = skill_tree_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h && !CheckSkillEquiped(page_display - 2, i))
+					{
+						if (GetSkillParent(i) == -1 || CheckSkillUnlocked(page_display - 2, GetSkillParent(i)))
+						{
+							if (!hover_playing)
+							{
+								app->audio->PlayFx(hover_sound);
+								hover_playing = true;
+							}
+							chosed = i;
+							skill_tree_buttons[i].state = 1;
+						}
+					}
+					else
+					{
+						skill_tree_buttons[i].state = 0;
+					}
+				}
+			}
+			else
+			{
+				for (size_t i = 0; i < NUM_SKILL_INTERACT_BUTTONS; i++)
+				{
+					SDL_Rect rect = skill_interact_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						skill_interact_buttons[i].state = 1;
+					}
+					else
+					{
+						skill_interact_buttons[i].state = 0;
+					}
 				}
 			}
 		}
@@ -678,12 +708,48 @@ bool Inventory::Update(float dt)
 		}
 		else if (submenu == SUB_INV::SKILL_TREE)
 		{
-			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_tree_buttons[chosed].state == 1)
+			if (skill_win == 0)
 			{
-				app->audio->PlayFx(click_sound);
-				// check skill points
+				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_tree_buttons[chosed].state == 1)
+				{
+					app->audio->PlayFx(click_sound);
+					if (CheckSkillUnlocked(page_display - 2, chosed))
+					{
+						skill_win = 1;
+					}
+					else if (CheckSkillUnlocked(page_display - 2, GetSkillParent(chosed)))
+					{
+						if (CheckSkillPoints(page_display - 2, chosed))
+						{
+							skill_win = 2;
+						}
+						else
+						{
+							skill_win = 3;
+						}
+					}
 
-				skill_tree_buttons[chosed].state = 2;
+					skill_tree_buttons[chosed].state = 2;
+				}
+			}
+			else
+			{
+				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && skill_interact_buttons[chosed].state == 1)
+				{
+					app->audio->PlayFx(click_sound);
+
+					if (chosed == 0)
+					{
+						// aceptar
+						skill_win = 0;
+					}
+					else
+					{
+						skill_win = 0;
+					}
+
+					skill_interact_buttons[chosed].state = 2;
+				}
 			}
 		}
 		else if (submenu == SUB_INV::ITEMS)
@@ -1152,6 +1218,11 @@ bool Inventory::PostUpdate()
 					{
 						rect = { 0, 256, 128, 128 };
 					}
+
+					if (skill_win != 0)
+					{
+						rect = { 0, 0, 128, 128 };
+					}
 					app->render->DrawTexture(whitemark_128x128, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
 				}
 
@@ -1179,6 +1250,70 @@ bool Inventory::PostUpdate()
 				{
 					skill = GetSkillForInv(page_display - 2, i);
 					app->fonts->BlitCombatText(skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, app->fonts->textFont2, skill.skill_name);
+				}
+
+				// skill win
+				if (skill_win != 0)
+				{
+					app->render->DrawTexture(whitemark_800x150, 240 + cx, 300 + cy);
+
+					skill_interact_buttons[0].rect.x = 400 + cx;
+					skill_interact_buttons[0].rect.y = 400 + cy;
+					skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 300;
+					skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
+
+					SDL_Rect b0;
+					if (skill_interact_buttons[0].state == 0)
+					{
+						b0 = { 0, 0, 128, 128 };
+					}
+					else if (skill_interact_buttons[0].state == 1)
+					{
+						b0 = { 0, 128, 128, 128 };
+					}
+					else if (skill_interact_buttons[0].state == 2)
+					{
+						b0 = { 0, 256, 128, 128 };
+					}
+
+					SDL_Rect b1;
+					if (skill_interact_buttons[1].state == 0)
+					{
+						b1 = { 0, 0, 128, 128 };
+					}
+					else if (skill_interact_buttons[1].state == 1)
+					{
+						b1 = { 0, 128, 128, 128 };
+					}
+					else if (skill_interact_buttons[1].state == 2)
+					{
+						b1 = { 0, 256, 128, 128 };
+					}
+
+					switch (skill_win)
+					{
+					case 1:
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
+						// check app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
+						// cross app->render->DrawTexture(whitemark_128x128, 700 + cx, 400 + cy);
+						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Equip Skill?");
+						break;
+					case 2:
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
+						// check app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
+						// cross app->render->DrawTexture(whitemark_128x128, 700 + cx, 400 + cy);
+						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Unlock Skill?");
+						break;
+					case 3:
+						skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 150;
+						skill_interact_buttons[1].rect.y = skill_interact_buttons[0].rect.y;
+						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
+						// cross app->render->DrawTexture(whitemark_128x128, 400 + cx, 400 + cy);
+						app->fonts->BlitCombatText(300 + cx, 300 + cy, app->fonts->textFont2, "Points Insufficients");
+						break;
+					}
 				}
 			}
 		}
@@ -1694,9 +1829,19 @@ void Inventory::BlockAll()
 			set.attribute("gear3").set_value(false);
 			set.attribute("gear4").set_value(false);
 		}
+
+		set = hero.child("skills");
+		for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+		{
+			std::string p = "skill";
+			std::string s = std::to_string(i);
+			std::string t = p + s;
+			const char* c = t.c_str();
+
+			set.attribute(c).set_value(false);
+		}
 	}
 
-	set = saveGame.child("objects").child("items").child("unlocked");
 	set.attribute("item0").set_value(false);
 	set.attribute("item1").set_value(false);
 	set.attribute("item2").set_value(false);
@@ -1751,6 +1896,17 @@ void Inventory::UnlockAll()
 			set.attribute("gear2").set_value(true);
 			set.attribute("gear3").set_value(true);
 			set.attribute("gear4").set_value(true);
+		}
+
+		set = hero.child("skills");
+		for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+		{
+			std::string p = "skill";
+			std::string s = std::to_string(i);
+			std::string t = p + s;
+			const char* c = t.c_str();
+
+			set.attribute(c).set_value(true);
 		}
 	}
 
@@ -2882,6 +3038,30 @@ void Inventory::EquipGear(const char* aei)
 	saveGame.save_file(HEROES_STATS_FILENAME);
 }
 
+void Inventory::UnlockSkill(int owner, int skill)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node skills;
+
+	switch (owner)
+	{
+	case 0: skills = saveGame.child("objects").child("assassin").child("skills"); break;
+	case 1: skills = saveGame.child("objects").child("healer").child("skills"); break;
+	case 2: skills = saveGame.child("objects").child("tank").child("skills"); break;
+	case 3: skills = saveGame.child("objects").child("wizard").child("skills"); break;
+	}
+
+	std::string p = "skill";
+	std::string s = std::to_string(skill);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	skills.attribute(c).set_value(true);
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
 bool Inventory::CheckGearUnlocked(int user, int piece, int level)
 {
 	pugi::xml_document saveGame;
@@ -3314,6 +3494,101 @@ bool Inventory::CheckGearUnlocked(int user, int piece, int level)
 	return res;
 }
 
+bool Inventory::CheckSkillUnlocked(int owner, int skill)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node skills;
+
+	switch (owner)
+	{
+	case 0: skills = saveGame.child("objects").child("assassin").child("skills"); break;
+	case 1: skills = saveGame.child("objects").child("healer").child("skills"); break;
+	case 2: skills = saveGame.child("objects").child("tank").child("skills"); break;
+	case 3: skills = saveGame.child("objects").child("wizard").child("skills"); break;
+	}
+
+	std::string p = "skill";
+	std::string s = std::to_string(skill);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	bool ret = skills.attribute(c).as_bool();
+	return skills.attribute(c).as_bool();
+}
+
+bool Inventory::CheckSkillPoints(int owner, int skill)
+{
+	bool res = false;
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node skills;
+	int points;
+
+	switch (owner)
+	{
+	case 0: skills.child("assassin").child("skills"); break;
+	case 1: skills.child("healer").child("skills"); break;
+	case 2: skills.child("tank").child("skills"); break;
+	case 3: skills.child("wizard").child("skills"); break;
+	}
+
+	std::string p = "skill";
+	std::string s = std::to_string(skill);
+	std::string t = p + s;
+	const char* c = t.c_str();
+	points = skills.attribute(c).as_int();
+
+	if (skill == 0 || skill == 1 || skill == 2 || skill == 3 || skill == 4)
+	{
+		if (points >= 1)
+		{
+			res = true;
+		}
+	}
+	else if (skill == 5 || skill == 6 || skill == 7 || skill == 8)
+	{
+		if (points >= 2)
+		{
+			res = true;
+		}
+	}
+	else if (skill == 9 || skill == 10 || skill == 11 || skill == 12 || skill == 13 || skill == 14 || skill == 15 || skill == 16)
+	{
+		if (points >= 3)
+		{
+			res = true;
+		}
+	}
+
+	return res;
+}
+
+bool Inventory::CheckSkillEquiped(int owner, int skill)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node equiped_skill;
+
+	switch (owner)
+	{
+	case 0: equiped_skill = saveGame.child("heroes_stats").child("assassin").child("equiped_skills"); break;
+	case 1: equiped_skill = saveGame.child("heroes_stats").child("healer").child("equiped_skills"); break;
+	case 2: equiped_skill = saveGame.child("heroes_stats").child("tank").child("equiped_skills"); break;
+	case 3: equiped_skill = saveGame.child("heroes_stats").child("wizard").child("equiped_skills"); break;
+	}
+
+	if (equiped_skill.attribute("skill1").as_int() == skill || equiped_skill.attribute("skill2").as_int() == skill ||
+		equiped_skill.attribute("skill3").as_int() == skill || equiped_skill.attribute("skill4").as_int() == skill)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool Inventory::CheckItemUnlocked(int n)
 {
 	pugi::xml_document saveGame;
@@ -3385,4 +3660,36 @@ Skill Inventory::GetSkillForInv(int owner, int skill)
 	}
 
 	return comb.GetSkill(ns);
+}
+
+int Inventory::GetSkillParent(int skill)
+{
+	int res = -1;
+
+	if (skill == 1 || skill == 2 || skill == 3 || skill == 4)
+	{
+		res = 0;
+	}
+	else if (skill == 5 || skill == 6 || skill == 7 || skill == 8)
+	{
+		res = skill - 4;
+	}
+	else if (skill == 9 || skill == 10)
+	{
+		res = 5;
+	}
+	else if (skill == 11 || skill == 12)
+	{
+		res = 6;
+	}
+	else if (skill == 13 || skill == 14)
+	{
+		res = 7;
+	}
+	else if (skill == 15 || skill == 16)
+	{
+		res = 8;
+	}
+
+	return res;
 }

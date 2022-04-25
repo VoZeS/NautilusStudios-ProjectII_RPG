@@ -114,6 +114,10 @@ bool Town1::Update(float dt)
 		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
 		app->frontground->FadeInCombat(enemies, "011");
 	}
+	else if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		app->inventory->UnlockSkill(0, 0);
+	}
 
 	return true;
 }

@@ -11,6 +11,7 @@
 #define NUM_GEAR_BUTTONS 4
 #define NUM_GEAR_SELECT_BUTTONS 4
 #define NUM_SKILL_TREE_BUTTONS 17
+#define NUM_SKILL_INTERACT_BUTTONS 2
 
 struct Button;
 struct Cursor;
@@ -77,6 +78,7 @@ public:
 	// i --> level of gear
 	void UnlockObject(const char* aei);
 	void EquipGear(const char* aei);
+	void UnlockSkill(int owner, int skill);
 
 private:
 	Cursor cursor;
@@ -135,6 +137,9 @@ private:
 	bool CheckItemUnlocked(int n);
 	void SaveGearChange(int n, int change, SUB_INV submenu);
 	bool CheckGearUnlocked(int user, int piece, int level);
+	bool CheckSkillUnlocked(int owner, int skill);
+	bool CheckSkillPoints(int owner, int skill);
+	bool CheckSkillEquiped(int owner, int skill);
 
 	// buttons
 	int chosed;
@@ -145,6 +150,7 @@ private:
 	Button gear_buttons[NUM_GEAR_BUTTONS];
 	Button gear_select_buttons[NUM_GEAR_SELECT_BUTTONS];
 	Button skill_tree_buttons[NUM_SKILL_TREE_BUTTONS];
+	Button skill_interact_buttons[NUM_SKILL_INTERACT_BUTTONS];
 	SUB_INV submenu;
 
 	// sound
@@ -155,7 +161,10 @@ private:
 	bool hover_playing = false;
 	bool InAnyButton();
 
+	// skill tree
 	Skill GetSkillForInv(int owner, int skill);
+	int GetSkillParent(int skill);
+	int skill_win; // 0 --> disabled, 1 --> what to equip, 2 --> unlock skill, 2 --> dont have points
 	
 };
 
