@@ -244,6 +244,10 @@ bool Inventory::Start()
 		skill_image1 = app->tex->Load("Assets/textures/skill_images1.png");
 		skill_image2 = app->tex->Load("Assets/textures/skill_images2.png");
 		skill_image3 = app->tex->Load("Assets/textures/skill_images3.png");
+
+		coin = app->tex->Load("Assets/textures/coin.png");
+		coins_obtained = 0;
+		coins_cd = 0;
 	}
 
 	return true;
@@ -841,11 +845,11 @@ bool Inventory::Update(float dt)
 // Called each loop iteration
 bool Inventory::PostUpdate()
 {
+	int cx = -app->render->camera.x;
+	int cy = -app->render->camera.y;
+
 	if (!hide)
 	{
-		int cx = -app->render->camera.x;
-		int cy = -app->render->camera.y;
-
 		SDL_Rect rect = book->GetCurrentFrame();
 		SDL_Rect l_rect = left_arrow->GetCurrentFrame();
 		SDL_Rect r_rect = right_arrow->GetCurrentFrame();
@@ -1405,13 +1409,17 @@ bool Inventory::PostUpdate()
 				}
 			}
 		}
+	}
+	else
+	{
+		DisplayCoins();
+	}
 
-		// draw cursor
-		if (!app->frontground->controller)
-		{
-			app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
-			app->render->DrawTexture(cursor.tex, cursor.pos.x + cx, cursor.pos.y + cy);
-		}
+	// draw cursor
+	if (!app->frontground->controller)
+	{
+		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
+		app->render->DrawTexture(cursor.tex, cursor.pos.x + cx, cursor.pos.y + cy);
 	}
 
 	return true;
@@ -1955,6 +1963,7 @@ void Inventory::BlockAll()
 	set.attribute("healer_points").set_value(0);
 	set.attribute("tank_points").set_value(0);
 	set.attribute("wizard_points").set_value(0);
+	set.attribute("gold").set_value(0);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
@@ -2030,6 +2039,7 @@ void Inventory::UnlockAll()
 	set.attribute("healer_points").set_value(99);
 	set.attribute("tank_points").set_value(99);
 	set.attribute("wizard_points").set_value(99);
+	AddCoins(999);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
@@ -3921,4 +3931,119 @@ SDL_Rect Inventory::GetSkillRect(int skill, bool unlocked)
 	}
 	
 	return rect;
+}
+
+void Inventory::DisplayCoins()
+{
+	float cx = -app->render->camera.x;
+	float cy = -app->render->camera.y;
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	int coins = saveGame.child("objects").child("currency").attribute("gold").as_int();
+
+	std::string s;
+	if (coins < 100)
+	{
+		if (coins < 10)
+		{
+			s = "00" + std::to_string(coins);
+		}
+		else
+		{
+			s = "0" + std::to_string(coins);
+		}
+	}
+	else
+	{
+		s = std::to_string(coins);
+	}
+	
+	app->fonts->BlitCombatText(1120 + cx, 50 + cy, app->fonts->textFont2, s.c_str());
+	app->render->DrawTexture(coin, 1180 + cx, 34 + cy);
+
+	if (coins_obtained != 0)
+	{
+		if (coins > 0)
+		{
+			if (coins_obtained < 100)
+			{
+				if (coins_obtained < 10)
+				{
+					s = "+00" + std::to_string(coins_obtained);
+				}
+				else
+				{
+					s = "+0" + std::to_string(coins_obtained);
+				}
+			}
+			else
+			{
+				s = "+" + std::to_string(coins_obtained);
+			}
+			
+			app->fonts->BlitCombatText(1094 + cx, 80 + cy, app->fonts->textFont4, s.c_str());
+		}
+		else
+		{
+			if (coins_obtained > -100)
+			{
+				if (coins_obtained > -10)
+				{
+					s = "-00" + std::to_string(abs(coins_obtained));
+				}
+				else
+				{
+					s = "-0" + std::to_string(abs(coins_obtained));
+				}
+			}
+			else
+			{
+				s = "-" + std::to_string(abs(coins_obtained));
+			}
+			app->fonts->BlitCombatText(1100 + cx, 80 + cy, app->fonts->textFont3, s.c_str());
+		}
+
+		coins_cd++;
+		if (coins_cd > 60)
+		{
+			coins_obtained = 0;
+			coins_cd = 0;
+		}
+	}
+}
+
+int Inventory::GetCoins()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	int coins = saveGame.child("objects").child("currency").attribute("gold").as_int();
+
+	return coins;
+}
+
+void Inventory::AddCoins(int amount)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_attribute coins = saveGame.child("objects").child("currency").attribute("gold");
+	int real_amount;
+
+	if (coins.as_int() + amount > 999)
+	{
+		real_amount = 999;
+	}
+	else if (coins.as_int() + amount < 0)
+	{
+		real_amount = 0;
+	}
+	else
+	{
+		real_amount = coins.as_int() + amount;
+	}
+
+	coins.set_value(real_amount);
+	coins_obtained = amount;
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }

@@ -1961,7 +1961,7 @@ bool Menu::PostUpdate()
 	}
 
 	// draw cursor
-	if (!app->frontground->controller && app->inventory->hide)
+	if (!app->frontground->controller && app->inventory->Disabled())
 	{
 		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 		app->render->DrawTexture(cursor.tex, cursor.pos.x + c_x, cursor.pos.y + c_y);

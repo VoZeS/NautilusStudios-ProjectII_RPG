@@ -82,6 +82,10 @@ public:
 	void UnlockSkill(int owner, int skill);
 	void AddSkillPoint(int owner, int amount);
 
+	// coins
+	int GetCoins();
+	void AddCoins(int amount);
+
 private:
 	Cursor cursor;
 
@@ -177,6 +181,12 @@ private:
 	SDL_Texture* skill_image1; // healer
 	SDL_Texture* skill_image2; // tank
 	SDL_Texture* skill_image3; // wizard
+
+	// coins
+	void DisplayCoins();
+	SDL_Texture* coin;
+	int coins_obtained;
+	int coins_cd;
 	
 };
 
