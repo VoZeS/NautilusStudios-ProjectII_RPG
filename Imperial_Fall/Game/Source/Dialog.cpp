@@ -252,6 +252,11 @@ bool Dialog::PreUpdate()
 	}
 	else if (in_shop != 0)
 	{
+		for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
+		{
+			shop_buttons[i].state = 0;
+		}
+
 		for (size_t i = 0; i < NUM_SHOP_INTERACT_BUTTONS; i++)
 		{
 			SDL_Rect rect = shop_interact_buttons[i].rect;
@@ -815,9 +820,9 @@ void Dialog::UpdateShop()
 {
 	for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 	{
-		shop1[0].selled = false;
-		shop2[0].selled = false;
-		shop3[0].selled = false;
+		shop1[i].selled = false;
+		shop2[i].selled = false;
+		shop3[i].selled = false;
 	}
 
 	if (app->frontground->adventure_phase == 0)

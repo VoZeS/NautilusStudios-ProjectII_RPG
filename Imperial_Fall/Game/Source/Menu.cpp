@@ -131,6 +131,7 @@ bool Menu::Start()
 		chosed = 0;
 		app->win->GetWindowSize(win_w, win_h);
 
+		open_book_sound = app->audio->LoadFx("Assets/audio/fx/open_book.wav");
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
 
@@ -315,6 +316,7 @@ bool Menu::PreUpdate()
 		{
 			app->inventory->hide = false;
 			app->inventory->SetTextCd(30);
+			app->audio->PlayFx(open_book_sound);
 		}
 
 		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)

@@ -192,6 +192,7 @@ private:
 	bool saving = false;
 
 	// sound
+	uint open_book_sound;
 	uint click_sound;
 	uint hover_sound;
 	bool hover_playing = false;

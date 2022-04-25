@@ -168,6 +168,10 @@ private:
 	uint hover_sound;
 	uint equip_sound;
 	uint unequip_sound;
+	uint open_book_sound;
+	uint pass_page_sound;
+	uint earn_coins_sound;
+	uint spend_coins_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
 

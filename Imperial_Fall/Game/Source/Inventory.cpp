@@ -188,6 +188,10 @@ bool Inventory::Start()
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
 		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
 		unequip_sound = app->audio->LoadFx("Assets/audio/fx/unequip.wav");
+		open_book_sound = app->audio->LoadFx("Assets/audio/fx/open_book.wav");
+		pass_page_sound = app->audio->LoadFx("Assets/audio/fx/pass_page.wav");
+		earn_coins_sound = app->audio->LoadFx("Assets/audio/fx/earn_coins.wav");
+		spend_coins_sound = app->audio->LoadFx("Assets/audio/fx/spend_coins.wav");
 
 		book_tex = app->tex->Load("Assets/textures/book_tex.png");
 		arrows_tex = app->tex->Load("Assets/textures/book_arrows.png"); 
@@ -195,7 +199,7 @@ bool Inventory::Start()
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_250x70 = app->tex->Load("Assets/textures/250x70_whitemark.png");
 		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
-		hero_tex = app->tex->Load("Assets/textures/heroes_icons.png");
+		hero_tex = app->tex->Load("Assets/textures/heroes_icons_128x128.png");
 		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
 		gear_tex = app->tex->Load("Assets/textures/gear.png");
 		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
@@ -284,6 +288,7 @@ bool Inventory::PreUpdate()
 					page1.Reset();
 					count = true;
 					info_cd = 15;
+					app->audio->PlayFx(pass_page_sound);
 				}
 			}
 			else if (book_pos == 1 && pass_page1_2.HasFinished())
@@ -300,6 +305,7 @@ bool Inventory::PreUpdate()
 					page2.Reset();
 					count = true;
 					info_cd = 15;
+					app->audio->PlayFx(pass_page_sound);
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
@@ -307,6 +313,7 @@ bool Inventory::PreUpdate()
 					page2.Reset();
 					count = true;
 					info_cd = 10;
+					app->audio->PlayFx(pass_page_sound);
 				}
 			}
 			else if (book_pos == 2 && pass_page2_3.HasFinished())
@@ -323,6 +330,7 @@ bool Inventory::PreUpdate()
 					page3.Reset();
 					count = true;
 					info_cd = 15;
+					app->audio->PlayFx(pass_page_sound);
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
@@ -330,6 +338,7 @@ bool Inventory::PreUpdate()
 					page3.Reset();
 					count = true;
 					info_cd = 10;
+					app->audio->PlayFx(pass_page_sound);
 				}
 			}
 			else if (book_pos == 3 && pass_page3_4.HasFinished())
@@ -346,6 +355,7 @@ bool Inventory::PreUpdate()
 					page4.Reset();
 					count = true;
 					info_cd = 15;
+					app->audio->PlayFx(pass_page_sound);
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 				{
@@ -353,6 +363,7 @@ bool Inventory::PreUpdate()
 					page4.Reset();
 					count = true;
 					info_cd = 10;
+					app->audio->PlayFx(pass_page_sound);
 				}
 			}
 			else if (book_pos == 4 && pass_page4_5.HasFinished())
@@ -369,6 +380,7 @@ bool Inventory::PreUpdate()
 					page5.Reset();
 					count = true;
 					info_cd = 10;
+					app->audio->PlayFx(pass_page_sound);
 				}
 			}
 			else if (book_pos == 2 && pass_page2_1.HasFinished())
@@ -407,6 +419,7 @@ bool Inventory::PreUpdate()
 				book = &close;
 				book_pos = 6;
 				count = true;
+				app->audio->PlayFx(open_book_sound);
 			}
 			else if (book_pos == 6 && close.HasFinished())
 			{
@@ -671,6 +684,7 @@ bool Inventory::Update(float dt)
 			{
 				if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && items_buttons[chosed].state == 1)
 				{
+					app->audio->PlayFx(click_sound);
 					item_submenu = chosed;
 					submenu = SUB_INV::ITEMS;
 
@@ -1449,22 +1463,22 @@ void Inventory::DisplayHero(int n)
 	{
 	case 0:
 		hero = saveGame.child("heroes_stats").child("assassin");
-		hero_rect = { 0, 0, 64, 64 };
+		hero_rect = { 0, 0, 128, 128 };
 		name = "Igol";
 		break;
 	case 1:
 		hero = saveGame.child("heroes_stats").child("healer");
-		hero_rect = { 64, 0, 64, 64 };
+		hero_rect = { 128, 0, 128, 128 };
 		name = "Gera";
 		break;
 	case 2:
 		hero = saveGame.child("heroes_stats").child("tank");
-		hero_rect = { 128, 0, 64, 64 };
+		hero_rect = { 256, 0, 128, 128 };
 		name = "Asteriol";
 		break;
 	case 3:
 		hero = saveGame.child("heroes_stats").child("wizard");
-		hero_rect = { 192, 0, 64, 64 };
+		hero_rect = { 384, 0, 128, 128 };
 		name = "Fernan";
 		break;
 	}
@@ -1709,10 +1723,10 @@ void Inventory::DisplayGear(int n)
 			switch (page_gear[0])
 			{
 			case 0: rect = { 512, 1024, 128, 128 }; break;
-			case 1: rect = { 0, 0, 1024, 128 }; break;
-			case 2: rect = { 128, 0, 1024, 128 }; break;
-			case 3: rect = { 256, 0, 1024, 128 }; break;
-			case 4: rect = { 384, 0, 1024, 128 }; break;
+			case 1: rect = { 0, 1024, 128, 128 }; break;
+			case 2: rect = { 128, 1024, 128, 128 }; break;
+			case 3: rect = { 256, 1024, 128, 128 }; break;
+			case 4: rect = { 384, 1024, 128, 128 }; break;
 			}
 			app->render->DrawTexture(gear_tex, gear_buttons[0].rect.x, gear_buttons[0].rect.y, &rect);
 
@@ -2039,7 +2053,7 @@ void Inventory::UnlockAll()
 	set.attribute("healer_points").set_value(99);
 	set.attribute("tank_points").set_value(99);
 	set.attribute("wizard_points").set_value(99);
-	AddCoins(999);
+	set.attribute("gold").set_value(999);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
@@ -4044,6 +4058,15 @@ void Inventory::AddCoins(int amount)
 
 	coins.set_value(real_amount);
 	coins_obtained = amount;
+
+	if (amount > 0)
+	{
+		app->audio->PlayFx(earn_coins_sound);
+	}
+	else if (amount < 0)
+	{
+		app->audio->PlayFx(spend_coins_sound);
+	}
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
