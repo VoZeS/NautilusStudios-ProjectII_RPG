@@ -303,6 +303,13 @@ bool Dialog::Update(float dt)
 				app->physics->coin_picked = true;
 				SetPressE_Hide(true);
 			}
+			else if (app->physics->inBook)
+			{
+				app->inventory->AddSkillPoint(app->physics->book_type, 1);
+				app->physics->book_picked = true;
+				SetPressE_Hide(true);
+				app->physics->book_type = -1;
+			}
 			else if (app->physics->GetInNPC(1))
 			{
 				if (app->frontground->adventure_phase == 0)

@@ -17,6 +17,7 @@
 #define RADTODEG 57.295779513082320876f
 
 #define MAX_COINS 9
+#define MAX_BOOKS 9
 
 struct Miscelenea
 {
@@ -57,6 +58,10 @@ public:
 	b2World* world;
 
 	Miscelenea coins_in_floor[MAX_COINS];
+	Miscelenea books_in_floor0[MAX_COINS]; // assassin
+	Miscelenea books_in_floor1[MAX_COINS]; // healer
+	Miscelenea books_in_floor2[MAX_COINS]; // tank
+	Miscelenea books_in_floor3[MAX_COINS]; // wizard
 
 	int on_collosion;
 
@@ -66,6 +71,8 @@ public:
 	bool inGranjero = false;
 	bool inAldeano = false;
 	bool inCoins = false;
+	bool inBook = false;
+	int book_type = -1;
 
 	bool GetInNPC(int npc)
 	{
@@ -86,6 +93,12 @@ public:
 	bool coin_picked = false;
 	int coins_number = 0;
 	void DestroyCoins();
+	bool book_picked = false;
+	int book_number0 = 0;
+	int book_number1 = 0;
+	int book_number2 = 0;
+	int book_number3 = 0;
+	void DestroyBook();
 	void ResetMiscelanea();
 
 	uint save_sound;
