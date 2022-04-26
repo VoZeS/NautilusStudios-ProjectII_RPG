@@ -381,7 +381,7 @@ bool Menu::PreUpdate()
 					{
 						if (!hover_playing)
 						{
-							if (firstime && i == 4) {}
+							if (app->frontground->first_time && i == 4) {}
 							else
 							{
 								if (subplaymenu && (i == 4 || i == 5))
@@ -734,7 +734,7 @@ bool Menu::PreUpdate()
 				}
 				else if (menu_buttons[5].state == 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !firstime)
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !app->frontground->first_time)
 					{
 						menu_buttons[5].state = 0;
 						menu_buttons[4].state = 1;
@@ -954,7 +954,7 @@ bool Menu::Update(float dt)
 					subplaymenu = true;
 					if (app->frontground->controller)
 					{
-						if (firstime)
+						if (app->frontground->first_time)
 						{
 							menu_buttons[0].state = 0;
 							menu_buttons[5].state = 1;
@@ -995,7 +995,7 @@ bool Menu::Update(float dt)
 					break;
 
 				case 4: // PLAY AND CONTINUE
-					if (!started && !firstime)
+					if (!started && !app->frontground->first_time)
 					{
 						app->LoadGameRequest(false);
 						switch (app->frontground->current_level)
@@ -1021,7 +1021,6 @@ bool Menu::Update(float dt)
 						saving = true;
 						intro = false;
 						paused = false;
-						//started = true;
 						subplaymenu = false;
 					}
 					break;
@@ -1030,6 +1029,7 @@ bool Menu::Update(float dt)
 					if (!started)
 					{
 						app->LoadGame(true); // load now, not at frames end
+						app->frontground->SetFirstTime(false);
 						app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
 						app->frontground->FadeToBlack();
 						saving = false;
@@ -1490,10 +1490,10 @@ bool Menu::PostUpdate()
 				menu_buttons[5].rect.x = c_x + 70;
 				menu_buttons[5].rect.y = c_y + 250;
 
-				if (menu_buttons[4].state == 0 && subplaymenu && firstime)
+				if (menu_buttons[4].state == 0 && subplaymenu && app->frontground->first_time)
 					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
-				if (menu_buttons[4].state == 0 && subplaymenu && !firstime)
+				if (menu_buttons[4].state == 0 && subplaymenu && !app->frontground->first_time)
 					app->render->DrawTexture(menu_buttons[4].tex, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
 				if (menu_buttons[5].state == 0 && subplaymenu)
@@ -1501,12 +1501,12 @@ bool Menu::PostUpdate()
 
 
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu && firstime)
+				if (menu_buttons[4].state == 1 && subplaymenu && app->frontground->first_time)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 				}
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu && !firstime)
+				if (menu_buttons[4].state == 1 && subplaymenu && !app->frontground->first_time)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex, menu_buttons[4].rect.x, menu_buttons[4].rect.y - 20);
 				}

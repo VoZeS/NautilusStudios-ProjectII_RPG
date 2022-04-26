@@ -53,6 +53,13 @@ bool Frontground::Start()
 
 	SDL_ShowCursor(false);
 
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+	first_time = saveGame.child("started").child("first_time").attribute("value").as_bool();
+	current_level = saveGame.child("started").child("current_level").attribute("value").as_int();;
+	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();;
+
 	return true;
 }
 

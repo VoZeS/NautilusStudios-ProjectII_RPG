@@ -133,6 +133,29 @@ public:
 
 	// adventure phase
 	int adventure_phase = 0;
+
+	// is there a save
+	bool first_time = false;
+	void SetFirstTime(bool state)
+	{
+		pugi::xml_document saveGame;
+		pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+		first_time = saveGame.child("started").child("first_time").attribute("value").set_value(state);
+
+		saveGame.save_file(STARTED_FILENAME);
+	}
+
+	void SaveStartUp()
+	{
+		pugi::xml_document saveGame;
+		pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+		saveGame.child("started").child("current_level").attribute("value").set_value(current_level);
+		saveGame.child("started").child("adventure_phase").attribute("value").set_value(adventure_phase);
+
+		saveGame.save_file(STARTED_FILENAME);
+	}
 };
 
 #endif

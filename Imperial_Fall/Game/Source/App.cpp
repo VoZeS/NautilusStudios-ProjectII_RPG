@@ -333,6 +333,8 @@ bool App::CleanUp()
 	ListItem<Module*>* item;
 	item = modules.end;
 
+	app->frontground->SaveStartUp();
+
 	while(item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();

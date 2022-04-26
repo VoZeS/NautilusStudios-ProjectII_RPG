@@ -8,6 +8,7 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+#define STARTED_FILENAME "started.xml"
 #define CONFIG_FILENAME	"config.xml"
 #define ORIGIN_SAVE_STATE_FILENAME "origin_save_game.xml"
 #define SAVE_STATE_FILENAME "save_game.xml"
