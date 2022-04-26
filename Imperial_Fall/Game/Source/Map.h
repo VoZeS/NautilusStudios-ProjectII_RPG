@@ -187,8 +187,6 @@ private:
 	int books2_index = 0;
 	int books3_index = 0;
 
-	int clean_cd = 0;
-
 };
 
 #endif // __MAP_H__

@@ -1470,6 +1470,15 @@ bool Inventory::CleanUp()
 	app->tex->UnLoad(book_tex);
 	book_tex = NULL;
 
+	for (size_t i = 0; i < MAX_COINS; i++)
+	{
+		app->physics->coins_in_floor[i].alive = false;
+		app->physics->books_in_floor0[i].alive = false;
+		app->physics->books_in_floor1[i].alive = false;
+		app->physics->books_in_floor2[i].alive = false;
+		app->physics->books_in_floor3[i].alive = false;
+	}
+
 	return true;
 }
 

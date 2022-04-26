@@ -85,7 +85,7 @@ bool Render::Update(float dt)
 		camera.x = 0;
 		camera.y = 0;
 	}
-
+	
 	if (app->frontground->current_level == 1)
 	{
 		if (camera.x > 0)
@@ -189,43 +189,43 @@ bool Render::Update(float dt)
 	}
 	else if (app->frontground->current_level == 6)
 	{
-	if (camera.x > 0)
-	{
-		camera.x = 0;
-	}
-	else if (camera.x < -700)
-	{
-		camera.x = -700;
-	}
+		if (camera.x > 0)
+		{
+			camera.x = 0;
+		}
+		else if (camera.x < -700)
+		{
+			camera.x = -700;
+		}
 
-	if (camera.y > 0)
-	{
-		camera.y = 0;
-	}
-	else if (camera.y < -970)
-	{
-		camera.y = -970;
-	}
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -970)
+		{
+			camera.y = -970;
+		}
 	}
 	else if (app->frontground->current_level == 7)
 	{
-	if (camera.x > 0)
-	{
-		camera.x = 0;
-	}
-	else if (camera.x < -830)
-	{
-		camera.x = -830;
-	}
+		if (camera.x > 0)
+		{
+			camera.x = 0;
+		}
+		else if (camera.x < -830)
+		{
+			camera.x = -830;
+		}
 
-	if (camera.y > 0)
-	{
-		camera.y = 0;
-	}
-	else if (camera.y < -600)
-	{
-		camera.y = -600;
-	}
+		if (camera.y > 0)
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < -600)
+		{
+			camera.y = -600;
+		}
 	}
 
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
