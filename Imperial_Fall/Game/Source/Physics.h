@@ -2,6 +2,7 @@
 #define __PHYSICS_H__
 
 #include "Module.h"
+#include "Textures.h"
 #include "Box2D/Box2D/Box2D.h"
 
 #define GRAVITY_X 0.0f
@@ -23,6 +24,7 @@ struct Miscelenea
 {
 	b2Body* body;
 	int number;
+	bool alive;
 };
 
 class Physics : public Module, public b2ContactListener

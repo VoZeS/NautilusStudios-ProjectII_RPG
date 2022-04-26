@@ -86,6 +86,7 @@ public:
 	SDL_Texture* gear_tex;
 	SDL_Texture* unknow_tex;
 	SDL_Texture* accept_tex;
+	SDL_Texture* misc;
 
 	// coins
 	int GetCoins();
@@ -172,6 +173,7 @@ private:
 	uint pass_page_sound;
 	uint earn_coins_sound;
 	uint spend_coins_sound;
+	uint earn_point_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
 

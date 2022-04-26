@@ -171,7 +171,6 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
 

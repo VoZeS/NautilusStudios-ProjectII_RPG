@@ -192,6 +192,7 @@ bool Inventory::Start()
 		pass_page_sound = app->audio->LoadFx("Assets/audio/fx/pass_page.wav");
 		earn_coins_sound = app->audio->LoadFx("Assets/audio/fx/earn_coins.wav");
 		spend_coins_sound = app->audio->LoadFx("Assets/audio/fx/spend_coins.wav");
+		earn_point_sound = app->audio->LoadFx("Assets/audio/fx/skill_point.wav");
 
 		book_tex = app->tex->Load("Assets/textures/book_tex.png");
 		arrows_tex = app->tex->Load("Assets/textures/book_arrows.png"); 
@@ -204,6 +205,7 @@ bool Inventory::Start()
 		gear_tex = app->tex->Load("Assets/textures/gear.png");
 		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
 		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
+		misc = app->tex->Load("Assets/textures/skill_books.png");
 
 		skill_button.rect.w = 250;
 		skill_button.rect.h = 70;
@@ -3265,6 +3267,8 @@ void Inventory::AddSkillPoint(int owner, int amount)
 	}
 
 	points.set_value(points.as_int() + amount);
+
+	app->audio->PlayFx(earn_point_sound);
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
