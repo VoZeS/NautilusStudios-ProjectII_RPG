@@ -1118,7 +1118,6 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				}
 				else if (skill.support_type == SUPPORT_TYPE::REVIVE)
 				{
-					objective->HealEntity(support);
 					objective->Revive();
 				}
 

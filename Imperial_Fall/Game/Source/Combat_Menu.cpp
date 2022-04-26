@@ -380,6 +380,14 @@ bool Combat_Menu::PreUpdate()
 						&& skill_prepared.enemy_objective != ENEMY_OBJECTIVE::ALL_ENEMY)
 					{
 						enemies_buttons[i].state = 3;
+
+						if ((app->combat_manager->GetEnemyByNumber(0)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(0)->GetEntityState() != 1)
+							&& (app->combat_manager->GetEnemyByNumber(1)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(1)->GetEntityState() != 1)
+							&& (app->combat_manager->GetEnemyByNumber(2)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(2)->GetEntityState() != 1)
+							&& (app->combat_manager->GetEnemyByNumber(3)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(3)->GetEntityState() != 1))
+						{
+							enemies_buttons[i].state = 1;
+						}
 					}
 				}
 			}
