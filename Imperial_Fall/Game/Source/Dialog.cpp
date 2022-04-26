@@ -585,7 +585,7 @@ bool Dialog::PostUpdate()
 
 			for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 			{
-				shop_buttons[0].rect.x = 280 + c_x;
+				shop_buttons[0].rect.x = 200 + c_x;
 				shop_buttons[0].rect.y = 70 + c_y;
 				shop_buttons[1].rect.x = shop_buttons[0].rect.x;
 				shop_buttons[1].rect.y = shop_buttons[0].rect.y + 150;
@@ -628,8 +628,10 @@ bool Dialog::PostUpdate()
 					{
 						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
+					object_cost = "Objeto: " + GetObjectForShop(shop1[i].item.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 26, app->fonts->textFont2, object_cost.c_str());
 					object_cost = "Cost: " + std::to_string(shop1[i].cost) + " coins";
-					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 66, app->fonts->textFont2, object_cost.c_str());
 					if (shop1[i].selled)
 					{
 						s_rect = { 256, 0, 128, 128 };
@@ -650,8 +652,10 @@ bool Dialog::PostUpdate()
 					{
 						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
+					object_cost = "Objeto: " + GetObjectForShop(shop2[i].item.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 26, app->fonts->textFont2, object_cost.c_str());
 					object_cost = "Cost: " + std::to_string(shop2[i].cost) + " coins";
-					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 66, app->fonts->textFont2, object_cost.c_str());
 					if (shop2[i].selled)
 					{
 						s_rect = { 256, 0, 128, 128 };
@@ -672,8 +676,10 @@ bool Dialog::PostUpdate()
 					{
 						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
+					object_cost = "Objeto: " + GetObjectForShop(shop3[i].item.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 26, app->fonts->textFont2, object_cost.c_str());
 					object_cost = "Cost: " + std::to_string(shop3[i].cost) + " coins";
-					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 24, app->fonts->textFont2, object_cost.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 66, app->fonts->textFont2, object_cost.c_str());
 					if (shop3[i].selled)
 					{
 						s_rect = { 256, 0, 128, 128 };
@@ -889,6 +895,90 @@ void Dialog::UpdateShop()
 		shop2[3].item = "40";
 		shop2[3].cost = 5;
 	}
+}
+
+std::string Dialog::GetObjectForShop(const char* aei)
+{
+	std::string s;
+
+	if (aei[0] == '0') // assassin
+	{
+		if (aei[1] == '0') // helmet
+		{
+			s = "Casco de nivel " + std::to_string(aei[2] - '0') + " para asesino";
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			s = "Peto de nivel " + std::to_string(aei[2] - '0') + " para asesino";
+		}
+		else if (aei[1] == '2') // boots
+		{
+			s = "Botas de nivel " + std::to_string(aei[2] - '0') + " para asesino";
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			s = "Espada de nivel " + std::to_string(aei[2] - '0') + " para asesino";
+		}
+	}
+	else if (aei[0] == '1') // healer
+	{
+		if (aei[1] == '0') // helmet
+		{
+			s = "Casco de nivel " + std::to_string(aei[2] - '0') + " para healer";
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			s = "Peto de nivel " + std::to_string(aei[2] - '0') + " para healer";
+		}
+		else if (aei[1] == '2') // boots
+		{
+			s = "Botas de nivel " + std::to_string(aei[2] - '0') + " para healer";
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			s = "Lira de nivel " + std::to_string(aei[2] - '0') + " para healer";
+		}
+	}
+	else if (aei[0] == '2') // tank
+	{
+		if (aei[1] == '0') // helmet
+		{
+			s = "Casco de nivel " + std::to_string(aei[2] - '0') + " para defensor";
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			s = "Peto de nivel " + std::to_string(aei[2] - '0') + " para defensor";
+		}
+		else if (aei[1] == '2') // boots
+		{
+			s = "Botas de nivel " + std::to_string(aei[2] - '0') + " para defensor";
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			s = "Escudo de nivel " + std::to_string(aei[2] - '0') + " para defensor";
+		}
+	}
+	else if (aei[0] == '3') // wizard
+	{
+		if (aei[1] == '0') // helmet
+		{
+			s = "Casco de nivel " + std::to_string(aei[2] - '0') + " para mago";
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			s = "Peto de nivel " + std::to_string(aei[2] - '0') + " para mago";
+		}
+		else if (aei[1] == '2') // boots
+		{
+			s = "Botas de nivel " + std::to_string(aei[2] - '0') + " para mago";
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			s = "Baston de nivel " + std::to_string(aei[2] - '0') + " para mago";
+		}
+	}
+
+	return s;
 }
 
 bool Dialog::InAnyButton()

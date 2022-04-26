@@ -149,6 +149,7 @@ private:
 
 	bool ContinueDialog(int& actual_text, int max_text);
 
+	// shop
 	int chosed;
 	int in_shop; // 0 --> all closed, 1 --> herrero, 2 --> medico, 3 --> granjero
 	Button shop_buttons[NUM_SHOP_BUTTONS];
@@ -160,6 +161,7 @@ private:
 	SDL_Texture* whitemark_800x150;
 	SDL_Texture* whitemark_1240x680;
 	Shop_objects* item_saved = new Shop_objects;
+	std::string GetObjectForShop(const char* aei);
 
 	// sound
 	uint click_sound;

@@ -181,7 +181,8 @@ private:
 	int GetSkillPoints(int skill);
 	int skill_win; // 0 --> disabled, 1 --> what to equip, 2 --> unlock skill, 2 --> dont have points
 	int skill_saved;
-	SDL_Rect GetSkillRect(int skill, bool unlocked);
+	SDL_Rect GetSkillRect(int skill, bool unlocked); // 1 to 4
+	int GetSkillBySlot(int owner, int slot);
 	SDL_Texture* skill_image0; // assassin
 	SDL_Texture* skill_image1; // healer
 	SDL_Texture* skill_image2; // tank

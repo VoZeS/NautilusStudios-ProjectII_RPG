@@ -1160,9 +1160,13 @@ bool Menu::Update(float dt)
 			{
 				app->audio->PlayFx(click_sound);
 				app->frontground->ReturnToField();
-				object_obtained = true;
 				win_button.state = 2;
 				kill_enemy = true;
+
+				if (app->frontground->reward != "999")
+				{
+					object_obtained = true;
+				}
 			}
 			if (chosed == -1)
 			{

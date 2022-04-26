@@ -1397,6 +1397,29 @@ bool Inventory::PostUpdate()
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[2].rect.x, skill_interact_buttons[2].rect.y, &b2);
 						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[3].rect.x, skill_interact_buttons[3].rect.y, &b3);
 						app->fonts->BlitCombatText(300 + cx, 310 + cy, app->fonts->textFont2, "Choose slot to equip the skill");
+
+						for (size_t i = 0; i < 4; i++)
+						{
+							switch (page_display)
+							{
+							case 2:
+								rect = GetSkillRect(GetSkillBySlot(page_display - 2, i + 1), true);
+								app->render->DrawTexture(skill_image0, skill_interact_buttons[i].rect.x, skill_interact_buttons[i].rect.y, &rect);
+								break;
+							case 3:
+								rect = GetSkillRect(GetSkillBySlot(page_display - 2, i + 1), true);
+								app->render->DrawTexture(skill_image1, skill_interact_buttons[i].rect.x, skill_interact_buttons[i].rect.y, &rect);
+								break;
+							case 4:
+								rect = GetSkillRect(GetSkillBySlot(page_display - 2, i + 1), true);
+								app->render->DrawTexture(skill_image2, skill_interact_buttons[i].rect.x, skill_interact_buttons[i].rect.y, &rect);
+								break;
+							case 5:
+								rect = GetSkillRect(GetSkillBySlot(page_display - 2, i + 1), true);
+								app->render->DrawTexture(skill_image3, skill_interact_buttons[i].rect.x, skill_interact_buttons[i].rect.y, &rect);
+								break;
+							}
+						}
 						break;
 					case 2:
 						skill_interact_buttons[0].rect.x = 400 + cx;
@@ -3947,6 +3970,28 @@ SDL_Rect Inventory::GetSkillRect(int skill, bool unlocked)
 	return rect;
 }
 
+int Inventory::GetSkillBySlot(int owner, int slot)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node hero;
+
+	std::string p = "skill";
+	std::string s = std::to_string(slot);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	switch (owner)
+	{
+	case 0: hero = saveGame.child("heroes_stats").child("assassin"); break;
+	case 1: hero = saveGame.child("heroes_stats").child("healer"); break;
+	case 2: hero = saveGame.child("heroes_stats").child("tank"); break;
+	case 3: hero = saveGame.child("heroes_stats").child("wizard"); break;
+	}
+
+	return hero.child("equiped_skills").attribute(c).as_int();
+}
+
 void Inventory::DisplayCoins()
 {
 	float cx = -app->render->camera.x;
@@ -3974,7 +4019,7 @@ void Inventory::DisplayCoins()
 	}
 	
 	app->fonts->BlitCombatText(1120 + cx, 50 + cy, app->fonts->textFont2, s.c_str());
-	app->render->DrawTexture(coin, 1180 + cx, 34 + cy);
+	app->render->DrawTexture(coin, 1182 + cx, 34 + cy);
 
 	if (coins_obtained != 0)
 	{
