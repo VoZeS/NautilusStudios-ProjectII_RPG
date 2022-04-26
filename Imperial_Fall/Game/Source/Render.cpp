@@ -520,8 +520,8 @@ bool Render::IsinCamera(const renderObject* renderObj)
 {
 
 	iPoint renderRectinWorldCoords = ScreenToWorld(renderObj->renderRect.x,renderObj->renderRect.y);
-	SDL_Rect cameraa = { -app->render->camera.x, -app->render->camera.y,app->render->camera.w,app->render->camera.h };
-	SDL_Rect r = { renderRectinWorldCoords.x,renderRectinWorldCoords.y,renderObj->renderRect.w ,renderObj->renderRect.h };
+	SDL_Rect cameraa = { -app->render->camera.x, -app->render->camera.y, app->render->camera.w, app->render->camera.h};
+	SDL_Rect r = { renderRectinWorldCoords.x,renderRectinWorldCoords.y, renderObj->renderRect.w ,renderObj->renderRect.h };
 
 	return SDL_HasIntersection(&cameraa, &r);
 }
@@ -559,8 +559,25 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	renderobject.Ordeninlayer = ordeninlayer;
 	renderobject.speed = speed;
 	renderobject.angle = angle;
-	renderobject.renderRect.x = (int)(-app->render->camera.x * speed) + pos.x * scale;
-	renderobject.renderRect.y = (int)(-app->render->camera.y * speed) + pos.y * scale;
+
+	/*if (renderobject.renderRect.x <= app->render->camera.w / 2)
+	{
+		renderobject.renderRect.x = app->render->camera.w / 2;
+	}
+	else
+	{
+		renderobject.renderRect.x = (int)(-app->render->camera.x * speed) + pos.x * scale;
+
+	}
+	if (renderobject.renderRect.y >= app->render->camera.h / 2)
+	{
+		renderobject.renderRect.y = app->render->camera.h / 2;
+	}
+	else
+	{
+		renderobject.renderRect.y = (int)(-app->render->camera.y * speed) + pos.y * scale;
+
+	}*/
 
 	if (layer == 3) renderobject.speed = 0;
 
