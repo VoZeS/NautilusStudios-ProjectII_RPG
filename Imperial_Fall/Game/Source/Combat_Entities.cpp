@@ -3,6 +3,7 @@
 #include "Fonts.h"
 #include "Combat_Entities.h"
 #include "Combat_Manager.h"
+#include "Frontground.h"
 #include "Defs.h"
 #include "Log.h"
 #include "Particles.h"
@@ -42,109 +43,183 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		entity_type = -1;
 		break;
 	case ENEMIES::W_TEMPLAR:
-		max_health = 100;
-		actual_health = max_health;
-		max_mana = 40;
-		actual_mana = max_mana;
-		this->speed = 30;
-		this->power = 60;
-		shield = 0;
-		shield_turns = 0;
+		if (app->frontground->adventure_phase == 0)
+		{
+			max_health = 100;
+			actual_health = max_health;
+			max_mana = 40;
+			actual_mana = max_mana;
+			this->speed = 30;
+			this->power = 60;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 1)
+		{
+			max_health = 150;
+			actual_health = max_health;
+			max_mana = 60;
+			actual_mana = max_mana;
+			this->speed = 40;
+			this->power = 80;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
 
 		weak_to = -1;
-
 		alive = 1;
-
 		entity_type = 4;
-
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
+		
 		break;
 	case ENEMIES::MUSHROOM:
-		max_health = 90;
-		actual_health = max_health;
-		max_mana = 80;
-		actual_mana = max_mana;
-		this->speed = 40;
-		this->power = 30;
-		shield = 0;
-		shield_turns = 0;
+		if (app->frontground->adventure_phase == 0)
+		{
+			max_health = 90;
+			actual_health = max_health;
+			max_mana = 80;
+			actual_mana = max_mana;
+			this->speed = 40;
+			this->power = 30;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 1)
+		{
+			max_health = 135;
+			actual_health = max_health;
+			max_mana = 120;
+			actual_mana = max_mana;
+			this->speed = 60;
+			this->power = 50;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
 
 		weak_to = 1;
-
 		alive = 1;
-
 		entity_type = 5;
 
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
 		break;
 	case ENEMIES::GOBLIN:
-		max_health = 80;
-		actual_health = max_health;
-		max_mana = 50;
-		actual_mana = max_mana;
-		this->speed = 60;
-		this->power = 50;
-		shield = 0;
-		shield_turns = 0;
+		if (app->frontground->adventure_phase == 0)
+		{
+			max_health = 80;
+			actual_health = max_health;
+			max_mana = 50;
+			actual_mana = max_mana;
+			this->speed = 60;
+			this->power = 50;
+			shield = 0;
+			shield_turns = 0;
 
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 1)
+		{
+			max_health = 100;
+			actual_health = max_health;
+			max_mana = 75;
+			actual_mana = max_mana;
+			this->speed = 90;
+			this->power = 70;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		
 		weak_to = 2;
-
 		alive = 1;
-
 		entity_type = 6;
-
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
+		
 		break;
 	case ENEMIES::SKELETON:
-		max_health = 50;
-		actual_health = max_health;
-		max_mana = 30;
-		actual_mana = max_mana;
-		this->speed = 35;
-		this->power = 60;
-		shield = 0;
-		shield_turns = 0;
+		if (app->frontground->adventure_phase == 0)
+		{
+			max_health = 50;
+			actual_health = max_health;
+			max_mana = 30;
+			actual_mana = max_mana;
+			this->speed = 35;
+			this->power = 60;
+			shield = 0;
+			shield_turns = 0;
 
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 1)
+		{
+			max_health = 75;
+			actual_health = max_health;
+			max_mana = 50;
+			actual_mana = max_mana;
+			this->speed = 45;
+			this->power = 90;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		
 		weak_to = -1;
-
 		alive = 1;
-
 		entity_type = 7;
 
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
 		break;
 	case ENEMIES::R_TEMPLAR:
-		max_health = 200;
-		actual_health = max_health;
-		max_mana = 80;
-		actual_mana = max_mana;
-		this->speed = 40;
-		this->power = 80;
-		shield = 0;
-		shield_turns = 0;
+		if (app->frontground->adventure_phase == 0 || app->frontground->adventure_phase == 1)
+		{
+			max_health = 200;
+			actual_health = max_health;
+			max_mana = 80;
+			actual_mana = max_mana;
+			this->speed = 40;
+			this->power = 80;
+			shield = 0;
+			shield_turns = 0;
 
+			skills[0] = SetSkill(entity_type, 0);
+			skills[1] = SetSkill(entity_type, 1);
+			skills[2] = SetSkill(entity_type, 2);
+			skills[3] = SetSkill(entity_type, 3);
+		}
+		
 		weak_to = -1;
-
 		alive = 1;
-
 		entity_type = 8;
 
-		skills[0] = SetSkill(entity_type, 0); // read from xml
-		skills[1] = SetSkill(entity_type, 1); // read from xml
-		skills[2] = SetSkill(entity_type, 2); // read from xml
-		skills[3] = SetSkill(entity_type, 3); // read from xml
 		break;
 	}
 }
