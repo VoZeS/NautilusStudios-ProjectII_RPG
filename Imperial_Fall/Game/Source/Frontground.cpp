@@ -106,7 +106,6 @@ bool Frontground::PreUpdate()
 // Called each loop iteration
 bool Frontground::Update(float dt)
 {
-
 	if (a >= 255)
 	{
 		go_black = false;
@@ -126,6 +125,11 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		app->physics->CleanNormalCollisions();
+	}
 	
 	r.x = c_x;
 	r.y = c_y;

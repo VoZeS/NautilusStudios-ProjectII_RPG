@@ -59,8 +59,13 @@ bool Physics::Start()
 
 	save_sound = app->audio->LoadFx("Assets/audio/fx/save_sound.wav");;
 
-	bool coin_picked = false;
-	int coins_number = 0;
+	coin_picked = false;
+	coins_number = 0;
+	book_picked = false;
+	book_number0 = 0;
+	book_number1 = 0;
+	book_number2 = 0;
+	book_number3 = 0;
 
 	return true;
 }
@@ -96,8 +101,7 @@ bool Physics::Update(float dt)
 bool Physics::PostUpdate()
 {
 	if (coin_picked)
-	{
-		DestroyCoins();
+	{		DestroyCoins();
 		coin_picked = false;
 	}
 	else if (book_picked)
@@ -305,6 +309,26 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	return true;
 }
 
+bool Physics::CreateNormalCollisions(int x, int y, int w, int h)
+{
+	b2BodyDef g;
+	g.type = b2_staticBody;
+	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
+
+	b2Body* p = world->CreateBody(&g);
+
+	b2PolygonShape box;
+	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	b2Fixture* fix = p->CreateFixture(&fixture);
+
+	fix->SetUserData((void*)100);
+
+	return true;
+}
+
 bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 {
 	b2BodyDef g;
@@ -396,6 +420,23 @@ bool Physics::CleanMapBoxes()
 		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 		{
 			if ((int)f->GetUserData() >= 2)
+			{
+				b->DestroyFixture(f);
+				world->DestroyBody(b);
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Physics::CleanNormalCollisions()
+{
+	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	{
+		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		{
+			if ((int)f->GetUserData() == 100)
 			{
 				b->DestroyFixture(f);
 				world->DestroyBody(b);

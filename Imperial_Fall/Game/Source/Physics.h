@@ -47,10 +47,12 @@ public:
 	bool CleanUp();
 
 	bool CreateMapBox(int x, int y, int w, int h, int collision);
+	bool CreateNormalCollisions(int x, int y, int w, int h);
 
 	bool CreateMiscelanea(int x, int y, int w, int h, int collision);
 
 	bool CleanMapBoxes();
+	bool CleanNormalCollisions();
 
 	void BeginContact(b2Contact* contact);
 

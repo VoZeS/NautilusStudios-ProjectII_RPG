@@ -55,6 +55,11 @@ bool Map::Start()
 	{
 		collision_loaded = false;
 		coins_index = 0;
+		books0_index = 0;
+		books1_index = 0;
+		books2_index = 0;
+		books3_index = 0;
+		clean_cd = 0;
 	}
 
 	return true;
@@ -85,7 +90,7 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50 ) &&
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50) &&
 							(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
 						{
 							app->render->DrawTexture(tileset->texture,
@@ -95,17 +100,50 @@ void Map::Draw()
 						}
 					}
 
+					clean_cd++;
+					if (clean_cd >= 600)
+					{
+						app->physics->CleanNormalCollisions();
+						clean_cd = 0;
+					}
+
+					int width = mapLayerItem->data->properties.GetProperty("Width");
+					int height = mapLayerItem->data->properties.GetProperty("Height");
+					int w, h;
+
+					if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
+					{
+						// collision ground
+						for (size_t i = 0; i < 20; i++)
+						{
+							w = (r.w * width) / 20;
+							h = (r.h * height) / 20;
+							if ((-app->render->camera.x > pos.x + (w * i) - 1400 && -app->render->camera.x < pos.x + (w * i) + 50) &&
+								(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
+							{
+								app->physics->CreateNormalCollisions(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+								break;
+							}
+							else if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50) &&
+								(-app->render->camera.y < pos.y + (h * i) + 50 && -app->render->camera.y > pos.y + (h * i) - 800))
+							{
+								app->physics->CreateNormalCollisions(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+								break;
+							}
+						}
+					}
+
 					if (!collision_loaded)
 					{
-						int width = mapLayerItem->data->properties.GetProperty("Width");
-						int height = mapLayerItem->data->properties.GetProperty("Height");
+						//int width = mapLayerItem->data->properties.GetProperty("Width");
+						//int height = mapLayerItem->data->properties.GetProperty("Height");
 
-						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
+						/*if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
+						else */if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
 						{
 							// Renato
 							app->entities->CreateEntity(ENTITY_TYPE::RENATO, pos.x, pos.y);
