@@ -275,6 +275,7 @@ bool Combat_Menu::PreUpdate()
 					{
 						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 						{
+							chosed = i;
 							general_buttons[i].state = 3;
 						}
 						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
@@ -292,6 +293,10 @@ bool Combat_Menu::PreUpdate()
 						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 						{
 							general_buttons[i].state = 3;
+						}
+						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+						{
+							general_buttons[i].state = 0;
 						}
 						else
 						{
@@ -1433,7 +1438,7 @@ bool Combat_Menu::Update(float dt)
 					general_buttons[chosed].state = 2;
 				}
 			}
-			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && general_buttons[chosed].state == 1)
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && (general_buttons[chosed].state == 1 || general_buttons[chosed].state == 3))
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -2491,8 +2496,8 @@ void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
 			break;
 		case DEBUFF_TYPE::DEF_REDUCC:
 			rect = { 32, 0, 32, 32 };
-			description0 = "Defense Reduction, user will receive extra damage from";
-			description1 = "physic damage.";
+			description0 = "Defense Reduction, user will receive extra damage";
+			description1 = "from physic damage.";
 			break;
 		case DEBUFF_TYPE::STUN:
 			rect = { 0, 0, 32, 32 };

@@ -43,6 +43,10 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		entity_type = -1;
 		break;
 	case ENEMIES::W_TEMPLAR:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 4;
+
 		if (app->frontground->adventure_phase == 0)
 		{
 			max_health = 100;
@@ -75,13 +79,13 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
 		}
-
-		weak_to = -1;
-		alive = 1;
-		entity_type = 4;
 		
 		break;
 	case ENEMIES::MUSHROOM:
+		weak_to = 1;
+		alive = 1;
+		entity_type = 5;
+
 		if (app->frontground->adventure_phase == 0)
 		{
 			max_health = 90;
@@ -115,12 +119,12 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 		}
 
-		weak_to = 1;
-		alive = 1;
-		entity_type = 5;
-
 		break;
 	case ENEMIES::GOBLIN:
+		weak_to = 2;
+		alive = 1;
+		entity_type = 6;
+
 		if (app->frontground->adventure_phase == 0)
 		{
 			max_health = 80;
@@ -154,12 +158,12 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 		}
 		
-		weak_to = 2;
-		alive = 1;
-		entity_type = 6;
-		
 		break;
 	case ENEMIES::SKELETON:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 7;
+
 		if (app->frontground->adventure_phase == 0)
 		{
 			max_health = 50;
@@ -192,13 +196,13 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
 		}
-		
-		weak_to = -1;
-		alive = 1;
-		entity_type = 7;
 
 		break;
 	case ENEMIES::R_TEMPLAR:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 8;
+
 		if (app->frontground->adventure_phase == 0 || app->frontground->adventure_phase == 1)
 		{
 			max_health = 200;
@@ -215,10 +219,6 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
 		}
-		
-		weak_to = -1;
-		alive = 1;
-		entity_type = 8;
 
 		break;
 	}
@@ -751,7 +751,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 1:
 			skill.owner = owner;
-			skill.skill_name = "Strong Stab";
+			skill.skill_name = "Thrust";
 			skill.skill_description0 = "Medium damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
@@ -794,7 +794,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 5: // level 2 skills
 			skill.owner = owner;
 			skill.skill_name = "Fast Stab";
-			skill.skill_description0 = "Low damage to a single target. The user boost his speed for two turn.";
+			skill.skill_description0 = "Low damage to a single target. The user boost his";
+			skill.skill_description1 = "speed for two turn.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 15;
@@ -839,8 +840,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 9: // level 3 up root skills
 			skill.owner = owner;
-			skill.skill_name = "Pierce Strong Stab";
-			skill.skill_description0 = "Medium damage to a single target, this tactical attack ignores the enemy shield.";
+			skill.skill_name = "Piercing Thrust";
+			skill.skill_description0 = "Medium damage to a single target, this tactical";
+			skill.skill_description1 = "attack ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -851,7 +853,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 10:
 			skill.owner = owner;
 			skill.skill_name = "Great Fire Bomb";
-			skill.skill_description0 = "Medium fire damage to all targets and set them on fire for 3 turns.";
+			skill.skill_description0 = "Medium fire damage to all targets and set them on";
+			skill.skill_description1 = "fire for 3 turns.";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 50;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -862,7 +865,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 11:
 			skill.owner = owner;
-			skill.skill_name = "Extended Stealth";
+			skill.skill_name = "Stealth+";
 			skill.skill_description0 = "The user obtain stealth for two turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
@@ -874,7 +877,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 12:
 			skill.owner = owner;
 			skill.skill_name = "Exausting Bomb";
-			skill.skill_description0 = "Low damage to all targets and reduce targets power for 2 turns.";
+			skill.skill_description0 = "Low damage to all targets and reduce targets";
+			skill.skill_description1 = "power for 2 turns.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 40;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -885,8 +889,10 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 13: // level 3 down root skills
 			skill.owner = owner;
-			skill.skill_name = "Tactic Stab";
-			skill.skill_description0 = "Medium critical damage to a single target. Critical damage hits more when the target is with low health or hits less if the target is with high health";
+			skill.skill_name = "Tactic Thrust";
+			skill.skill_description0 = "Medium critical damage to a single target. Critical";
+			skill.skill_description1 = "damage hits more when the target is with low";
+			skill.skill_description2 = "health or hits less if the target is with high health";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -897,7 +903,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Spike Trap";
-			skill.skill_description0 = "Low damage to all targets and reduce targets speed for 2 turns.";
+			skill.skill_description0 = "Low damage to all targets and reduce targets speed";
+			skill.skill_description1 = "for 2 turns.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 40;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -919,7 +926,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 16:
 			skill.owner = owner;
-			skill.skill_name = "Lightning Strong Stab";
+			skill.skill_name = "Thunder Thrust";
 			skill.skill_description0 = "Medium lightning damage to a single target.";
 			skill.att_effect = ATT_EFFECT::LIGHTNING;
 			skill.mana_cost = 20;
@@ -978,7 +985,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 4:
 			skill.owner = owner;
-			skill.skill_name = "Attack Boost";
+			skill.skill_name = "Encourage";
 			skill.skill_description0 = "Boosts the target power for two turns.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 15;
@@ -1033,8 +1040,10 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 9: // level 3 up root skills
 			skill.owner = owner;
-			skill.skill_name = "Give Inmortality";
-			skill.skill_description0 = "Give damage inmunity to an ally for two turn.";
+			skill.skill_name = "Inmortal Peach";
+			skill.skill_description0 = "Offer to the target the inmortal peach of";
+			skill.skill_description1 = "Wukong. Give damage inmunity to an ally for";
+			skill.skill_description1 = "two turns.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 120;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -1064,8 +1073,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 12:
-			skill.owner = owner;
-			skill.skill_name = "Field Attack Boost";
+			skill.owner = owner;	  
+			skill.skill_name = "Field Encourage";
 			skill.skill_description0 = "Boosts all targets power for two turns.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 60;
@@ -1110,7 +1119,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 16:
 			skill.owner = owner;
 			skill.skill_name = "Mana Source";
-			skill.skill_description0 = "Use a huge amount of mana to invoke the mana spirit. All allies recover a good amount of mana.";
+			skill.skill_description0 = "Use a huge amount of mana to invoke the mana";
+			skill.skill_description1 = "spirit. All allies recover a good amount of mana.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 100;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
@@ -1136,7 +1146,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 1:
 			skill.owner = owner;
-			skill.skill_name = "Heavy Slash";
+			skill.skill_name = "Strike";
 			skill.skill_description0 = "Medium damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
@@ -1157,7 +1167,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 3:
 			skill.owner = owner;
-			skill.skill_name = "Pierce Slash";
+			skill.skill_name = "Piercing Slash";
 			skill.skill_description0 = "Low damage to a single target, this tactical attack ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
@@ -1168,7 +1178,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 4:
 			skill.owner = owner;
-			skill.skill_name = "Auto-Shield";
+			skill.skill_name = "Shell";
 			skill.skill_description0 = "The user obtain a small shield during one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 10;
@@ -1181,7 +1191,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 5: // level 2 skills
 			skill.owner = owner;
 			skill.skill_name = "Defensive Slash";
-			skill.skill_description0 = "Low damage to a single target. The user obtain a small shield during one turn.";
+			skill.skill_description0 = "Low damage to a single target. The user obtain a";
+			skill.skill_description1 = "small shield during one turn.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
@@ -1195,8 +1206,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 6:
 			skill.owner = owner;
-			skill.skill_name = "Taunt Insurance";
-			skill.skill_description0 = "Provoke all enemies, obtain taunt for one turn. The user obtain a small shield during one turn.";
+			skill.skill_name = "Shielding Taunt";
+			skill.skill_description0 = "Provoke all enemies, obtain taunt for one turn. The";
+			skill.skill_description1 = "user obtain a small shield during one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -1208,8 +1220,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 7:
 			skill.owner = owner;
-			skill.skill_name = "Heavy Pierce Slash";
-			skill.skill_description0 = "Medium damage to a single target, this tactical attack ignores the enemy shield.";
+			skill.skill_name = "Piercing Strike";
+			skill.skill_description0 = "Medium damage to a single target, this tactical";
+			skill.skill_description1 = "attack ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 25;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1219,7 +1232,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 8:
 			skill.owner = owner;
-			skill.skill_name = "Great Auto-Shield";
+			skill.skill_name = "Great Shell";
 			skill.skill_description0 = "The user obtain a good shield during one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 15;
@@ -1231,8 +1244,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 9: // level 3 up root skills
 			skill.owner = owner;
-			skill.skill_name = "Heavy Defensive Slash";
-			skill.skill_description0 = "Medium damage to a single target. The user obtain a small shield during one turn.";
+			skill.skill_name = "Defense Strike";
+			skill.skill_description0 = "Medium damage to a single target. The user obtain a";
+			skill.skill_description1 = "small shield during one turn.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 30;
@@ -1246,7 +1260,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 10:
 			skill.owner = owner;
-			skill.skill_name = "Extended Taunt";
+			skill.skill_name = "Taunt+";
 			skill.skill_description0 = "Provoke all enemies, obtain taunt for two turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
@@ -1257,18 +1271,18 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 11:
 			skill.owner = owner;
-			skill.skill_name = "Destructive Slash";
-			skill.skill_description0 = "Low damage to a single target, this powerful attack destroy the enemy shield.";
+			skill.skill_name = "Atlas Slash";
+			skill.skill_description0 = "Uses the strenght of Atlas, the titan attack";
+			skill.skill_description1 = "destroy the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
-			skill.att_strenght = 0;
 			skill.skill_bonus = SKILL_BONUS::DESTROY_SHIELD;
 			break;
 		case 12:
 			skill.owner = owner;
-			skill.skill_name = "Extended Great Auto-Shield";
+			skill.skill_name = "Great Shell+";
 			skill.skill_description0 = "The user obtain a good shield during two turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 25;
@@ -1280,7 +1294,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 13: // level 3 down root skills
 			skill.owner = owner;
-			skill.skill_name = "Spinning Slash";
+			skill.skill_name = "Spinning";
 			skill.skill_description0 = "Low damage to all targets.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 30;
@@ -1291,7 +1305,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Statue";
-			skill.skill_description0 = "The user obtain the resistance of a mountain. Provoke all enemies, obtain taunt for two turn. The user obtain a good shield during two turn.";
+			skill.skill_description0 = "The user obtain the resistance of a mountain";
+			skill.skill_description1 = "Provoke all enemies, obtain taunt for two turn.";
+			skill.skill_description2 = "The user obtain a good shield during two turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 50;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -1304,8 +1320,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 15:
 			skill.owner = owner;
-			skill.skill_name = "Spinning Pierce Slash";
-			skill.skill_description0 = "Low damage to all targets, this tactical attack ignores the enemy shield.";
+			skill.skill_name = "Pierce Spinning";
+			skill.skill_description0 = "Low damage to all targets, this tactical attack";
+			skill.skill_description1 = "ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 40;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -1382,7 +1399,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 5: // level 2 skills
 			skill.owner = owner;
 			skill.skill_name = "Armor Break";
-			skill.skill_description0 = "Low damage to a single target. Break the armor of an enemy for 2 turns.";
+			skill.skill_description0 = "Low damage to a single target. Break the armor of";
+			skill.skill_description1 = "an enemy for 2 turns.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 25;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1393,8 +1411,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 6:
 			skill.owner = owner;
-			skill.skill_name = "Burning Fire Ball";
-			skill.skill_description0 = "Low fire damage to a single target and set him on fire for 2 turns.";
+			skill.skill_name = "Fire Orb";
+			skill.skill_description0 = "Low fire damage to a single target and set him on";
+			skill.skill_description1 = "fire for 2 turns.";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1405,8 +1424,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 7:
 			skill.owner = owner;
-			skill.skill_name = "Slow Down Water Jet";
-			skill.skill_description0 = "Low water damage to a single target and reduce his speed for 2 turns.";
+			skill.skill_name = "Water Canon";
+			skill.skill_description0 = "Low water damage to a single target and reduce his";
+			skill.skill_description1 = "speed for 2 turns.";
 			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1428,7 +1448,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 9: // level 3 up root skills
 			skill.owner = owner;
 			skill.skill_name = "Compact Rock";
-			skill.skill_description0 = "Lauch a small rock at high speed. Colosal damage to a single target.";
+			skill.skill_description0 = "Lauch a small rock at high speed. Colosal damage to";
+			skill.skill_description1 = "a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 60;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1437,8 +1458,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 10:
 			skill.owner = owner;
-			skill.skill_name = "Burning Fire Circle";
-			skill.skill_description0 = "Low fire damage to all targets and set them on fire for 2 turns.";
+			skill.skill_name = "Fire Circle";
+			skill.skill_description0 = "Low fire damage to all targets and set them on fire";
+			skill.skill_description1 = "for 2 turns.";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 30;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -1481,7 +1503,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Magma Orb";
-			skill.skill_description0 = "Medium fire damage to a single target and set him on fire for 3 turns.";
+			skill.skill_description0 = "Medium fire damage to a single target and set him";
+			skill.skill_description1 = "on fire for 3 turns.";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 50;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1492,12 +1515,14 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 15:
 			skill.owner = owner;
-			skill.skill_name = "Slow Down Water Splash";
-			skill.skill_description0 = "Low water damage to all targets and reduce targets speed for 2 turns.";
+			skill.skill_name = "Aquarius";
+			skill.skill_description0 = "Invoke Aquarius, whose attack causes low water";
+			skill.skill_description1 = "damage to all targets and reduce targets speed";
+			skill.skill_description2 = "for two turns.";
 			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 50;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
+			skill.element = 3;
 			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
 			skill.buff_turns = 2;
