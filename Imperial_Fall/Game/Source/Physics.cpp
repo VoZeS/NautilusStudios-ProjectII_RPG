@@ -59,6 +59,9 @@ bool Physics::Start()
 
 	save_sound = app->audio->LoadFx("Assets/audio/fx/save_sound.wav");;
 
+	bool coin_picked = false;
+	int coins_number = 0;
+
 	return true;
 }
 
@@ -92,6 +95,12 @@ bool Physics::Update(float dt)
 // Called each loop iteration
 bool Physics::PostUpdate()
 {
+	if (coin_picked)
+	{
+		DestroyCoins();
+		coin_picked = false;
+	}
+
 	if (!debug)
 		return true;
 
@@ -163,6 +172,11 @@ bool Physics::PostUpdate()
 						c_g = 100;
 						c_b = 100;
 						break;
+					case 20: // coins in floor
+						c_r = 0;
+						c_g = 0;
+						c_b = 0;
+						break;
 					default:
 						c_r = 100;
 						c_g = 100;
@@ -218,7 +232,33 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
+	// miscelanea
+	else if (collision == 20) fixture.isSensor = true;
 	b2Fixture* fix = p->CreateFixture(&fixture);
+
+	fix->SetUserData((void*)collision);
+
+	return true;
+}
+
+bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
+{
+	b2BodyDef g;
+	g.type = b2_staticBody;
+	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
+
+	coins_in_floor[coins_number].body = world->CreateBody(&g);
+	coins_in_floor[coins_number].number = coins_number;
+
+	b2PolygonShape box;
+	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	// miscelanea
+	if (collision == 20) fixture.isSensor = true;
+	b2Fixture* fix = coins_in_floor[coins_number].body->CreateFixture(&fixture);
+	coins_number++;
 
 	fix->SetUserData((void*)collision);
 
@@ -283,6 +323,12 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataB == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inCoins = true;
 		}
 
 		// --------------------------------------------------------------- PASS LEVELS
@@ -409,6 +455,12 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataA == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inCoins = true;
 		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)
@@ -540,6 +592,12 @@ void Physics::EndContact(b2Contact* contact)
 			inAldeano = false;
 			app->dialog->QuitDialogs();
 		}
+		else if ((int)fixtureUserDataB == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inCoins = false;
+		}
 	}
 
 	if ((int)fixtureUserDataB == 1)
@@ -579,5 +637,90 @@ void Physics::EndContact(b2Contact* contact)
 			inAldeano = false;
 			app->dialog->QuitDialogs();
 		}
+		else if ((int)fixtureUserDataA == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inCoins = false;
+		}
 	}
+}
+
+void Physics::DestroyCoins()
+{
+	float max = 9999;
+	b2Body* body = NULL;
+	int number = -1;
+
+	fPoint pos1 = app->entities->GetPlayer()->GetPlayerPosition();
+
+	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	{
+		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		{
+			fPoint pos2 = { b->GetPosition().x, b->GetPosition().y };
+			if ((int)f->GetUserData() == 20 && (abs(pos1.DistanceTo(pos2)) < max))
+			{
+				body = b;
+				max = abs(pos1.DistanceTo(pos2));
+			}
+		}
+	}
+
+	for (size_t i = 0; i < MAX_COINS; i++)
+	{
+		if (coins_in_floor[i].body == body)
+		{
+			number = coins_in_floor[i].number;
+			break;
+		}
+	}
+
+	world->DestroyBody(body);
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+	std::string p1 = "coins_in_room";
+	std::string s1;
+	switch (app->frontground->current_level)
+	{
+	case 1: s1 = std::to_string(0); break;
+	case 2: s1 = std::to_string(1); break;
+	case 3: s1 = std::to_string(2); break;
+	case 4: s1 = std::to_string(3); break;
+	case 5: s1 = std::to_string(4); break;
+	case 6: s1 = std::to_string(5); break;
+	case 7: s1 = std::to_string(6); break;
+	default: break;
+	}
+	std::string t1 = p1 + s1;
+	const char* c1 = t1.c_str();
+
+	std::string p2 = "picked";
+	std::string s2 = std::to_string(number);
+	std::string t2 = p2 + s2;
+	const char* c2 = t2.c_str();
+
+	saveGame.child("miscelanea").child(c1).attribute(c2).set_value(true);
+
+	saveGame.save_file(MISCELANEA_FILENAME);
+}
+
+void Physics::ResetMiscelanea()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+	for (size_t i = 0; i < MAX_COINS; i++)
+	{
+		std::string p = "picked";
+		std::string s = std::to_string(i);
+		std::string t = p + s;
+		const char* c = t.c_str();
+
+		saveGame.child("miscelanea").child("coins_in_floor").attribute(c).set_value(false);
+	}
+
+	saveGame.save_file(MISCELANEA_FILENAME);
 }

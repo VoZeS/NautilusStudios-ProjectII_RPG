@@ -256,7 +256,7 @@ void Fonts::BlitCombatText(int x, int y, int font_id, const char* text, int zoom
 			|| text[i] == 't' || text[i] == 'u' || text[i] == 'v' || text[i] == 'x' || text[i] == 'y')
 		{
 			app->render->DrawTexture(font->texture, x - 2, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
-			x += spriteRect.w - 6;
+			x += spriteRect.w - 8;
 		}
 		else if (text[i] == '[' || text[i] == ']' || text[i] == 'i' || text[i] == 'l')
 		{

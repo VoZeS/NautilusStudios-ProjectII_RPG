@@ -16,6 +16,14 @@
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
+#define MAX_COINS 9
+
+struct Miscelenea
+{
+	b2Body* body;
+	int number;
+};
+
 class Physics : public Module, public b2ContactListener
 {
 public:
@@ -37,6 +45,8 @@ public:
 
 	bool CreateMapBox(int x, int y, int w, int h, int collision);
 
+	bool CreateMiscelanea(int x, int y, int w, int h, int collision);
+
 	bool CleanMapBoxes();
 
 	void BeginContact(b2Contact* contact);
@@ -46,6 +56,8 @@ public:
 	bool debug;
 	b2World* world;
 
+	Miscelenea coins_in_floor[MAX_COINS];
+
 	int on_collosion;
 
 	bool inRenato = false;
@@ -53,6 +65,7 @@ public:
 	bool inHerrero = false;
 	bool inGranjero = false;
 	bool inAldeano = false;
+	bool inCoins = false;
 
 	bool GetInNPC(int npc)
 	{
@@ -69,6 +82,11 @@ public:
 
 		return ret;
 	}
+
+	bool coin_picked = false;
+	int coins_number = 0;
+	void DestroyCoins();
+	void ResetMiscelanea();
 
 	uint save_sound;
 

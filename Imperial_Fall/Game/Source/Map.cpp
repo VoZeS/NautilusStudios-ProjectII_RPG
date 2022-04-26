@@ -6,6 +6,7 @@
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -53,6 +54,7 @@ bool Map::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		collision_loaded = false;
+		coins_index = 0;
 	}
 
 	return true;
@@ -197,6 +199,40 @@ void Map::Draw()
 								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
+						}
+						// ------------------------ miscelanea
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 20)
+						{
+							// coins
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "coins_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(coins_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w* width) / 2, (r.h* height) / 2, 20);
+							}
+							coins_index++;
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)

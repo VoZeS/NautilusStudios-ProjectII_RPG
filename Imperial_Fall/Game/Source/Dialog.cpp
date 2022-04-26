@@ -297,7 +297,13 @@ bool Dialog::Update(float dt)
 	{
 		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
 		{
-			if (app->physics->GetInNPC(1))
+			if (app->physics->inCoins)
+			{
+				app->inventory->AddCoins(5);
+				app->physics->coin_picked = true;
+				SetPressE_Hide(true);
+			}
+			else if (app->physics->GetInNPC(1))
 			{
 				if (app->frontground->adventure_phase == 0)
 				{

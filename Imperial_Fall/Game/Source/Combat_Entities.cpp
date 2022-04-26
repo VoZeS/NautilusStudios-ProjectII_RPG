@@ -618,47 +618,45 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 4:
 			skill.owner = owner;
-			skill.skill_name = "HP Potion0";
-			skill.skill_description0 = "Heal the objective.";
+			skill.skill_name = "Green Leaves";
+			skill.skill_description0 = "All allies obtain relax for 5 turns.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
-			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
-			skill.supp_strenght = 1;
-			skill.support_type = SUPPORT_TYPE::HEAL;
+			skill.buff_type = BUFF_TYPE::RELAX;
+			skill.buff_turns = 5;
 			break;
 		case 5:
 			skill.owner = owner;
-			skill.skill_name = "MP Potion0";
-			skill.skill_description0 = "Restore the objective and the user mana.";
+			skill.skill_name = "Recam";
+			skill.skill_description0 = "Revive an ally.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 1; // reload the half of the mana from the user
+			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
-			skill.supp_strenght = 1;
-			skill.support_type = SUPPORT_TYPE::RELOAD;
+			skill.support_type = SUPPORT_TYPE::REVIVE;
 			break;
 		case 6:
 			skill.owner = owner;
-			skill.skill_name = "Fire Jar0";
-			skill.skill_description0 = "Set all enemies on fire for 3 turns.";
-			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.skill_name = "Rainbow Grace";
+			skill.skill_description0 = "All allies obtain damage inmunity for 2 turns.";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 1;
-			skill.debuff_type = DEBUFF_TYPE::BURN;
-			skill.buff_turns = 3;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
+			skill.buff_turns = 2;
 			break;
 		case 7:
 			skill.owner = owner;
-			skill.skill_name = "Lightning Jar0";
-			skill.skill_description0 = "Break the armor of an enemy for 2 turns.";
-			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.skill_name = "Anti-Shield";
+			skill.skill_description0 = "Destroy the shield form one enemy.";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.element = 2;
-			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
-			skill.buff_turns = 2;
+			skill.element = 0;
+			skill.skill_bonus = SKILL_BONUS::DESTROY_SHIELD;
 			break;
 		}
 	}

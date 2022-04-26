@@ -14,6 +14,7 @@
 #define DIALOG_FILENAME	"dialog.xml"
 #define HEROES_STATS_FILENAME	"heroes_stats.xml"
 #define UNLOCKABLE_OBJECTS_FILENAME	"unlockable_objects.xml"
+#define MISCELANEA_FILENAME	"miscelanea.xml"
 
 // Modules
 class Window;

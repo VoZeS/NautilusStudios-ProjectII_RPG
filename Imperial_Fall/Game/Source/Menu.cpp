@@ -1041,6 +1041,7 @@ bool Menu::Update(float dt)
 						app->inventory->ResetItems();
 						app->inventory->ResetGear();
 						app->inventory->ResetSkills();
+						app->physics->ResetMiscelanea();
 					}
 					break;
 				}

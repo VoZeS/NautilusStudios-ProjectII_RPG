@@ -425,6 +425,10 @@ bool Combat_Menu::PreUpdate()
 					{
 						allies_buttons[i].state = 0;
 					}
+					else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1 && skill_prepared.support_type == SUPPORT_TYPE::REVIVE)
+					{
+						allies_buttons[i].state = 0;
+					}
 				}
 			}
 
@@ -2527,19 +2531,19 @@ int Combat_Menu::GetItemByName(const char* skill_name)
 	{
 		return 3;
 	}
-	else if (skill_name == "HP Potion0")
+	else if (skill_name == "Green Leaves")
 	{
 		return 4;
 	}
-	else if (skill_name == "MP Potion0")
+	else if (skill_name == "Recam")
 	{
 		return 5;
 	}
-	else if (skill_name == "Fire Jar0")
+	else if (skill_name == "Rainbow Grace")
 	{
 		return 6;
 	}
-	else if (skill_name == "Lightning Jar0")
+	else if (skill_name == "Anti-Shield")
 	{
 		return 7;
 	}

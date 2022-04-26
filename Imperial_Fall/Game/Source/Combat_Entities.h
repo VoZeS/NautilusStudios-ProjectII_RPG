@@ -145,6 +145,7 @@ public:
 	void Revive()
 	{
 		alive = 1;
+		actual_health = max_health / 2;
 	}
 
 	void UpdateShield();

@@ -181,6 +181,8 @@ private:
     SString folder;
     bool mapLoaded;
 
+	int coins_index = 0;
+
 };
 
 #endif // __MAP_H__
