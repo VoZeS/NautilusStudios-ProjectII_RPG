@@ -69,6 +69,8 @@ bool Combat_Manager::Start()
 		}
 
 		items = new Combat_Entities(); // items
+		LoadItemUses();
+		items_saved = false;
 
 		//set turn order
 		SetOrder();
@@ -112,6 +114,11 @@ bool Combat_Manager::PreUpdate()
 		else if (CheckCombatState() == 1)
 		{
 			app->menu->SetWinLoseScape(0); // win
+			if (!items_saved)
+			{
+				SaveItemUses();
+				items_saved = true;
+			}
 		}
 		else if (CheckCombatState() == 2)
 		{
@@ -313,6 +320,12 @@ bool Combat_Manager::CleanUp()
 	{
 		delete items;
 		items = nullptr;
+	}
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		s_item_uses[i] = 0;
+		f_item_uses[i] = 0;
 	}
 
 	return true;
@@ -1522,6 +1535,65 @@ int Combat_Manager::CheckCombatState()
 	}
 
 	return ret;
+}
+
+void Combat_Manager::LoadItemUses()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node set = saveGame.child("objects").child("items").child("uses");
+	
+	for (size_t i = 0; i < 4; i++)
+	{
+		std::string p = "item";
+		std::string s = std::to_string(app->combat_menu->GetItemByName(items->GetSkill(i).skill_name));
+		std::string t = p + s;
+		const char* c = t.c_str();
+
+		if (s != "-1")
+		{
+			if (set.attribute(c).as_int() > 3)
+			{
+				s_item_uses[i] = 3;
+			}
+			else
+			{
+				s_item_uses[i] = set.attribute(c).as_int();
+			}
+		}
+		else
+		{
+			s_item_uses[i] = 0;
+		}
+		
+		f_item_uses[i] = s_item_uses[i];
+	}
+}
+
+void Combat_Manager::SaveItemUses()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node set = saveGame.child("objects").child("items").child("uses");
+	int uses, used;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		std::string p = "item";
+		std::string s = std::to_string(app->combat_menu->GetItemByName(items->GetSkill(i).skill_name));
+		std::string t = p + s;
+		const char* c = t.c_str();
+
+		if (s != "-1")
+		{
+			uses = set.attribute(c).as_int();
+
+			used = s_item_uses[i] - f_item_uses[i];
+			set.attribute(c).set_value(uses - used);
+		}
+	}
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
 void Combat_Manager::KillPreparedEntities()

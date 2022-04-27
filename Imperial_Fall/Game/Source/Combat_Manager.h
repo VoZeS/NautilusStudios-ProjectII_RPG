@@ -87,6 +87,13 @@ public:
 
 	SDL_Texture* status_effects = NULL;
 
+	int s_item_uses[4] = { 0 };
+	int f_item_uses[4] = { 0 };
+	int GetItemUses(int n)
+	{
+		return f_item_uses[n];
+	}
+
 private:
 	bool preupdatedone = false;
 
@@ -100,6 +107,10 @@ private:
 	Combat_Entities* allies[4] = { NULL };
 	Combat_Entities* enemies[4] = { NULL };
 	Combat_Entities* items = NULL;
+
+	void LoadItemUses();
+	void SaveItemUses();
+	bool items_saved;
 
 	int animation_cd = 0;
 	int in_animation = 0; // 0 --> no, 1 --> starting, 2 --> in

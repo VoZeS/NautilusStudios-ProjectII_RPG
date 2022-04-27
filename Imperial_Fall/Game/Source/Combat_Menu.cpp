@@ -313,7 +313,7 @@ bool Combat_Menu::PreUpdate()
 					SDL_Rect rect = items_buttons[i].rect;
 					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 					{
-						if (i == 4 || app->inventory->GetItemUses(GetItemByName(app->combat_manager->GetItemList()->GetSkill(i).skill_name)) > 0)
+						if (i == 4 || app->combat_manager->GetItemUses(i) > 0)
 						{
 							chosed = i;
 							items_buttons[i].state = 1;
@@ -1589,7 +1589,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(0));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1598,7 +1598,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(1));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1607,7 +1607,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(2));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1616,7 +1616,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(3));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1647,7 +1647,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(0));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1656,7 +1656,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(1));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1665,7 +1665,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(2));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1674,7 +1674,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(3));
 					if (skill_prepared_is_item != -1)
 					{
-						UseItem(GetItemByName(skill_prepared.skill_name));
+						UseItem(skill_prepared_is_item);
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -2056,15 +2056,15 @@ bool Combat_Menu::PostUpdate()
 
 				app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 
-				if (i != 4 && app->inventory->GetItemUses(item_num) == 0)
+				if (i != 4 && app->combat_manager->GetItemUses(i) == 0)
 				{
 					e_rect = { 128, 0, 128, 128 };
 					app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 				}
 
-				if (item_num > -1 && app->inventory->GetItemUses(item_num) > 0)
+				if (item_num > -1 && app->combat_manager->GetItemUses(i) > 0)
 				{
-					app->fonts->BlitCombatText(items_buttons[i].rect.x + 100, items_buttons[i].rect.y + 100, app->fonts->textFont2, std::to_string(app->inventory->GetItemUses(item_num)).c_str());
+					app->fonts->BlitCombatText(items_buttons[i].rect.x + 100, items_buttons[i].rect.y + 100, app->fonts->textFont2, std::to_string(app->combat_manager->GetItemUses(i)).c_str());
 				}
 			}
 		}
@@ -2548,7 +2548,7 @@ int Combat_Menu::GetItemByName(const char* skill_name)
 	{
 		return 4;
 	}
-	else if (skill_name == "Recam")
+	else if (skill_name == "Recarm")
 	{
 		return 5;
 	}
@@ -2568,18 +2568,5 @@ int Combat_Menu::GetItemByName(const char* skill_name)
 
 void Combat_Menu::UseItem(int n)
 {
-	pugi::xml_document saveGame;
-	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
-	pugi::xml_node set = saveGame.child("objects").child("items").child("uses");
-	int uses;
-
-	std::string p = "item";
-	std::string s = std::to_string(n);
-	std::string t = p + s;
-	const char* c = t.c_str();
-
-	uses = set.attribute(c).as_int();
-	set.attribute(c).set_value(uses - 1);
-
-	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+	app->combat_manager->f_item_uses[n]--;
 }

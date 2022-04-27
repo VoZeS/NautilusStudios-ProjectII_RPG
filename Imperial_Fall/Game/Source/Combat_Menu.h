@@ -168,6 +168,8 @@ private:
 	uint heal_fx;
 	uint buff_fx;
 
+public:
+
 	int GetItemByName(const char* skill_name);
 	void UseItem(int n);
 
