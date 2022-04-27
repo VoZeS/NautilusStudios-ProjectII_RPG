@@ -44,7 +44,8 @@ enum class MOVE_TO
 	INSIDE_OUTSIDE,
 	INSIDE_COMBAT,
 	FROM_COMBAT,
-	RESET_COMBAT
+	RESET_COMBAT,
+	COMBAT_FINALCOMBAT
 };
 
 class Frontground : public Module

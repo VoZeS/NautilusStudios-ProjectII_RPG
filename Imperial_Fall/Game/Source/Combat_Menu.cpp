@@ -51,6 +51,10 @@ Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 	dragonAnim.PushBack({ 0, 0, 240, 240 });
 	dragonAnim.PushBack({ 240, 0, 240, 240 });
 	dragonAnim.speed = 0.02f;
+
+	theseionAnim.PushBack({ 68, 78, 46, 74 });
+	theseionAnim.PushBack({ 124, 78, 46, 74 });
+	theseionAnim.speed = 0.03f;
 }
 
 // Destructor
@@ -96,6 +100,7 @@ bool Combat_Menu::Start()
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
 		dragon = app->tex->Load("Assets/textures/dragon.png");
+		theseion = app->tex->Load("Assets/textures/Theseion.png");
 		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
@@ -244,6 +249,18 @@ bool Combat_Menu::PreUpdate()
 				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &dragonAnim)
 				{
 					app->combat_manager->GetEnemyByNumber(i)->current_anim = &dragonAnim;
+				}
+				break;
+			case 10:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &theseionAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &theseionAnim;
+				}
+				break;
+			case 11:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &theseionAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &theseionAnim;
 				}
 				break;
 			default:
@@ -1834,6 +1851,16 @@ bool Combat_Menu::PostUpdate()
 					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 80, enemies_buttons[i].rect.y - 150, &r);
 					break;
+				case 10:
+					texture = theseion;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 5, &r);
+					break;
+				case 11:
+					texture = theseion;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 5, &r);
+					break;
 				default:
 					texture = assassin_texture;
 					r = currentAnimation->GetCurrentFrame();
@@ -2255,6 +2282,10 @@ bool Combat_Menu::PostUpdate()
 	}
 	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 	{
+		SDL_Rect r_text = { 0, 0, 400, 50 };
+		app->render->DrawTexture(whitemark_400x50, 415 + c_x, 660 + c_y, &r_text);
+		app->fonts->BlitCombatText(415 + c_x, 660 + c_y + 10, app->fonts->textFont2, skill_prepared.skill_name);
+
 		if (skill_att_effect != ATT_EFFECT::EMPTY)
 		{
 			// fx

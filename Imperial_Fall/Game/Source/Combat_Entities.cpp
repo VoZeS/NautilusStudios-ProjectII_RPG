@@ -223,12 +223,52 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 		entity_type = 9;
 
-		max_health = 400;
+		max_health = 800;
 		actual_health = max_health;
-		max_mana = 400;
+		max_mana = 450;
 		actual_mana = max_mana;
 		this->speed = 80;
 		this->power = 100;
+		shield = 0;
+		shield_turns = 0;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
+	case ENEMIES::THESEION:
+		weak_to = 0;
+		alive = 1;
+		entity_type = 10;
+
+		max_health = 700;
+		actual_health = max_health;
+		max_mana = 150;
+		actual_mana = max_mana;
+		this->speed = 50;
+		this->power = 80;
+		shield = 0;
+		shield_turns = 0;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
+	case ENEMIES::NECRO_THESEION:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 11;
+
+		max_health = 700;
+		actual_health = max_health;
+		max_mana = 150;
+		actual_mana = max_mana;
+		this->speed = 50;
+		this->power = 80;
 		shield = 0;
 		shield_turns = 0;
 
@@ -325,7 +365,21 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 	}
 	else
 	{
-		actual_health -= amount;
+		if (bonus == SKILL_BONUS::NOTHING)
+		{
+			actual_health -= amount;
+		}
+		else if (bonus == SKILL_BONUS::CRITICAL)
+		{
+			if (actual_health <= max_health / 2)
+			{
+				actual_health -= amount * 2;
+			}
+			else
+			{
+				actual_health -= amount * 0.5;
+			}
+		}
 	}
 
 	if (actual_health <= 0)
@@ -333,6 +387,11 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		actual_health = 0;
 		prepared_to_die = true;
 		app->particles->AddParticle(app->particles->blood_smoke, position.x - 32, position.y - 35);
+
+		if (entity_type == 10)
+		{
+			app->menu->theseion2 = true;
+		}
 	}
 
 	return true;
@@ -343,6 +402,10 @@ void Combat_Entities::ReloadMana(int amount)
 	if (amount == -1)
 	{
 		actual_mana += max_mana / 2;
+	}
+	else if (amount == -2)
+	{
+		actual_mana += max_mana;
 	}
 	else
 	{
@@ -1919,7 +1982,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Recovery";	
 			skill.att_effect = ATT_EFFECT::LIGHTNING;
-			skill.mana_cost = 0;
+			skill.mana_cost = 2;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 2;
@@ -1940,7 +2003,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Bite";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.mana_cost = 80;
+			skill.mana_cost = 150;
 			skill.element = 0;
 			skill.att_strenght = 1;
 			skill.supp_strenght = 1;
@@ -1951,7 +2014,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Hell flame";
 			skill.att_effect = ATT_EFFECT::FIRE;
-			skill.mana_cost = 80;	
+			skill.mana_cost = 150;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 1;
 			skill.att_strenght = 0;
@@ -1962,7 +2025,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Earthquake";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 80;
+			skill.mana_cost = 150;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 1;
@@ -1973,13 +2036,110 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "FLAME OF CALAMITY";
 			skill.att_effect = ATT_EFFECT::FIRE;
-			skill.mana_cost = 0;
+			skill.mana_cost = 2;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 1;
 			skill.att_strenght = 3;
-			skill.supp_strenght = 2;
-			skill.support_type = SUPPORT_TYPE::RELOAD;
+			skill.zero_mana = true;
+			break;
+		}
+	}
+	else if (owner == 10) // THESEION
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "For the law weight";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.mana_cost = 30;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Praise me";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 60;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::RELAX;
+			skill.buff_turns = 3;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "You fools";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 35;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "I am the ruler";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 40;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 3;
+			break;
+		}
+	}
+	else if (owner == 11) // THESEION, THE NECROMANCER
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Law of the death";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.mana_cost = 30;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Praise the undeads";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 60;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DODGE;
+			skill.buff_turns = 3;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Fool ambitions to rest";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 35;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::STUN;
+			skill.buff_turns = 1;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "I will rule for ever";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 2;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 3;
 			skill.zero_mana = true;
 			break;
 		}

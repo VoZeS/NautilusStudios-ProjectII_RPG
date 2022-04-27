@@ -279,12 +279,13 @@ bool Menu::Start()
 		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
 
 		sub_newgame = false;
-
 		for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
 		{
 			ask_buttons[i].rect.w = 128;
 			ask_buttons[i].rect.h = 128;
 		}
+
+		theseion2 = false;
 	}
 
 	return true;
@@ -1229,7 +1230,21 @@ bool Menu::Update(float dt)
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && win_button.state == 1)
 			{
 				app->audio->PlayFx(click_sound);
-				app->frontground->ReturnToField();
+				if (!theseion2)
+				{
+					app->frontground->ReturnToField();
+				}
+				else
+				{
+					ENEMIES enemies[4];
+					enemies[0] = ENEMIES::NECRO_THESEION;
+					enemies[1] = ENEMIES::DRAGON;
+					enemies[2] = ENEMIES::NOTHING;
+					enemies[3] = ENEMIES::NOTHING;
+					app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
+					app->frontground->FadeInCombat(enemies, "999");
+				}
+				
 				win_button.state = 2;
 				kill_enemy = true;
 
@@ -2198,7 +2213,9 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	case 5: a = "Mushroom"; break;
 	case 6: a = "Goblin"; break;
 	case 7: a = "Skeleton"; break;
-	case 8: a = "Templar Master"; break;
+	case 9: a = "Lloyd, the reborn dragon"; break;
+	case 10: a = "Theseion"; break;
+	case 11: a = "Theseion, the necromancer"; break;
 	default: a = " "; break;
 	}
 	const char* res = a.c_str();

@@ -495,6 +495,10 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 9: rect = { 320, 0, 64, 64 };
 			  break;
+		case 10: rect = { 384, 0, 64, 64 };
+			   break;
+		case 11: rect = { 448, 0, 64, 64 };
+			   break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -533,6 +537,10 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 9: rect = { 320, 0, 64, 64 };
 			  break;
+		case 10: rect = { 384, 0, 64, 64 };
+			   break;
+		case 11: rect = { 448, 0, 64, 64 };
+			   break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -570,6 +578,10 @@ void Combat_Manager::UpdateHUD()
 		case 8: rect = { 256, 0, 64, 64 };
 			  break;
 		case 9: rect = { 320, 0, 64, 64 };
+			  break;
+		case 10: rect = { 384, 0, 64, 64 };
+			  break;
+		case 11: rect = { 448, 0, 64, 64 };
 			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
@@ -609,6 +621,10 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 9: rect = { 320, 0, 64, 64 };
 			  break;
+		case 10: rect = { 384, 0, 64, 64 };
+			   break;
+		case 11: rect = { 448, 0, 64, 64 };
+			   break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -683,6 +699,14 @@ void Combat_Manager::DisplayOrder(int cx, int cy)
 		break;
 	case 9: 
 		rect = { 320, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 10:
+		rect = { 384, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
+	case 11:
+		rect = { 448, 0, 64, 64 };
 		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
 		break;
 	}

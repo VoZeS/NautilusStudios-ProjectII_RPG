@@ -2,7 +2,7 @@
 <objects>
 	<items>
 		<unlocked item0="true" item1="true" item2="true" item3="true" item4="true" item5="true" item6="true" item7="true" />
-		<uses item0="3" item1="3" item2="3" item3="3" item4="3" item5="3" item6="3" item7="3" />
+		<uses item0="3" item1="3" item2="3" item3="1" item4="3" item5="3" item6="3" item7="3" />
 	</items>
 	<assassin>
 		<helmet gear1="true" gear2="true" gear3="true" gear4="true" />

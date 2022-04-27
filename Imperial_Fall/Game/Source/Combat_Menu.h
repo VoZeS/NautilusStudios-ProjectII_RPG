@@ -125,6 +125,7 @@ private:
 	Animation goblinAnim;
 	Animation skeletonAnim;
 	Animation dragonAnim;
+	Animation theseionAnim;
 
 	// positions
 	fPoint action_pos[NUM_BUTTONS];
@@ -151,6 +152,7 @@ private:
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* red_templar = NULL;
 	SDL_Texture* dragon = NULL;
+	SDL_Texture* theseion = NULL;
 	SDL_Texture* whitemark_400x50 = NULL;
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;

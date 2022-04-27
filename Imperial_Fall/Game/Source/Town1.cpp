@@ -107,12 +107,12 @@ bool Town1::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
 		ENEMIES enemies[4];
-		enemies[0] = ENEMIES::MUSHROOM;
-		enemies[1] = ENEMIES::DRAGON;
-		enemies[2] = ENEMIES::MUSHROOM;
-		enemies[3] = ENEMIES::MUSHROOM;
+		enemies[0] = ENEMIES::THESEION;
+		enemies[1] = ENEMIES::NOTHING;
+		enemies[2] = ENEMIES::NOTHING;
+		enemies[3] = ENEMIES::NOTHING;
 		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
-		app->frontground->FadeInCombat(enemies, "011");
+		app->frontground->FadeInCombat(enemies, "999");
 	}
 	else if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{

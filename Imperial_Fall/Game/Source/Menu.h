@@ -131,6 +131,9 @@ public:
 	int unlock_state; // 0 --> none, 1 --> moving, 2 --> stoped
 	SDL_Rect GetUnlockRect(std::string aei);
 
+	// final battle
+	bool theseion2 = false;
+
 private:
 
 	Cursor cursor;
