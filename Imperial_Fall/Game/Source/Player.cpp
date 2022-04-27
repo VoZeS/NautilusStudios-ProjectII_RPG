@@ -794,13 +794,13 @@ bool Player::Draw()
 		switch (char_control)
 		{
 		case 0:
-			/*app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f) }, c2_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f) }, c2_rect, 1, 1.0f, 0.0f);
 			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f) }, c1_rect, 1, 1.0f, 0.0f);
 			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f) }, c0_rect, 1, 1.0f, 0.0f);
 			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f) }, rect, 1, 1.0f, 0.0f);
-			*/
+			
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
-			if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
+			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
 			{
 				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
 				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
@@ -982,7 +982,7 @@ bool Player::Draw()
 				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
 				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
 				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}
+			}*/
 			break;
 		case 1:
 			/*app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f)}, c2_rect, 2, 1.0f, 0.0f);
