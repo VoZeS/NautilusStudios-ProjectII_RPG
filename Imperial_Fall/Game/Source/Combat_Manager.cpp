@@ -732,7 +732,7 @@ void Combat_Manager::DisplayOrder(int cx, int cy)
 
 void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entities* objective)
 {
-	if (user->GetActualMana() < skill.mana_cost)
+	if (user->GetActualMana() < skill.mana_cost - 2)
 	{
 		app->combat_menu->CancelAction();
 	}

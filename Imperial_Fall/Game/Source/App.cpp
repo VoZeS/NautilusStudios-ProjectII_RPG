@@ -24,6 +24,7 @@
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
+#include "End_Combat_Scene.h"
 #include "Dialog.h"
 #include "LogoScreen.h"
 
@@ -61,6 +62,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	outside = new Outside_Castle(false);
 	inside = new Inside_Castle(false);
 	combat_scene = new Combat_Scene(false);
+	end_combat_scene = new End_Combat_Scene(false);
 	dialog = new Dialog(false);
 	logo = new LogoScreen(true);
 
@@ -79,6 +81,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(outside);
 	AddModule(inside);
 	AddModule(combat_scene);
+	AddModule(end_combat_scene);
 	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);

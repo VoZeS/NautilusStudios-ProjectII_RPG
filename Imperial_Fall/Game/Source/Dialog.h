@@ -75,6 +75,8 @@ public:
 		return (in_shop != 0 || inDialog);
 	}
 
+	void PlayLetterSound();
+
 	void UpdateShop();
 	void ResetShop();
 	void SaveShop();
@@ -139,7 +141,6 @@ private:
 	uint letter_fx; // normal
 	uint letterA_fx; // agudo
 	uint letterG_fx; // grave
-	void PlayLetterSound();
 
 	SDL_Texture* whitemark_300x80 = NULL;
 	SDL_Texture* whitemark_1200x140 = NULL;

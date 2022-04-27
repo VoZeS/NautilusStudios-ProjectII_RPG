@@ -43,6 +43,7 @@ class Dungeon;
 class Outside_Castle;
 class Inside_Castle;
 class Combat_Scene;
+class End_Combat_Scene;
 class Dialog;
 class LogoScreen;
 
@@ -135,6 +136,7 @@ public:
 	Outside_Castle* outside;
 	Inside_Castle* inside;
 	Combat_Scene* combat_scene;
+	End_Combat_Scene* end_combat_scene;
 	Dialog* dialog;
 	LogoScreen* logo;
 

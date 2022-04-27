@@ -634,6 +634,13 @@ void Combat_Entities::AddDebuff(DEBUFF_TYPE type, int turns)
 			return;
 		}
 	}
+	else if (entity_type == 11)
+	{
+		if (type == DEBUFF_TYPE::STUN)
+		{
+			return;
+		}
+	}
 
 	if (FindDebuff(new_debuff) == -1)
 	{
@@ -939,7 +946,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_description0 = "Medium damage to a single target, this tactical";
 			skill.skill_description1 = "attack ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 15;
+			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 1;
@@ -952,7 +959,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_description1 = "damage hits more when the target is with low";
 			skill.skill_description2 = "health or hits less if the target is with high health";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 15;
+			skill.mana_cost = 25;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 1;
@@ -1151,7 +1158,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Field Shield";
 			skill.skill_description0 = "Give to all allies a small shield during one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 30;
+			skill.mana_cost = 40;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 0;
@@ -1163,7 +1170,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Great Heal";
 			skill.skill_description0 = "Heal a good amount of health to an ally.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 24;
+			skill.mana_cost = 34;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 1;
@@ -1174,8 +1181,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Relax";
 			skill.skill_description0 = "All allies obtain relax for 3 turns.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 35;
-			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.mana_cost = 100;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::RELAX;
 			skill.buff_turns = 3;
@@ -1185,7 +1192,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Field Clean";
 			skill.skill_description0 = "Clean all the debuffs from all allies.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 10;
+			skill.mana_cost = 40;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
@@ -1195,7 +1202,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Field Cancel";
 			skill.skill_description0 = "Remove all buffs of all targets.";
 			skill.att_effect = ATT_EFFECT::ANTI_HEAL;
-			skill.mana_cost = 15;
+			skill.mana_cost = 40;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 0;
 			skill.support_type = SUPPORT_TYPE::CLEAN_BUFFS;
@@ -1217,10 +1224,10 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_description0 = "Use a huge amount of mana to invoke the mana";
 			skill.skill_description1 = "spirit. All allies recover a good amount of mana.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 100;
+			skill.mana_cost = 200;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
-			skill.supp_strenght = 1;
+			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::RELOAD;
 			break;
 		}

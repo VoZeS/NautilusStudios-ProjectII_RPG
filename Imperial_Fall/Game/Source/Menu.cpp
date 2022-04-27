@@ -23,6 +23,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
@@ -1241,8 +1242,9 @@ bool Menu::Update(float dt)
 					enemies[1] = ENEMIES::DRAGON;
 					enemies[2] = ENEMIES::NOTHING;
 					enemies[3] = ENEMIES::NOTHING;
-					app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
+					app->frontground->move_to = MOVE_TO::COMBAT_FINALCOMBAT;
 					app->frontground->FadeInCombat(enemies, "999");
+					theseion2 = true;
 				}
 				
 				win_button.state = 2;
@@ -2183,6 +2185,7 @@ void Menu::DisableAll()
 	app->outside->Disable();
 	app->inside->Disable();
 	app->combat_scene->Disable();
+	app->end_combat_scene->Disable();
 }
 
 void Menu::InitPlayer()

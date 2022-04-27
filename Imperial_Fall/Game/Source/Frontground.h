@@ -119,6 +119,11 @@ private:
 
 	int direction = -1; // 0 --> down, 1 --> up, 2 --> right, 3 --> left
 
+	// cutscene
+	uint letlengh = 0;
+	int letter_cd = 0;
+	bool fix = true;
+
 public:
 	// controller
 	bool controller = false;

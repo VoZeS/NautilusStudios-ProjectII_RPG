@@ -19,6 +19,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 #include "Dialog.h"
 
@@ -111,7 +112,27 @@ bool Frontground::Update(float dt)
 	{
 		go_black = false;
 
-		FadeFromBlack();
+ 		if (!app->end_combat_scene->in_cutscene && fix)
+		{
+			FadeFromBlack();
+		}
+		else if (app->end_combat_scene->cutcene_cd > BLACK_TIME)
+		{
+			fix = false;
+			letter_cd ++;
+
+			if (letter_cd >= 60 * 0.05f && letlengh <= app->dialog->limitLenght)
+			{
+				letlengh++;
+				app->dialog->PlayLetterSound();
+				letter_cd = 0;
+			}
+
+			if (app->end_combat_scene->cutcene_cd == 199 + BLACK_TIME || app->end_combat_scene->cutcene_cd == 399 + BLACK_TIME)
+			{
+				letlengh = 0;
+			}
+		}
 	}
 	else if (a <= 0)
 	{
@@ -141,6 +162,25 @@ bool Frontground::PostUpdate()
 	}
 
 	app->render->DrawRectangle(r, 0, 0, 0, a);
+
+	if (app->end_combat_scene->in_cutscene && app->end_combat_scene->Enabled() && app->end_combat_scene->cutcene_cd > BLACK_TIME)
+	{
+		if (app->end_combat_scene->cutcene_cd < 199 + BLACK_TIME )
+		{
+			app->render->DrawTexture(app->end_combat_scene->whitemark_1200x140, 40 + c_x, 290 + c_y);
+			app->fonts->BlitTextLetter(300 + c_x, 320 + c_y, app->fonts->textFont1, "Pensabais que esto habia acabado????", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else if(app->end_combat_scene->cutcene_cd < 399 + BLACK_TIME)
+		{
+			app->render->DrawTexture(app->end_combat_scene->whitemark_1200x140, 40 + c_x, 290 + c_y);
+			app->fonts->BlitTextLetter(300 + c_x, 320 + c_y, app->fonts->textFont1, "Nunca podreis acabar conmigo!!!!", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else
+		{
+			return_black = true;
+			fix = true;
+		}
+	}
 
 	return true;
 }
@@ -264,8 +304,8 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::RESET_COMBAT: app->combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
 		break;
-	case MOVE_TO::COMBAT_FINALCOMBAT: app->combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
-		break;
+	case MOVE_TO::COMBAT_FINALCOMBAT: app->end_combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
+		return_black = false; break;
 	default:
 		break;
 	}
@@ -301,7 +341,10 @@ bool Frontground::ReturnToField()
 
 bool Frontground::ResetCombat()
 {
-	move_to = MOVE_TO::RESET_COMBAT;
+	if (move_to != MOVE_TO::COMBAT_FINALCOMBAT)
+	{
+		move_to = MOVE_TO::RESET_COMBAT;
+	}
 
 	FadeToBlack();
 

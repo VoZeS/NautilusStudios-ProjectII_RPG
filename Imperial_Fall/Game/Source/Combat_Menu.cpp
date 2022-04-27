@@ -1854,12 +1854,12 @@ bool Combat_Menu::PostUpdate()
 				case 10:
 					texture = theseion;
 					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 5, &r);
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x + 5, enemies_buttons[i].rect.y + 5, &r);
 					break;
 				case 11:
 					texture = theseion;
 					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-					app->render->DrawTexture(texture, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 5, &r);
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x + 5, enemies_buttons[i].rect.y + 5, &r);
 					break;
 				default:
 					texture = assassin_texture;
