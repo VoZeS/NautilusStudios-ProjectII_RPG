@@ -27,7 +27,7 @@ private:
 	bool Save(pugi::xml_node&);
 
 private:
-	int w = 20, h = 8;
+	int w = 20, h = 12;
 	int npc_type = 0; // renato = 1, curandero = 2, herrero = 3, granjero = 4, aldeano = 5
 
 public:

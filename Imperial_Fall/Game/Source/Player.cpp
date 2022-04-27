@@ -794,10 +794,10 @@ bool Player::Draw()
 		switch (char_control)
 		{
 		case 0:
-			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 65.0f) }, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 65.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 65.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 			
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
 			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
@@ -985,10 +985,10 @@ bool Player::Draw()
 			}*/
 			break;
 		case 1:
-			app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 65.0f)}, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 65.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 65.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f)}, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 			
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
 			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
@@ -1176,10 +1176,10 @@ bool Player::Draw()
 			}*/
 			break;
 		case 2:
-			app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 65.0f)}, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 65.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 65.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f)}, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 			
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
 			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
@@ -1367,10 +1367,10 @@ bool Player::Draw()
 			}*/
 			break;
 		case 3:
-			app->render->AddrenderObject(app->entities->healer_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 65.0f)}, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 65.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 65.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f)}, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 			
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
 			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
