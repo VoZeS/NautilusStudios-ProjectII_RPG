@@ -46,7 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding(true);
 	physics = new Physics(true);
 	entities = new Entities(false);
-	fonts = new Fonts(false);
+	fonts = new Fonts(true);
 	combat_manager = new Combat_Manager(false);
 	combat_menu = new Combat_Menu(false);
 	menu = new Menu(true);

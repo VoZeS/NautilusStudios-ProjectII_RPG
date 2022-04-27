@@ -2908,7 +2908,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '2') // boots
 		{
-			set = hero.child("chest");
+			set = hero.child("boots");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -2928,7 +2928,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '3') // weapon
 		{
-			set = hero.child("chest");
+			set = hero.child("weapon");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -2992,7 +2992,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '2') // boots
 		{
-			set = hero.child("chest");
+			set = hero.child("boots");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -3012,7 +3012,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '3') // weapon
 		{
-			set = hero.child("chest");
+			set = hero.child("weapon");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -3076,7 +3076,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '2') // boots
 		{
-			set = hero.child("chest");
+			set = hero.child("boots");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -3096,7 +3096,7 @@ void Inventory::UnlockObject(const char* aei)
 		}
 		else if (aei[1] == '3') // weapon
 		{
-			set = hero.child("chest");
+			set = hero.child("weapon");
 			if (aei[2] == '1')
 			{
 				set.attribute("gear1").set_value(true);
@@ -3121,14 +3121,38 @@ void Inventory::UnlockObject(const char* aei)
 
 		switch (aei[1])
 		{
-		case '0': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '1': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '2': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '3': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '4': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '5': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '6': hero.child("unlocked").attribute("item0").set_value(true); break;
-		case '7': hero.child("unlocked").attribute("item0").set_value(true); break;
+		case '0': 
+			hero.child("unlocked").attribute("item0").set_value(true);
+			hero.child("uses").attribute("item0").set_value(hero.child("uses").attribute("item0").as_int() + (aei[2] - '0'));
+			break;
+		case '1': 
+			hero.child("unlocked").attribute("item1").set_value(true);
+			hero.child("uses").attribute("item1").set_value(hero.child("uses").attribute("item1").as_int() + (aei[2] - '0'));
+			break;
+		case '2': 
+			hero.child("unlocked").attribute("item2").set_value(true);
+			hero.child("uses").attribute("item2").set_value(hero.child("uses").attribute("item2").as_int() + (aei[2] - '0'));
+			break;
+		case '3': 
+			hero.child("unlocked").attribute("item3").set_value(true);
+			hero.child("uses").attribute("item3").set_value(hero.child("uses").attribute("item3").as_int() + (aei[2] - '0'));
+			break;
+		case '4': 
+			hero.child("unlocked").attribute("item4").set_value(true);
+			hero.child("uses").attribute("item4").set_value(hero.child("uses").attribute("item4").as_int() + (aei[2] - '0'));
+			break;
+		case '5': 
+			hero.child("unlocked").attribute("item5").set_value(true);
+			hero.child("uses").attribute("item5").set_value(hero.child("uses").attribute("item5").as_int() + (aei[2] - '0'));
+			break;
+		case '6': 
+			hero.child("unlocked").attribute("item6").set_value(true);
+			hero.child("uses").attribute("item6").set_value(hero.child("uses").attribute("item6").as_int() + (aei[2] - '0'));
+			break;
+		case '7': 
+			hero.child("unlocked").attribute("item7").set_value(true);
+			hero.child("uses").attribute("item7").set_value(hero.child("uses").attribute("item7").as_int() + (aei[2] - '0'));
+			break;
 		}
 	}
 

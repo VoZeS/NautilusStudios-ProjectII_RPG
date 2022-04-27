@@ -144,24 +144,24 @@ bool Dialog::Start()
 		shop1[3].cost = 15;
 
 		// medico
-		shop2[0].item = "40";
+		shop2[0].item = "403";
 		shop2[0].cost = 5;
-		shop2[1].item = "41";
+		shop2[1].item = "413";
 		shop2[1].cost = 8;
-		shop2[2].item = "44";
+		shop2[2].item = "442";
 		shop2[2].cost = 5;
-		shop2[3].item = "45";
+		shop2[3].item = "452";
 		shop2[3].cost = 8;
 
 		// granjero
-		shop3[0].item = "40";
-		shop3[0].cost = 5;
-		shop3[1].item = "40";
-		shop3[1].cost = 5;
-		shop3[2].item = "40";
-		shop3[2].cost = 5;
-		shop3[3].item = "40";
-		shop3[3].cost = 5;
+		shop3[0].item = "501";
+		shop3[0].cost = 10;
+		shop3[1].item = "511";
+		shop3[1].cost = 10;
+		shop3[2].item = "521";
+		shop3[2].cost = 10;
+		shop3[3].item = "531";
+		shop3[3].cost = 10;
 	}
 	else if (app->frontground->adventure_phase == 1)
 	{
@@ -176,24 +176,24 @@ bool Dialog::Start()
 		shop1[3].cost = 15;
 
 		// medico
-		shop2[0].item = "40";
+		shop2[0].item = "403";
 		shop2[0].cost = 5;
-		shop2[1].item = "41";
+		shop2[1].item = "413";
 		shop2[1].cost = 8;
-		shop2[2].item = "44";
+		shop2[2].item = "443";
 		shop2[2].cost = 5;
-		shop2[3].item = "45";
+		shop2[3].item = "453";
 		shop2[3].cost = 8;
 
 		// granjero
-		shop2[0].item = "40";
-		shop2[0].cost = 5;
-		shop2[1].item = "40";
-		shop2[1].cost = 5;
-		shop2[2].item = "40";
-		shop2[2].cost = 5;
-		shop2[3].item = "40";
-		shop2[3].cost = 5;
+		shop3[0].item = "501";
+		shop3[0].cost = 10;
+		shop3[1].item = "511";
+		shop3[1].cost = 10;
+		shop3[2].item = "521";
+		shop3[2].cost = 10;
+		shop3[3].item = "531";
+		shop3[3].cost = 10;
 	}
 	
 	whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
@@ -203,6 +203,22 @@ bool Dialog::Start()
 	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 	hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
 	hover_playing = false;
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+
+
+	std::string p = "selled";
+	std::string s;
+	for (size_t i = 0; i < 4; i++)
+	{
+		s = std::to_string(i);
+		std::string t = p + s;
+		const char* c = t.c_str();
+		shop1[i].selled = saveGame.child("objects").child("shops").child("shop1").attribute(c).as_bool();
+		shop2[i].selled = saveGame.child("objects").child("shops").child("shop2").attribute(c).as_bool();
+		shop3[i].selled = saveGame.child("objects").child("shops").child("shop3").attribute(c).as_bool();
+	}
 
 	return true;
 }
@@ -461,7 +477,15 @@ bool Dialog::Update(float dt)
 			{
 				if (chosed == 0)
 				{
-					app->inventory->UnlockObject(item_saved->item.c_str());
+					if (item_saved->item[0] == '5')
+					{
+						app->inventory->AddSkillPoint(item_saved->item[1] - '0', item_saved->item[2] - '0');
+					}
+					else
+					{
+						app->inventory->UnlockObject(item_saved->item.c_str());
+					}
+					
 					app->inventory->AddCoins(-item_saved->cost);
 					item_saved->selled = true;
 				}
@@ -633,11 +657,11 @@ bool Dialog::PostUpdate()
 				for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 				{
 					s_rect = app->menu->GetUnlockRect(shop1[i].item);
-					if (shop1[i].item[0] != '4')
+					if (shop1[i].item[0] != '4' && shop1[i].item[0] != '5')
 					{
 						app->render->DrawTexture(app->inventory->gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
-					else if (shop1[i].item[0] == '4')
+					else if (shop1[i].item[0] == '4' || shop1[i].item[0] == '5')
 					{
 						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
@@ -657,11 +681,11 @@ bool Dialog::PostUpdate()
 				for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 				{
 					s_rect = app->menu->GetUnlockRect(shop2[i].item);
-					if (shop2[i].item[0] != '4')
+					if (shop2[i].item[0] != '4' && shop2[i].item[0] != '5')
 					{
 						app->render->DrawTexture(app->inventory->gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
-					else if (shop2[i].item[0] == '4')
+					else if (shop2[i].item[0] == '4' || shop2[i].item[0] == '5')
 					{
 						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
@@ -681,11 +705,11 @@ bool Dialog::PostUpdate()
 				for (size_t i = 0; i < NUM_SHOP_BUTTONS; i++)
 				{
 					s_rect = app->menu->GetUnlockRect(shop3[i].item);
-					if (shop3[i].item[0] != '4')
+					if (shop3[i].item[0] != '4' && shop3[i].item[0] != '5')
 					{
 						app->render->DrawTexture(app->inventory->gear_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
-					else if (shop3[i].item[0] == '4')
+					else if (shop3[i].item[0] == '4' || shop3[i].item[0] == '5')
 					{
 						app->render->DrawTexture(app->inventory->items_tex, shop_buttons[i].rect.x, shop_buttons[i].rect.y, &s_rect);
 					}
@@ -990,8 +1014,102 @@ std::string Dialog::GetObjectForShop(const char* aei)
 			s = "Baston de nivel " + std::to_string(aei[2] - '0') + " para mago";
 		}
 	}
+	else if (aei[0] == '4') // items
+	{
+		if (aei[1] == '0') // helmet
+		{
+			s = "HP Potion";
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			s = "MP Potion";
+		}
+		else if (aei[1] == '2') // boots
+		{
+			s = "Fire Jar";
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			s = "Lightning Jar";
+		}
+		else if (aei[1] == '4') // helmet
+		{
+			s = "Green Leaves";
+		}
+		else if (aei[1] == '5') // chestplate
+		{
+			s = "Recarm";
+		}
+		else if (aei[1] == '6') // boots
+		{
+			s = "Rainbow Grace";
+		}
+		else if (aei[1] == '7') // weapon
+		{
+			s = "Anti-Shield";
+		}
+	}
+	else if (aei[0] == '5') // wizard
+	{
+		if (aei[1] == '0') // helmet
+		{
+			s = "Skill Book for assassin";
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			s = "Skill Book for healer";
+		}
+		else if (aei[1] == '2') // boots
+		{
+			s = "Skill Book for tank";
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			s = "Skill Book for wizard";
+		}
+	}
 
 	return s;
+}
+
+void Dialog::ResetShop()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+
+	std::string p = "selled";
+	std::string s;
+	for (size_t i = 0; i < 4; i++)
+	{
+		s = std::to_string(i);
+		std::string t = p + s;
+		const char* c = t.c_str();
+		shop1[i].selled = saveGame.child("objects").child("shops").child("shop1").attribute(c).set_value(false);
+		shop2[i].selled = saveGame.child("objects").child("shops").child("shop2").attribute(c).set_value(false);
+		shop3[i].selled = saveGame.child("objects").child("shops").child("shop3").attribute(c).set_value(false);
+	}
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
+void Dialog::SaveShop()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+
+	std::string p = "selled";
+	std::string s;
+	for (size_t i = 0; i < 4; i++)
+	{
+		s = std::to_string(i);
+		std::string t = p + s;
+		const char* c = t.c_str();
+		saveGame.child("objects").child("shops").child("shop1").attribute(c).set_value(shop1[i].selled);
+		saveGame.child("objects").child("shops").child("shop2").attribute(c).set_value(shop2[i].selled);
+		saveGame.child("objects").child("shops").child("shop3").attribute(c).set_value(shop3[i].selled);
+	}
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
 bool Dialog::InAnyButton()

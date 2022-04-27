@@ -76,6 +76,8 @@ public:
 	}
 
 	void UpdateShop();
+	void ResetShop();
+	void SaveShop();
 
 private:
 	

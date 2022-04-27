@@ -70,7 +70,7 @@ private:
 	Companion c2;
 
 private:
-	int w = 20, h = 32;
+	int w = 20, h = 28;
 	float speed = 0.3f;
 	bool collision_active;
 	b2Fixture* bodyFixture;

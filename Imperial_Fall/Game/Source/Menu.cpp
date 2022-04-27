@@ -155,8 +155,10 @@ bool Menu::Start()
 
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
+		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
 		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
+		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -276,6 +278,14 @@ bool Menu::Start()
 		object_buttons[1].rect.w = 500;
 		unlock_fx = app->audio->LoadFx("Assets/audio/fx/unlock.wav");
 		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
+
+		sub_newgame = false;
+
+		for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+		{
+			ask_buttons[i].rect.w = 128;
+			ask_buttons[i].rect.h = 128;
+		}
 	}
 
 	return true;
@@ -372,7 +382,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && !settings)
+			else if (intro && !settings && !sub_newgame)
 			{
 				for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 				{
@@ -402,6 +412,27 @@ bool Menu::PreUpdate()
 					else
 					{
 						menu_buttons[i].state = 0;
+					}
+				}
+			}
+			else if (intro && !settings && sub_newgame)
+			{
+				for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+				{
+					SDL_Rect rect = ask_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						ask_buttons[i].state = 1;
+					}
+					else
+					{
+						ask_buttons[i].state = 0;
 					}
 				}
 			}
@@ -1026,7 +1057,7 @@ bool Menu::Update(float dt)
 					break;
 
 				case 5: // NEW GAME
-					if (!started)
+					if (!started && app->frontground->first_time)
 					{
 						app->LoadGame(true); // load now, not at frames end
 						app->frontground->SetFirstTime(false);
@@ -1042,6 +1073,11 @@ bool Menu::Update(float dt)
 						app->inventory->ResetGear();
 						app->inventory->ResetSkills();
 						app->physics->ResetMiscelanea();
+						app->dialog->ResetShop();
+					}
+					else if (!app->frontground->first_time)
+					{
+						sub_newgame = true;
 					}
 					break;
 				}
@@ -1049,6 +1085,40 @@ bool Menu::Update(float dt)
 				{
 					menu_buttons[chosed].state = 2;
 				}
+			}
+		}
+
+		if (sub_newgame)
+		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && ask_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					app->LoadGame(true); // load now, not at frames end
+					app->frontground->SetFirstTime(false);
+					app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
+					app->frontground->FadeToBlack();
+					saving = false;
+					intro = false;
+					paused = false;
+					app->frontground->adventure_phase = 0;
+					subplaymenu = false;
+					app->inventory->BlockAll();
+					app->inventory->ResetItems();
+					app->inventory->ResetGear();
+					app->inventory->ResetSkills();
+					app->physics->ResetMiscelanea();
+					app->dialog->ResetShop();
+					sub_newgame = false;
+					break;
+				case 1:
+					sub_newgame = false;
+					break;
+				}
+
+				ask_buttons[chosed].state = 2;
 			}
 		}
 
@@ -1603,6 +1673,56 @@ bool Menu::PostUpdate()
 			{
 				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 70, PauseMenuHUD.y);
 			}
+		}
+
+		if (sub_newgame)
+		{
+			app->render->DrawTexture(whitemark_800x150, 240 + c_x, 300 + c_y);
+
+			SDL_Rect b0;
+			if (ask_buttons[0].state == 0)
+			{
+				b0 = { 0, 0, 128, 128 };
+			}
+			else if (ask_buttons[0].state == 1)
+			{
+				b0 = { 0, 128, 128, 128 };
+			}
+			else if (ask_buttons[0].state == 2)
+			{
+				b0 = { 0, 256, 128, 128 };
+			}
+
+			SDL_Rect b1;
+			if (ask_buttons[1].state == 0)
+			{
+				b1 = { 0, 0, 128, 128 };
+			}
+			else if (ask_buttons[1].state == 1)
+			{
+				b1 = { 0, 128, 128, 128 };
+			}
+			else if (ask_buttons[1].state == 2)
+			{
+				b1 = { 0, 256, 128, 128 };
+			}
+
+			SDL_Rect a_rect = { 0, 0, 128, 128 };
+			std::string p_siting;
+
+			ask_buttons[0].rect.x = 400 + c_x;
+			ask_buttons[0].rect.y = 400 + c_y;
+			ask_buttons[1].rect.x = ask_buttons[0].rect.x + 300;
+			ask_buttons[1].rect.y = ask_buttons[0].rect.y;
+			app->render->DrawTexture(whitemark_128x128, ask_buttons[0].rect.x, ask_buttons[0].rect.y, &b0);
+			app->render->DrawTexture(whitemark_128x128, ask_buttons[1].rect.x, ask_buttons[1].rect.y, &b1);
+			app->render->DrawTexture(accept_tex, ask_buttons[0].rect.x, ask_buttons[0].rect.y, &a_rect);
+			a_rect = { 128, 0, 128, 128 };
+			app->render->DrawTexture(accept_tex, ask_buttons[1].rect.x, ask_buttons[1].rect.y, &a_rect);
+			p_siting = "Are you sure to start again?";
+			app->fonts->BlitCombatText(320 + c_x, 310 + c_y, app->fonts->textFont3, p_siting.c_str());
+			p_siting = "You will lose the actual save.";
+			app->fonts->BlitCombatText(320 + c_x, 350 + c_y, app->fonts->textFont3, p_siting.c_str());
 		}
 
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
@@ -2306,6 +2426,13 @@ bool Menu::InAnyButton()
 			return true;
 		}
 	}
+	for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+	{
+		if (ask_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -2647,6 +2774,16 @@ SDL_Rect Menu::GetUnlockRect(std::string aei)
 		case '5': res = { 256, 128, 128, 128 }; break;
 		case '6': res = { 384, 128, 128, 128 }; break;
 		case '7': res = { 512, 128, 128, 128 }; break;
+		}
+	}
+	else if (aei[0] == '5') // items
+	{
+		switch (aei[1])
+		{
+		case '0': res = { 128, 256, 128, 128 }; break;
+		case '1': res = { 256, 256, 128, 128 }; break;
+		case '2': res = { 384, 256, 128, 128 }; break;
+		case '3': res = { 512, 256, 128, 128 }; break;
 		}
 	}
 

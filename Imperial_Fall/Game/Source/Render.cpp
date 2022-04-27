@@ -85,7 +85,7 @@ bool Render::Update(float dt)
 		camera.x = 0;
 		camera.y = 0;
 	}
-	
+	/*
 	if (app->frontground->current_level == 1)
 	{
 		if (camera.x > 0)
@@ -226,7 +226,7 @@ bool Render::Update(float dt)
 		{
 			camera.y = -600;
 		}
-	}
+	}*/
 
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 

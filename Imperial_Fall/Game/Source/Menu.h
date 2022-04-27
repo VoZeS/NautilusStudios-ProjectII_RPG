@@ -12,6 +12,7 @@
 #define NUM_SCAPE_BUTTONS 2
 #define NUM_SETTINGS_BUTTONS 4
 #define NUM_OBJECT_BUTTONS 2
+#define NUM_ASK_BUTTONS 2
 
 struct Button {
 	SDL_Rect rect = { 0, 0, 220, 70 };
@@ -162,6 +163,7 @@ private:
 	Button win_button;
 	Button lose_buttons[NUM_LOSE_BUTTONS];
 	Button scape_buttons[NUM_SCAPE_BUTTONS];
+	Button ask_buttons[NUM_ASK_BUTTONS];
 
 	SDL_Texture* combat_back = NULL;
 	SDL_Texture* combat_win = NULL;
@@ -170,8 +172,10 @@ private:
 
 	SDL_Texture* whitemark_128x128 = NULL;
 	SDL_Texture* whitemark_500x70 = NULL;
+	SDL_Texture* whitemark_800x150 = NULL;
 	SDL_Texture* whitemark_1240x680 = NULL;
 	SDL_Texture* skills_icons = NULL;
+	SDL_Texture* accept_tex = NULL;
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;
@@ -208,6 +212,9 @@ private:
 	SDL_Texture* gear_tex;
 	SDL_Texture* items_tex;
 	Button object_buttons[NUM_OBJECT_BUTTONS];
+
+	// ask new game
+	bool sub_newgame;
 	
 };
 

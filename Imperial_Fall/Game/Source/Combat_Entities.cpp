@@ -704,7 +704,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 5:
 			skill.owner = owner;
-			skill.skill_name = "Recam";
+			skill.skill_name = "Recarm";
 			skill.skill_description0 = "Revive an ally.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;

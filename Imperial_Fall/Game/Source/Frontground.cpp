@@ -20,6 +20,7 @@
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
 #include "LogoScreen.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -393,4 +394,17 @@ void Frontground::SetController()
 {
 	app->menu->SetController();
 	app->combat_menu->SetController();
+}
+
+void Frontground::SaveStartUp()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+	saveGame.child("started").child("current_level").attribute("value").set_value(current_level);
+	saveGame.child("started").child("adventure_phase").attribute("value").set_value(adventure_phase);
+
+	saveGame.save_file(STARTED_FILENAME);
+
+	app->dialog->SaveShop();
 }
