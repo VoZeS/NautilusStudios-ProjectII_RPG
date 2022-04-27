@@ -90,6 +90,7 @@ void Map::Draw()
 								pos.x,
 								pos.y,
 								&r);
+							
 						}
 					}
 
