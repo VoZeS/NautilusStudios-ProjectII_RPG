@@ -125,7 +125,7 @@ public:
 	int walk_cd = 320;
 
 	int look_dir; // 0 --> up, 1 --> down, 2 --> left, 3 --> right
-
+	
 };
 
 #endif
