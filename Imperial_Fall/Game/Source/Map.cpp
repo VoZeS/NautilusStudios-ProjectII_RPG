@@ -6,6 +6,7 @@
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
+#include "Frontground.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -53,6 +54,11 @@ bool Map::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		collision_loaded = false;
+		coins_index = 0;
+		books0_index = 0;
+		books1_index = 0;
+		books2_index = 0;
+		books3_index = 0;
 	}
 
 	return true;
@@ -65,6 +71,8 @@ void Map::Draw()
 	
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
+
+	//app->physics->CleanNormalCollisions();
 
 	while (mapLayerItem != NULL) {
 		
@@ -83,8 +91,8 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50 ) &&
-							(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
 						{
 							app->render->DrawTexture(tileset->texture,
 								pos.x,
@@ -93,11 +101,40 @@ void Map::Draw()
 						}
 					}
 
+					/*int width = mapLayerItem->data->properties.GetProperty("Width");
+					int height = mapLayerItem->data->properties.GetProperty("Height");
+					int w, h;
+
+					if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
+					{
+						// collision ground
+						for (size_t i = 0; i < 20; i++)
+						{
+							for (size_t j = 0; j < 20; j++)
+							{
+								w = r.w * width / 20 * i;
+								h = r.h * height / 20 * j;
+								if ((-app->render->camera.x < pos.x + 350 && -app->render->camera.x > pos.x - 730) &&
+									(-app->render->camera.y < pos.y - 260 && -app->render->camera.y > pos.y - 400))
+								{
+									app->physics->CreateNormalCollisions(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+									break;
+								}
+								else if ((-app->render->camera.x < pos.x + 350 + w && -app->render->camera.x > pos.x - 730 + w) &&
+									(-app->render->camera.y < pos.y - 260 + h && -app->render->camera.y > pos.y - 400 + h))
+								{
+									app->physics->CreateNormalCollisions(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+									break;
+								}
+							}
+						}
+					}*/
+
 					if (!collision_loaded)
 					{
 						int width = mapLayerItem->data->properties.GetProperty("Width");
 						int height = mapLayerItem->data->properties.GetProperty("Height");
-						
+
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
@@ -138,7 +175,8 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
@@ -151,6 +189,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -164,6 +203,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -177,6 +217,7 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
 						}
@@ -190,8 +231,175 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
 								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
 							}
+						}
+						// ------------------------ miscelanea
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 20)
+						{
+							// coins
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "coins_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(coins_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("coins").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 20);
+							}
+							coins_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 22)
+						{
+							// assassin book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(books0_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books0").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 22);
+							}
+							books0_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 26)
+						{
+							// assassin book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(books1_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books1").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 26);
+							}
+							books1_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 27)
+						{
+							// assassin book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(books2_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books2").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 27);
+							}
+							books2_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 28)
+						{
+							// assassin book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(books3_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books3").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 28);
+							}
+							books3_index++;
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
@@ -320,6 +528,29 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	}
 
 	return set;
+}
+
+std::string Map::IntToString(int n)
+{
+	std::string s;
+	std::string r;
+
+	if (n < 10)
+	{
+		s = std::to_string(n);
+		r = "00" + s;
+	}
+	else if (n < 100)
+	{
+		s = std::to_string(n);
+		r = "0" + s;
+	}
+	else
+	{
+		r = std::to_string(n);
+	}
+
+	return r;
 }
 
 // Get relative Tile rectangle

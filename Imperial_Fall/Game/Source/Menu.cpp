@@ -7,7 +7,9 @@
 #include "Scene.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Dialog.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Player.h"
 #include "Defs.h"
@@ -129,6 +131,7 @@ bool Menu::Start()
 		chosed = 0;
 		app->win->GetWindowSize(win_w, win_h);
 
+		open_book_sound = app->audio->LoadFx("Assets/audio/fx/open_book.wav");
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
 
@@ -150,9 +153,12 @@ bool Menu::Start()
 			settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1);
 		}
 
+		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
+		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
 		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
+		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -259,6 +265,27 @@ bool Menu::Start()
 
 		hover_playing = false;
 		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
+
+		// unlock animation
+		unlock_cd = 120;
+		unlock_state = 0;
+		unlock_pos = { 576, 200 };
+		unlock_rect = { 0, 0, 128, 128 };
+		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
+		gear_tex = app->tex->Load("Assets/textures/gear.png");
+		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
+		object_buttons[0].rect.w = 500;
+		object_buttons[1].rect.w = 500;
+		unlock_fx = app->audio->LoadFx("Assets/audio/fx/unlock.wav");
+		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
+
+		sub_newgame = false;
+
+		for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+		{
+			ask_buttons[i].rect.w = 128;
+			ask_buttons[i].rect.h = 128;
+		}
 	}
 
 	return true;
@@ -279,13 +306,27 @@ bool Menu::PreUpdate()
 		app->entities->KillEnemy();
 	}
 
+	if (object_obtained && app->inventory->Enabled() && app->frontground->GetA() <= 50)
+	{
+		unlock_state = 1;
+		object_obtained = false;
+		app->audio->PlayFx(unlock_fx);
+	}
+
 	if (!app->frontground->controller) // keyboard
 	{
-		//app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
-
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide && unlock_state == 0
+			&& !app->dialog->InDialog())
 		{
 			paused = !paused;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && !paused && !settings && description_disabled
+			&& app->inventory->hide && app->inventory->Enabled() && unlock_state == 0)
+		{
+			app->inventory->hide = false;
+			app->inventory->SetTextCd(30);
+			app->audio->PlayFx(open_book_sound);
 		}
 
 		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -341,7 +382,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && !settings)
+			else if (intro && !settings && !sub_newgame)
 			{
 				for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 				{
@@ -350,7 +391,7 @@ bool Menu::PreUpdate()
 					{
 						if (!hover_playing)
 						{
-							if (firstime && i == 4) {}
+							if (app->frontground->first_time && i == 4) {}
 							else
 							{
 								if (subplaymenu && (i == 4 || i == 5))
@@ -371,6 +412,27 @@ bool Menu::PreUpdate()
 					else
 					{
 						menu_buttons[i].state = 0;
+					}
+				}
+			}
+			else if (intro && !settings && sub_newgame)
+			{
+				for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+				{
+					SDL_Rect rect = ask_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						ask_buttons[i].state = 1;
+					}
+					else
+					{
+						ask_buttons[i].state = 0;
 					}
 				}
 			}
@@ -453,6 +515,33 @@ bool Menu::PreUpdate()
 					else
 					{
 						scape_buttons[i].state = 0;
+					}
+				}
+			}
+
+			if (unlock_state == 2)
+			{
+				for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+				{
+					SDL_Rect rect = object_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (i == 0 && app->frontground->reward[0] == '4')
+						{}
+						else
+						{
+							if (!hover_playing)
+							{
+								app->audio->PlayFx(hover_sound);
+								hover_playing = true;
+							}
+							chosed = i;
+							object_buttons[i].state = 1;
+						}
+					}
+					else
+					{
+						object_buttons[i].state = 0;
 					}
 				}
 			}
@@ -676,7 +765,7 @@ bool Menu::PreUpdate()
 				}
 				else if (menu_buttons[5].state == 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !firstime)
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !app->frontground->first_time)
 					{
 						menu_buttons[5].state = 0;
 						menu_buttons[4].state = 1;
@@ -896,7 +985,7 @@ bool Menu::Update(float dt)
 					subplaymenu = true;
 					if (app->frontground->controller)
 					{
-						if (firstime)
+						if (app->frontground->first_time)
 						{
 							menu_buttons[0].state = 0;
 							menu_buttons[5].state = 1;
@@ -937,7 +1026,7 @@ bool Menu::Update(float dt)
 					break;
 
 				case 4: // PLAY AND CONTINUE
-					if (!started && !firstime)
+					if (!started && !app->frontground->first_time)
 					{
 						app->LoadGameRequest(false);
 						switch (app->frontground->current_level)
@@ -963,22 +1052,32 @@ bool Menu::Update(float dt)
 						saving = true;
 						intro = false;
 						paused = false;
-						//started = true;
 						subplaymenu = false;
 					}
 					break;
 
 				case 5: // NEW GAME
-					if (!started)
+					if (!started && app->frontground->first_time)
 					{
 						app->LoadGame(true); // load now, not at frames end
+						app->frontground->SetFirstTime(false);
 						app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
 						app->frontground->FadeToBlack();
 						saving = false;
 						intro = false;
 						paused = false;
-						app->menu->redtemplar_killed = false;
+						app->frontground->adventure_phase = 0;
 						subplaymenu = false;
+						app->inventory->BlockAll();
+						app->inventory->ResetItems();
+						app->inventory->ResetGear();
+						app->inventory->ResetSkills();
+						app->physics->ResetMiscelanea();
+						app->dialog->ResetShop();
+					}
+					else if (!app->frontground->first_time)
+					{
+						sub_newgame = true;
 					}
 					break;
 				}
@@ -986,6 +1085,40 @@ bool Menu::Update(float dt)
 				{
 					menu_buttons[chosed].state = 2;
 				}
+			}
+		}
+
+		if (sub_newgame)
+		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && ask_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					app->LoadGame(true); // load now, not at frames end
+					app->frontground->SetFirstTime(false);
+					app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
+					app->frontground->FadeToBlack();
+					saving = false;
+					intro = false;
+					paused = false;
+					app->frontground->adventure_phase = 0;
+					subplaymenu = false;
+					app->inventory->BlockAll();
+					app->inventory->ResetItems();
+					app->inventory->ResetGear();
+					app->inventory->ResetSkills();
+					app->physics->ResetMiscelanea();
+					app->dialog->ResetShop();
+					sub_newgame = false;
+					break;
+				case 1:
+					sub_newgame = false;
+					break;
+				}
+
+				ask_buttons[chosed].state = 2;
 			}
 		}
 
@@ -1100,6 +1233,11 @@ bool Menu::Update(float dt)
 				app->frontground->ReturnToField();
 				win_button.state = 2;
 				kill_enemy = true;
+
+				if (app->frontground->reward != "999")
+				{
+					object_obtained = true;
+				}
 			}
 			if (chosed == -1)
 			{
@@ -1123,6 +1261,7 @@ bool Menu::Update(float dt)
 				case 1:
 					// return field
 					app->frontground->ReturnToField();
+					app->frontground->reward = "999";
 					break;
 				}
 
@@ -1146,6 +1285,7 @@ bool Menu::Update(float dt)
 				case 0:
 					// sure to scape
 					app->frontground->ReturnToField();
+					app->frontground->reward = "999";
 					break;
 				case 1:
 					// cancel scape
@@ -1163,6 +1303,29 @@ bool Menu::Update(float dt)
 			{
 				scape_buttons[0].state = 1;
 				chosed = 0;
+			}
+		}
+
+		if (unlock_state == 2)
+		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && object_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					// equip and close
+					app->inventory->EquipGear(app->frontground->reward.c_str());
+					app->audio->PlayFx(equip_sound);
+					break;
+				case 1:
+					// only close
+					break;
+				}
+
+				app->frontground->reward = "999";
+				unlock_state = 0;
+				object_buttons[chosed].state = 2;
 			}
 		}
 	}
@@ -1233,6 +1396,10 @@ bool Menu::Update(float dt)
 	else if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		app->frontground->fast_combat = !app->frontground->fast_combat;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		app->inventory->UnlockAll();
 	}
 
 	return true;
@@ -1393,10 +1560,10 @@ bool Menu::PostUpdate()
 				menu_buttons[5].rect.x = c_x + 70;
 				menu_buttons[5].rect.y = c_y + 250;
 
-				if (menu_buttons[4].state == 0 && subplaymenu && firstime)
+				if (menu_buttons[4].state == 0 && subplaymenu && app->frontground->first_time)
 					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
-				if (menu_buttons[4].state == 0 && subplaymenu && !firstime)
+				if (menu_buttons[4].state == 0 && subplaymenu && !app->frontground->first_time)
 					app->render->DrawTexture(menu_buttons[4].tex, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
 				if (menu_buttons[5].state == 0 && subplaymenu)
@@ -1404,12 +1571,12 @@ bool Menu::PostUpdate()
 
 
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu && firstime)
+				if (menu_buttons[4].state == 1 && subplaymenu && app->frontground->first_time)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 				}
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu && !firstime)
+				if (menu_buttons[4].state == 1 && subplaymenu && !app->frontground->first_time)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex, menu_buttons[4].rect.x, menu_buttons[4].rect.y - 20);
 				}
@@ -1506,6 +1673,56 @@ bool Menu::PostUpdate()
 			{
 				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 70, PauseMenuHUD.y);
 			}
+		}
+
+		if (sub_newgame)
+		{
+			app->render->DrawTexture(whitemark_800x150, 240 + c_x, 300 + c_y);
+
+			SDL_Rect b0;
+			if (ask_buttons[0].state == 0)
+			{
+				b0 = { 0, 0, 128, 128 };
+			}
+			else if (ask_buttons[0].state == 1)
+			{
+				b0 = { 0, 128, 128, 128 };
+			}
+			else if (ask_buttons[0].state == 2)
+			{
+				b0 = { 0, 256, 128, 128 };
+			}
+
+			SDL_Rect b1;
+			if (ask_buttons[1].state == 0)
+			{
+				b1 = { 0, 0, 128, 128 };
+			}
+			else if (ask_buttons[1].state == 1)
+			{
+				b1 = { 0, 128, 128, 128 };
+			}
+			else if (ask_buttons[1].state == 2)
+			{
+				b1 = { 0, 256, 128, 128 };
+			}
+
+			SDL_Rect a_rect = { 0, 0, 128, 128 };
+			std::string p_siting;
+
+			ask_buttons[0].rect.x = 400 + c_x;
+			ask_buttons[0].rect.y = 400 + c_y;
+			ask_buttons[1].rect.x = ask_buttons[0].rect.x + 300;
+			ask_buttons[1].rect.y = ask_buttons[0].rect.y;
+			app->render->DrawTexture(whitemark_128x128, ask_buttons[0].rect.x, ask_buttons[0].rect.y, &b0);
+			app->render->DrawTexture(whitemark_128x128, ask_buttons[1].rect.x, ask_buttons[1].rect.y, &b1);
+			app->render->DrawTexture(accept_tex, ask_buttons[0].rect.x, ask_buttons[0].rect.y, &a_rect);
+			a_rect = { 128, 0, 128, 128 };
+			app->render->DrawTexture(accept_tex, ask_buttons[1].rect.x, ask_buttons[1].rect.y, &a_rect);
+			p_siting = "Are you sure to start again?";
+			app->fonts->BlitCombatText(320 + c_x, 310 + c_y, app->fonts->textFont3, p_siting.c_str());
+			p_siting = "You will lose the actual save.";
+			app->fonts->BlitCombatText(320 + c_x, 350 + c_y, app->fonts->textFont3, p_siting.c_str());
 		}
 
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
@@ -1708,7 +1925,7 @@ bool Menu::PostUpdate()
 			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 		}
 
-		app->fonts->BlitCombatText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (lose)
@@ -1740,8 +1957,8 @@ bool Menu::PostUpdate()
 			}
 		}
 		
-		app->fonts->BlitCombatText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
-		app->fonts->BlitCombatText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
+		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
+		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (scape)
@@ -1759,22 +1976,22 @@ bool Menu::PostUpdate()
 			if (scape_buttons[i].state == 0)
 			{
 				rect = { 0, 0, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 			else if (scape_buttons[i].state == 1)
 			{
 				rect = { 0, 70, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 			else if (scape_buttons[i].state == 2)
 			{
 				rect = { 0, 140, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 		}
 
-		app->fonts->BlitCombatText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
-		app->fonts->BlitCombatText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
+		app->fonts->BlitText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
+		app->fonts->BlitText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
 	}
 
 	// skills descriptions
@@ -1789,8 +2006,91 @@ bool Menu::PostUpdate()
 		}
 	}
 
+	if (unlock_state != 0)
+	{
+		SDL_Rect or = { 0, 0, 128, 128 };
+		unlock_cd--;
+		if (unlock_cd <= 0)
+		{
+			unlock_state = 2;
+			unlock_cd = 120;
+
+			app->inventory->UnlockObject(app->frontground->reward.c_str());
+		}
+		if (unlock_state == 1)
+		{
+			if (unlock_cd % 4 == 0)
+			{
+				unlock_pos.x += 2;
+			}
+			else if (unlock_cd % 4 == 1)
+			{
+				unlock_pos.x -= 2;
+			}
+			else if (unlock_cd % 4 == 2)
+			{
+				unlock_pos.y += 2;
+			}
+			else if (unlock_cd % 4 == 3)
+			{
+				unlock_pos.y -= 2;
+			}
+
+			app->render->DrawTexture(whitemark_128x128, unlock_pos.x + c_x, unlock_pos.y + c_y, &or);
+			app->render->DrawTexture(unknow_tex, unlock_pos.x + c_x, unlock_pos.y + c_y);
+		}
+		else
+		{
+			app->render->DrawTexture(whitemark_128x128, unlock_pos.x + c_x, unlock_pos.y + c_y, &or );
+
+			if (app->frontground->reward[0] != '4')
+			{
+				app->render->DrawTexture(gear_tex, unlock_pos.x + c_x, unlock_pos.y + c_y, &GetUnlockRect(app->frontground->reward));
+			}
+			else if (app->frontground->reward[0] == '4')
+			{
+				app->render->DrawTexture(items_tex, unlock_pos.x + c_x, unlock_pos.y + c_y, &GetUnlockRect(app->frontground->reward));
+			}
+
+			object_buttons[0].rect.x = (640 - (object_buttons[0].rect.w / 2) + c_x);
+			object_buttons[0].rect.y = unlock_pos.y + 200 + c_y;
+			object_buttons[1].rect.x = (640 - (object_buttons[0].rect.w / 2) + c_x);
+			object_buttons[1].rect.y = unlock_pos.y + 300 + c_y;
+
+			for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+			{
+				if (object_buttons[i].state == 0)
+				{
+					or = { 0, 0, 500, 70 };
+				}
+				else if (object_buttons[i].state == 1)
+				{
+					or = { 0, 70, 500, 70 };
+				}
+				else if (object_buttons[i].state == 2)
+				{
+					or = { 0, 140, 500, 70 };
+				}
+
+				if (i == 0 && app->frontground->reward[0] == '4')
+				{}
+				else
+				{
+					app->render->DrawTexture(whitemark_500x70, object_buttons[i].rect.x, object_buttons[i].rect.y, &or );
+				}
+			}
+
+			if (app->frontground->reward[0] != '4')
+			{
+				app->fonts->BlitText(object_buttons[0].rect.x, object_buttons[0].rect.y + 15, app->fonts->textFont1, "Equip and close");
+			}
+			
+			app->fonts->BlitText(object_buttons[1].rect.x, object_buttons[1].rect.y + 15, app->fonts->textFont1, "Close");
+		}
+	}
+
 	// draw cursor
-	if (!app->frontground->controller)
+	if (!app->frontground->controller && app->inventory->Disabled())
 	{
 		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 		app->render->DrawTexture(cursor.tex, cursor.pos.x + c_x, cursor.pos.y + c_y);
@@ -2119,6 +2419,373 @@ bool Menu::InAnyButton()
 			return true;
 		}
 	}
+	for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+	{
+		if (object_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
+	for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+	{
+		if (ask_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
 
 	return false;
+}
+
+SDL_Rect Menu::GetUnlockRect(std::string aei)
+{
+	SDL_Rect res = { -128, 0, 128, 128 };
+
+	if (aei == "999")
+	{
+		return res;
+	}
+
+	if (aei[0] == '0') // assassin
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 0, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 0, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 0, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 0, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 128, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 128, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 128, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 128, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 256, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 256, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 256, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 256, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 384, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 384, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 384, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 384, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '1') // healer
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 512, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 512, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 512, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 512, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 640, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 640, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 640, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 640, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 768, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 768, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 768, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 768, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 896, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 896, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 896, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 896, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '2') // tank
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1024, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1024, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1024, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1024, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1152, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1152, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1152, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1152, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1280, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1280, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1280, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1280, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1408, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1408, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1408, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1408, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '3') // wizard
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1536, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1536, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1536, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1536, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1664, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1664, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1664, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1664, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1792, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1792, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1792, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1792, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1920, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1920, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1920, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1920, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '4') // items
+	{
+		switch (aei[1])
+		{
+		case '0': res = { 256, 0, 128, 128 }; break;
+		case '1': res = { 384, 0, 128, 128 }; break;
+		case '2': res = { 512, 0, 128, 128 }; break;
+		case '3': res = { 0, 128, 128, 128 }; break;
+		case '4': res = { 128, 128, 128, 128 }; break;
+		case '5': res = { 256, 128, 128, 128 }; break;
+		case '6': res = { 384, 128, 128, 128 }; break;
+		case '7': res = { 512, 128, 128, 128 }; break;
+		}
+	}
+	else if (aei[0] == '5') // items
+	{
+		switch (aei[1])
+		{
+		case '0': res = { 128, 256, 128, 128 }; break;
+		case '1': res = { 256, 256, 128, 128 }; break;
+		case '2': res = { 384, 256, 128, 128 }; break;
+		case '3': res = { 512, 256, 128, 128 }; break;
+		}
+	}
+
+	return res;
 }

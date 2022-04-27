@@ -158,8 +158,6 @@ private:
 	SDL_Texture* casting = NULL;
 	SDL_Texture* skills_icons = NULL;
 
-	void BlittAttackText(int c_x, int c_y);
-
 	// skills fx
 	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal, 5 --> buff
 	void PlaySkillFx(int n);
@@ -169,6 +167,9 @@ private:
 	uint water_fx;
 	uint heal_fx;
 	uint buff_fx;
+
+	int GetItemByName(const char* skill_name);
+	void UseItem(int n);
 
 };
 

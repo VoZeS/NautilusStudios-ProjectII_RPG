@@ -17,7 +17,7 @@
 #include <time.h>
 
 // ENEMY
-Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
+Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew) : Entity()
 {
 	switch (en1)
 	{
@@ -57,6 +57,8 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	}
 	
 	p_in_array = index;
+
+	reward = rew;
 
 	// animations
 	mushroomAnim.PushBack({ 0, 0, 100, 125 });

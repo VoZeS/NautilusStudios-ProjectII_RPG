@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Pathfinding.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Frontground.h"
 
 #include "Defs.h"
@@ -443,7 +444,8 @@ void Player::HandleInput(float dt)
 			}
 
 
-			if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
+			if ((body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0) && !app->menu->GetGameState() && app->inventory->hide
+				&& !app->menu->object_obtained && app->menu->unlock_state == 0)
 			{
 				walk_cd -= dt;
 				if (walk_cd <= 0)
@@ -492,7 +494,7 @@ void Player::HandleInput(float dt)
 			currentAnimation->Update();
 		}
 
-		if (app->entities->freeze)
+		if (app->entities->freeze || app->menu->object_obtained || app->menu->unlock_state != 0)
 		{
 			body->SetLinearVelocity({ 0, 0 });
 		}

@@ -13,6 +13,7 @@
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Particles.h"
 #include "Frontground.h"
 #include "Town1.h"
@@ -45,10 +46,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding(true);
 	physics = new Physics(true);
 	entities = new Entities(false);
-	fonts = new Fonts(false);
+	fonts = new Fonts(true);
 	combat_manager = new Combat_Manager(false);
 	combat_menu = new Combat_Menu(false);
 	menu = new Menu(true);
+	inventory = new Inventory(false);
 	particles = new Particles(false);
 	frontground = new Frontground(true);
 	town1 = new Town1(false);
@@ -84,9 +86,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fonts);
 	AddModule(combat_manager);
 	AddModule(combat_menu);
-	AddModule(menu);
 	AddModule(particles);
+	AddModule(menu);
 	AddModule(dialog);
+	AddModule(inventory);
 	AddModule(logo);
 	AddModule(frontground);
 
@@ -329,6 +332,8 @@ bool App::CleanUp()
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.end;
+
+	app->frontground->SaveStartUp();
 
 	while(item != NULL && ret == true)
 	{

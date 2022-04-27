@@ -3,6 +3,12 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Menu.h"
+
+#define NUM_SHOP_BUTTONS 4
+#define NUM_SHOP_INTERACT_BUTTONS 2
+
+struct Button;
 
 enum class DIALOGS
 {
@@ -13,6 +19,13 @@ enum class DIALOGS
 	GRANJERO,
 	ALDEANO,
 	ENEMIGO
+};
+
+struct Shop_objects
+{
+	std::string item;
+	int cost;
+	bool selled = false;
 };
 
 class Dialog : public Module
@@ -56,6 +69,15 @@ public:
 	{
 		press_e_hide = hide;
 	}
+
+	bool InDialog()
+	{
+		return (in_shop != 0 || inDialog);
+	}
+
+	void UpdateShop();
+	void ResetShop();
+	void SaveShop();
 
 private:
 	
@@ -128,6 +150,26 @@ private:
 	Animation idle_e;
 
 	bool ContinueDialog(int& actual_text, int max_text);
+
+	// shop
+	int chosed;
+	int in_shop; // 0 --> all closed, 1 --> herrero, 2 --> medico, 3 --> granjero
+	Button shop_buttons[NUM_SHOP_BUTTONS];
+	Button shop_interact_buttons[NUM_SHOP_INTERACT_BUTTONS];
+	Shop_objects shop1[4];
+	Shop_objects shop2[4];
+	Shop_objects shop3[4];
+	SDL_Texture* whitemark_128x128;
+	SDL_Texture* whitemark_800x150;
+	SDL_Texture* whitemark_1240x680;
+	Shop_objects* item_saved = new Shop_objects;
+	std::string GetObjectForShop(const char* aei);
+
+	// sound
+	uint click_sound;
+	uint hover_sound;
+	bool hover_playing = false;
+	bool InAnyButton();
 
 };
 

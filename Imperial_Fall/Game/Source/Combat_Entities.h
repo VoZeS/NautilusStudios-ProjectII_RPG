@@ -32,6 +32,8 @@ public:
 	Combat_Entities(int health, int mana, int speed, int power, int owner, int skill1, int skill2, int skill3, int skill4);
 	Combat_Entities(ENEMIES enemy);
 	Combat_Entities();
+	// used in inventory
+	Combat_Entities(int owner, int set);
 	~Combat_Entities();
 
 	// 0 --> dead, 1 --> alive, 2 --> no exist
@@ -143,6 +145,7 @@ public:
 	void Revive()
 	{
 		alive = 1;
+		actual_health = max_health / 2;
 	}
 
 	void UpdateShield();

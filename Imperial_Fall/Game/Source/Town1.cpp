@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -49,6 +50,7 @@ bool Town1::Start()
 
 		//Enable Player & map
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -110,7 +112,15 @@ bool Town1::Update(float dt)
 		enemies[2] = ENEMIES::MUSHROOM;
 		enemies[3] = ENEMIES::MUSHROOM;
 		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
-		app->frontground->FadeInCombat(enemies);
+		app->frontground->FadeInCombat(enemies, "011");
+	}
+	else if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		app->inventory->AddCoins(30);
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		app->inventory->AddCoins(-30);
 	}
 
 	return true;
@@ -132,6 +142,7 @@ bool Town1::CleanUp()
 	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
+	app->inventory->Disable();
 	app->menu->Disable();
 
 	// clean textures

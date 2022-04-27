@@ -31,6 +31,8 @@ bool Fonts::Start()
 		char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
 		textFont1 = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
 		textFont2 = app->fonts->Load("Assets/textures/my_font.png", lookupTableChars, 8);
+		textFont3 = app->fonts->Load("Assets/textures/my_font_red.png", lookupTableChars, 8);
+		textFont4 = app->fonts->Load("Assets/textures/my_font_green.png", lookupTableChars, 8);
 	}
 
 	return true;
@@ -39,6 +41,9 @@ bool Fonts::Start()
 bool Fonts::CleanUp()
 {
 	UnLoad(textFont1);
+	UnLoad(textFont2);
+	UnLoad(textFont3);
+	UnLoad(textFont4);
 
 	return true;
 }
@@ -251,7 +256,7 @@ void Fonts::BlitCombatText(int x, int y, int font_id, const char* text, int zoom
 			|| text[i] == 't' || text[i] == 'u' || text[i] == 'v' || text[i] == 'x' || text[i] == 'y')
 		{
 			app->render->DrawTexture(font->texture, x - 2, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
-			x += spriteRect.w - 6;
+			x += spriteRect.w - 8;
 		}
 		else if (text[i] == '[' || text[i] == ']' || text[i] == 'i' || text[i] == 'l')
 		{

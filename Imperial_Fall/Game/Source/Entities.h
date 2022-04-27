@@ -64,6 +64,7 @@ public:
 	virtual void ImpulsePlayer();
 	
 	virtual ENEMIES GetCombatEnemy(int n);
+	virtual std::string GetReward();
 
 	bool SaveSingleEnemy();
 
@@ -110,7 +111,7 @@ public:
 	void SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y);
 
 public:
-	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
+	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1, const char* rew = "999");
 
 	List<Entity*> entities;
 	DynArray<bool> entities_state;

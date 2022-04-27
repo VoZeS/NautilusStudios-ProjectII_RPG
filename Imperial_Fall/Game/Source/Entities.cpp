@@ -3,6 +3,7 @@
 #include "Entities.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Dialog.h"
 #include "Frontground.h"
 
 #include "Player.h"
@@ -170,7 +171,6 @@ bool Entities::PostUpdate()
 {
 	bool ret = true;
 
-
 	ListItem<Entity*>* item;
 	Entity* entity = NULL;
 
@@ -291,7 +291,7 @@ bool Entities::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index, int en1, int en2, int en3, int en4)
+void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index, int en1, int en2, int en3, int en4, const char* rew)
 {
 	fPoint p = { x, y };
 
@@ -335,31 +335,31 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		break;
 	case ENTITY_TYPE::W_TEMPLAR:
 	{
-		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
 		AddEntity(enemy, ENTITY_TYPE::W_TEMPLAR, p);
 	}
 		break;
 	case ENTITY_TYPE::MUSHROOM:
 	{
-		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
 		AddEntity(enemy, ENTITY_TYPE::MUSHROOM, p);
 	}
 		break;
 	case ENTITY_TYPE::GOBLIN:
 	{
-		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
 		AddEntity(enemy, ENTITY_TYPE::GOBLIN, p);
 	}
 		break;
 	case ENTITY_TYPE::SKELETON:
 	{
-		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
 		AddEntity(enemy, ENTITY_TYPE::SKELETON, p);
 	}
 		break;
 	case ENTITY_TYPE::R_TEMPLAR:
 	{
-		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
 		AddEntity(enemy, ENTITY_TYPE::R_TEMPLAR, p);
 	}
 		break;
@@ -493,7 +493,8 @@ void Entities::StartCombat()
 		default:
 			break;
 		}
-		app->frontground->FadeInCombat(enemies);
+		std::string c = combat_entity->GetReward();
+		app->frontground->FadeInCombat(enemies, c);
 	}
 }
 
@@ -529,7 +530,8 @@ void Entities::KillEnemy()
 		app->menu->kill_enemy = false;
 		if (combat_entity->entity_type == ENTITY_TYPE::R_TEMPLAR) 
 		{
-			app->menu->redtemplar_killed = true;
+			app->frontground->adventure_phase = 1;
+			app->dialog->UpdateShop();
 		}
 	}
 }
@@ -673,6 +675,11 @@ void Entity::ImpulsePlayer()
 ENEMIES Entity::GetCombatEnemy(int n)
 {
 	return ENEMIES::NOTHING;
+}
+
+std::string Entity::GetReward()
+{
+	return "999";
 }
 
 bool Entity::SaveSingleEnemy()

@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Enemies.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Frontground.h"
 #include "Town1.h"
 #include "Town2.h"
@@ -58,6 +59,14 @@ bool Physics::Start()
 
 	save_sound = app->audio->LoadFx("Assets/audio/fx/save_sound.wav");;
 
+	coin_picked = false;
+	coins_number = 0;
+	book_picked = false;
+	book_number0 = 0;
+	book_number1 = 0;
+	book_number2 = 0;
+	book_number3 = 0;
+
 	return true;
 }
 
@@ -65,7 +74,7 @@ bool Physics::Start()
 bool Physics::PreUpdate()
 {
 	
-	if (!app->menu->GetGameState())
+	if (!app->menu->GetGameState() && app->inventory->hide)
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
 	}
@@ -91,6 +100,55 @@ bool Physics::Update(float dt)
 // Called each loop iteration
 bool Physics::PostUpdate()
 {
+	if (coin_picked)
+	{		DestroyCoins();
+		coin_picked = false;
+	}
+	else if (book_picked)
+	{
+		DestroyBook();
+		book_picked = false;
+	}
+
+	if (app->inventory->misc != NULL)
+	{
+		SDL_Rect rect = { 256, 0, 64, 64 };
+		for (size_t i = 0; i < MAX_COINS; i++)
+		{
+			if (coins_in_floor[i].alive)
+			{
+				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().y) - 32, &rect);
+			}
+		}
+
+		for (size_t i = 0; i < MAX_BOOKS; i++)
+		{
+			rect = { 0, 0, 64, 64 };
+			if (books_in_floor0[i].alive)
+			{
+				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().y) - 32, &rect);
+			}
+
+			rect = { 64, 0, 64, 64 };
+			if (books_in_floor1[i].alive)
+			{
+				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().y) - 32, &rect);
+			}
+
+			rect = { 128, 0, 64, 64 };
+			if (books_in_floor2[i].alive)
+			{
+				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().y) - 32, &rect);
+			}
+
+			rect = { 192, 0, 64, 64 };
+			if (books_in_floor3[i].alive)
+			{
+				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().y) - 32, &rect);
+			}
+		}
+	}
+	
 	if (!debug)
 		return true;
 
@@ -162,6 +220,31 @@ bool Physics::PostUpdate()
 						c_g = 100;
 						c_b = 100;
 						break;
+					case 20: // coins in floor
+						c_r = 0;
+						c_g = 0;
+						c_b = 0;
+						break;
+					case 22: // book0 in floor
+						c_r = 0;
+						c_g = 0;
+						c_b = 0;
+						break;
+					case 26: // book1 in floor
+						c_r = 0;
+						c_g = 0;
+						c_b = 0;
+						break;
+					case 27: // book2 in floor
+						c_r = 0;
+						c_g = 0;
+						c_b = 0;
+						break;
+					case 28: // book3 in floor
+						c_r = 0;
+						c_g = 0;
+						c_b = 0;
+						break;
 					default:
 						c_r = 100;
 						c_g = 100;
@@ -217,9 +300,115 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
+	// miscelanea
+	else if (collision == 20) fixture.isSensor = true;
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
 	fix->SetUserData((void*)collision);
+
+	return true;
+}
+
+bool Physics::CreateNormalCollisions(int x, int y, int w, int h)
+{
+	b2BodyDef g;
+	g.type = b2_staticBody;
+	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
+
+	b2Body* p = world->CreateBody(&g);
+
+	b2PolygonShape box;
+	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	b2Fixture* fix = p->CreateFixture(&fixture);
+
+	fix->SetUserData((void*)100);
+
+	return true;
+}
+
+bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
+{
+	b2BodyDef g;
+	g.type = b2_staticBody;
+	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
+
+	if (collision == 20)
+	{
+		coins_in_floor[coins_number].body = world->CreateBody(&g);
+		coins_in_floor[coins_number].number = coins_number;
+		coins_in_floor[coins_number].alive = true;
+	}
+	else if (collision == 22)
+	{
+		books_in_floor0[book_number0].body = world->CreateBody(&g);
+		books_in_floor0[book_number0].number = book_number0;
+		books_in_floor0[book_number0].alive = true;
+	}
+	else if (collision == 26)
+	{
+		books_in_floor1[book_number1].body = world->CreateBody(&g);
+		books_in_floor1[book_number1].number = book_number1;
+		books_in_floor1[book_number1].alive = true;
+	}
+	else if (collision == 27)
+	{
+		books_in_floor2[book_number2].body = world->CreateBody(&g);
+		books_in_floor2[book_number2].number = book_number2;
+		books_in_floor2[book_number2].alive = true;
+	}
+	else if (collision == 28)
+	{
+		books_in_floor3[book_number3].body = world->CreateBody(&g);
+		books_in_floor3[book_number3].number = book_number3;
+		books_in_floor3[book_number3].alive = true;
+	}
+
+	b2PolygonShape box;
+	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	// miscelanea
+	if (collision == 20) fixture.isSensor = true;
+	else if (collision == 22) fixture.isSensor = true;
+	else if (collision == 26) fixture.isSensor = true;
+	else if (collision == 27) fixture.isSensor = true;
+	else if (collision == 28) fixture.isSensor = true;
+
+	b2Fixture* fix;
+	if (collision == 20)
+	{
+		fix = coins_in_floor[coins_number].body->CreateFixture(&fixture);
+		coins_number++;
+		fix->SetUserData((void*)collision);
+	}
+	else if (collision == 22)
+	{
+		fix = books_in_floor0[book_number0].body->CreateFixture(&fixture);
+		book_number0++;
+		fix->SetUserData((void*)collision);
+	}
+	else if (collision == 26)
+	{
+		fix = books_in_floor1[book_number1].body->CreateFixture(&fixture);
+		book_number1++;
+		fix->SetUserData((void*)collision);
+	}
+	else if (collision == 27)
+	{
+		fix = books_in_floor2[book_number2].body->CreateFixture(&fixture);
+		book_number2++;
+		fix->SetUserData((void*)collision);
+	}
+	else if (collision == 28)
+	{
+		fix = books_in_floor3[book_number3].body->CreateFixture(&fixture);
+		book_number3++;
+		fix->SetUserData((void*)collision);
+	}
 
 	return true;
 }
@@ -231,6 +420,23 @@ bool Physics::CleanMapBoxes()
 		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 		{
 			if ((int)f->GetUserData() >= 2)
+			{
+				b->DestroyFixture(f);
+				world->DestroyBody(b);
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Physics::CleanNormalCollisions()
+{
+	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	{
+		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		{
+			if ((int)f->GetUserData() == 100)
 			{
 				b->DestroyFixture(f);
 				world->DestroyBody(b);
@@ -282,6 +488,40 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataB == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inCoins = true;
+		}
+		else if ((int)fixtureUserDataB == 22)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 0;
+		}
+		else if ((int)fixtureUserDataB == 26)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 1;
+		}
+		else if ((int)fixtureUserDataB == 27)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 2;
+		}
+		else if ((int)fixtureUserDataB == 28)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 3;
 		}
 
 		// --------------------------------------------------------------- PASS LEVELS
@@ -408,6 +648,40 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataA == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inCoins = true;
+		}
+		else if ((int)fixtureUserDataA == 22)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 0;
+		}
+		else if ((int)fixtureUserDataA == 26)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 1;
+		}
+		else if ((int)fixtureUserDataA == 27)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 2;
+		}
+		else if ((int)fixtureUserDataA == 28)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inBook = true;
+			book_type = 3;
 		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)
@@ -539,6 +813,40 @@ void Physics::EndContact(b2Contact* contact)
 			inAldeano = false;
 			app->dialog->QuitDialogs();
 		}
+		else if ((int)fixtureUserDataB == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inCoins = false;
+		}
+		else if ((int)fixtureUserDataB == 22)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
+		else if ((int)fixtureUserDataB == 26)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
+		else if ((int)fixtureUserDataB == 27)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
+		else if ((int)fixtureUserDataB == 28)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
 	}
 
 	if ((int)fixtureUserDataB == 1)
@@ -578,5 +886,248 @@ void Physics::EndContact(b2Contact* contact)
 			inAldeano = false;
 			app->dialog->QuitDialogs();
 		}
+		else if ((int)fixtureUserDataA == 20)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inCoins = false;
+		}
+		else if ((int)fixtureUserDataA == 22)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
+		else if ((int)fixtureUserDataA == 26)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
+		else if ((int)fixtureUserDataA == 27)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
+		else if ((int)fixtureUserDataA == 28)
+		{
+			// coins in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inBook = false;
+			book_type = -1;
+		}
 	}
+}
+
+void Physics::DestroyCoins()
+{
+	float max = 9999;
+	b2Body* body = NULL;
+	int number = -1;
+
+	fPoint pos1 = app->entities->GetPlayer()->GetPlayerPosition();
+
+	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	{
+		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		{
+			fPoint pos2 = { b->GetPosition().x, b->GetPosition().y };
+			if ((int)f->GetUserData() == 20 && (abs(pos1.DistanceTo(pos2)) < max))
+			{
+				body = b;
+				max = abs(pos1.DistanceTo(pos2));
+			}
+		}
+	}
+
+	for (size_t i = 0; i < MAX_COINS; i++)
+	{
+		if (coins_in_floor[i].body == body)
+		{
+			number = coins_in_floor[i].number;
+			coins_in_floor[i].alive = false;
+			break;
+		}
+	}
+
+	world->DestroyBody(body);
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+	std::string p1 = "coins_in_room";
+	std::string s1;
+	switch (app->frontground->current_level)
+	{
+	case 1: s1 = std::to_string(0); break;
+	case 2: s1 = std::to_string(1); break;
+	case 3: s1 = std::to_string(2); break;
+	case 4: s1 = std::to_string(3); break;
+	case 5: s1 = std::to_string(4); break;
+	case 6: s1 = std::to_string(5); break;
+	case 7: s1 = std::to_string(6); break;
+	default: break;
+	}
+	std::string t1 = p1 + s1;
+	const char* c1 = t1.c_str();
+
+	std::string p2 = "picked";
+	std::string s2 = std::to_string(number);
+	std::string t2 = p2 + s2;
+	const char* c2 = t2.c_str();
+
+	saveGame.child("miscelanea").child("coins").child(c1).attribute(c2).set_value(true);
+
+	saveGame.save_file(MISCELANEA_FILENAME);
+}
+
+void Physics::DestroyBook()
+{
+	float max = 9999;
+	b2Body* body = NULL;
+	int number = -1;
+	int book_owner = -1;
+
+	fPoint pos1 = app->entities->GetPlayer()->GetPlayerPosition();
+
+	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	{
+		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		{
+			fPoint pos2 = { b->GetPosition().x, b->GetPosition().y };
+			if (((int)f->GetUserData() == 22 || (int)f->GetUserData() == 26 || (int)f->GetUserData() == 27 || (int)f->GetUserData() == 28)
+				&& (abs(pos1.DistanceTo(pos2)) < max))
+			{
+				body = b;
+				max = abs(pos1.DistanceTo(pos2));
+				book_owner = (int)f->GetUserData();
+			}
+		}
+	}
+
+	for (size_t i = 0; i < MAX_COINS; i++)
+	{
+		if (book_owner == 22 && books_in_floor0[i].body == body)
+		{
+			number = books_in_floor0[i].number;
+			books_in_floor0[i].alive = false;
+			break;
+		}
+		else if (book_owner == 26 && books_in_floor1[i].body == body)
+		{
+			number = books_in_floor1[i].number;
+			books_in_floor1[i].alive = false;
+			break;
+		}
+		else if (book_owner == 27 && books_in_floor2[i].body == body)
+		{
+			number = books_in_floor2[i].number;
+			books_in_floor2[i].alive = false;
+			break;
+		}
+		else if (book_owner == 28 && books_in_floor3[i].body == body)
+		{
+			number = books_in_floor3[i].number;
+			books_in_floor3[i].alive = false;
+			break;
+		}
+	}
+
+	world->DestroyBody(body);
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+	std::string p1 = "books_in_room";
+	std::string s1;
+	switch (app->frontground->current_level)
+	{
+	case 1: s1 = std::to_string(0); break;
+	case 2: s1 = std::to_string(1); break;
+	case 3: s1 = std::to_string(2); break;
+	case 4: s1 = std::to_string(3); break;
+	case 5: s1 = std::to_string(4); break;
+	case 6: s1 = std::to_string(5); break;
+	case 7: s1 = std::to_string(6); break;
+	default: break;
+	}
+	std::string t1 = p1 + s1;
+	const char* c1 = t1.c_str();
+
+	std::string p3 = "books";
+	std::string s3;
+	switch (book_owner)
+	{
+	case 22: s3 = std::to_string(0); break;
+	case 26: s3 = std::to_string(1); break;
+	case 27: s3 = std::to_string(2); break;
+	case 28: s3 = std::to_string(3); break;
+	default: break;
+	}
+	std::string t3 = p3 + s3;
+	const char* c3 = t3.c_str();
+
+	std::string p2 = "picked";
+	std::string s2 = std::to_string(number);
+	std::string t2 = p2 + s2;
+	const char* c2 = t2.c_str();
+
+	saveGame.child("miscelanea").child(c3).child(c1).attribute(c2).set_value(true);
+
+	saveGame.save_file(MISCELANEA_FILENAME);
+}
+
+void Physics::ResetMiscelanea()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+	for (size_t i = 0; i < MAX_COINS; i++)
+	{
+		std::string p1 = "picked";
+		std::string s1 = std::to_string(i);
+		std::string t1 = p1 + s1;
+		const char* c1 = t1.c_str();
+
+		for (size_t j = 0; j < 7; j++)
+		{
+			std::string p2 = "coins_in_room";
+			std::string s2 = std::to_string(j);
+			std::string t2 = p2 + s2;
+			const char* c2 = t2.c_str();
+			saveGame.child("miscelanea").child("coins").child(c2).attribute(c1).set_value(false);
+		}
+	}
+	
+	for (size_t i = 0; i < MAX_BOOKS; i++)
+	{
+		std::string p1 = "picked";
+		std::string s1 = std::to_string(i);
+		std::string t1 = p1 + s1;
+		const char* c1 = t1.c_str();
+
+		for (size_t j = 0; j < 7; j++)
+		{
+			std::string p2 = "books_in_room";
+			std::string s2 = std::to_string(j);
+			std::string t2 = p2 + s2;
+			const char* c2 = t2.c_str();
+
+			for (size_t k = 0; k < 4; k++)
+			{
+				std::string p3 = "books";
+				std::string s3 = std::to_string(k);
+				std::string t3 = p3 + s3;
+				const char* c3 = t3.c_str();
+
+				saveGame.child("miscelanea").child(c3).child(c2).attribute(c1).set_value(false);
+			}
+		}
+	}
+
+	saveGame.save_file(MISCELANEA_FILENAME);
 }

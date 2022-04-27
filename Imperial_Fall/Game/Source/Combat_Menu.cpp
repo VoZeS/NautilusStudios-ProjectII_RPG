@@ -9,6 +9,7 @@
 #include "Frontground.h"
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
+#include "Inventory.h"
 #include "Particles.h"
 #include "Player.h"
 #include "Defs.h"
@@ -274,7 +275,12 @@ bool Combat_Menu::PreUpdate()
 					{
 						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 						{
+							chosed = i;
 							general_buttons[i].state = 3;
+						}
+						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+						{
+							general_buttons[i].state = 0;
 						}
 						else
 						{
@@ -287,6 +293,10 @@ bool Combat_Menu::PreUpdate()
 						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 						{
 							general_buttons[i].state = 3;
+						}
+						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+						{
+							general_buttons[i].state = 0;
 						}
 						else
 						{
@@ -301,11 +311,17 @@ bool Combat_Menu::PreUpdate()
 				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 				{
 					SDL_Rect rect = items_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h 
-						&& app->combat_manager->GetItemsUses(i) > 0)
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 					{
-						chosed = i;
-						items_buttons[i].state = 1;
+						if (i == 4 || app->inventory->GetItemUses(GetItemByName(app->combat_manager->GetItemList()->GetSkill(i).skill_name)) > 0)
+						{
+							chosed = i;
+							items_buttons[i].state = 1;
+						}
+						else
+						{
+							items_buttons[i].state = 0;
+						}
 					}
 					else
 					{
@@ -369,6 +385,14 @@ bool Combat_Menu::PreUpdate()
 						&& skill_prepared.enemy_objective != ENEMY_OBJECTIVE::ALL_ENEMY)
 					{
 						enemies_buttons[i].state = 3;
+
+						if ((app->combat_manager->GetEnemyByNumber(0)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(0)->GetEntityState() != 1)
+							&& (app->combat_manager->GetEnemyByNumber(1)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(1)->GetEntityState() != 1)
+							&& (app->combat_manager->GetEnemyByNumber(2)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(2)->GetEntityState() != 1)
+							&& (app->combat_manager->GetEnemyByNumber(3)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(3)->GetEntityState() != 1))
+						{
+							enemies_buttons[i].state = 1;
+						}
 					}
 				}
 			}
@@ -411,6 +435,10 @@ bool Combat_Menu::PreUpdate()
 				for (size_t i = 0; i < 4; i++)
 				{
 					if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() != 1 && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
+					{
+						allies_buttons[i].state = 0;
+					}
+					else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1 && skill_prepared.support_type == SUPPORT_TYPE::REVIVE)
 					{
 						allies_buttons[i].state = 0;
 					}
@@ -1410,7 +1438,7 @@ bool Combat_Menu::Update(float dt)
 					general_buttons[chosed].state = 2;
 				}
 			}
-			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && general_buttons[chosed].state == 1)
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && (general_buttons[chosed].state == 1 || general_buttons[chosed].state == 3))
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1561,7 +1589,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(0));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1570,7 +1598,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(1));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1579,7 +1607,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(2));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1588,7 +1616,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetEnemyByNumber(3));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1619,7 +1647,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(0));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1628,7 +1656,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(1));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1637,7 +1665,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(2));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1646,7 +1674,7 @@ bool Combat_Menu::Update(float dt)
 					app->combat_manager->UseSkill(app->combat_manager->GetActualEntity(), skill_prepared, app->combat_manager->GetAllyByNumber(3));
 					if (skill_prepared_is_item != -1)
 					{
-						app->combat_manager->SetItemsUses(skill_prepared_is_item);
+						UseItem(GetItemByName(skill_prepared.skill_name));
 						skill_prepared_is_item = -1;
 					}
 					break;
@@ -1984,21 +2012,59 @@ bool Combat_Menu::PostUpdate()
 				}
 				app->render->DrawTexture(whitemark_128x128, items_buttons[i].rect.x, items_buttons[i].rect.y, &i_rect);
 
-				switch (i)
+				int item_num = GetItemByName(app->combat_manager->GetItemList()->GetSkill(i).skill_name);
+				if (i == 4)
 				{
-				case 0: e_rect = { 0, 0, 128, 128 }; break;
-				case 1: e_rect = { 128, 0, 128, 128 }; break;
-				case 2: e_rect = { 256, 0, 128, 128 }; break;
-				case 3: e_rect = { 384, 0, 128, 128 }; break;
-				case 4: e_rect = { 512, 0, 128, 128 }; break;
+					e_rect = { 0, 0, 128, 128 };
+				}
+				else if (item_num == -1)
+				{
+					e_rect = { 128, 0, 128, 128 };
+				}
+				else if(item_num == 0)
+				{
+					e_rect = { 256, 0, 128, 128 };
+				}
+				else if (item_num == 1)
+				{
+					e_rect = { 384, 0, 128, 128 };
+				}
+				else if (item_num == 2)
+				{
+					e_rect = { 512, 0, 128, 128 };
+				}
+				else if (item_num == 3)
+				{
+					e_rect = { 0, 128, 128, 128 };
+				}
+				else if (item_num == 4)
+				{
+					e_rect = { 128, 128, 128, 128 };
+				}
+				else if (item_num == 5)
+				{
+					e_rect = { 256, 128, 128, 128 };
+				}
+				else if (item_num == 6)
+				{
+					e_rect = { 384, 128, 128, 128 };
+				}
+				else if (item_num == 7)
+				{
+					e_rect = { 512, 128, 128, 128 };
 				}
 
 				app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
 
-				if (app->combat_manager->GetItemsUses(i) == 0)
+				if (i != 4 && app->inventory->GetItemUses(item_num) == 0)
 				{
-					e_rect = { 640, 0, 128, 128 };
+					e_rect = { 128, 0, 128, 128 };
 					app->render->DrawTexture(items, items_buttons[i].rect.x, items_buttons[i].rect.y, &e_rect);
+				}
+
+				if (item_num > -1 && app->inventory->GetItemUses(item_num) > 0)
+				{
+					app->fonts->BlitCombatText(items_buttons[i].rect.x + 100, items_buttons[i].rect.y + 100, app->fonts->textFont2, std::to_string(app->inventory->GetItemUses(item_num)).c_str());
 				}
 			}
 		}
@@ -2173,7 +2239,6 @@ bool Combat_Menu::PostUpdate()
 	}
 	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 	{
-		BlittAttackText(240 + c_x, 590 + c_y);
 		if (skill_att_effect != ATT_EFFECT::EMPTY)
 		{
 			// fx
@@ -2331,43 +2396,6 @@ iPoint Combat_Menu::GetEntityPosition(bool ally, int n)
 	return pos;
 }
 
-void Combat_Menu::BlittAttackText(int c_x, int c_y)
-{
-	app->render->DrawTexture(whitemark_800x50, c_x, c_y - 10);
-	switch (app->combat_manager->GetActualEntity()->GetType())
-	{
-	case 0:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 1:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 2:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 3:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 4:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 5:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 6:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 7:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-	case 8:
-		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
-		break;
-
-	}
-	
-}
-
 void Combat_Menu::PlaySkillFx(int n)
 {
 	switch (n)
@@ -2468,8 +2496,8 @@ void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
 			break;
 		case DEBUFF_TYPE::DEF_REDUCC:
 			rect = { 32, 0, 32, 32 };
-			description0 = "Defense Reduction, user will receive extra damage from";
-			description1 = "physic damage.";
+			description0 = "Defense Reduction, user will receive extra damage";
+			description1 = "from physic damage.";
 			break;
 		case DEBUFF_TYPE::STUN:
 			rect = { 0, 0, 32, 32 };
@@ -2497,4 +2525,61 @@ void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
 		res = description1.c_str();
 		app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont2, res);
 	}
+}
+int Combat_Menu::GetItemByName(const char* skill_name)
+{
+	if (skill_name == "HP Potion")
+	{
+		return 0;
+	}
+	else if (skill_name == "MP Potion")
+	{
+		return 1;
+	}
+	else if (skill_name == "Fire Jar")
+	{
+		return 2;
+	}
+	else if (skill_name == "Lightning Jar")
+	{
+		return 3;
+	}
+	else if (skill_name == "Green Leaves")
+	{
+		return 4;
+	}
+	else if (skill_name == "Recam")
+	{
+		return 5;
+	}
+	else if (skill_name == "Rainbow Grace")
+	{
+		return 6;
+	}
+	else if (skill_name == "Anti-Shield")
+	{
+		return 7;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+void Combat_Menu::UseItem(int n)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_node set = saveGame.child("objects").child("items").child("uses");
+	int uses;
+
+	std::string p = "item";
+	std::string s = std::to_string(n);
+	std::string t = p + s;
+	const char* c = t.c_str();
+
+	uses = set.attribute(c).as_int();
+	set.attribute(c).set_value(uses - 1);
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }

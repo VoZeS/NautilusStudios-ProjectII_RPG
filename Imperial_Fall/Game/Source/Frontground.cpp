@@ -20,6 +20,7 @@
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
 #include "LogoScreen.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -52,6 +53,13 @@ bool Frontground::Start()
 	a = 0;
 
 	SDL_ShowCursor(false);
+
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+	first_time = saveGame.child("started").child("first_time").attribute("value").as_bool();
+	current_level = saveGame.child("started").child("current_level").attribute("value").as_int();;
+	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();;
 
 	return true;
 }
@@ -99,7 +107,6 @@ bool Frontground::PreUpdate()
 // Called each loop iteration
 bool Frontground::Update(float dt)
 {
-
 	if (a >= 255)
 	{
 		go_black = false;
@@ -119,6 +126,11 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		app->physics->CleanNormalCollisions();
+	}
 	
 	r.x = c_x;
 	r.y = c_y;
@@ -259,7 +271,7 @@ bool Frontground::FadeFromBlack()
 	return true;
 }
 
-bool Frontground::FadeInCombat(ENEMIES enemies[])
+bool Frontground::FadeInCombat(ENEMIES enemies[], std::string rew)
 {
 	go_black = true;
 
@@ -267,6 +279,8 @@ bool Frontground::FadeInCombat(ENEMIES enemies[])
 	{
 		enemies_to_fight[i] = enemies[i];
 	}
+
+	reward = rew;
 
 	return true;
 }
@@ -380,4 +394,17 @@ void Frontground::SetController()
 {
 	app->menu->SetController();
 	app->combat_menu->SetController();
+}
+
+void Frontground::SaveStartUp()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+	saveGame.child("started").child("current_level").attribute("value").set_value(current_level);
+	saveGame.child("started").child("adventure_phase").attribute("value").set_value(adventure_phase);
+
+	saveGame.save_file(STARTED_FILENAME);
+
+	app->dialog->SaveShop();
 }

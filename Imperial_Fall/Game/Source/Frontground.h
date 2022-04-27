@@ -76,14 +76,20 @@ public:
 		a = 0;
 	}
 
+	int GetA()
+	{
+		return a;
+	}
+
 	bool FadeToBlack();
 
 	bool FadeFromBlack();
 
-	bool FadeInCombat(ENEMIES enemies[]); // start combat
+	bool FadeInCombat(ENEMIES enemies[], std::string rew); // start combat
 
 
 	ENEMIES enemies_to_fight[4];
+	std::string reward = "999"; // default
 
 	ENEMIES GetEnemiesToFight(int n)
 	{
@@ -124,6 +130,23 @@ public:
 
 	// 0 --> scene, 1 --> town1, 2 --> town2, 3 --> forest, 4 --> battlefield, 5 --> dungeon, 6 --> outside, 7 --> inside
 	int current_level = 0;
+
+	// adventure phase
+	int adventure_phase = 0;
+
+	// is there a save
+	bool first_time = false;
+	void SetFirstTime(bool state)
+	{
+		pugi::xml_document saveGame;
+		pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+		first_time = saveGame.child("started").child("first_time").attribute("value").set_value(state);
+
+		saveGame.save_file(STARTED_FILENAME);
+	}
+
+	void SaveStartUp();
 };
 
 #endif
