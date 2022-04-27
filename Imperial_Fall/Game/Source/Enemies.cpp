@@ -27,6 +27,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[0] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[0] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[0] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[0] = ENEMIES::DRAGON; break;
 	}
 	switch (en2)
 	{
@@ -36,6 +37,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[1] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[1] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[1] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[1] = ENEMIES::DRAGON; break;
 	}
 	switch (en3)
 	{
@@ -45,6 +47,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[2] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[2] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[2] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[2] = ENEMIES::DRAGON; break;
 	}
 	switch (en4)
 	{
@@ -54,6 +57,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[3] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[3] = ENEMIES::DRAGON; break;
 	}
 	
 	p_in_array = index;

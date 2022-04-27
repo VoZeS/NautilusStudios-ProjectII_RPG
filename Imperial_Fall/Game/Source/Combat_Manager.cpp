@@ -67,6 +67,14 @@ bool Combat_Manager::Start()
 		{
 			enemies[i] = new Combat_Entities(app->frontground->GetEnemiesToFight(i));
 		}
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (enemies[i]->GetSkill(0).owner == 9)
+			{
+				dragon_breath = app->audio->LoadFx("Assets/audio/fx/dragon_breath.wav");
+				break;
+			}
+		}
 
 		items = new Combat_Entities(); // items
 		LoadItemUses();
@@ -169,6 +177,11 @@ bool Combat_Manager::Update(float dt)
 		{
 			app->combat_menu->SetAlliesTurn(true);
 
+			if (turn_order[turn]->prepared_to_die)
+			{
+				in_animation = 1;
+			}
+
 			// control debuffs
 			DEBUFF b;
 			b.debuff_type = DEBUFF_TYPE::STUN;
@@ -180,6 +193,11 @@ bool Combat_Manager::Update(float dt)
 		}
 		else // enemies
 		{
+			if (turn_order[turn]->prepared_to_die)
+			{
+				in_animation = 1;
+			}
+
 			// AI
 			enemies_loops = 0;
 			if (app->frontground->fast_combat)
@@ -475,6 +493,8 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 8: rect = { 256, 0, 64, 64 };
 			  break;
+		case 9: rect = { 320, 0, 64, 64 };
+			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -510,6 +530,8 @@ void Combat_Manager::UpdateHUD()
 		case 7: rect = { 128, 0, 64, 64 };
 			  break;
 		case 8: rect = { 256, 0, 64, 64 };
+			  break;
+		case 9: rect = { 320, 0, 64, 64 };
 			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
@@ -547,6 +569,8 @@ void Combat_Manager::UpdateHUD()
 			  break;
 		case 8: rect = { 256, 0, 64, 64 };
 			  break;
+		case 9: rect = { 320, 0, 64, 64 };
+			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
 		}
@@ -582,6 +606,8 @@ void Combat_Manager::UpdateHUD()
 		case 7: rect = { 128, 0, 64, 64 };
 			  break;
 		case 8: rect = { 256, 0, 64, 64 };
+			  break;
+		case 9: rect = { 320, 0, 64, 64 };
 			  break;
 		default: rect = { 0, 0, 64, 64 };
 			   break;
@@ -655,6 +681,10 @@ void Combat_Manager::DisplayOrder(int cx, int cy)
 		rect = { 256, 0, 64, 64 };
 		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
 		break;
+	case 9: 
+		rect = { 320, 0, 64, 64 };
+		app->render->DrawTexture(enemies_icons, 608 + cx, 30 + cy, &rect);
+		break;
 	}
 
 	for (size_t i = 0; i < 3; i++)
@@ -699,6 +729,8 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 		case 1: damage = 0.45f * user->GetPower();
 			break;
 		case 2: damage = 0.8f * user->GetPower();
+			break;
+		case 3: damage = 5.0f * user->GetPower();
 			break;
 		}
 
@@ -1284,6 +1316,14 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 				{
 					user->AddBuff(skill.buff_type, skill.buff_turns);
 				}
+			}
+		}
+
+		if (skill.zero_mana)
+		{
+			if (skill.owner == 9)
+			{
+				app->audio->PlayFx(dragon_breath);
 			}
 		}
 

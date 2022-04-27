@@ -133,6 +133,8 @@ private:
 	SDL_Texture* whitemark_64x64 = NULL;
 	SDL_Texture* whitemark_32x32 = NULL;
 
+	uint dragon_breath;
+
 	// enemy casting skill
 	bool casting = false;
 	int casting_time = 0;

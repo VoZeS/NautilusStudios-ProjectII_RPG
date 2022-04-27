@@ -2206,28 +2206,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 5;
+				new_gear.mana = 10;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 10;
+				new_gear.mana = 25;
 				new_gear.speed = 10;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 18;
+				new_gear.mana = 50;
 				new_gear.speed = 18;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 30;
+				new_gear.mana = 70;
 				new_gear.speed = 30;
 				new_gear.power = 0;
 			}
@@ -2236,28 +2236,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 		{
 			if (level == 1)
 			{
-				new_gear.health = 5;
+				new_gear.health = 10;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 5;
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 10;
+				new_gear.health = 25;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 18;
+				new_gear.health = 50;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 25;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 30;
+				new_gear.health = 70;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 40;
@@ -2333,28 +2333,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 5;
+				new_gear.mana = 10;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 20;
+				new_gear.mana = 35;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 36;
+				new_gear.mana = 68;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 60;
+				new_gear.mana = 100;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
@@ -2363,28 +2363,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 		{
 			if (level == 1)
 			{
-				new_gear.health = 5;
+				new_gear.health = 10;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 5;
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 10;
+				new_gear.health = 25;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 15;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 18;
+				new_gear.health = 30;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 25;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 30;
+				new_gear.health = 70;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 40;
@@ -2460,28 +2460,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 5;
+				new_gear.mana = 10;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 10;
-				new_gear.mana = 10;
+				new_gear.mana = 25;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 18;
-				new_gear.mana = 18;
+				new_gear.mana = 30;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 30;
-				new_gear.mana = 30;
+				new_gear.mana = 70;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
@@ -2497,21 +2497,21 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 25;
+				new_gear.health = 35;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 43;
+				new_gear.health = 68;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 70;
+				new_gear.health = 100;
 				new_gear.mana = 0;
 				new_gear.speed = 0;
 				new_gear.power = 0;
@@ -2588,28 +2588,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 			if (level == 1)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 5;
+				new_gear.mana = 10;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 10;
+				new_gear.mana = 25;
 				new_gear.speed = 0;
 				new_gear.power = 10;
 			}
 			else if (level == 3)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 18;
+				new_gear.mana = 50;
 				new_gear.speed = 0;
 				new_gear.power = 18;
 			}
 			else if (level == 4)
 			{
 				new_gear.health = 0;
-				new_gear.mana = 30;
+				new_gear.mana = 70;
 				new_gear.speed = 0;
 				new_gear.power = 30;
 			}
@@ -2618,28 +2618,28 @@ Gear Inventory::GetGearPiece(int user, int piece, int level)
 		{
 			if (level == 1)
 			{
-				new_gear.health = 5;
+				new_gear.health = 10;
 				new_gear.mana = 5;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 2)
 			{
-				new_gear.health = 10;
+				new_gear.health = 25;
 				new_gear.mana = 15;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 3)
 			{
-				new_gear.health = 18;
+				new_gear.health = 50;
 				new_gear.mana = 25;
 				new_gear.speed = 0;
 				new_gear.power = 0;
 			}
 			else if (level == 4)
 			{
-				new_gear.health = 30;
+				new_gear.health = 70;
 				new_gear.mana = 40;
 				new_gear.speed = 0;
 				new_gear.power = 0;
@@ -3250,6 +3250,37 @@ void Inventory::EquipGear(const char* aei)
 			hero.attribute("weapon").set_value(aei[2] - '0');
 		}
 	}
+
+	saveGame.save_file(HEROES_STATS_FILENAME);
+}
+
+void Inventory::EquipAllMaxGear()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_node hero;
+
+	hero = saveGame.child("heroes_stats").child("assassin").child("gear");
+	hero.attribute("helmet").set_value(4);
+	hero.attribute("chest").set_value(4);
+	hero.attribute("boots").set_value(4);
+	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("healer").child("gear");
+	hero.attribute("helmet").set_value(4);
+	hero.attribute("chest").set_value(4);
+	hero.attribute("boots").set_value(4);
+	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("tank").child("gear");
+	hero.attribute("helmet").set_value(4);
+	hero.attribute("chest").set_value(4);
+	hero.attribute("boots").set_value(4);
+	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("wizard").child("gear");
+	hero.attribute("helmet").set_value(4);
+	hero.attribute("chest").set_value(4);
+	hero.attribute("boots").set_value(4);
+	hero.attribute("weapon").set_value(4);
+	
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
 }

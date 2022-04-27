@@ -244,7 +244,6 @@ bool Menu::Start()
 		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
 		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
 
-
 		torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
 		light_fire1 = app->tex->Load("Assets/textures/Torch1_light.png");
 		light_fire2 = app->tex->Load("Assets/textures/Torch2_light.png");
@@ -1400,6 +1399,7 @@ bool Menu::Update(float dt)
 	else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		app->inventory->UnlockAll();
+		app->inventory->EquipAllMaxGear();
 	}
 
 	return true;

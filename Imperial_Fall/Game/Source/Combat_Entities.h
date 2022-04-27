@@ -13,7 +13,8 @@ enum class ENEMIES
 	MUSHROOM,
 	GOBLIN,
 	SKELETON,
-	R_TEMPLAR
+	R_TEMPLAR,
+	DRAGON
 };
 
 struct BUFF {

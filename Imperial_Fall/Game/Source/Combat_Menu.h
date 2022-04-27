@@ -124,6 +124,7 @@ private:
 	Animation mushroomAnim;
 	Animation goblinAnim;
 	Animation skeletonAnim;
+	Animation dragonAnim;
 
 	// positions
 	fPoint action_pos[NUM_BUTTONS];
@@ -149,6 +150,7 @@ private:
 	SDL_Texture* mushroom = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* red_templar = NULL;
+	SDL_Texture* dragon = NULL;
 	SDL_Texture* whitemark_400x50 = NULL;
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;

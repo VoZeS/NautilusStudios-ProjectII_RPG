@@ -108,7 +108,7 @@ bool Town1::Update(float dt)
 	{
 		ENEMIES enemies[4];
 		enemies[0] = ENEMIES::MUSHROOM;
-		enemies[1] = ENEMIES::MUSHROOM;
+		enemies[1] = ENEMIES::DRAGON;
 		enemies[2] = ENEMIES::MUSHROOM;
 		enemies[3] = ENEMIES::MUSHROOM;
 		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;

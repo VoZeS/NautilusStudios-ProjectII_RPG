@@ -79,6 +79,7 @@ public:
 	// i --> level of gear
 	void UnlockObject(const char* aei);
 	void EquipGear(const char* aei);
+	void EquipAllMaxGear(); // cheat only
 	void UnlockSkill(int owner, int skill);
 	void AddSkillPoint(int owner, int amount);
 
