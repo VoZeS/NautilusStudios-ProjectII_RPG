@@ -1490,7 +1490,7 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 			{
 				objective = rand() % 4;
 				rounds++;
-			} while ((!enemies[objective]->GetEntityState() || (enemies[objective]->GetActualHealth() > enemies[objective]->GetMaxHealth() - 20)) && rounds < 10);
+			} while ((enemies[objective]->GetEntityState() != 1 || (enemies[objective]->GetActualHealth() > enemies[objective]->GetMaxHealth() * 0.7)) && rounds < 10);
 
 			if (rounds == 10)
 			{
