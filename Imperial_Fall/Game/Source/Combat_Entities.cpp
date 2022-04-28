@@ -781,11 +781,18 @@ void Combat_Entities::AddDebuff(DEBUFF_TYPE type, int turns)
 	DEBUFF new_debuff;
 	new_debuff.debuff_type = type;
 
-	int r;
+	int r = rand() % 10;
 
-	if (entity_type == 9)
+
+	if (entity_type == 8 || entity_type == 12)
 	{
-		r = rand() % 10;
+		if (type == DEBUFF_TYPE::STUN && r > 4)
+		{
+			return;
+		}
+	}
+	else if (entity_type == 9)
+	{
 		if (type == DEBUFF_TYPE::BURN)
 		{
 			return;
