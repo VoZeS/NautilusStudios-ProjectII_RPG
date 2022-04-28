@@ -253,7 +253,7 @@ bool Render::PostUpdate()
 
 	SDL_RenderPresent(renderer);
 
-	printf_s("Sprites Rendered: %d \n", cont);
+	
 	
 	//Clear layers
 	for (int i = 0; i < MAX_LAYERS; i++)

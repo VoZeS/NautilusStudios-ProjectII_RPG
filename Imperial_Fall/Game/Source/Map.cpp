@@ -97,8 +97,12 @@ void Map::Draw()
 					{
 						int width = mapLayerItem->data->properties.GetProperty("Width");
 						int height = mapLayerItem->data->properties.GetProperty("Height");
-						
-						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 0)
+						{
+							// dungeon ice sensor
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 0);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);

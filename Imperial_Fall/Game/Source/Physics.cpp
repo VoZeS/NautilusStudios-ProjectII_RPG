@@ -217,6 +217,7 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
+	else if (collision == 0) fixture.isSensor = true;
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
 	fix->SetUserData((void*)collision);
@@ -248,6 +249,23 @@ void Physics::BeginContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataA == 1)
 	{
+
+		if ((int)fixtureUserDataB == 0)
+		{
+			//dungeon sensor
+			if (app->dungeon->isinIce == true)
+			{
+				app->dungeon->isinIce = false;
+				printf_s("ice false \n");
+			}
+			else
+			{
+				app->dungeon->isinIce = true;
+				printf_s("ice true \n");
+			}
+		}
+		
+			
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
@@ -283,6 +301,8 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
+
+
 
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataB == 12)
@@ -374,7 +394,23 @@ void Physics::BeginContact(b2Contact* contact)
 	
 	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 2)
+		if ((int)fixtureUserDataA == 0)
+		{
+			//dungeon sensor
+			if (app->dungeon->isinIce == true)
+			{
+				app->dungeon->isinIce = false;
+				printf_s("ice false \n");
+			}
+			else
+			{
+				app->dungeon->isinIce = true;
+				printf_s("ice true \n");
+			}
+			
+			
+		}
+		else if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
 			app->dialog->SetPressE_Hide(false);
@@ -409,6 +445,7 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
+		
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)
 		{
