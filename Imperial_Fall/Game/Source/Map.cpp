@@ -157,13 +157,21 @@ void Map::Draw()
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
 						{
-							// Granjero
-							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
+							// Sabio
+							app->entities->CreateEntity(ENTITY_TYPE::SABIO, pos.x, pos.y);
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 15)
 						{
 							// Aldeano
 							app->entities->CreateEntity(ENTITY_TYPE::ALDEANO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 16)
+						{
+							if (app->frontground->adventure_phase > 0)
+							{
+								// Granjero
+								app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
+							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{

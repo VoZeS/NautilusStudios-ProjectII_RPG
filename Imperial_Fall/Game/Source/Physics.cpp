@@ -190,7 +190,7 @@ bool Physics::PostUpdate()
 						c_g = 0;
 						c_b = 0;
 						break;
-					case 5: // granjero interaction
+					case 5: // sabio interaction
 						c_r = 255;
 						c_g = 200;
 						c_b = 0;
@@ -205,7 +205,7 @@ bool Physics::PostUpdate()
 						c_g = 100;
 						c_b = 100;
 						break;
-					case 8:
+					case 8: // granjero interaction
 						c_r = 50;
 						c_g = 200;
 						c_b = 200;
@@ -474,9 +474,9 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
-			// granjero contact
+			// sabio contact
 			app->dialog->SetPressE_Hide(false);
-			inGranjero = true;
+			inSabio = true;
 		}
 		else if ((int)fixtureUserDataB == 6)
 		{
@@ -488,6 +488,12 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataB == 8)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(false);
+			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataB == 20)
 		{
@@ -634,9 +640,9 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
-			// granjero contact
+			// sabio contact
 			app->dialog->SetPressE_Hide(false);
-			inGranjero = true;
+			inSabio = true;
 		}
 		else if ((int)fixtureUserDataA == 6)
 		{
@@ -648,6 +654,12 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataA == 8)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(false);
+			inGranjero = true;
 		}
 		else if ((int)fixtureUserDataA == 20)
 		{
@@ -801,9 +813,9 @@ void Physics::EndContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 5)
 		{
-			// granjero contact
+			// sabio contact
 			app->dialog->SetPressE_Hide(true);
-			inGranjero = false;
+			inSabio = false;
 			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 6)
@@ -811,6 +823,13 @@ void Physics::EndContact(b2Contact* contact)
 			// granjero contact
 			app->dialog->SetPressE_Hide(true);
 			inAldeano = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 8)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inGranjero = false;
 			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataB == 20)
@@ -874,9 +893,9 @@ void Physics::EndContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataA == 5)
 		{
-			// granjero contact
+			// sabio contact
 			app->dialog->SetPressE_Hide(false);
-			inGranjero = false;
+			inSabio = false;
 			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataA == 6)
@@ -884,6 +903,13 @@ void Physics::EndContact(b2Contact* contact)
 			// granjero contact
 			app->dialog->SetPressE_Hide(true);
 			inAldeano = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataA == 8)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(false);
+			inGranjero = false;
 			app->dialog->QuitDialogs();
 		}
 		else if ((int)fixtureUserDataA == 20)

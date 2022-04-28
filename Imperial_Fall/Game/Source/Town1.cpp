@@ -109,7 +109,7 @@ bool Town1::Update(float dt)
 		ENEMIES enemies[4];
 		enemies[0] = ENEMIES::NOTHING;
 		enemies[1] = ENEMIES::A_TEMPLAR;
-		enemies[2] = ENEMIES::W_TEMPLAR;
+		enemies[2] = ENEMIES::NOTHING;
 		enemies[3] = ENEMIES::NOTHING;
 		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
 		app->frontground->FadeInCombat(enemies, "999");

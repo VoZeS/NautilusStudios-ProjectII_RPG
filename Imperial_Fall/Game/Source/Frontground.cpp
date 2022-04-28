@@ -78,6 +78,11 @@ bool Frontground::PreUpdate()
 			app->combat_menu->SetController();
 		}
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		adventure_phase++;
+	}
 	
 	if (go_black)
 	{

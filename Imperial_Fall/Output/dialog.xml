@@ -9,15 +9,23 @@
 	<herrero>
 		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado"/>
 	</herrero>
-	<granjero>
+	<sabio>
 		<text1 linea1="Hola! Ahora mismo estamos sin existencias." linea2="Volved mas adelante."/>
-	</granjero>
+	</sabio>
 	<medico>
 		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!"/>
 	</medico>
 	<aldeano>
 		<text1 linea1="No tengo nada que decir. No molestes."/>
 	</aldeano>
+	<granjero>
+		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector."/>
+		<text2 linea1="Dicen que era un dragon!! Por lo visto murio hace ya mucho."/>
+		<text3 linea1="Dicen que hay personas con la capacidad de no perder" linea2="turno al recargar."/>
+		<text4 linea1="En vez de eso, aprovechan el momento para usar poderosos" linea2="ataques."/>
+		<text5 linea1="La leyenda cuenta que el aliento igneo de Lloyd producia" linea2="tanto calor que nadie podia soportarlo."/>
+		<text6 linea1="Esa majestuosa llamarada obtuvo el nombre de..." linea2="Flame of calamity."/>
+	</granjero>
 	<templario>
 		<text1 linea1="Y vosotros quienes sois?" linea2="Largaos de aqui!"/>
 	</templario>

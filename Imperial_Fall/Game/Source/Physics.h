@@ -72,8 +72,9 @@ public:
 	bool inRenato = false;
 	bool inCurandero = false;
 	bool inHerrero = false;
-	bool inGranjero = false;
+	bool inSabio = false;
 	bool inAldeano = false;
+	bool inGranjero = false;
 	bool inCoins = false;
 	bool inBook = false;
 	int book_type = -1;
@@ -87,8 +88,9 @@ public:
 		case 1: ret = inRenato; break;
 		case 2: ret = inCurandero; break;
 		case 3: ret = inHerrero; break;
-		case 4: ret = inGranjero; break;
+		case 4: ret = inSabio; break;
 		case 5: ret = inAldeano; break;
+		case 6: ret = inGranjero; break;
 		}
 
 		return ret;

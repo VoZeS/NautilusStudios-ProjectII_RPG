@@ -49,8 +49,9 @@ bool Entities::Start()
 		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
 		curandero = app->tex->Load("Assets/textures/curandero.png");
 		herrero = app->tex->Load("Assets/textures/herrero.png");
-		granjero = app->tex->Load("Assets/textures/granjero.png");
+		sabio = app->tex->Load("Assets/textures/sage.png");
 		aldeano = app->tex->Load("Assets/textures/aldeano.png");
+		granjero = app->tex->Load("Assets/textures/granjero.png");
 		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
@@ -95,11 +96,14 @@ bool Entities::PreUpdate()
 			case ENTITY_TYPE::HERRERO:
 				entity->InitCustomEntity(3);
 				break;
-			case ENTITY_TYPE::GRANJERO:
+			case ENTITY_TYPE::SABIO:
 				entity->InitCustomEntity(4);
 				break;
 			case ENTITY_TYPE::ALDEANO:
 				entity->InitCustomEntity(5);
+				break;
+			case ENTITY_TYPE::GRANJERO:
+				entity->InitCustomEntity(7);
 				break;
 			case ENTITY_TYPE::W_TEMPLAR:
 				entity->InitCustomEntity(1);
@@ -325,16 +329,22 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(npc, ENTITY_TYPE::HERRERO, p);
 	}
 		break;
-	case ENTITY_TYPE::GRANJERO:
+	case ENTITY_TYPE::SABIO:
 	{
 		NPC* npc = new NPC();
-		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
+		AddEntity(npc, ENTITY_TYPE::SABIO, p);
 	}
 		break;
 	case ENTITY_TYPE::ALDEANO:
 	{
 		NPC* npc = new NPC();
 		AddEntity(npc, ENTITY_TYPE::ALDEANO, p);
+	}
+		break;
+	case ENTITY_TYPE::GRANJERO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
 	case ENTITY_TYPE::W_TEMPLAR:
@@ -391,7 +401,8 @@ int Entities::FindNPC()
 		entity = item->data;
 
 		if ((entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO
-			|| entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+			|| entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO
+			|| entity->entity_type == ENTITY_TYPE::ALDEANO || entity->entity_type == ENTITY_TYPE::GRANJERO)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			switch (entity->entity_type)
@@ -402,9 +413,11 @@ int Entities::FindNPC()
 				break;
 			case ENTITY_TYPE::HERRERO: ret = 3;
 				break;
-			case ENTITY_TYPE::GRANJERO: ret = 4;
+			case ENTITY_TYPE::SABIO: ret = 4;
 				break;
 			case ENTITY_TYPE::ALDEANO: ret = 5;
+				break;
+			case ENTITY_TYPE::GRANJERO: ret = 6;
 				break;
 			}
 

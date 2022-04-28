@@ -16,8 +16,9 @@ enum class DIALOGS
 	RENATO,
 	HERRERO,
 	MEDICO,
-	GRANJERO,
+	SABIO,
 	ALDEANO,
+	GRANJERO,
 	ENEMIGO
 };
 
@@ -94,6 +95,7 @@ private:
 	const char* linea2Char_Renato[5];
 	int renato_text = -1;
 	int renato_maxtext = 5;
+	int renato_base = -1;
 	bool dialog_finish = false;
 
 	std::string linea1String_Herrero;
@@ -102,6 +104,7 @@ private:
 	const char* linea2Char_Herrero;
 	int herrero_text = -1;
 	int herrero_maxtext = 1;
+	int herrero_base = -1;
 
 	std::string linea1String_Medico;
 	std::string linea2String_Medico;
@@ -109,19 +112,30 @@ private:
 	const char* linea2Char_Medico;
 	int medico_text = -1;
 	int medico_maxtext = 1;
+	int medico_base = -1;
 
-	std::string linea1String_Granjero;
-	std::string linea2String_Granjero;
-	const char* linea1Char_Granjero;
-	const char* linea2Char_Granjero;
-	int granjero_text = -1;
-	int granjero_maxtext = 1;
-
+	std::string linea1String_Sabio;
+	std::string linea2String_Sabio;
+	const char* linea1Char_Sabio;
+	const char* linea2Char_Sabio;
+	int sabio_text = -1;
+	int sabio_maxtext = 1;
+	int sabio_base = -1;
 
 	std::string linea1String_Aldeano;
 	const char* linea1Char_Aldeano;
 	int aldeano_text = -1;
 	int aldeano_maxtext = 1;
+	int aldeano_base = -1;
+
+
+	std::string linea1String_Granjero[6];
+	std::string linea2String_Granjero[6];
+	const char* linea1Char_Granjero[6];
+	const char* linea2Char_Granjero[6];
+	int granjero_text = -1;
+	int granjero_maxtext = 6;
+	int grangero_base = -1;
 
 	/*
 	std::string linea1String_Templario;
@@ -150,7 +164,7 @@ private:
 	Animation* anim = NULL;
 	Animation idle_e;
 
-	bool ContinueDialog(int& actual_text, int max_text);
+	bool ContinueDialog(int& actual_text, int max_text, int base_text);
 
 	// shop
 	int chosed;
