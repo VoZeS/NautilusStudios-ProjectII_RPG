@@ -64,7 +64,7 @@ bool Physics::Start()
 // Called each loop iteration
 bool Physics::PreUpdate()
 {
-	
+
 	if (!app->menu->GetGameState())
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
@@ -109,7 +109,7 @@ bool Physics::PostUpdate()
 				if (i > 0)
 				{
 					void* userData = f->GetUserData();
-					
+
 					switch ((int)userData)
 					{
 					case 1: // player
@@ -253,6 +253,7 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	{
 		if (!isActive_S6) fixture.isSensor = true;
 	}
+	else if (collision == 0) fixture.isSensor = true;
 
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
@@ -281,7 +282,7 @@ bool Physics::CreateDynamicBox(int x, int y, int w, int h)
 	fixture.restitution = 0.0f;
 
 	b2Fixture* fix = p->CreateFixture(&fixture);
-	
+
 	return true;
 }
 
@@ -309,6 +310,23 @@ void Physics::BeginContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataA == 1)
 	{
+
+		if ((int)fixtureUserDataB == 0)
+		{
+			//dungeon sensor
+			if (app->dungeon->isinIce == true)
+			{
+				app->dungeon->isinIce = false;
+				printf_s("ice false \n");
+			}
+			else
+			{
+				app->dungeon->isinIce = true;
+				printf_s("ice true \n");
+			}
+		}
+
+
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
@@ -344,6 +362,8 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
+
+
 
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataB == 12)
@@ -432,10 +452,26 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-	
+
 	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 2)
+		if ((int)fixtureUserDataA == 0)
+		{
+			//dungeon sensor
+			if (app->dungeon->isinIce == true)
+			{
+				app->dungeon->isinIce = false;
+				printf_s("ice false \n");
+			}
+			else
+			{
+				app->dungeon->isinIce = true;
+				printf_s("ice true \n");
+			}
+
+
+		}
+		else if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
 			app->dialog->SetPressE_Hide(false);
@@ -470,6 +506,7 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
+
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)
 		{

@@ -34,7 +34,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-
+public:
+	bool isinIce = false;
 
 
 

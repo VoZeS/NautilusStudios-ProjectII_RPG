@@ -62,22 +62,22 @@ bool Map::Start()
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-	
+
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
 
 	while (mapLayerItem != NULL) {
-		
+
 		for (int x = 0; x < mapLayerItem->data->width; x++)
 		{
 			for (int y = 0; y < mapLayerItem->data->height; y++)
 			{
 				// L04: DONE 9: Complete the draw function
 				int gid = mapLayerItem->data->Get(x, y);
-				
+
 				if (gid > 0) {
 					TileSet* tileset = GetTilesetFromTileId(gid);
-					
+
 					SDL_Rect r = tileset->GetTileRect(gid);
 					iPoint pos = MapToWorld(x, y);
 
@@ -97,13 +97,12 @@ void Map::Draw()
 					{
 						int width = mapLayerItem->data->properties.GetProperty("Width");
 						int height = mapLayerItem->data->properties.GetProperty("Height");
-
-						if (mapLayerItem->data->properties.GetProperty("Collision") == 200) //BOX SOUKOBAN PUZZLE
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 0)
 						{
-							app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+							// dungeon ice sensor
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 0);
 						}
-						
-						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
@@ -141,10 +140,10 @@ void Map::Draw()
 
 						}
 						// --------------------------------------------------------------------- SENSOR SOUKOBAN PUZZLE
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 201) 
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 201)
 						{
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 201);
-							
+
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 202)
 						{
@@ -350,7 +349,7 @@ iPoint Map::MapToWorld(int x, int y) const
 		ret.x = (x - y) * (mapData.tileWidth * 0.5f);
 		ret.y = (x + y) * (mapData.tileHeight * 0.5f);
 	}
-	
+
 	return ret;
 }
 
@@ -379,7 +378,7 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 {
 	ListItem<TileSet*>* item = mapData.tilesets.start;
 	TileSet* set = item->data;
-	
+
 	for (set; set; item = item->next,  set = item->data)
 	{
 		if (id >= set->firstgid && id < set->firstgid + set->tilecount)
@@ -402,7 +401,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	rect.h = tileHeight;
 	rect.x = margin + ((rect.w + spacing) * (relativeId % columns));
 	rect.y = margin + ((rect.h + spacing) * (relativeId / columns));
-	
+
 	return rect;
 }
 
@@ -410,7 +409,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 bool Map::CleanUp()
 {
     LOG("Unloading map");
-	
+
     // L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
     // Remove all tilesets
 	ListItem<TileSet*>* item;
@@ -444,7 +443,7 @@ bool Map::Load(const char* filename)
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
 
-	pugi::xml_document mapFile; 
+	pugi::xml_document mapFile;
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
     if(result == NULL)
@@ -473,11 +472,11 @@ bool Map::Load(const char* filename)
 	{
 		ret = LoadAllLayers(mapFile.child("map"));
 	}
-    
+
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
-		 
+
 		/*LOG("Successfully parsed map XML file: %s", filename);
 		LOG("width: %d", mapData.width);
 		LOG("height: %d", mapData.height);
@@ -522,7 +521,7 @@ bool Map::Load(const char* filename)
 			LOG("name: %s", layer->data->name.GetString());
 			LOG("width: %d", layer->data->width);
 			LOG("height: %d", layer->data->height);*/
-			
+
 			layerCtr++;
 			layer = layer->next;
 		}
@@ -689,7 +688,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 
 		properties.list.Add(p);
 	}
-	
+
 	return ret;
 }
 
