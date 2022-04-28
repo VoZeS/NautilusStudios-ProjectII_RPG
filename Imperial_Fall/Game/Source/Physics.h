@@ -25,6 +25,7 @@ struct Miscelenea
 	b2Body* body;
 	int number = -1;
 	bool alive = false;
+	int misc_type; // 0 --> coins, 1 --> assassin, 2 --> healer, 3 --> tank, 4 --> wizard
 };
 
 class Physics : public Module, public b2ContactListener
@@ -62,10 +63,7 @@ public:
 	b2World* world;
 
 	Miscelenea coins_in_floor[MAX_COINS];
-	Miscelenea books_in_floor0[MAX_BOOKS]; // assassin
-	Miscelenea books_in_floor1[MAX_BOOKS]; // healer
-	Miscelenea books_in_floor2[MAX_BOOKS]; // tank
-	Miscelenea books_in_floor3[MAX_BOOKS]; // wizard
+	Miscelenea books_in_floor[MAX_BOOKS];
 
 	int on_collosion;
 
@@ -100,10 +98,7 @@ public:
 	int coins_number = 0;
 	void DestroyCoins();
 	bool book_picked = false;
-	int book_number0 = 0;
-	int book_number1 = 0;
-	int book_number2 = 0;
-	int book_number3 = 0;
+	int book_number = 0;
 	void DestroyBook();
 	void ResetMiscelanea();
 

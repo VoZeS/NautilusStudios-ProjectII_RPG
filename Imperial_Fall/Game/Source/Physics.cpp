@@ -62,10 +62,7 @@ bool Physics::Start()
 	coin_picked = false;
 	coins_number = 0;
 	book_picked = false;
-	book_number0 = 0;
-	book_number1 = 0;
-	book_number2 = 0;
-	book_number3 = 0;
+	book_number = 0;
 
 	return true;
 }
@@ -123,28 +120,17 @@ bool Physics::PostUpdate()
 
 		for (size_t i = 0; i < MAX_BOOKS; i++)
 		{
-			rect = { 0, 0, 64, 64 };
-			if (books_in_floor0[i].alive)
+			if (books_in_floor[i].alive)
 			{
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().y) - 32, &rect);
-			}
+				switch (books_in_floor[i].misc_type)
+				{
+				case 1: rect = { 0, 0, 64, 64 }; break;
+				case 2: rect = { 64, 0, 64, 64 }; break;
+				case 3: rect = { 128, 0, 64, 64 }; break;
+				case 4: rect = { 192, 0, 64, 64 }; break;
+				}
 
-			rect = { 64, 0, 64, 64 };
-			if (books_in_floor1[i].alive)
-			{
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().y) - 32, &rect);
-			}
-
-			rect = { 128, 0, 64, 64 };
-			if (books_in_floor2[i].alive)
-			{
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().y) - 32, &rect);
-			}
-
-			rect = { 192, 0, 64, 64 };
-			if (books_in_floor3[i].alive)
-			{
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().y) - 32, &rect);
+				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().y) - 32, &rect);
 			}
 		}
 	}
@@ -340,30 +326,35 @@ bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 		coins_in_floor[coins_number].body = world->CreateBody(&g);
 		coins_in_floor[coins_number].number = coins_number;
 		coins_in_floor[coins_number].alive = true;
+		coins_in_floor[coins_number].misc_type = 0;
 	}
 	else if (collision == 22)
 	{
-		books_in_floor0[book_number0].body = world->CreateBody(&g);
-		books_in_floor0[book_number0].number = book_number0;
-		books_in_floor0[book_number0].alive = true;
+		books_in_floor[book_number].body = world->CreateBody(&g);
+		books_in_floor[book_number].number = book_number;
+		books_in_floor[book_number].alive = true;
+		books_in_floor[book_number].misc_type = 1;
 	}
 	else if (collision == 26)
 	{
-		books_in_floor1[book_number1].body = world->CreateBody(&g);
-		books_in_floor1[book_number1].number = book_number1;
-		books_in_floor1[book_number1].alive = true;
+		books_in_floor[book_number].body = world->CreateBody(&g);
+		books_in_floor[book_number].number = book_number;
+		books_in_floor[book_number].alive = true;
+		books_in_floor[book_number].misc_type = 2;
 	}
 	else if (collision == 27)
 	{
-		books_in_floor2[book_number2].body = world->CreateBody(&g);
-		books_in_floor2[book_number2].number = book_number2;
-		books_in_floor2[book_number2].alive = true;
+		books_in_floor[book_number].body = world->CreateBody(&g);
+		books_in_floor[book_number].number = book_number;
+		books_in_floor[book_number].alive = true;
+		books_in_floor[book_number].misc_type = 3;
 	}
 	else if (collision == 28)
 	{
-		books_in_floor3[book_number3].body = world->CreateBody(&g);
-		books_in_floor3[book_number3].number = book_number3;
-		books_in_floor3[book_number3].alive = true;
+		books_in_floor[book_number].body = world->CreateBody(&g);
+		books_in_floor[book_number].number = book_number;
+		books_in_floor[book_number].alive = true;
+		books_in_floor[book_number].misc_type = 4;
 	}
 
 	b2PolygonShape box;
@@ -385,28 +376,10 @@ bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 		coins_number++;
 		fix->SetUserData((void*)collision);
 	}
-	else if (collision == 22)
+	else if (collision == 22 || collision == 26 || collision == 27 || collision == 28)
 	{
-		fix = books_in_floor0[book_number0].body->CreateFixture(&fixture);
-		book_number0++;
-		fix->SetUserData((void*)collision);
-	}
-	else if (collision == 26)
-	{
-		fix = books_in_floor1[book_number1].body->CreateFixture(&fixture);
-		book_number1++;
-		fix->SetUserData((void*)collision);
-	}
-	else if (collision == 27)
-	{
-		fix = books_in_floor2[book_number2].body->CreateFixture(&fixture);
-		book_number2++;
-		fix->SetUserData((void*)collision);
-	}
-	else if (collision == 28)
-	{
-		fix = books_in_floor3[book_number3].body->CreateFixture(&fixture);
-		book_number3++;
+		fix = books_in_floor[book_number].body->CreateFixture(&fixture);
+		book_number++;
 		fix->SetUserData((void*)collision);
 	}
 
@@ -1035,30 +1008,12 @@ void Physics::DestroyBook()
 		}
 	}
 
-	for (size_t i = 0; i < MAX_COINS; i++)
+	for (size_t i = 0; i < MAX_BOOKS; i++)
 	{
-		if (book_owner == 22 && books_in_floor0[i].body == body)
+		if (books_in_floor[i].body == body)
 		{
-			number = books_in_floor0[i].number;
-			books_in_floor0[i].alive = false;
-			break;
-		}
-		else if (book_owner == 26 && books_in_floor1[i].body == body)
-		{
-			number = books_in_floor1[i].number;
-			books_in_floor1[i].alive = false;
-			break;
-		}
-		else if (book_owner == 27 && books_in_floor2[i].body == body)
-		{
-			number = books_in_floor2[i].number;
-			books_in_floor2[i].alive = false;
-			break;
-		}
-		else if (book_owner == 28 && books_in_floor3[i].body == body)
-		{
-			number = books_in_floor3[i].number;
-			books_in_floor3[i].alive = false;
+			number = books_in_floor[i].number;
+			books_in_floor[i].alive = false;
 			break;
 		}
 	}
