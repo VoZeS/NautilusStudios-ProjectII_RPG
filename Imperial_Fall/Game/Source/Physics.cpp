@@ -202,11 +202,21 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 
 	b2FixtureDef fixture;
 	fixture.shape = &box;
+
 	if (collision == 5) fixture.isSensor = true;
 	else if (collision == 6) fixture.isSensor = true;
 	else if (collision == 7) fixture.isSensor = true;
 	else if (collision == 12) fixture.isSensor = true;
 	else if (collision == 21) fixture.isSensor = true;
+
+	// SOUKOBAN PUZZLE SENSORS
+	else if (collision == 201) fixture.isSensor = true;
+	else if (collision == 202) fixture.isSensor = true;
+	else if (collision == 203) fixture.isSensor = true;
+	else if (collision == 204) fixture.isSensor = true;
+	else if (collision == 205) fixture.isSensor = true;
+	else if (collision == 206) fixture.isSensor = true;
+
 	else if (collision == 23) fixture.isSensor = true;
 	else if (collision == 32) fixture.isSensor = true;
 	else if (collision == 24) fixture.isSensor = true;
@@ -217,10 +227,61 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
+
+	// SOUKOBAN PUZZLE COLLIDERS RIVER
+	else if (collision == 101)
+	{
+		if(!isActive_S1) fixture.isSensor = true;
+	}
+	else if (collision == 102)
+	{
+		if (!isActive_S2) fixture.isSensor = true;
+	}
+	else if (collision == 103)
+	{
+		if (!isActive_S3) fixture.isSensor = true;
+	}
+	else if (collision == 104)
+	{
+		if (!isActive_S4) fixture.isSensor = true;
+	}
+	else if (collision == 105)
+	{
+		if (!isActive_S5) fixture.isSensor = true;
+	}
+	else if (collision == 106)
+	{
+		if (!isActive_S6) fixture.isSensor = true;
+	}
+
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
 	fix->SetUserData((void*)collision);
 
+
+	return true;
+}
+
+bool Physics::CreateDynamicBox(int x, int y, int w, int h)
+{
+	b2BodyDef g;
+	g.type = b2_dynamicBody;
+	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
+	g.fixedRotation = true;
+	g.linearDamping = 100.0f;
+
+	b2Body* p = world->CreateBody(&g);
+
+	b2PolygonShape box;
+	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.friction = 1.0f;
+	fixture.restitution = 0.0f;
+
+	b2Fixture* fix = p->CreateFixture(&fixture);
+	
 	return true;
 }
 
@@ -493,6 +554,62 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->move_to = MOVE_TO::INSIDE_OUTSIDE;
 
 			app->frontground->FadeToBlack();
+		}
+	}
+
+	if ((int)fixtureUserDataA == 200)
+	{
+		if ((int)fixtureUserDataB == 201)
+		{
+			isActive_S1 = false;
+		}
+		if ((int)fixtureUserDataB == 202)
+		{
+			isActive_S2 = false;
+		}
+		if ((int)fixtureUserDataB == 203)
+		{
+			isActive_S3 = false;
+		}
+		if ((int)fixtureUserDataB == 204)
+		{
+			isActive_S4 = false;
+		}
+		if ((int)fixtureUserDataB == 205)
+		{
+			isActive_S5 = false;
+		}
+		if ((int)fixtureUserDataB == 206)
+		{
+			isActive_S6 = false;
+		}
+	}
+
+	if ((int)fixtureUserDataB == 200)
+	{
+		if ((int)fixtureUserDataA == 201)
+		{
+			isActive_S1 = false;
+		}
+		if ((int)fixtureUserDataA == 202)
+		{
+			isActive_S2 = false;
+		}
+		if ((int)fixtureUserDataA == 203)
+		{
+			isActive_S3 = false;
+		}
+		if ((int)fixtureUserDataA == 204)
+		{
+			isActive_S4 = false;
+		}
+		if ((int)fixtureUserDataA == 205)
+		{
+			isActive_S5 = false;
+		}
+		if ((int)fixtureUserDataA == 206)
+		{
+			isActive_S6 = false;
 		}
 	}
 }

@@ -15,6 +15,7 @@
 #include "Pathfinding.h"
 #include "Fonts.h"
 #include "Dialog.h"
+#include "Physics.h"
 
 #include "Defs.h"
 #include "Log.h"

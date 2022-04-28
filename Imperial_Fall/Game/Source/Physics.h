@@ -37,6 +37,8 @@ public:
 
 	bool CreateMapBox(int x, int y, int w, int h, int collision);
 
+	bool CreateDynamicBox(int x, int y, int w, int h);
+
 	bool CleanMapBoxes();
 
 	void BeginContact(b2Contact* contact);
@@ -53,6 +55,14 @@ public:
 	bool inHerrero = false;
 	bool inGranjero = false;
 	bool inAldeano = false;
+
+	//Soukoban Puzzles Colliders River Booleans
+	bool isActive_S1 = true;
+	bool isActive_S2 = true;
+	bool isActive_S3 = true;
+	bool isActive_S4 = true;
+	bool isActive_S5 = true;
+	bool isActive_S6 = true;
 
 	bool GetInNPC(int npc)
 	{

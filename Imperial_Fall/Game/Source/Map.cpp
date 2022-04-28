@@ -97,12 +97,81 @@ void Map::Draw()
 					{
 						int width = mapLayerItem->data->properties.GetProperty("Width");
 						int height = mapLayerItem->data->properties.GetProperty("Height");
+
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 200) //BOX SOUKOBAN PUZZLE
+						{
+							app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+						}
 						
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+
 						}
+						// -------------------------------------------------------------------- RIVER COLLISIONS SOUKOBAN PUZZLE
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 101)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 101);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 102)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 102);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 103)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 103);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 104)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 104);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 105)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 105);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 106)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 106);
+
+						}
+						// --------------------------------------------------------------------- SENSOR SOUKOBAN PUZZLE
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 201) 
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 201);
+							
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 202)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 202);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 203)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 203);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 204)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 204);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 205)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 205);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 206)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 206);
+
+						}
+
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
 						{
 							// Renato
