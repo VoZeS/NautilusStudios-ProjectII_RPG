@@ -278,6 +278,26 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 3);
 
 		break;
+	case ENEMIES::A_TEMPLAR:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 12;
+
+		max_health = 400;
+		actual_health = max_health;
+		max_mana = 50;
+		actual_mana = max_mana;
+		this->speed = 10;
+		this->power = 90;
+		shield = 200;
+		shield_turns = 10;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
 	}
 }
 
@@ -392,6 +412,11 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		{
 			app->menu->theseion2 = true;
 		}
+	}
+
+	if (shield <= 0)
+	{
+		shield_turns = 0;
 	}
 
 	return true;
@@ -1532,7 +1557,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.element = 1;
+			skill.element = 3;
 			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
 			skill.buff_turns = 1;
@@ -1868,122 +1893,6 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			skill.buff_turns = 2;
-			// buff
-			break;
-		case 3:
-			skill.owner = owner;
-			skill.skill_name = "Recovery";	
-			skill.att_effect = ATT_EFFECT::LIGHTNING;
-			skill.mana_cost = 0;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 2;
-			skill.supp_strenght = 2;
-			skill.support_type = SUPPORT_TYPE::RELOAD;
-			skill.debuff_type = DEBUFF_TYPE::STUN;
-			skill.buff_turns = 1;
-			skill.zero_mana = true;
-			break;
-		}
-	}
-	else if (owner == 8) // Red Templar (ENEMY)
-	{
-		switch (skill_number)
-		{
-		case 0:
-			skill.owner = owner;
-			skill.skill_name = "Berserker";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 40;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
-			skill.supp_strenght = 0;
-			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.shield_turns = 2;
-			skill.buff_type = BUFF_TYPE::STRONG;
-			skill.buff_turns = 2;
-			break;
-		case 1:
-			skill.owner = owner;
-			skill.skill_name = "Demolish";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 20;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
-			skill.att_strenght = 1;
-			skill.buff_type = BUFF_TYPE::QUICK;
-			skill.buff_turns = 2;
-			break;
-		case 2:
-			skill.owner = owner;
-			skill.skill_name = "I command thee, kneel!";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 25;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
-			skill.att_strenght = 0;
-			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
-			skill.buff_turns = 2;
-			// buff
-			break;
-		case 3:
-			skill.owner = owner;
-			skill.skill_name = "Recovery";	
-			skill.att_effect = ATT_EFFECT::LIGHTNING;
-			skill.mana_cost = 0;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 2;
-			skill.supp_strenght = 2;
-			skill.support_type = SUPPORT_TYPE::RELOAD;
-			skill.debuff_type = DEBUFF_TYPE::STUN;
-			skill.buff_turns = 1;
-			skill.zero_mana = true;
-			break;
-		}
-	}
-	else if (owner == 8) // Red Templar (ENEMY)
-	{
-		switch (skill_number)
-		{
-		case 0:
-			skill.owner = owner;
-			skill.skill_name = "Berserker";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 40;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
-			skill.supp_strenght = 0;
-			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.shield_turns = 2;
-			skill.buff_type = BUFF_TYPE::STRONG;
-			skill.buff_turns = 2;
-			break;
-		case 1:
-			skill.owner = owner;
-			skill.skill_name = "Demolish";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 20;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
-			skill.att_strenght = 1;
-			skill.buff_type = BUFF_TYPE::QUICK;
-			skill.buff_turns = 2;
-			break;
-		case 2:
-			skill.owner = owner;
-			skill.skill_name = "I command thee, kneel!";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 25;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
-			skill.att_strenght = 0;
-			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
-			skill.buff_turns = 2;
 			break;
 		case 3:
 			skill.owner = owner;
@@ -1993,8 +1902,6 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 2;
-			skill.supp_strenght = 2;
-			skill.support_type = SUPPORT_TYPE::RELOAD;
 			skill.debuff_type = DEBUFF_TYPE::STUN;
 			skill.buff_turns = 1;
 			skill.zero_mana = true;
@@ -2147,6 +2054,59 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			skill.buff_type = BUFF_TYPE::STRONG;
 			skill.buff_turns = 3;
+			skill.zero_mana = true;
+			break;
+		}
+	}
+	else if (owner == 12) // Armored Templar (ENEMY)
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Axe Blow";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 2;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Heavy shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 25;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 5;
+			skill.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
+			skill.buff_turns = 5;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Spin to win";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "For Theseion!!!";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 2;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
 			skill.zero_mana = true;
 			break;
 		}
@@ -2338,6 +2298,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			{
 				if (item->data.turns > 1)
 				{
+					app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns - 1).c_str());
 					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
 					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 					res = description0.c_str();
@@ -2349,6 +2310,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			}
 			else
 			{
+				app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns).c_str());
 				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
 				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 				res = description0.c_str();
@@ -2401,6 +2363,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			{
 				if (item->data.turns > 1)
 				{
+					app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns - 1).c_str());
 					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
 					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 					res = description0.c_str();
@@ -2412,6 +2375,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			}
 			else
 			{
+				app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns).c_str());
 				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
 				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 				res = description0.c_str();

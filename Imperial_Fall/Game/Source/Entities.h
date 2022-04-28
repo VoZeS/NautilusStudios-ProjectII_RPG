@@ -21,7 +21,8 @@ enum class ENTITY_TYPE
 	MUSHROOM,
 	GOBLIN,
 	SKELETON,
-	R_TEMPLAR
+	R_TEMPLAR,
+	A_TEMPLAR
 };
 
 class Entity
@@ -142,6 +143,7 @@ public:
 	SDL_Texture* goblin = NULL;
 	SDL_Texture* skeleton = NULL;
 	SDL_Texture* red_templar = NULL;
+	SDL_Texture* armored_templar = NULL;
 	
 };
 

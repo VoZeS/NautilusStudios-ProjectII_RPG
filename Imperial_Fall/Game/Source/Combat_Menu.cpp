@@ -63,6 +63,18 @@ Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 	theseionAnim.PushBack({ 68, 78, 46, 74 });
 	theseionAnim.PushBack({ 124, 78, 46, 74 });
 	theseionAnim.speed = 0.03f;
+
+	armoredAnim.PushBack({ 0, 0, 220, 140 });
+	armoredAnim.PushBack({ 220, 0, 220, 140 });
+	armoredAnim.PushBack({ 440, 0, 220, 140 });
+	armoredAnim.PushBack({ 660, 0, 220, 140 });
+	armoredAnim.PushBack({ 880, 0, 220, 140 });
+	armoredAnim.PushBack({ 0, 140, 220, 140 });
+	armoredAnim.PushBack({ 220, 140, 220, 140 });
+	armoredAnim.PushBack({ 440, 140, 220, 140 });
+	armoredAnim.PushBack({ 660, 140, 220, 140 });
+	armoredAnim.PushBack({ 880, 140, 220, 140 });
+	armoredAnim.speed = 0.08f;
 }
 
 // Destructor
@@ -110,6 +122,7 @@ bool Combat_Menu::Start()
 		dragon_idle = app->tex->Load("Assets/textures/dragon_idle.png");
 		dragon_ult = app->tex->Load("Assets/textures/dragon_ult.png");
 		theseion = app->tex->Load("Assets/textures/Theseion.png");
+		armored_templar = app->tex->Load("Assets/textures/armored_templar.png");
 		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
@@ -294,6 +307,12 @@ bool Combat_Menu::PreUpdate()
 				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &theseionAnim)
 				{
 					app->combat_manager->GetEnemyByNumber(i)->current_anim = &theseionAnim;
+				}
+				break;
+			case 12:
+				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &armoredAnim)
+				{
+					app->combat_manager->GetEnemyByNumber(i)->current_anim = &armoredAnim;
 				}
 				break;
 			default:
@@ -1902,6 +1921,11 @@ bool Combat_Menu::PostUpdate()
 					texture = theseion;
 					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x + 5, enemies_buttons[i].rect.y + 5, &r);
+					break;
+				case 12:
+					texture = armored_templar;
+					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 80, enemies_buttons[i].rect.y - 50, &r);
 					break;
 				default:
 					texture = assassin_texture;

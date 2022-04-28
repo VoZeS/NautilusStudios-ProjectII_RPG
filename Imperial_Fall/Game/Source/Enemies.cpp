@@ -27,7 +27,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[0] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[0] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[0] = ENEMIES::R_TEMPLAR; break;
-	case 6: combat_enemies[0] = ENEMIES::DRAGON; break;
+	case 6: combat_enemies[0] = ENEMIES::A_TEMPLAR; break;
 	}
 	switch (en2)
 	{
@@ -37,7 +37,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[1] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[1] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[1] = ENEMIES::R_TEMPLAR; break;
-	case 6: combat_enemies[1] = ENEMIES::DRAGON; break;
+	case 6: combat_enemies[1] = ENEMIES::A_TEMPLAR; break;
 	}
 	switch (en3)
 	{
@@ -47,7 +47,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[2] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[2] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[2] = ENEMIES::R_TEMPLAR; break;
-	case 6: combat_enemies[2] = ENEMIES::DRAGON; break;
+	case 6: combat_enemies[2] = ENEMIES::A_TEMPLAR; break;
 	}
 	switch (en4)
 	{
@@ -57,7 +57,7 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[3] = ENEMIES::R_TEMPLAR; break;
-	case 6: combat_enemies[3] = ENEMIES::DRAGON; break;
+	case 6: combat_enemies[3] = ENEMIES::A_TEMPLAR; break;
 	}
 	
 	p_in_array = index;
@@ -81,6 +81,18 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	skeletonAnim.PushBack({ 192, 0, 192, 205 });
 	skeletonAnim.PushBack({ 384, 0, 192, 205 });
 	skeletonAnim.speed = 0.03f;
+
+	armoredAnim.PushBack({ 0, 0, 110, 70 });
+	armoredAnim.PushBack({ 110, 0, 110, 70 });
+	armoredAnim.PushBack({ 220, 0, 110, 70 });
+	armoredAnim.PushBack({ 330, 0, 110, 70 });
+	armoredAnim.PushBack({ 440, 0, 110, 70 });
+	armoredAnim.PushBack({ 0, 70, 110, 70 });
+	armoredAnim.PushBack({ 110, 70, 110, 70 });
+	armoredAnim.PushBack({ 220, 70, 110, 70 });
+	armoredAnim.PushBack({ 330, 70, 110, 70 });
+	armoredAnim.PushBack({ 440, 70, 110, 70 });
+	armoredAnim.speed = 0.08f;
 }
 
 // Destructor
@@ -98,6 +110,7 @@ void Enemies::InitCustomEntity(int enemy)
 	case 3: currentAnimation = &goblinAnim; break;
 	case 4: currentAnimation = &skeletonAnim; break;
 	case 5: currentAnimation = &mushroomAnim; break;
+	case 6: currentAnimation = &armoredAnim; break;
 	}
 
 	// body
@@ -201,6 +214,9 @@ bool Enemies::Draw()
 			break;
 		case 5:
 			app->render->DrawTexture(app->entities->red_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			break;
+		case 6:
+			app->render->DrawTexture(app->entities->armored_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
 			break;
 		}
 	}
