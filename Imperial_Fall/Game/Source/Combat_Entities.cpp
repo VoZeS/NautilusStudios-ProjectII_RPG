@@ -225,7 +225,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 
 		max_health = 800;
 		actual_health = max_health;
-		max_mana = 450;
+		max_mana = 600;
 		actual_mana = max_mana;
 		this->speed = 80;
 		this->power = 100;

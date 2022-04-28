@@ -9,6 +9,7 @@
 
 #define CASTING_TIME 2 // in seconds
 #define MAX_EFFECTS_DISPLAYED 4
+#define EXIT_DELAY 70
 
 class Combat_Entities;
 
@@ -139,6 +140,11 @@ private:
 	bool casting = false;
 	int casting_time = 0;
 	SDL_Rect casting_rect;
+
+	// exit combat
+	bool winning;
+	bool losing;
+	int exit_cd;
 };
 
 #endif

@@ -48,9 +48,17 @@ Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 	skeletonAnim.PushBack({ 384, 0, 192, 210 });
 	skeletonAnim.speed = 0.03f;
 
-	dragonAnim.PushBack({ 0, 0, 240, 240 });
-	dragonAnim.PushBack({ 240, 0, 240, 240 });
-	dragonAnim.speed = 0.02f;
+	dragon_idleAnim.PushBack({ 0, 0, 240, 240 });
+	dragon_idleAnim.PushBack({ 240, 0, 240, 240 });
+	dragon_idleAnim.speed = 0.02f;
+
+	dragon_ultAnim.PushBack({ 0, 0, 500, 500 });
+	dragon_ultAnim.PushBack({ 500, 0, 500, 500 });
+	dragon_ultAnim.PushBack({ 1000, 0, 500, 500 });
+	dragon_ultAnim.PushBack({ 1500, 0, 500, 500 });
+	dragon_ultAnim.PushBack({ 2000, 0, 500, 500 });
+	dragon_ultAnim.speed = 0.05f;
+	dragon_ultAnim.loop = false;
 
 	theseionAnim.PushBack({ 68, 78, 46, 74 });
 	theseionAnim.PushBack({ 124, 78, 46, 74 });
@@ -99,7 +107,8 @@ bool Combat_Menu::Start()
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
-		dragon = app->tex->Load("Assets/textures/dragon.png");
+		dragon_idle = app->tex->Load("Assets/textures/dragon_idle.png");
+		dragon_ult = app->tex->Load("Assets/textures/dragon_ult.png");
 		theseion = app->tex->Load("Assets/textures/Theseion.png");
 		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
 		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
@@ -246,9 +255,33 @@ bool Combat_Menu::PreUpdate()
 				}
 				break;
 			case 9:
-				if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &dragonAnim)
+				if (skill_prepared.zero_mana)
 				{
-					app->combat_manager->GetEnemyByNumber(i)->current_anim = &dragonAnim;
+					if (dragon_ultAnim.HasFinished())
+					{
+						dragon_ultAnim.Reset();
+						CleanSkillPrepared();
+						if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &dragon_idleAnim)
+						{
+							dragon_idleAnim.Reset();
+							app->combat_manager->GetEnemyByNumber(i)->current_anim = &dragon_idleAnim;
+						}
+					}
+					else
+					{
+						if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &dragon_ultAnim)
+						{
+							app->combat_manager->GetEnemyByNumber(i)->current_anim = &dragon_ultAnim;
+						}
+					}
+				}
+				else
+				{
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim != &dragon_idleAnim)
+					{
+						dragon_idleAnim.Reset();
+						app->combat_manager->GetEnemyByNumber(i)->current_anim = &dragon_idleAnim;
+					}
 				}
 				break;
 			case 10:
@@ -1847,9 +1880,18 @@ bool Combat_Menu::PostUpdate()
 					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 20, enemies_buttons[i].rect.y - 40, &r);
 					break;
 				case 9:
-					texture = dragon;
-					r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
-					app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 80, enemies_buttons[i].rect.y - 150, &r);
+					if (app->combat_manager->GetEnemyByNumber(i)->current_anim == &dragon_ultAnim)
+					{
+						texture = dragon_ult;
+						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 225, enemies_buttons[i].rect.y - 300, &r);
+					}
+					else
+					{
+						texture = dragon_idle;
+						r = app->combat_manager->GetEnemyByNumber(i)->current_anim->GetCurrentFrame();
+						app->render->DrawTexture(texture, enemies_buttons[i].rect.x - 80, enemies_buttons[i].rect.y - 150, &r);
+					}
 					break;
 				case 10:
 					texture = theseion;
@@ -2282,6 +2324,11 @@ bool Combat_Menu::PostUpdate()
 	}
 	else if (app->combat_manager->GetInAnimation() == 2 && skill_prepared.skill_name != "null")
 	{
+		if (skill_prepared.owner ==  9 && skill_prepared.zero_mana)
+		{
+
+		}
+
 		SDL_Rect r_text = { 0, 0, 400, 50 };
 		app->render->DrawTexture(whitemark_400x50, 415 + c_x, 660 + c_y, &r_text);
 		app->fonts->BlitCombatText(415 + c_x, 660 + c_y + 10, app->fonts->textFont2, skill_prepared.skill_name);
@@ -2423,6 +2470,15 @@ bool Combat_Menu::CleanUp()
 	items = NULL;
 
 	return true;
+}
+
+void Combat_Menu::CleanSkillPrepared()
+{
+	Skill clean;
+	clean.skill_name = "";
+	clean.owner = -1;
+
+	SetSkillPrepared(clean);
 }
 
 iPoint Combat_Menu::GetEntityPosition(bool ally, int n)

@@ -89,6 +89,10 @@ bool Combat_Manager::Start()
 		casting_time = 0;
 		casting_rect = { -64, 0, 64, 64 };
 
+		winning = false;
+		losing = false;
+		exit_cd = 0;
+
 		preupdatedone = false;
 	}
 
@@ -121,16 +125,24 @@ bool Combat_Manager::PreUpdate()
 		}
 		else if (CheckCombatState() == 1)
 		{
-			app->menu->SetWinLoseScape(0); // win
-			if (!items_saved)
+			exit_cd++;
+			if (exit_cd > EXIT_DELAY)
 			{
-				SaveItemUses();
-				items_saved = true;
+				app->menu->SetWinLoseScape(0); // win
+				if (!items_saved)
+				{
+					SaveItemUses();
+					items_saved = true;
+				}
 			}
 		}
 		else if (CheckCombatState() == 2)
 		{
-			app->menu->SetWinLoseScape(1); // lose
+			exit_cd++;
+			if (exit_cd > EXIT_DELAY)
+			{
+				app->menu->SetWinLoseScape(1); // lose
+			}
 		}
 	}
 
