@@ -96,7 +96,6 @@ private:
 	int renato_text = -1;
 	int renato_maxtext = 5;
 	int renato_base = -1;
-	bool dialog_finish = false;
 
 	std::string linea1String_Herrero;
 	std::string linea2String_Herrero;
@@ -135,7 +134,7 @@ private:
 	const char* linea2Char_Granjero[6];
 	int granjero_text = -1;
 	int granjero_maxtext = 6;
-	int grangero_base = -1;
+	int granjero_base = -1;
 
 	/*
 	std::string linea1String_Templario;

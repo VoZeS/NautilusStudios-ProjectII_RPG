@@ -248,10 +248,11 @@ bool Dialog::Start()
 
 	if (app->frontground->adventure_phase == 0)
 	{
-		
+		renato_text = -1;
 	}
 	else if (app->frontground->adventure_phase == 1)
 	{
+		renato_text = 3;
 		granjero_text = -1;
 	}
 	else if (app->frontground->adventure_phase == 2)
@@ -373,7 +374,8 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == 0)
 				{
-					if (ContinueDialog(renato_text, renato_maxtext - 1, renato_base))
+					renato_base = -1;
+					if (ContinueDialog(renato_text, 4, renato_base))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -390,22 +392,20 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 1)
 				{
-					if (!dialog_finish)
+					renato_base = 4;
+					if (ContinueDialog(renato_text, 5, renato_base))
 					{
-						renato_text = 4;
 						letlengh = 0;
 						letlengh2 = 0;
 
 						inDialog = true;
 						actual_dialog = DIALOGS::RENATO;
 						SetPressE_Hide(true);
-						dialog_finish = true;
 					}
 					else
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
-						dialog_finish = false;
 					}
 				}
 			}
@@ -484,8 +484,8 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == 1)
 				{
-					grangero_base = -1;
-					if (ContinueDialog(granjero_text, 2, grangero_base))
+					granjero_base = -1;
+					if (ContinueDialog(granjero_text, 2, granjero_base))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -502,8 +502,8 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 2)
 				{
-					grangero_base = 1;
-					if (ContinueDialog(granjero_text, 4, grangero_base))
+					granjero_base = 1;
+					if (ContinueDialog(granjero_text, 4, granjero_base))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -520,8 +520,8 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 3)
 				{
-					grangero_base = 3;
-					if (ContinueDialog(granjero_text, 6, grangero_base))
+					granjero_base = 3;
+					if (ContinueDialog(granjero_text, 6, granjero_base))
 					{
 						letlengh = 0;
 						letlengh2 = 0;

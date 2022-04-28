@@ -410,7 +410,7 @@ void Combat_Manager::UpdateHUD()
 	int cy = -app->render->camera.y;
 	SDL_Rect rect;
 
-	float divider = ((float)app->frontground->adventure_phase / 6) + 1;
+	float divider = ((float)app->frontground->adventure_phase / 3) + 1;
 
 	// assassin
 	app->render->DrawTexture(whitemark_64x64, 8 + cx, 8 + cy);

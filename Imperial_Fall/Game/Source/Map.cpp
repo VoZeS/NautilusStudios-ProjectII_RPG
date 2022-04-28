@@ -197,8 +197,8 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								//const char* rew = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
-								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
@@ -211,8 +211,8 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
-								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 13)
@@ -225,8 +225,8 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
-								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 14)
@@ -239,8 +239,22 @@ void Map::Draw()
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								//const char* rew = IntToCChar(mapLayerItem->data->properties.GetProperty("Reward"));
-								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
+							}
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 17)
+						{
+							// Armored Templar
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index))
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::A_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						// ------------------------ miscelanea

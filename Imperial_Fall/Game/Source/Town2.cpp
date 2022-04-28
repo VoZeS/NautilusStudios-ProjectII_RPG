@@ -83,8 +83,6 @@ bool Town2::Start()
 				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
 		}
 
-		app->audio->PlayMusic("Assets/audio/music/town2.ogg");
-
 		int w, h;
 		uchar* data = NULL;
 

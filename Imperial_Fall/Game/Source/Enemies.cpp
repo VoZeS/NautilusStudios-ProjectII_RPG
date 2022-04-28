@@ -62,7 +62,14 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	
 	p_in_array = index;
 
-	reward = rew;
+	if (rew == "")
+	{
+		reward = "999";
+	}
+	else
+	{
+		reward = rew;
+	}
 
 	// animations
 	mushroomAnim.PushBack({ 0, 0, 100, 125 });
