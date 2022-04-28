@@ -61,6 +61,7 @@ public:
 	Animation mushroomAnim;
 	Animation goblinAnim;
 	Animation skeletonAnim;
+	Animation armoredAnim;
 
 	ENEMY_STATE state;
 

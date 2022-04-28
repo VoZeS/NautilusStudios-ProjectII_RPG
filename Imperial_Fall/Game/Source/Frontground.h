@@ -44,7 +44,8 @@ enum class MOVE_TO
 	INSIDE_OUTSIDE,
 	INSIDE_COMBAT,
 	FROM_COMBAT,
-	RESET_COMBAT
+	RESET_COMBAT,
+	COMBAT_FINALCOMBAT
 };
 
 class Frontground : public Module
@@ -118,6 +119,11 @@ private:
 
 	int direction = -1; // 0 --> down, 1 --> up, 2 --> right, 3 --> left
 
+	// cutscene
+	uint letlengh = 0;
+	int letter_cd = 0;
+	bool fix = true;
+
 public:
 	// controller
 	bool controller = false;
@@ -141,7 +147,7 @@ public:
 		pugi::xml_document saveGame;
 		pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
 
-		first_time = saveGame.child("started").child("first_time").attribute("value").set_value(state);
+		saveGame.child("started").child("first_time").attribute("value").set_value(state);
 
 		saveGame.save_file(STARTED_FILENAME);
 	}

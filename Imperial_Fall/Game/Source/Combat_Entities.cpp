@@ -19,14 +19,22 @@ Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int
 	shield = 0;
 	shield_turns = 0;
 
+	switch (owner)
+	{
+	case 0: weak_to = 3; break;
+	case 1: weak_to = 1; break;
+	case 2: weak_to = 2; break;
+	case 3: weak_to = -1; break;
+	}
+
 	alive = 1;
 
 	entity_type = owner;
 
-	skills[0] = SetSkill(entity_type, skill1); // read from xml
-	skills[1] = SetSkill(entity_type, skill2); // read from xml
-	skills[2] = SetSkill(entity_type, skill3); // read from xml
-	skills[3] = SetSkill(entity_type, skill4); // read from xml
+	skills[0] = SetSkill(entity_type, skill1);
+	skills[1] = SetSkill(entity_type, skill2);
+	skills[2] = SetSkill(entity_type, skill3);
+	skills[3] = SetSkill(entity_type, skill4);
 }
 
 Combat_Entities::Combat_Entities(ENEMIES enemy)
@@ -51,9 +59,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		{
 			max_health = 100;
 			actual_health = max_health;
-			max_mana = 40;
+			max_mana = 50;
 			actual_mana = max_mana;
-			this->speed = 30;
+			this->speed = 35;
 			this->power = 60;
 			shield = 0;
 			shield_turns = 0;
@@ -65,19 +73,51 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
-			max_health = 150;
+			max_health = 140;
 			actual_health = max_health;
-			max_mana = 60;
+			max_mana = 95;
 			actual_mana = max_mana;
-			this->speed = 40;
-			this->power = 80;
+			this->speed = 45;
+			this->power = 75;
 			shield = 0;
 			shield_turns = 0;
 
-			skills[0] = SetSkill(entity_type, 0);
-			skills[1] = SetSkill(entity_type, 1);
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 2)
+		{
+			max_health = 180;
+			actual_health = max_health;
+			max_mana = 110;
+			actual_mana = max_mana;
+			this->speed = 55;
+			this->power = 92;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
+		}
+		else if (app->frontground->adventure_phase == 3)
+		{
+			max_health = 220;
+			actual_health = max_health;
+			max_mana = 150;
+			actual_mana = max_mana;
+			this->speed = 65;
+			this->power = 105;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 8);
+			skills[1] = SetSkill(entity_type, 9);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
 		}
 		
 		break;
@@ -93,7 +133,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			max_mana = 80;
 			actual_mana = max_mana;
 			this->speed = 40;
-			this->power = 30;
+			this->power = 45;
 			shield = 0;
 			shield_turns = 0;
 
@@ -104,19 +144,51 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
-			max_health = 135;
+			max_health = 125;
 			actual_health = max_health;
 			max_mana = 120;
 			actual_mana = max_mana;
 			this->speed = 60;
-			this->power = 50;
+			this->power = 60;
 			shield = 0;
 			shield_turns = 0;
 
-			skills[0] = SetSkill(entity_type, 0);
-			skills[1] = SetSkill(entity_type, 1);
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 2)
+		{
+			max_health = 160;
+			actual_health = max_health;
+			max_mana = 160;
+			actual_mana = max_mana;
+			this->speed = 75;
+			this->power = 80;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
+		}
+		else if (app->frontground->adventure_phase == 3)
+		{
+			max_health = 190;
+			actual_health = max_health;
+			max_mana = 200;
+			actual_mana = max_mana;
+			this->speed = 80;
+			this->power = 85;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 8);
+			skills[1] = SetSkill(entity_type, 9);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
 		}
 
 		break;
@@ -127,12 +199,12 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 
 		if (app->frontground->adventure_phase == 0)
 		{
-			max_health = 80;
+			max_health = 50;
 			actual_health = max_health;
 			max_mana = 50;
 			actual_mana = max_mana;
 			this->speed = 60;
-			this->power = 50;
+			this->power = 70;
 			shield = 0;
 			shield_turns = 0;
 
@@ -143,19 +215,51 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
-			max_health = 100;
+			max_health = 75;
 			actual_health = max_health;
 			max_mana = 75;
 			actual_mana = max_mana;
-			this->speed = 90;
-			this->power = 70;
+			this->speed = 70;
+			this->power = 90;
 			shield = 0;
 			shield_turns = 0;
 
-			skills[0] = SetSkill(entity_type, 0);
-			skills[1] = SetSkill(entity_type, 1);
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 2)
+		{
+			max_health = 100;
+			actual_health = max_health;
+			max_mana = 95;
+			actual_mana = max_mana;
+			this->speed = 85;
+			this->power = 90;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
+		}
+		else if (app->frontground->adventure_phase == 3)
+		{
+			max_health = 110;
+			actual_health = max_health;
+			max_mana = 100;
+			actual_mana = max_mana;
+			this->speed = 100;
+			this->power = 110;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 8);
+			skills[1] = SetSkill(entity_type, 9);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
 		}
 		
 		break;
@@ -166,7 +270,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 
 		if (app->frontground->adventure_phase == 0)
 		{
-			max_health = 50;
+			max_health = 120;
 			actual_health = max_health;
 			max_mana = 30;
 			actual_mana = max_mana;
@@ -182,19 +286,51 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
-			max_health = 75;
+			max_health = 160;
 			actual_health = max_health;
-			max_mana = 50;
+			max_mana = 45;
 			actual_mana = max_mana;
-			this->speed = 45;
-			this->power = 90;
+			this->speed = 40;
+			this->power = 68;
 			shield = 0;
 			shield_turns = 0;
 
-			skills[0] = SetSkill(entity_type, 0);
-			skills[1] = SetSkill(entity_type, 1);
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+		}
+		else if (app->frontground->adventure_phase == 2)
+		{
+			max_health = 200;
+			actual_health = max_health;
+			max_mana = 55;
+			actual_mana = max_mana;
+			this->speed = 45;
+			this->power = 78;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 4);
+			skills[1] = SetSkill(entity_type, 5);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
+		}
+		else if (app->frontground->adventure_phase == 3)
+		{
+			max_health = 250;
+			actual_health = max_health;
+			max_mana = 60;
+			actual_mana = max_mana;
+			this->speed = 50;
+			this->power = 85;
+			shield = 0;
+			shield_turns = 0;
+
+			skills[0] = SetSkill(entity_type, 8);
+			skills[1] = SetSkill(entity_type, 9);
+			skills[2] = SetSkill(entity_type, 6);
+			skills[3] = SetSkill(entity_type, 7);
 		}
 
 		break;
@@ -203,22 +339,99 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 		entity_type = 8;
 
-		if (app->frontground->adventure_phase == 0 || app->frontground->adventure_phase == 1)
-		{
-			max_health = 200;
-			actual_health = max_health;
-			max_mana = 80;
-			actual_mana = max_mana;
-			this->speed = 40;
-			this->power = 80;
-			shield = 0;
-			shield_turns = 0;
+		max_health = 200;
+		actual_health = max_health;
+		max_mana = 80;
+		actual_mana = max_mana;
+		this->speed = 55;
+		this->power = 80;
+		shield = 0;
+		shield_turns = 0;
 
-			skills[0] = SetSkill(entity_type, 0);
-			skills[1] = SetSkill(entity_type, 1);
-			skills[2] = SetSkill(entity_type, 2);
-			skills[3] = SetSkill(entity_type, 3);
-		}
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
+	case ENEMIES::DRAGON:
+		weak_to = 3;
+		alive = 1;
+		entity_type = 9;
+
+		max_health = 800;
+		actual_health = max_health;
+		max_mana = 600;
+		actual_mana = max_mana;
+		this->speed = 80;
+		this->power = 100;
+		shield = 0;
+		shield_turns = 0;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
+	case ENEMIES::THESEION:
+		weak_to = 0;
+		alive = 1;
+		entity_type = 10;
+
+		max_health = 700;
+		actual_health = max_health;
+		max_mana = 150;
+		actual_mana = max_mana;
+		this->speed = 62;
+		this->power = 85;
+		shield = 0;
+		shield_turns = 0;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
+	case ENEMIES::NECRO_THESEION:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 11;
+
+		max_health = 700;
+		actual_health = max_health;
+		max_mana = 150;
+		actual_mana = max_mana;
+		this->speed = 62;
+		this->power = 85;
+		shield = 0;
+		shield_turns = 0;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
+
+		break;
+	case ENEMIES::A_TEMPLAR:
+		weak_to = -1;
+		alive = 1;
+		entity_type = 12;
+
+		max_health = 400;
+		actual_health = max_health;
+		max_mana = 50;
+		actual_mana = max_mana;
+		this->speed = 10;
+		this->power = 90;
+		shield = 200;
+		shield_turns = 10;
+
+		skills[0] = SetSkill(entity_type, 0);
+		skills[1] = SetSkill(entity_type, 1);
+		skills[2] = SetSkill(entity_type, 2);
+		skills[3] = SetSkill(entity_type, 3);
 
 		break;
 	}
@@ -308,7 +521,21 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 	}
 	else
 	{
-		actual_health -= amount;
+		if (bonus == SKILL_BONUS::NOTHING || bonus == SKILL_BONUS::IGNORE_SHIELD || bonus == SKILL_BONUS::DESTROY_SHIELD)
+		{
+			actual_health -= amount;
+		}
+		else if (bonus == SKILL_BONUS::CRITICAL)
+		{
+			if (actual_health <= max_health / 2)
+			{
+				actual_health -= amount * 2;
+			}
+			else
+			{
+				actual_health -= amount * 0.5;
+			}
+		}
 	}
 
 	if (actual_health <= 0)
@@ -316,6 +543,16 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		actual_health = 0;
 		prepared_to_die = true;
 		app->particles->AddParticle(app->particles->blood_smoke, position.x - 32, position.y - 35);
+
+		if (entity_type == 10)
+		{
+			app->menu->theseion2 = true;
+		}
+	}
+
+	if (shield <= 0)
+	{
+		shield_turns = 0;
 	}
 
 	return true;
@@ -326,6 +563,10 @@ void Combat_Entities::ReloadMana(int amount)
 	if (amount == -1)
 	{
 		actual_mana += max_mana / 2;
+	}
+	else if (amount == -2)
+	{
+		actual_mana += max_mana;
 	}
 	else
 	{
@@ -539,6 +780,28 @@ void Combat_Entities::AddDebuff(DEBUFF_TYPE type, int turns)
 {
 	DEBUFF new_debuff;
 	new_debuff.debuff_type = type;
+
+	int r;
+
+	if (entity_type == 9)
+	{
+		r = rand() % 10;
+		if (type == DEBUFF_TYPE::BURN)
+		{
+			return;
+		}
+		else if (type == DEBUFF_TYPE::STUN && r > 4)
+		{
+			return;
+		}
+	}
+	else if (entity_type == 11)
+	{
+		if (type == DEBUFF_TYPE::STUN)
+		{
+			return;
+		}
+	}
 
 	if (FindDebuff(new_debuff) == -1)
 	{
@@ -844,13 +1107,26 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_description0 = "Medium damage to a single target, this tactical";
 			skill.skill_description1 = "attack ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 15;
+			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 1;
 			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
 			break;
 		case 10:
+			skill.owner = owner;
+			skill.skill_name = "Tactic Thrust";
+			skill.skill_description0 = "Medium critical damage to a single target. Critical";
+			skill.skill_description1 = "damage hits more when the target is with low";
+			skill.skill_description2 = "health or hits less if the target is with high health";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 25;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.skill_bonus = SKILL_BONUS::CRITICAL;
+			break;
+		case 11:
 			skill.owner = owner;
 			skill.skill_name = "Great Fire Bomb";
 			skill.skill_description0 = "Medium fire damage to all targets and set them on";
@@ -863,44 +1139,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.debuff_type = DEBUFF_TYPE::BURN;
 			skill.buff_turns = 3;
 			break;
-		case 11:
-			skill.owner = owner;
-			skill.skill_name = "Stealth+";
-			skill.skill_description0 = "The user obtain stealth for two turn.";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 20;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
-			skill.buff_type = BUFF_TYPE::STEALTH;
-			skill.buff_turns = 2;
-			break;
 		case 12:
-			skill.owner = owner;
-			skill.skill_name = "Exausting Bomb";
-			skill.skill_description0 = "Low damage to all targets and reduce targets";
-			skill.skill_description1 = "power for 2 turns.";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 40;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
-			skill.att_strenght = 0;
-			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
-			skill.buff_turns = 2;
-			break;
-		case 13: // level 3 down root skills
-			skill.owner = owner;
-			skill.skill_name = "Tactic Thrust";
-			skill.skill_description0 = "Medium critical damage to a single target. Critical";
-			skill.skill_description1 = "damage hits more when the target is with low";
-			skill.skill_description2 = "health or hits less if the target is with high health";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 15;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.element = 0;
-			skill.att_strenght = 1;
-			skill.skill_bonus = SKILL_BONUS::CRITICAL;
-			break;
-		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Spike Trap";
 			skill.skill_description0 = "Low damage to all targets and reduce targets speed";
@@ -913,7 +1152,18 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
 			skill.buff_turns = 2;
 			break;
-		case 15:
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Stealth+";
+			skill.skill_description0 = "The user obtain stealth for two turn.";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STEALTH;
+			skill.buff_turns = 2;
+			break;
+		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Ghost";
 			skill.skill_description0 = "The user become inmune to damage for one turn.";
@@ -923,6 +1173,19 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
 			skill.buff_turns = 1;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Exausting Bomb";
+			skill.skill_description0 = "Low damage to all targets and reduce targets";
+			skill.skill_description1 = "power for 2 turns.";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
+			skill.buff_turns = 2;
 			break;
 		case 16:
 			skill.owner = owner;
@@ -1053,27 +1316,60 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 10:
 			skill.owner = owner;
+			skill.skill_name = "Field Shield";
+			skill.skill_description0 = "Give to all allies a small shield during one turn.";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 40;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 1;
+			break;
+		case 11:
+			skill.owner = owner;
 			skill.skill_name = "Great Heal";
 			skill.skill_description0 = "Heal a good amount of health to an ally.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 24;
+			skill.mana_cost = 34;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
-		case 11:
+		case 12:
+			skill.owner = owner;
+			skill.skill_name = "Relax";
+			skill.skill_description0 = "All allies obtain relax for 3 turns.";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 100;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::RELAX;
+			skill.buff_turns = 3;
+			break;
+		case 13: // level 3 down root skills
 			skill.owner = owner;
 			skill.skill_name = "Field Clean";
 			skill.skill_description0 = "Clean all the debuffs from all allies.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 10;
+			skill.mana_cost = 40;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
-		case 12:
-			skill.owner = owner;	  
+		case 14:
+			skill.owner = owner;
+			skill.skill_name = "Field Cancel";
+			skill.skill_description0 = "Remove all buffs of all targets.";
+			skill.att_effect = ATT_EFFECT::ANTI_HEAL;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.support_type = SUPPORT_TYPE::CLEAN_BUFFS;
+			break;
+		case 15:
+			skill.owner = owner;
 			skill.skill_name = "Field Encourage";
 			skill.skill_description0 = "Boosts all targets power for two turns.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
@@ -1083,49 +1379,16 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.buff_type = BUFF_TYPE::STRONG;
 			skill.buff_turns = 2;
 			break;
-		case 13: // level 3 down root skills
-			skill.owner = owner;
-			skill.skill_name = "Field Shield";
-			skill.skill_description0 = "Give to all allies a small shield during one turn.";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 30;
-			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 0;
-			skill.supp_strenght = 0;
-			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.shield_turns = 1;
-			break;
-		case 14:
-			skill.owner = owner;
-			skill.skill_name = "Relax";
-			skill.skill_description0 = "All allies obtain relax for 3 turns.";
-			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 35;
-			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
-			skill.buff_type = BUFF_TYPE::RELAX;
-			skill.buff_turns = 3;
-			break;
-		case 15:
-			skill.owner = owner;
-			skill.skill_name = "Field Cancel";
-			skill.skill_description0 = "Remove all buffs of all targets.";
-			skill.att_effect = ATT_EFFECT::ANTI_HEAL;
-			skill.mana_cost = 15;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
-			skill.support_type = SUPPORT_TYPE::CLEAN_BUFFS;
-			break;
 		case 16:
 			skill.owner = owner;
 			skill.skill_name = "Mana Source";
 			skill.skill_description0 = "Use a huge amount of mana to invoke the mana";
 			skill.skill_description1 = "spirit. All allies recover a good amount of mana.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 100;
+			skill.mana_cost = 200;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
-			skill.supp_strenght = 1;
+			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::RELOAD;
 			break;
 		}
@@ -1260,6 +1523,16 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 10:
 			skill.owner = owner;
+			skill.skill_name = "Spinning";
+			skill.skill_description0 = "Low damage to all targets.";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 30;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			break;
+		case 11:
+			skill.owner = owner;
 			skill.skill_name = "Taunt+";
 			skill.skill_description0 = "Provoke all enemies, obtain taunt for two turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
@@ -1269,40 +1542,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.buff_type = BUFF_TYPE::TAUNT;
 			skill.buff_turns = 2;
 			break;
-		case 11:
-			skill.owner = owner;
-			skill.skill_name = "Atlas Slash";
-			skill.skill_description0 = "Uses the strenght of Atlas, the titan attack";
-			skill.skill_description1 = "destroy the enemy shield.";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 15;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.element = 0;
-			skill.skill_bonus = SKILL_BONUS::DESTROY_SHIELD;
-			break;
 		case 12:
-			skill.owner = owner;
-			skill.skill_name = "Great Shell+";
-			skill.skill_description0 = "The user obtain a good shield during two turn.";
-			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 25;
-			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
-			skill.supp_strenght = 1;
-			skill.support_type = SUPPORT_TYPE::SHIELD;
-			skill.shield_turns = 2;
-			break;
-		case 13: // level 3 down root skills
-			skill.owner = owner;
-			skill.skill_name = "Spinning";
-			skill.skill_description0 = "Low damage to all targets.";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 30;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
-			skill.att_strenght = 0;
-			break;
-		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Statue";
 			skill.skill_description0 = "The user obtain the resistance of a mountain";
@@ -1318,7 +1558,18 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.buff_type = BUFF_TYPE::TAUNT;
 			skill.buff_turns = 2;
 			break;
-		case 15:
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Atlas Slash";
+			skill.skill_description0 = "Uses the strenght of Atlas, the titan attack";
+			skill.skill_description1 = "destroy the enemy shield.";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.skill_bonus = SKILL_BONUS::DESTROY_SHIELD;
+			break;
+		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Pierce Spinning";
 			skill.skill_description0 = "Low damage to all targets, this tactical attack";
@@ -1329,6 +1580,18 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.att_strenght = 0;
 			skill.skill_bonus = SKILL_BONUS::IGNORE_SHIELD;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Great Shell+";
+			skill.skill_description0 = "The user obtain a good shield during two turn.";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 25;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 2;
 			break;
 		case 16:
 			skill.owner = owner;
@@ -1430,7 +1693,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.element = 0;
+			skill.element = 3;
 			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
 			skill.buff_turns = 1;
@@ -1458,6 +1721,16 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 10:
 			skill.owner = owner;
+			skill.skill_name = "Giant Rock";
+			skill.skill_description0 = "Medium damage to all targets.";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 11:
+			skill.owner = owner;
 			skill.skill_name = "Fire Circle";
 			skill.skill_description0 = "Low fire damage to all targets and set them on fire";
 			skill.skill_description1 = "for 2 turns.";
@@ -1469,38 +1742,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.debuff_type = DEBUFF_TYPE::BURN;
 			skill.buff_turns = 2;
 			break;
-		case 11:
-			skill.owner = owner;
-			skill.skill_name = "Water Splash";
-			skill.skill_description0 = "Low water damage to all targets.";
-			skill.att_effect = ATT_EFFECT::WATER;
-			skill.mana_cost = 10;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 3;
-			skill.att_strenght = 0;
-			break;
 		case 12:
-			skill.owner = owner;
-			skill.skill_name = "Paralyzing Bolt";
-			skill.skill_description0 = "Stun the target for one turn.";
-			skill.att_effect = ATT_EFFECT::LIGHTNING;
-			skill.mana_cost = 60;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
-			skill.element = 2;
-			skill.debuff_type = DEBUFF_TYPE::STUN;
-			skill.buff_turns = 1;
-			break;
-		case 13: // level 3 down root skills
-			skill.owner = owner;
-			skill.skill_name = "Giant Rock";
-			skill.skill_description0 = "Medium damage to all targets.";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.mana_cost = 50;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.element = 0;
-			skill.att_strenght = 1;
-			break;
-		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Magma Orb";
 			skill.skill_description0 = "Medium fire damage to a single target and set him";
@@ -1513,7 +1755,17 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.debuff_type = DEBUFF_TYPE::BURN;
 			skill.buff_turns = 3;
 			break;
-		case 15:
+		case 13: // level 3 down root skills
+			skill.owner = owner;
+			skill.skill_name = "Water Splash";
+			skill.skill_description0 = "Low water damage to all targets.";
+			skill.att_effect = ATT_EFFECT::WATER;
+			skill.mana_cost = 10;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 3;
+			skill.att_strenght = 0;
+			break;
+		case 14:
 			skill.owner = owner;
 			skill.skill_name = "Aquarius";
 			skill.skill_description0 = "Invoke Aquarius, whose attack causes low water";
@@ -1526,6 +1778,17 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
 			skill.buff_turns = 2;
+			break;
+		case 15:
+			skill.owner = owner;
+			skill.skill_name = "Paralyzing Bolt";
+			skill.skill_description0 = "Stun the target for one turn.";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 60;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 2;
+			skill.debuff_type = DEBUFF_TYPE::STUN;
+			skill.buff_turns = 1;
 			break;
 		case 16:
 			skill.owner = owner;
@@ -1571,7 +1834,6 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::STRONG;
 			skill.buff_turns = 1;
-			// buff
 			break;
 		case 3:
 			skill.owner = owner;
@@ -1580,7 +1842,70 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 1;
+			skill.att_strenght = 0;
+			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Double Lunge";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
 			skill.att_strenght = 1;
+			break;
+		case 5:
+			skill.owner = owner;
+			skill.skill_name = "Defensive Block";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 1;
+			skill.buff_type = BUFF_TYPE::TAUNT;
+			skill.buff_turns = 1;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Templar Praise";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 30;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Break";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 30;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Tecnical Lunge";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.skill_bonus = SKILL_BONUS::CRITICAL;
+			break;
+		case 9:
+			skill.owner = owner;
+			skill.skill_name = "Save Zone";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 70;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DODGE;
+			skill.buff_turns = 2;
 			break;
 		}
 	}
@@ -1609,16 +1934,12 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 2:
 			skill.owner = owner;
-			skill.skill_name = "Heart Breaker"; // Roba +5 de vida a los PROTAGONISTAS y se los pone a los ENEMIGOS
+			skill.skill_name = "Heart Thief"; // Roba +5 de vida a los PROTAGONISTAS y se los pone a los ENEMIGOS
 			skill.att_effect = ATT_EFFECT::PHYSIC;
-			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 40;
+			skill.mana_cost = 25;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
-			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.att_strenght = 0;
-			skill.supp_strenght = 0;
-			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
 		case 3:
 			skill.owner = owner;
@@ -1628,6 +1949,68 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 3;
 			skill.att_strenght = 0;
+			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Charge";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 20;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 5:
+			skill.owner = owner;
+			skill.skill_name = "Great Heal";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 30;
+			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Heart Breaker"; // Roba +5 de vida a los PROTAGONISTAS y se los pone a los ENEMIGOS
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Splash Bubble";
+			skill.att_effect = ATT_EFFECT::WATER;
+			skill.mana_cost = 25;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 3;
+			skill.att_strenght = 1;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Dehydrate";
+			skill.att_effect = ATT_EFFECT::WATER;
+			skill.mana_cost = 60;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
+			skill.buff_turns = 2;
+			break;
+		case 9:
+			skill.owner = owner;
+			skill.skill_name = "Power of Nature";
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 100;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::RELAX;
+			skill.buff_turns = 2;
 			break;
 		}
 	}
@@ -1646,7 +2029,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 1:
 			skill.owner = owner;
-			skill.skill_name = "Great Circle"; // "Scratch" pero a 3 PROTAGONISTAS distintos en el mismo ataque******Ruben: Todos por favor, no 3*****DAVID: HAHHAHAH VALE TODOS
+			skill.skill_name = "Circle";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 35;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -1673,6 +2056,67 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			skill.buff_turns = 2;
 			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Money Spoted";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 5:
+			skill.owner = owner;
+			skill.skill_name = "Fast Circle";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 1;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Savage Reap";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 50;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 2;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Break Scratch";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 35;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Great Circle";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 40;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 9:
+			skill.owner = owner;
+			skill.skill_name = "Trick";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 35;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
+			skill.buff_turns = 2;
+			break;
 		}
 	}
 	else if (owner == 7) // Skeleton (ENEMY)
@@ -1683,6 +2127,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Silence Slash";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -1707,7 +2152,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Steal Life";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 20;
+			skill.mana_cost = 12;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
@@ -1723,6 +2168,71 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 0;
 			skill.att_strenght = 0;
+			break;
+		case 4:
+			skill.owner = owner;
+			skill.skill_name = "Silence+";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 15;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::STEALTH;
+			skill.buff_turns = 3;
+			break;
+		case 5:
+			skill.owner = owner;
+			skill.skill_name = "Barrier";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 30;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.supp_strenght = 0;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 1;
+			break;
+		case 6:
+			skill.owner = owner;
+			skill.skill_name = "Blood Drain";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 18;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			break;
+		case 7:
+			skill.owner = owner;
+			skill.skill_name = "Strike";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 12;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 8:
+			skill.owner = owner;
+			skill.skill_name = "Oppression of the undead";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 60;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 2;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 3;
+			skill.buff_type = BUFF_TYPE::TAUNT;
+			skill.buff_turns = 3;
+			break;
+		case 9:
+			skill.owner = owner;
+			skill.skill_name = "Collision";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 22;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
 			break;
 		}
 	}
@@ -1766,20 +2276,220 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			skill.buff_turns = 2;
-			// buff
 			break;
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Recovery";	
 			skill.att_effect = ATT_EFFECT::LIGHTNING;
-			skill.mana_cost = 0;
+			skill.mana_cost = 2;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 2;
-			skill.supp_strenght = 2;
-			skill.support_type = SUPPORT_TYPE::RELOAD;
 			skill.debuff_type = DEBUFF_TYPE::STUN;
 			skill.buff_turns = 1;
+			skill.zero_mana = true;
+			break;
+		}
+	}
+	else if (owner == 9) // DRAGON
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Bite";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.mana_cost = 150;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.supp_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Hell flame";
+			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.mana_cost = 150;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 1;
+			skill.att_strenght = 0;
+			skill.debuff_type = DEBUFF_TYPE::BURN;
+			skill.buff_turns = 10;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Earthquake";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 150;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_QUICK;
+			skill.buff_turns = 2;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "FLAME OF CALAMITY";
+			skill.att_effect = ATT_EFFECT::FIRE;
+			skill.mana_cost = 2;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 1;
+			skill.att_strenght = 3;
+			skill.zero_mana = true;
+			break;
+		}
+	}
+	else if (owner == 10) // THESEION
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "For the law weight";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.mana_cost = 30;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Praise me";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 60;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::RELAX;
+			skill.buff_turns = 3;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "You fools";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 35;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.debuff_type = DEBUFF_TYPE::ANTI_STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "I am the ruler";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 40;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 3;
+			break;
+		}
+	}
+	else if (owner == 11) // THESEION, THE NECROMANCER
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Law of the death";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.mana_cost = 30;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Praise the undeads";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 60;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
+			skill.element = 0;
+			skill.buff_type = BUFF_TYPE::DODGE;
+			skill.buff_turns = 3;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Fool ambitions to rest";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 35;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::STUN;
+			skill.buff_turns = 1;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "I will rule for ever";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::HEAL;
+			skill.mana_cost = 2;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::HEAL;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 3;
+			skill.zero_mana = true;
+			break;
+		}
+	}
+	else if (owner == 12) // Armored Templar (ENEMY)
+	{
+		switch (skill_number)
+		{
+		case 0:
+			skill.owner = owner;
+			skill.skill_name = "Axe Blow";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 20;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.att_strenght = 2;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
+			break;
+		case 1:
+			skill.owner = owner;
+			skill.skill_name = "Heavy shield";
+			skill.supp_effect = SUPP_EFFECT::BUFF;
+			skill.mana_cost = 25;
+			skill.ally_objective = ALLY_OBJECTIVE::SELF;
+			skill.element = 0;
+			skill.supp_strenght = 1;
+			skill.support_type = SUPPORT_TYPE::SHIELD;
+			skill.shield_turns = 5;
+			skill.buff_type = BUFF_TYPE::DEBUFF_INMUNITY;
+			skill.buff_turns = 5;
+			break;
+		case 2:
+			skill.owner = owner;
+			skill.skill_name = "Spin to win";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 0;
+			skill.att_strenght = 1;
+			break;
+		case 3:
+			skill.owner = owner;
+			skill.skill_name = "For Theseion!!!";
+			skill.att_effect = ATT_EFFECT::LIGHTNING;
+			skill.mana_cost = 2;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
+			skill.element = 2;
+			skill.att_strenght = 1;
+			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
+			skill.buff_turns = 2;
 			skill.zero_mana = true;
 			break;
 		}
@@ -1945,12 +2655,12 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				break;
 			case BUFF_TYPE::QUICK:
 				rect = { 96, 64, 32, 32 };
-				description0 = "Quick, increases 2 times the user speed.";
+				description0 = "Quick, increases by 100% the user speed.";
 				description1 = "";
 				break;
 			case BUFF_TYPE::STRONG:
 				rect = { 32, 96, 32, 32 };
-				description0 = "Strong, increases 1.5 times the user power.";
+				description0 = "Strong, increases by 50% times the user power.";
 				description1 = "";
 				break;
 			case BUFF_TYPE::RELAX:
@@ -1960,7 +2670,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 				break;
 			case BUFF_TYPE::GODMODE_STRONG:
 				rect = { 64, 96, 32, 32 };
-				description0 = "Grace of the Gods, increases 5 times the user";
+				description0 = "Grace of the Gods, increases by 500% times the user";
 				description1 = "power. Only the real gods can use it.";
 				break;
 			default:
@@ -1971,6 +2681,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			{
 				if (item->data.turns > 1)
 				{
+					app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns - 1).c_str());
 					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
 					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 					res = description0.c_str();
@@ -1982,6 +2693,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			}
 			else
 			{
+				app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns).c_str());
 				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
 				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 				res = description0.c_str();
@@ -2034,6 +2746,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			{
 				if (item->data.turns > 1)
 				{
+					app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns - 1).c_str());
 					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
 					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 					res = description0.c_str();
@@ -2045,6 +2758,7 @@ void Combat_Entities::DisplayStatusDescription(int cx, int cy)
 			}
 			else
 			{
+				app->fonts->BlitCombatText(cx - 32, cy + ((64 + 25) * i), app->fonts->textFont2, std::to_string(item->data.turns).c_str());
 				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
 				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
 				res = description0.c_str();

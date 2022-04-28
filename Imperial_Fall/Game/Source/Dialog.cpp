@@ -81,11 +81,11 @@ bool Dialog::Start()
 
 
 
-	linea1String_Granjero = dialog.child("granjero").child("text1").attribute("linea1").as_string();
-	linea2String_Granjero = dialog.child("granjero").child("text1").attribute("linea2").as_string();
+	linea1String_Sabio = dialog.child("sabio").child("text1").attribute("linea1").as_string();
+	linea2String_Sabio = dialog.child("sabio").child("text1").attribute("linea2").as_string();
 
-	linea1Char_Granjero = linea1String_Granjero.c_str();
-	linea2Char_Granjero = linea2String_Granjero.c_str();
+	linea1Char_Sabio = linea1String_Sabio.c_str();
+	linea2Char_Sabio = linea2String_Sabio.c_str();
 
 
 
@@ -98,6 +98,32 @@ bool Dialog::Start()
 	linea1String_Aldeano = dialog.child("aldeano").child("text1").attribute("linea1").as_string();
 
 	linea1Char_Aldeano = linea1String_Aldeano.c_str();
+
+
+
+	linea1String_Granjero[0] = dialog.child("granjero").child("text1").attribute("linea1").as_string();
+	linea2String_Granjero[0] = dialog.child("granjero").child("text1").attribute("linea2").as_string();
+
+	linea1String_Granjero[1] = dialog.child("granjero").child("text2").attribute("linea1").as_string();
+	linea2String_Granjero[1] = dialog.child("granjero").child("text2").attribute("linea2").as_string();
+
+	linea1String_Granjero[2] = dialog.child("granjero").child("text3").attribute("linea1").as_string();
+	linea2String_Granjero[2] = dialog.child("granjero").child("text3").attribute("linea2").as_string();
+
+	linea1String_Granjero[3] = dialog.child("granjero").child("text4").attribute("linea1").as_string();
+	linea2String_Granjero[3] = dialog.child("granjero").child("text4").attribute("linea2").as_string();
+
+	linea1String_Granjero[4] = dialog.child("granjero").child("text5").attribute("linea1").as_string();
+	linea2String_Granjero[4] = dialog.child("granjero").child("text5").attribute("linea2").as_string();
+
+	linea1String_Granjero[5] = dialog.child("granjero").child("text6").attribute("linea1").as_string();
+	linea2String_Granjero[5] = dialog.child("granjero").child("text6").attribute("linea2").as_string();
+
+	for (int i = 0; i < 6; i++)
+	{
+		linea1Char_Granjero[i] = linea1String_Granjero[i].c_str();
+		linea2Char_Granjero[i] = linea2String_Granjero[i].c_str();
+	}
 
 
 	/*
@@ -185,7 +211,7 @@ bool Dialog::Start()
 		shop2[3].item = "453";
 		shop2[3].cost = 8;
 
-		// granjero
+		// sabio
 		shop3[0].item = "501";
 		shop3[0].cost = 10;
 		shop3[1].item = "511";
@@ -218,6 +244,24 @@ bool Dialog::Start()
 		shop1[i].selled = saveGame.child("objects").child("shops").child("shop1").attribute(c).as_bool();
 		shop2[i].selled = saveGame.child("objects").child("shops").child("shop2").attribute(c).as_bool();
 		shop3[i].selled = saveGame.child("objects").child("shops").child("shop3").attribute(c).as_bool();
+	}
+
+	if (app->frontground->adventure_phase == 0)
+	{
+		renato_text = -1;
+	}
+	else if (app->frontground->adventure_phase == 1)
+	{
+		renato_text = 3;
+		granjero_text = -1;
+	}
+	else if (app->frontground->adventure_phase == 2)
+	{
+		granjero_text = 1;
+	}
+	else if (app->frontground->adventure_phase == 3)
+	{
+		granjero_text = 3;
 	}
 
 	return true;
@@ -330,7 +374,8 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == 0)
 				{
-					if (ContinueDialog(renato_text, renato_maxtext - 1))
+					renato_base = -1;
+					if (ContinueDialog(renato_text, 4, renato_base))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -347,28 +392,26 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 1)
 				{
-					if (!dialog_finish)
+					renato_base = 4;
+					if (ContinueDialog(renato_text, 5, renato_base))
 					{
-						renato_text = 4;
 						letlengh = 0;
 						letlengh2 = 0;
 
 						inDialog = true;
 						actual_dialog = DIALOGS::RENATO;
 						SetPressE_Hide(true);
-						dialog_finish = true;
 					}
 					else
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
-						dialog_finish = false;
 					}
 				}
 			}
 			else if (app->physics->GetInNPC(2))
 			{
-				if (ContinueDialog(medico_text, medico_maxtext))
+				if (ContinueDialog(medico_text, medico_maxtext, medico_base))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -386,7 +429,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(3))
 			{
-				if (ContinueDialog(herrero_text, herrero_maxtext))
+				if (ContinueDialog(herrero_text, herrero_maxtext, medico_base))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -404,13 +447,13 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(4))
 			{
-				if (ContinueDialog(granjero_text, granjero_maxtext))
+				if (ContinueDialog(sabio_text, sabio_maxtext, sabio_base))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
 
 					inDialog = true;
-					actual_dialog = DIALOGS::GRANJERO;
+					actual_dialog = DIALOGS::SABIO;
 					SetPressE_Hide(true);
 				}
 				else
@@ -422,7 +465,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(5))
 			{
-				if (ContinueDialog(aldeano_text, aldeano_maxtext))
+				if (ContinueDialog(aldeano_text, aldeano_maxtext, aldeano_base))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -435,6 +478,63 @@ bool Dialog::Update(float dt)
 				{
 					inDialog = false;
 					actual_dialog = DIALOGS::NO_ONE;
+				}
+			}
+			else if (app->physics->GetInNPC(6))
+			{
+				if (app->frontground->adventure_phase == 1)
+				{
+					granjero_base = -1;
+					if (ContinueDialog(granjero_text, 2, granjero_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+					}
+				}
+				else if (app->frontground->adventure_phase == 2)
+				{
+					granjero_base = 1;
+					if (ContinueDialog(granjero_text, 4, granjero_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+					}
+				}
+				else if (app->frontground->adventure_phase == 3)
+				{
+					granjero_base = 3;
+					if (ContinueDialog(granjero_text, 6, granjero_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+					}
 				}
 			}
 			else
@@ -585,14 +685,14 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Medico, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Medico, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
-		else if (actual_dialog == DIALOGS::GRANJERO) // ALLY TALKING
+		else if (actual_dialog == DIALOGS::SABIO) // ALLY TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
-			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "GRANJERO:");
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "SABIO:");
 
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Granjero, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Granjero, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Sabio, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Sabio, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
 		/*else if (actual_dialog == DIALOGS::ENEMIGO) // ENEMIES TALKING
 		{
@@ -610,6 +710,15 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ALDEANO:");
 
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Aldeano, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else if (actual_dialog == DIALOGS::GRANJERO) // ALLY TALKING
+		{
+			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
+			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "GRANJERO:");
+
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Granjero[granjero_text], 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Granjero[granjero_text], 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
 	}
 	else
@@ -822,7 +931,7 @@ bool Dialog::LoadDialog()
 
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+		LOG("Could not load map xml file dialog.xml. pugi error: %s", result.description());
 		ret = false;
 	}
 	else
@@ -845,7 +954,7 @@ void Dialog::PlayLetterSound()
 	}
 }
 
-bool Dialog::ContinueDialog(int& actual_text, int max_text)
+bool Dialog::ContinueDialog(int& actual_text, int max_text, int base_text)
 {
 	actual_text++;
 	if (actual_text < max_text)
@@ -854,7 +963,7 @@ bool Dialog::ContinueDialog(int& actual_text, int max_text)
 	}
 	else 
 	{
-		actual_text = -1;
+		actual_text = base_text;
 		return false;
 	}
 }

@@ -13,7 +13,11 @@ enum class ENEMIES
 	MUSHROOM,
 	GOBLIN,
 	SKELETON,
-	R_TEMPLAR
+	R_TEMPLAR,
+	DRAGON,
+	THESEION,
+	NECRO_THESEION,
+	A_TEMPLAR
 };
 
 struct BUFF {
@@ -146,6 +150,7 @@ public:
 	{
 		alive = 1;
 		actual_health = max_health / 2;
+		actual_mana = max_mana / 2;
 	}
 
 	void UpdateShield();

@@ -17,11 +17,13 @@ enum class ENTITY_TYPE
 	HERRERO,
 	GRANJERO,
 	ALDEANO,
+	SABIO,
 	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
 	SKELETON,
-	R_TEMPLAR
+	R_TEMPLAR,
+	A_TEMPLAR
 };
 
 class Entity
@@ -134,14 +136,16 @@ public:
 	SDL_Texture* wizard_texture = NULL;
 	SDL_Texture* curandero = NULL;
 	SDL_Texture* herrero = NULL;
-	SDL_Texture* granjero = NULL;
+	SDL_Texture* sabio = NULL;
 	SDL_Texture* aldeano = NULL;
+	SDL_Texture* granjero = NULL;
 	SDL_Texture* renato_bueno = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* mushroom = NULL;
 	SDL_Texture* goblin = NULL;
 	SDL_Texture* skeleton = NULL;
 	SDL_Texture* red_templar = NULL;
+	SDL_Texture* armored_templar = NULL;
 	
 };
 

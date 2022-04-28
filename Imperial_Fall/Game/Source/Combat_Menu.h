@@ -42,6 +42,8 @@ public:
 		skill_prepared = skill;
 	}
 
+	void CleanSkillPrepared();
+
 	void SetSkillAnimation(ATT_EFFECT att_effect, SUPP_EFFECT supp_effect, int pos_x, int pos_y)
 	{
 		skill_att_effect = att_effect;
@@ -124,6 +126,10 @@ private:
 	Animation mushroomAnim;
 	Animation goblinAnim;
 	Animation skeletonAnim;
+	Animation dragon_idleAnim;
+	Animation dragon_ultAnim;
+	Animation theseionAnim;
+	Animation armoredAnim;
 
 	// positions
 	fPoint action_pos[NUM_BUTTONS];
@@ -149,6 +155,10 @@ private:
 	SDL_Texture* mushroom = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* red_templar = NULL;
+	SDL_Texture* dragon_idle = NULL;
+	SDL_Texture* dragon_ult = NULL;
+	SDL_Texture* theseion = NULL;
+	SDL_Texture* armored_templar = NULL;
 	SDL_Texture* whitemark_400x50 = NULL;
 	SDL_Texture* whitemark_110x110 = NULL;
 	SDL_Texture* whitemark_128x128 = NULL;
@@ -167,6 +177,8 @@ private:
 	uint water_fx;
 	uint heal_fx;
 	uint buff_fx;
+
+public:
 
 	int GetItemByName(const char* skill_name);
 	void UseItem(int n);

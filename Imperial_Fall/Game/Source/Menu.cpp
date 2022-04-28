@@ -23,6 +23,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
@@ -244,7 +245,6 @@ bool Menu::Start()
 		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
 		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
 
-
 		torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
 		light_fire1 = app->tex->Load("Assets/textures/Torch1_light.png");
 		light_fire2 = app->tex->Load("Assets/textures/Torch2_light.png");
@@ -280,12 +280,13 @@ bool Menu::Start()
 		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
 
 		sub_newgame = false;
-
 		for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
 		{
 			ask_buttons[i].rect.w = 128;
 			ask_buttons[i].rect.h = 128;
 		}
+
+		theseion2 = false;
 	}
 
 	return true;
@@ -1230,7 +1231,22 @@ bool Menu::Update(float dt)
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && win_button.state == 1)
 			{
 				app->audio->PlayFx(click_sound);
-				app->frontground->ReturnToField();
+				if (!theseion2)
+				{
+					app->frontground->ReturnToField();
+				}
+				else
+				{
+					ENEMIES enemies[4];
+					enemies[0] = ENEMIES::NECRO_THESEION;
+					enemies[1] = ENEMIES::DRAGON;
+					enemies[2] = ENEMIES::NOTHING;
+					enemies[3] = ENEMIES::NOTHING;
+					app->frontground->move_to = MOVE_TO::COMBAT_FINALCOMBAT;
+					app->frontground->FadeInCombat(enemies, "999");
+					theseion2 = true;
+				}
+				
 				win_button.state = 2;
 				kill_enemy = true;
 
@@ -1400,6 +1416,7 @@ bool Menu::Update(float dt)
 	else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		app->inventory->UnlockAll();
+		app->inventory->EquipAllMaxGear();
 	}
 
 	return true;
@@ -2168,6 +2185,7 @@ void Menu::DisableAll()
 	app->outside->Disable();
 	app->inside->Disable();
 	app->combat_scene->Disable();
+	app->end_combat_scene->Disable();
 }
 
 void Menu::InitPlayer()
@@ -2198,7 +2216,9 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	case 5: a = "Mushroom"; break;
 	case 6: a = "Goblin"; break;
 	case 7: a = "Skeleton"; break;
-	case 8: a = "Templar Master"; break;
+	case 9: a = "Lloyd, the reborn dragon"; break;
+	case 10: a = "Theseion"; break;
+	case 11: a = "Theseion, the necromancer"; break;
 	default: a = " "; break;
 	}
 	const char* res = a.c_str();

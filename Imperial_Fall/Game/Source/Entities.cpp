@@ -49,14 +49,16 @@ bool Entities::Start()
 		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
 		curandero = app->tex->Load("Assets/textures/curandero.png");
 		herrero = app->tex->Load("Assets/textures/herrero.png");
-		granjero = app->tex->Load("Assets/textures/granjero.png");
+		sabio = app->tex->Load("Assets/textures/sage.png");
 		aldeano = app->tex->Load("Assets/textures/aldeano.png");
+		granjero = app->tex->Load("Assets/textures/granjero.png");
 		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
 		goblin = app->tex->Load("Assets/textures/goblin_b.png");
 		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
+		armored_templar = app->tex->Load("Assets/textures/armored_templar.png");
 
 		freeze = false;
 		in_boss = false;
@@ -94,11 +96,14 @@ bool Entities::PreUpdate()
 			case ENTITY_TYPE::HERRERO:
 				entity->InitCustomEntity(3);
 				break;
-			case ENTITY_TYPE::GRANJERO:
+			case ENTITY_TYPE::SABIO:
 				entity->InitCustomEntity(4);
 				break;
 			case ENTITY_TYPE::ALDEANO:
 				entity->InitCustomEntity(5);
+				break;
+			case ENTITY_TYPE::GRANJERO:
+				entity->InitCustomEntity(7);
 				break;
 			case ENTITY_TYPE::W_TEMPLAR:
 				entity->InitCustomEntity(1);
@@ -114,6 +119,9 @@ bool Entities::PreUpdate()
 				break;
 			case ENTITY_TYPE::R_TEMPLAR:
 				entity->InitCustomEntity(5);
+				break;
+			case ENTITY_TYPE::A_TEMPLAR:
+				entity->InitCustomEntity(6);
 				break;
 			default:
 				entity->InitCustomEntity();
@@ -321,16 +329,22 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(npc, ENTITY_TYPE::HERRERO, p);
 	}
 		break;
-	case ENTITY_TYPE::GRANJERO:
+	case ENTITY_TYPE::SABIO:
 	{
 		NPC* npc = new NPC();
-		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
+		AddEntity(npc, ENTITY_TYPE::SABIO, p);
 	}
 		break;
 	case ENTITY_TYPE::ALDEANO:
 	{
 		NPC* npc = new NPC();
 		AddEntity(npc, ENTITY_TYPE::ALDEANO, p);
+	}
+		break;
+	case ENTITY_TYPE::GRANJERO:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
 	case ENTITY_TYPE::W_TEMPLAR:
@@ -363,6 +377,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(enemy, ENTITY_TYPE::R_TEMPLAR, p);
 	}
 		break;
+	case ENTITY_TYPE::A_TEMPLAR:
+	{
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
+		AddEntity(enemy, ENTITY_TYPE::A_TEMPLAR, p);
+	}
+		break;
 	default:
 		break;
 	}
@@ -381,7 +401,8 @@ int Entities::FindNPC()
 		entity = item->data;
 
 		if ((entity->entity_type == ENTITY_TYPE::RENATO || entity->entity_type == ENTITY_TYPE::CURANDERO
-			|| entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO)
+			|| entity->entity_type == ENTITY_TYPE::HERRERO || entity->entity_type == ENTITY_TYPE::GRANJERO
+			|| entity->entity_type == ENTITY_TYPE::ALDEANO || entity->entity_type == ENTITY_TYPE::GRANJERO)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			switch (entity->entity_type)
@@ -392,9 +413,11 @@ int Entities::FindNPC()
 				break;
 			case ENTITY_TYPE::HERRERO: ret = 3;
 				break;
-			case ENTITY_TYPE::GRANJERO: ret = 4;
+			case ENTITY_TYPE::SABIO: ret = 4;
 				break;
 			case ENTITY_TYPE::ALDEANO: ret = 5;
+				break;
+			case ENTITY_TYPE::GRANJERO: ret = 6;
 				break;
 			}
 
@@ -419,7 +442,7 @@ fPoint Entities::GetEnemyPos()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
-			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			combat_entity = entity;
@@ -455,12 +478,12 @@ void Entities::StartCombat()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
-			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			combat_entity = entity;
 			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
-			if (entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			if (entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
 			{
 				in_boss = true;
 			}
@@ -514,7 +537,7 @@ void Entities::KillEnemy()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
-			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR)
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
 			&& (abs(pos.DistanceTo(entity->position)) < max))
 		{
 			combat_entity = entity;
@@ -531,6 +554,11 @@ void Entities::KillEnemy()
 		if (combat_entity->entity_type == ENTITY_TYPE::R_TEMPLAR) 
 		{
 			app->frontground->adventure_phase = 1;
+			app->dialog->UpdateShop();
+		}
+		else if (combat_entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
+		{
+			app->frontground->adventure_phase = 2;
 			app->dialog->UpdateShop();
 		}
 	}

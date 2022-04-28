@@ -23,8 +23,9 @@
 struct Miscelenea
 {
 	b2Body* body;
-	int number;
-	bool alive;
+	int number = -1;
+	bool alive = false;
+	int misc_type; // 0 --> coins, 1 --> assassin, 2 --> healer, 3 --> tank, 4 --> wizard
 };
 
 class Physics : public Module, public b2ContactListener
@@ -62,18 +63,16 @@ public:
 	b2World* world;
 
 	Miscelenea coins_in_floor[MAX_COINS];
-	Miscelenea books_in_floor0[MAX_COINS]; // assassin
-	Miscelenea books_in_floor1[MAX_COINS]; // healer
-	Miscelenea books_in_floor2[MAX_COINS]; // tank
-	Miscelenea books_in_floor3[MAX_COINS]; // wizard
+	Miscelenea books_in_floor[MAX_BOOKS];
 
 	int on_collosion;
 
 	bool inRenato = false;
 	bool inCurandero = false;
 	bool inHerrero = false;
-	bool inGranjero = false;
+	bool inSabio = false;
 	bool inAldeano = false;
+	bool inGranjero = false;
 	bool inCoins = false;
 	bool inBook = false;
 	int book_type = -1;
@@ -87,8 +86,9 @@ public:
 		case 1: ret = inRenato; break;
 		case 2: ret = inCurandero; break;
 		case 3: ret = inHerrero; break;
-		case 4: ret = inGranjero; break;
+		case 4: ret = inSabio; break;
 		case 5: ret = inAldeano; break;
+		case 6: ret = inGranjero; break;
 		}
 
 		return ret;
@@ -98,10 +98,7 @@ public:
 	int coins_number = 0;
 	void DestroyCoins();
 	bool book_picked = false;
-	int book_number0 = 0;
-	int book_number1 = 0;
-	int book_number2 = 0;
-	int book_number3 = 0;
+	int book_number = 0;
 	void DestroyBook();
 	void ResetMiscelanea();
 
