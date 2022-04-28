@@ -147,7 +147,7 @@ public:
 		pugi::xml_document saveGame;
 		pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
 
-		first_time = saveGame.child("started").child("first_time").attribute("value").set_value(state);
+		saveGame.child("started").child("first_time").attribute("value").set_value(state);
 
 		saveGame.save_file(STARTED_FILENAME);
 	}
