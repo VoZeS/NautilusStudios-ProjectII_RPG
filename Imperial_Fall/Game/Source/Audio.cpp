@@ -194,7 +194,12 @@ void Audio::SetFX(int volume)
 	}
 }
 
-void Audio::StopMusic()
+void Audio::StopMusic(float fade_time)
 {
-	Mix_HaltMusic();
+	if (music != NULL)
+	{
+		Mix_FadeOutMusic(int(fade_time * 1000.0f));
+
+		Mix_FreeMusic(music);
+	}
 }

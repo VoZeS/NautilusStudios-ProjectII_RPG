@@ -36,7 +36,7 @@ public:
 
 	void SetFX(int volume);
 
-	void StopMusic();
+	void StopMusic(float fade_time);
 
 private:
 

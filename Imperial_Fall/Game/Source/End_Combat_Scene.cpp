@@ -47,8 +47,9 @@ bool End_Combat_Scene::Start()
 		app->map->Load("end_combat.tmx");
 
 		// Load music
-		app->audio->StopMusic();
+		app->audio->StopMusic(1.0f);
 		evil_laugh = app->audio->LoadFx("Assets/audio/fx/evil_laugh.wav");
+		dragon_roar = app->audio->LoadFx("Assets/audio/fx/dragon_roar.wav");
 
 		whitemark_1200x140 = app->tex->Load("Assets/textures/1200x140_whitemark.png");
 
@@ -72,14 +73,27 @@ bool End_Combat_Scene::Start()
 // Called each loop iteration
 bool End_Combat_Scene::PreUpdate()
 {
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		cutcene_cd = 9999;
+	}
+
 	if (in_cutscene)
 	{
 		cutcene_cd++;
-		if (cutcene_cd == 300 + BLACK_TIME)
+		if (cutcene_cd == 150 + BLACK_TIME)
 		{
 			app->audio->PlayFx(evil_laugh);
 		}
-		else if (cutcene_cd >= 400 + BLACK_TIME)
+		else if (cutcene_cd == 400 + BLACK_TIME)
+		{
+			app->audio->PlayMusic("Assets/audio/music/misterius.ogg", 0.0f);
+		}
+		else if (cutcene_cd == 700 + BLACK_TIME)
+		{
+			app->audio->PlayFx(dragon_roar);
+		}
+		else if (cutcene_cd >= 800 + BLACK_TIME)
 		{
 			in_cutscene = false;
 			cutcene_cd = 0;

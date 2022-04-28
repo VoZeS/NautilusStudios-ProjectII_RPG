@@ -5,7 +5,7 @@
 #include "Animation.h"
 #include "Physics.h"
 
-#define BLACK_TIME 300
+#define BLACK_TIME 200
 
 struct SDL_Texture;
 enum class ENEMIES;
@@ -42,6 +42,7 @@ public:
 
 	SDL_Texture* whitemark_1200x140;
 	uint evil_laugh;
+	uint dragon_roar;
 
 };
 
