@@ -35,7 +35,7 @@ public:
 
 	bool CleanUp();
 
-	bool CreateMapBox(int x, int y, int w, int h, int collision);
+	b2Fixture* CreateMapBox(int x, int y, int w, int h, int collision);
 
 	bool CreateDynamicBox(int x, int y, int w, int h);
 

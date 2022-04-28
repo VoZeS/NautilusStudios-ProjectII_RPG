@@ -189,7 +189,7 @@ bool Physics::CleanUp()
 	return true;
 }
 
-bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
+b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 {
 	b2BodyDef g;
 	g.type = b2_staticBody;
@@ -227,40 +227,14 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
-
-	// SOUKOBAN PUZZLE COLLIDERS RIVER
-	else if (collision == 101)
-	{
-		if(!isActive_S1) fixture.isSensor = true;
-	}
-	else if (collision == 102)
-	{
-		if (!isActive_S2) fixture.isSensor = true;
-	}
-	else if (collision == 103)
-	{
-		if (!isActive_S3) fixture.isSensor = true;
-	}
-	else if (collision == 104)
-	{
-		if (!isActive_S4) fixture.isSensor = true;
-	}
-	else if (collision == 105)
-	{
-		if (!isActive_S5) fixture.isSensor = true;
-	}
-	else if (collision == 106)
-	{
-		if (!isActive_S6) fixture.isSensor = true;
-	}
-	else if (collision == 0) fixture.isSensor = true;
+	//else if (collision == 0) fixture.isSensor = true;
 
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
 	fix->SetUserData((void*)collision);
 
 
-	return true;
+	return fix;
 }
 
 bool Physics::CreateDynamicBox(int x, int y, int w, int h)
@@ -280,8 +254,9 @@ bool Physics::CreateDynamicBox(int x, int y, int w, int h)
 	fixture.shape = &box;
 	fixture.friction = 1.0f;
 	fixture.restitution = 0.0f;
-
+	
 	b2Fixture* fix = p->CreateFixture(&fixture);
+	fix->SetUserData((void*)8);
 
 	return true;
 }
@@ -311,7 +286,7 @@ void Physics::BeginContact(b2Contact* contact)
 	if ((int)fixtureUserDataA == 1)
 	{
 
-		if ((int)fixtureUserDataB == 0)
+		/*if ((int)fixtureUserDataB == 0)
 		{
 			//dungeon sensor
 			if (app->dungeon->isinIce == true)
@@ -324,7 +299,7 @@ void Physics::BeginContact(b2Contact* contact)
 				app->dungeon->isinIce = true;
 				printf_s("ice true \n");
 			}
-		}
+		}*/
 
 
 		if ((int)fixtureUserDataB == 2)
@@ -362,8 +337,6 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
-
-
 
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataB == 12)
@@ -452,10 +425,9 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-
 	if ((int)fixtureUserDataB == 1)
 	{
-		if ((int)fixtureUserDataA == 0)
+		/*if ((int)fixtureUserDataA == 0)
 		{
 			//dungeon sensor
 			if (app->dungeon->isinIce == true)
@@ -470,8 +442,8 @@ void Physics::BeginContact(b2Contact* contact)
 			}
 
 
-		}
-		else if ((int)fixtureUserDataA == 2)
+		}*/
+		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
 			app->dialog->SetPressE_Hide(false);
@@ -594,61 +566,108 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-	if ((int)fixtureUserDataA == 200)
+	if ((int)fixtureUserDataA == 8)
 	{
+		// COLLIDERS --> SENSORS (RIVER) SOUKOBAN PUZZLE
 		if ((int)fixtureUserDataB == 201)
 		{
-			isActive_S1 = false;
+			app->map->S1_Coll->SetSensor(true);
+
+			
 		}
-		if ((int)fixtureUserDataB == 202)
+		else if ((int)fixtureUserDataB == 202)
 		{
-			isActive_S2 = false;
+			app->map->S2_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
+
 		}
-		if ((int)fixtureUserDataB == 203)
+		else if ((int)fixtureUserDataB == 203)
 		{
-			isActive_S3 = false;
+			app->map->S3_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataB == 204)
+		else if ((int)fixtureUserDataB == 204)
 		{
-			isActive_S4 = false;
+			app->map->S4_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataB == 205)
+		else if ((int)fixtureUserDataB == 205)
 		{
-			isActive_S5 = false;
+			app->map->S5_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataB == 206)
+		else if ((int)fixtureUserDataB == 206)
 		{
-			isActive_S6 = false;
+			app->map->S6_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
 		}
 	}
 
-	if ((int)fixtureUserDataB == 200)
+	if ((int)fixtureUserDataB == 8)
 	{
+		// COLLIDERS --> SENSORS (RIVER) SOUKOBAN PUZZLE
 		if ((int)fixtureUserDataA == 201)
 		{
-			isActive_S1 = false;
+			app->map->S1_Coll->SetSensor(true);
+
 		}
-		if ((int)fixtureUserDataA == 202)
+		else if ((int)fixtureUserDataA == 202)
 		{
-			isActive_S2 = false;
+			app->map->S2_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataA == 203)
+		else if ((int)fixtureUserDataA == 203)
 		{
-			isActive_S3 = false;
+			app->map->S3_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataA == 204)
+		else if ((int)fixtureUserDataA == 204)
 		{
-			isActive_S4 = false;
+			app->map->S4_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataA == 205)
+		else if ((int)fixtureUserDataA == 205)
 		{
-			isActive_S5 = false;
+			app->map->S5_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
 		}
-		if ((int)fixtureUserDataA == 206)
+		else if ((int)fixtureUserDataA == 206)
 		{
-			isActive_S6 = false;
+			app->map->S6_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
 		}
 	}
+	
 }
 
 void Physics::EndContact(b2Contact* contact)
