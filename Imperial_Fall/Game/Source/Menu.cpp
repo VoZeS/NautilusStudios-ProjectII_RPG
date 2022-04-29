@@ -1286,6 +1286,7 @@ bool Menu::Update(float dt)
 					break;
 				}
 
+				app->inventory->AddXP(-5 - (5 * app->frontground->adventure_phase));
 				lose_buttons[chosed].state = 2;
 			}
 			if (chosed == -1)

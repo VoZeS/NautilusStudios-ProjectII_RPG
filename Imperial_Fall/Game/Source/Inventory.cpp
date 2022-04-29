@@ -4216,89 +4216,147 @@ void Inventory::AddXP(int amount)
 	int exp_stored;
 	int skill_point = 0;
 
-	for (size_t i = 0; i < 4; i++)
+	if (amount > 0)
 	{
-		if (i == 0)
+		for (size_t i = 0; i < 4; i++)
 		{
-			xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
+			if (i == 0)
+			{
+				xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
 
-			if (xp.as_int() + amount < 100)
-			{
-				xp.set_value(xp.as_int() + amount);
-			}
-			else
-			{
-				exp_stored = xp.as_int() + amount;
-				do
+				if (xp.as_int() + amount < 100)
 				{
-					exp_stored -= 100;
-					skill_point++;
-				} while (exp_stored >= 100);
-				xp.set_value(exp_stored);
-				AddSkillPoint(0, skill_point);
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
 			}
-		}
-		else if (i == 1)
-		{
-			xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
+			else if (i == 1)
+			{
+				xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
 
-			if (xp.as_int() + amount < 100)
-			{
-				xp.set_value(xp.as_int() + amount);
-			}
-			else
-			{
-				exp_stored = xp.as_int() + amount;
-				do
+				if (xp.as_int() + amount < 100)
 				{
-					exp_stored -= 100;
-					skill_point++;
-				} while (exp_stored >= 100);
-				xp.set_value(exp_stored);
-				AddSkillPoint(0, skill_point);
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
 			}
-		}
-		else if (i == 2)
-		{
-			xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
+			else if (i == 2)
+			{
+				xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
 
-			if (xp.as_int() + amount < 100)
-			{
-				xp.set_value(xp.as_int() + amount);
-			}
-			else
-			{
-				exp_stored = xp.as_int() + amount;
-				do
+				if (xp.as_int() + amount < 100)
 				{
-					exp_stored -= 100;
-					skill_point++;
-				} while (exp_stored >= 100);
-				xp.set_value(exp_stored);
-				AddSkillPoint(0, skill_point);
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
 			}
-		}
-		else if (i == 3)
-		{
-			xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
+			else if (i == 3)
+			{
+				xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
 
-			if (xp.as_int() + amount < 100)
-			{
-				xp.set_value(xp.as_int() + amount);
-			}
-			else
-			{
-				exp_stored = xp.as_int() + amount;
-				do
+				if (xp.as_int() + amount < 100)
 				{
-					exp_stored -= 100;
-					skill_point++;
-				} while (exp_stored >= 100);
-				xp.set_value(exp_stored);
-				AddSkillPoint(0, skill_point);
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
 			}
 		}
 	}
+	else if (amount < 0)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (i == 0)
+			{
+				xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+			else if (i == 1)
+			{
+				xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+			else if (i == 2)
+			{
+				xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+			else if (i == 3)
+			{
+				xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+		}
+	}
+	
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
