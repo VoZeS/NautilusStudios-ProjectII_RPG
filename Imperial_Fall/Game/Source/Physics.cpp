@@ -237,7 +237,7 @@ b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	return fix;
 }
 
-bool Physics::CreateDynamicBox(int x, int y, int w, int h)
+b2Fixture* Physics::CreateDynamicBox(int x, int y, int w, int h)
 {
 	b2BodyDef g;
 	g.type = b2_dynamicBody;
@@ -258,7 +258,7 @@ bool Physics::CreateDynamicBox(int x, int y, int w, int h)
 	b2Fixture* fix = p->CreateFixture(&fixture);
 	fix->SetUserData((void*)8);
 
-	return true;
+	return fix;
 }
 
 bool Physics::CleanMapBoxes()

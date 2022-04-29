@@ -6,6 +6,7 @@
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
+#include "Forest.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -90,6 +91,7 @@ void Map::Draw()
 								pos.x,
 								pos.y,
 								&r);
+
 						}
 					}
 
@@ -109,12 +111,28 @@ void Map::Draw()
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 
 						}
-						// BOX SOUKOBAN
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 200)
+						// -------------------------------------------------------------------------- BOXES SOUKOBAN
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 301)
 						{
-							app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+							S1_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
 
 						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 302)
+						{
+							S2_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 303)
+						{
+							S3_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 304)
+						{
+							S4_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+
 						// -------------------------------------------------------------------- RIVER COLLISIONS SOUKOBAN PUZZLE
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 101)
 						{

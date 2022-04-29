@@ -23,6 +23,13 @@
 Forest::Forest(bool enabled) : Module(enabled)
 {
 	name.Create("forest");
+
+	// moving animation
+	movingBox_Anim.PushBack({ 0, 0, 64, 65 });
+	movingBox_Anim.PushBack({ 0, 64, 64, 65 });
+	movingBox_Anim.PushBack({ 0, 128, 64, 65 });
+	movingBox_Anim.speed = 0.03f;
+	movingBox_Anim.loop = true;
 }
 
 // Destructor
@@ -47,6 +54,9 @@ bool Forest::Start()
 
 		// Load music
 		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
+
+		//Load Box Tex
+		box_texture = app->tex->Load("Assets/textures/S_Box.png");
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -87,6 +97,7 @@ bool Forest::PreUpdate()
 // Called each loop iteration
 bool Forest::Update(float dt)
 {
+	
 	// Draw map
 	app->map->Draw();
 
@@ -96,6 +107,17 @@ bool Forest::Update(float dt)
 // Called each loop iteration
 bool Forest::PostUpdate()
 {
+	currentAnimation = &movingBox_Anim;
+
+	if (app->map->S1_Box != nullptr)
+	{
+		if (app->map->S1_Box->GetBody()->GetLinearVelocity() == b2Vec2{ 0,0 })
+		{
+			currentAnimation->Update();
+
+		}
+	}
+	
 
 	return true;
 }

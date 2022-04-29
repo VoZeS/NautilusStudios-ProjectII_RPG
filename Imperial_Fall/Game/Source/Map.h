@@ -160,6 +160,10 @@ public:
 	b2Fixture* S5_Sens;
 	b2Fixture* S6_Sens;
 
+	b2Fixture* S1_Box;
+	b2Fixture* S2_Box;
+	b2Fixture* S3_Box;
+	b2Fixture* S4_Box;
 private:
 
 	// L03: Methods to load all required map data
