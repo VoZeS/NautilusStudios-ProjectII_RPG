@@ -10,10 +10,10 @@
 	</renderer>
 	<entities>
 		<player>
-			<position x="12" y="56" />
-			<comp0 x="12" y="60" />
-			<comp1 x="12" y="62" />
-			<comp2 x="12" y="64" />
+			<position x="48.8043938" y="20.5599995" />
+			<comp0 x="50.7241936" y="19.560461" />
+			<comp1 x="52.6553459" y="19.0128937" />
+			<comp2 x="54.5781441" y="18.928833" />
 		</player>
 		<enemies>
 			<enemy0 state="true" />

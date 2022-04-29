@@ -203,6 +203,8 @@ private:
 	int save_cd = 50;
 	bool saving = false;
 
+	bool count_xp;
+
 	// sound
 	uint open_book_sound;
 	uint click_sound;

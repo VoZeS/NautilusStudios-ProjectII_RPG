@@ -298,6 +298,8 @@ bool Menu::Start()
 			ask_buttons[i].rect.h = 128;
 		}
 
+		count_xp = false;
+
 		theseion2 = false;
 	}
 
@@ -1261,8 +1263,7 @@ bool Menu::Update(float dt)
 					theseion2 = true;
 				}
 				
-				app->frontground->combat_xp = 0;
-				app->frontground->combat_gold = 0;
+				count_xp = true;
 				win_button.state = 2;
 				kill_enemy = true;
 
@@ -1447,6 +1448,24 @@ bool Menu::PostUpdate()
 	
 	r.x = c_x;
 	r.y = c_y;
+
+
+
+	if (count_xp)
+	{
+		if (app->frontground->combat_xp > 0)
+		{
+			app->frontground->combat_xp--;
+		}
+		if (app->frontground->combat_gold > 0)
+		{
+			app->frontground->combat_gold--;
+		}
+		if (app->frontground->combat_xp == 0 && app->frontground->combat_gold == 0)
+		{
+			count_xp = false;
+		}
+	}
 
 	if (app->scene->fuegoSeguir == true )
 	{
