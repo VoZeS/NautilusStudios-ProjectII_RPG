@@ -160,6 +160,7 @@ bool Menu::Start()
 		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
+		desc_icons = app->tex->Load("Assets/textures/descriptions_icons.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -2225,61 +2226,67 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	app->fonts->BlitCombatText(50, 50, app->fonts->textFont2, res);
 
 	// Health
-	a = "Health: ";
+	SDL_Rect rect = { 0, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 50, 100, &rect);
 	std::string b = std::to_string(entity->GetActualHealth());
 	std::string c = " / ";
 	std::string d = std::to_string(entity->GetMaxHealth());
-	std::string r = a + b + c + d;
+	std::string r = b + c + d;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 100, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(85, 100, app->fonts->textFont2, res);
 
 	// Mana
-	a = "Mana: ";
+	rect = { 32, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 50, 150, &rect);
 	b = std::to_string(entity->GetActualMana());
 	d = std::to_string(entity->GetMaxMana());
-	r = a + b + c + d;
+	r = b + c + d;
 	res = r.c_str();
-	app->fonts->BlitCombatText(700, 100, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(85, 150, app->fonts->textFont2, res);
 
 	// Speed
-	a = "Speed: ";
+	rect = { 64, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 700, 100, &rect);
 	b = std::to_string(entity->GetSpeed());
-	r = a + b;
+	r = b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 150, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(735, 100, app->fonts->textFont2, res);
 
 	// Power
-	a = "Power: ";
+	rect = { 128, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 700, 150, &rect);
 	b = std::to_string(entity->GetPower());
-	r = a + b;
+	r = b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(700, 150, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(735, 150, app->fonts->textFont2, res);
 
 	// Shield
 	if (entity->GetShield() > 0)
 	{
-		a = "Shield: ";
+		rect = { 96, 32, 32, 32 };
+		app->render->DrawTexture(desc_icons, 50, 200, &rect);
 		b = std::to_string(entity->GetShield());
 		c = ", ";
 		d = std::to_string(entity->GetShieldTurns());
 		std::string e = " turns remaining";
-		r = a + b + c + d + e;
+		r = b + c + d + e;
 		res = r.c_str();
-		app->fonts->BlitCombatText(50, 200, app->fonts->textFont2, res);
+		app->fonts->BlitCombatText(85, 200, app->fonts->textFont2, res);
 	}
 
 	// Weakness
 	a = "Weakness: ";
 	switch (entity->GetWeakness())
 	{
-	case -1: b = "No weakness"; break;
-	case 0: b = "Physic"; break;
-	case 1: b = "Fire"; break;
-	case 2: b = "Lightning"; break;
-	case 3: b = "Water"; break;
-	default: b = " "; break;
+	case -1: rect = { 160, 0, 32, 32 }; break;
+	case 0: rect = { 128, 0, 32, 32 }; break;
+	case 1: rect = { 0, 0, 32, 32 }; break;
+	case 2: rect = { 32, 0, 32, 32 }; break;
+	case 3: rect = { 64, 0, 32, 32 }; break;
+	default: rect = { -32, 0, 32, 32 }; break;
 	}
-	r = a + b;
+	app->render->DrawTexture(desc_icons, 925, 200, &rect);
+	r = a;
 	res = r.c_str();
 	app->fonts->BlitCombatText(700, 200, app->fonts->textFont2, res);
 
@@ -2299,20 +2306,22 @@ void Menu::DisplaySkillInfo(Skill skill)
 	// Element
 	a = "Element: ";
 	std::string b;
+	SDL_Rect rect;
 	switch (skill.element)
 	{
-	case 0: b = "Physic"; break;
-	case 1: b = "Fire"; break;
-	case 2: b = "Lightning"; break;
-	case 3: b = "Water"; break;
-	default: b = " "; break;
+	case 0: rect = { 128, 0, 32, 32 }; break;
+	case 1: rect = { 0, 0, 32, 32 }; break;
+	case 2: rect = { 32, 0, 32, 32 }; break;
+	case 3: rect = { 64, 0, 32, 32 }; break;
+	case 4: rect = { 96, 0, 32, 32 }; break;
+	default: rect = { -32, 0, 32, 32 }; break;
 	}
-	std::string r = a + b;
+	app->render->DrawTexture(desc_icons, 240, 120, &rect);
+	std::string r = a;
 	res = r.c_str();
 	app->fonts->BlitCombatText(50, 120, app->fonts->textFont2, res);
 
 	// Objective
-	SDL_Rect rect;
 	if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 	{
 		rect = { 40, 0, 40, 40 };
@@ -2351,6 +2360,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	res = r.c_str();
 	app->fonts->BlitCombatText(800, 120, app->fonts->textFont2, res);
 
+	/*
 	// Attack Strenght
 	a = "Attack Strenght: ";
 	switch (skill.att_strenght)
@@ -2376,6 +2386,7 @@ void Menu::DisplaySkillInfo(Skill skill)
 	r = a + b;
 	res = r.c_str();
 	app->fonts->BlitCombatText(50, 275, app->fonts->textFont2, res);
+	*/
 
 	// Buffs mand Debuffs
 	app->combat_menu->DisplaySkillEffects(skill, 50, 350);

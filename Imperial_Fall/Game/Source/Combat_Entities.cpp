@@ -781,11 +781,18 @@ void Combat_Entities::AddDebuff(DEBUFF_TYPE type, int turns)
 	DEBUFF new_debuff;
 	new_debuff.debuff_type = type;
 
-	int r;
+	int r = rand() % 10;
 
-	if (entity_type == 9)
+
+	if (entity_type == 8 || entity_type == 12)
 	{
-		r = rand() % 10;
+		if (type == DEBUFF_TYPE::STUN && r > 4)
+		{
+			return;
+		}
+	}
+	else if (entity_type == 9)
+	{
 		if (type == DEBUFF_TYPE::BURN)
 		{
 			return;
@@ -917,7 +924,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
@@ -961,7 +968,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.buff_type = BUFF_TYPE::RELAX;
 			skill.buff_turns = 5;
 			break;
@@ -972,7 +979,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.support_type = SUPPORT_TYPE::REVIVE;
 			break;
 		case 6:
@@ -1232,7 +1239,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 15;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
@@ -1243,7 +1250,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 4:
@@ -1276,7 +1283,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 15;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
@@ -1333,7 +1340,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 34;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
@@ -1344,7 +1351,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 100;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.buff_type = BUFF_TYPE::RELAX;
 			skill.buff_turns = 3;
 			break;
@@ -1355,7 +1362,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 40;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 14:
@@ -1600,7 +1607,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 80;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.support_type = SUPPORT_TYPE::REVIVE;
 			break;
 		}
@@ -1928,7 +1935,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.supp_strenght = 0;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
@@ -1965,7 +1972,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 30;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.supp_strenght = 1;
 			skill.support_type = SUPPORT_TYPE::HEAL;
 			break;
@@ -2008,7 +2015,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 100;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 0;
+			skill.element = 4;
 			skill.buff_type = BUFF_TYPE::RELAX;
 			skill.buff_turns = 2;
 			break;
@@ -2361,7 +2368,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 60;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
-			skill.element = 0;
+			skill.element = 4;
 			skill.buff_type = BUFF_TYPE::RELAX;
 			skill.buff_turns = 3;
 			break;

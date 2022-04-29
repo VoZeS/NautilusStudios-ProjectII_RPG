@@ -96,7 +96,7 @@ public:
 	ENEMY_OBJECTIVE enemy_objective = ENEMY_OBJECTIVE::NOTHING;
 	// ally objective
 	ALLY_OBJECTIVE ally_objective = ALLY_OBJECTIVE::NOTHING;
-	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water
+	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal
 	int element = 0;
 	// 0 --> low damage, 1 --> mid damage, 2 --> high damage
 	int att_strenght = -1;

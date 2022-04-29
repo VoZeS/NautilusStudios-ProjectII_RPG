@@ -2028,6 +2028,8 @@ bool Combat_Menu::PostUpdate()
 							  break;
 						case 3: g_rect = { 0, 200, 400, 50 };
 							  break;
+						case 4: g_rect = { 0, 300, 400, 50 };
+							  break;
 						}
 					}
 
@@ -2232,6 +2234,8 @@ bool Combat_Menu::PostUpdate()
 						  break;
 					case 3: e_rect = { 0, 200, 400, 50 };
 						  break;
+					case 4: e_rect = { 0, 300, 400, 50 };
+						  break;
 					}
 					app->render->DrawTexture(whitemark_400x50, enemies_buttons[i].rect.x, enemies_buttons[i].rect.y, &e_rect);
 				}
@@ -2312,6 +2316,8 @@ bool Combat_Menu::PostUpdate()
 					case 2: a_rect = { 0, 250, 400, 50 };
 						  break;
 					case 3: a_rect = { 0, 200, 400, 50 };
+						  break;
+					case 4: a_rect = { 0, 300, 400, 50 };
 						  break;
 					}
 					app->render->DrawTexture(whitemark_400x50, allies_buttons[i].rect.x, allies_buttons[i].rect.y, &a_rect);
