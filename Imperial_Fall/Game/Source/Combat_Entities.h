@@ -202,6 +202,12 @@ public:
 	void DisplayStatus(int cx, int cy);
 	void DisplayStatusDescription(int cx, int cy);
 
+	// display damage
+	int damage_recived = 0;
+
+	// enemies xp
+	int xp = 0;
+
 private:
 	Skill SetSkill(int owner, int skill_number);
 

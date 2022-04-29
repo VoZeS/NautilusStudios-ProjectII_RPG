@@ -161,6 +161,7 @@ bool Menu::Start()
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
 		desc_icons = app->tex->Load("Assets/textures/descriptions_icons.png");
+		rew_icons = app->tex->Load("Assets/textures/rewards.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -1235,6 +1236,8 @@ bool Menu::Update(float dt)
 				if (!theseion2)
 				{
 					app->frontground->ReturnToField();
+					app->inventory->AddXP(app->frontground->combat_xp);
+					app->inventory->AddCoins(2);
 				}
 				else
 				{
@@ -1248,6 +1251,7 @@ bool Menu::Update(float dt)
 					theseion2 = true;
 				}
 				
+				app->frontground->combat_xp = 0;
 				win_button.state = 2;
 				kill_enemy = true;
 
@@ -1944,6 +1948,19 @@ bool Menu::PostUpdate()
 		}
 
 		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		
+		rect = { 0, 0, 64, 64 };
+		for (size_t i = 0; i < 4; i++)
+		{
+			app->render->DrawTexture(rew_icons, 100 + (300 * i), 400, &rect);
+			app->fonts->BlitCombatText(170 + (300 * i), 420, app->fonts->textFont2, std::to_string(app->frontground->combat_xp).c_str());
+		}
+		rect = { 64, 0, 64, 64 };
+		for (size_t i = 0; i < 4; i++)
+		{
+			app->render->DrawTexture(rew_icons, 100 + (300 * i), 500, &rect);
+			app->fonts->BlitCombatText(170 + (110 * i), 520, app->fonts->textFont2, "2");
+		}
 	}
 
 	if (lose)

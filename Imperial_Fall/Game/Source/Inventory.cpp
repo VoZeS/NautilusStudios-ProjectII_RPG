@@ -3269,21 +3269,41 @@ void Inventory::EquipAllMaxGear()
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("assassin").child("equiped_skills");
+	hero.attribute("skill1").set_value(1);
+	hero.attribute("skill2").set_value(10);
+	hero.attribute("skill3").set_value(11);
+	hero.attribute("skill4").set_value(15);
 	hero = saveGame.child("heroes_stats").child("healer").child("gear");
 	hero.attribute("helmet").set_value(4);
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("healer").child("equiped_skills");
+	hero.attribute("skill1").set_value(10);
+	hero.attribute("skill2").set_value(12);
+	hero.attribute("skill3").set_value(13);
+	hero.attribute("skill4").set_value(14);
 	hero = saveGame.child("heroes_stats").child("tank").child("gear");
 	hero.attribute("helmet").set_value(4);
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("tank").child("equiped_skills");
+	hero.attribute("skill1").set_value(7);
+	hero.attribute("skill2").set_value(9);
+	hero.attribute("skill3").set_value(12);
+	hero.attribute("skill4").set_value(16);
 	hero = saveGame.child("heroes_stats").child("wizard").child("gear");
 	hero.attribute("helmet").set_value(4);
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("wizard").child("equiped_skills");
+	hero.attribute("skill1").set_value(5);
+	hero.attribute("skill2").set_value(9);
+	hero.attribute("skill3").set_value(12);
+	hero.attribute("skill4").set_value(14);
 	
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
@@ -4183,6 +4203,101 @@ void Inventory::AddCoins(int amount)
 	else if (amount < 0)
 	{
 		app->audio->PlayFx(spend_coins_sound);
+	}
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
+void Inventory::AddXP(int amount)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_attribute xp;
+	int exp_stored;
+	int skill_point = 0;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (i == 0)
+		{
+			xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
+
+			if (xp.as_int() + amount < 100)
+			{
+				xp.set_value(xp.as_int() + amount);
+			}
+			else
+			{
+				exp_stored = xp.as_int() + amount;
+				do
+				{
+					exp_stored -= 100;
+					skill_point++;
+				} while (exp_stored >= 100);
+				xp.set_value(exp_stored);
+				AddSkillPoint(0, skill_point);
+			}
+		}
+		else if (i == 1)
+		{
+			xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
+
+			if (xp.as_int() + amount < 100)
+			{
+				xp.set_value(xp.as_int() + amount);
+			}
+			else
+			{
+				exp_stored = xp.as_int() + amount;
+				do
+				{
+					exp_stored -= 100;
+					skill_point++;
+				} while (exp_stored >= 100);
+				xp.set_value(exp_stored);
+				AddSkillPoint(0, skill_point);
+			}
+		}
+		else if (i == 2)
+		{
+			xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
+
+			if (xp.as_int() + amount < 100)
+			{
+				xp.set_value(xp.as_int() + amount);
+			}
+			else
+			{
+				exp_stored = xp.as_int() + amount;
+				do
+				{
+					exp_stored -= 100;
+					skill_point++;
+				} while (exp_stored >= 100);
+				xp.set_value(exp_stored);
+				AddSkillPoint(0, skill_point);
+			}
+		}
+		else if (i == 3)
+		{
+			xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
+
+			if (xp.as_int() + amount < 100)
+			{
+				xp.set_value(xp.as_int() + amount);
+			}
+			else
+			{
+				exp_stored = xp.as_int() + amount;
+				do
+				{
+					exp_stored -= 100;
+					skill_point++;
+				} while (exp_stored >= 100);
+				xp.set_value(exp_stored);
+				AddSkillPoint(0, skill_point);
+			}
+		}
 	}
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);

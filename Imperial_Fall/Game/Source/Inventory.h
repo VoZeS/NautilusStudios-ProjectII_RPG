@@ -93,6 +93,9 @@ public:
 	int GetCoins();
 	void AddCoins(int amount);
 
+	// xp
+	void AddXP(int amount);
+
 private:
 	Cursor cursor;
 

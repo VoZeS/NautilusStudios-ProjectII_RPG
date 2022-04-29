@@ -125,6 +125,9 @@ private:
 	bool fix = true;
 
 public:
+	// combat xp
+	int combat_xp = 0;
+
 	// controller
 	bool controller = false;
 
