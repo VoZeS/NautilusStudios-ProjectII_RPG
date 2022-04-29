@@ -96,6 +96,10 @@ public:
 	// xp
 	void AddXP(int amount);
 
+	// description
+	bool in_description;
+	Skill desc_skill;
+
 private:
 	Cursor cursor;
 
@@ -183,6 +187,7 @@ private:
 
 	// skill tree
 	Skill GetSkillForInv(int owner, int skill);
+	Skill GetItemForInv(int skill);
 	int GetSkillParent(int skill);
 	int GetSkillPoints(int skill);
 	int skill_win; // 0 --> disabled, 1 --> what to equip, 2 --> unlock skill, 2 --> dont have points
