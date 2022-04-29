@@ -63,6 +63,7 @@ bool Combat_Manager::Start()
 		allies[3] = new Combat_Entities(health, mana, speed, power, 3, skill1, skill2, skill3, skill4);
 
 		app->frontground->combat_xp = 0;
+		app->frontground->combat_gold = 0;
 
 		//init enemies
 		for (size_t i = 0; i < 4; i++)
@@ -70,6 +71,7 @@ bool Combat_Manager::Start()
 			enemies[i] = new Combat_Entities(app->frontground->GetEnemiesToFight(i));
 			app->frontground->combat_xp += enemies[i]->xp;
 		}
+		app->frontground->combat_gold = 2;
 		for (size_t i = 0; i < 4; i++)
 		{
 			if (enemies[i]->GetSkill(0).owner == 9)

@@ -1247,14 +1247,14 @@ bool Menu::Update(float dt)
 				{
 					app->frontground->ReturnToField();
 					app->inventory->AddXP(app->frontground->combat_xp);
-					app->inventory->AddCoins(2);
+					app->inventory->AddCoins(app->frontground->combat_gold);
 				}
 				else
 				{
 					ENEMIES enemies[4];
 					enemies[0] = ENEMIES::NECRO_THESEION;
-					enemies[1] = ENEMIES::DRAGON;
-					enemies[2] = ENEMIES::NOTHING;
+					enemies[1] = ENEMIES::NOTHING;
+					enemies[2] = ENEMIES::DRAGON;
 					enemies[3] = ENEMIES::NOTHING;
 					app->frontground->move_to = MOVE_TO::COMBAT_FINALCOMBAT;
 					app->frontground->FadeInCombat(enemies, "999");
@@ -1262,6 +1262,7 @@ bool Menu::Update(float dt)
 				}
 				
 				app->frontground->combat_xp = 0;
+				app->frontground->combat_gold = 0;
 				win_button.state = 2;
 				kill_enemy = true;
 
@@ -1951,7 +1952,7 @@ bool Menu::PostUpdate()
 
 		else if (win_button.state == 1)
 		{
-			app->render->DrawTexture(win_button.alt_tex, win_button.rect.x-20 , win_button.rect.y-20);
+			app->render->DrawTexture(win_button.alt_tex, win_button.rect.x - 20 , win_button.rect.y - 20);
 		}
 
 		else if (win_button.state == 2)
@@ -1965,14 +1966,14 @@ bool Menu::PostUpdate()
 		rect = { 0, 0, 64, 64 };
 		for (size_t i = 0; i < 4; i++)
 		{
-			app->render->DrawTexture(rew_icons, 100 + (300 * i), 400, &rect);
-			app->fonts->BlitCombatText(170 + (300 * i), 420, app->fonts->textFont2, std::to_string(app->frontground->combat_xp).c_str());
+			app->render->DrawTexture(rew_icons, 100 + (315 * i), 450, &rect);
+			app->fonts->BlitCombatText(170 + (315 * i), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp).c_str());
 		}
 		rect = { 64, 0, 64, 64 };
 		for (size_t i = 0; i < 4; i++)
 		{
-			app->render->DrawTexture(rew_icons, 100 + (300 * i), 500, &rect);
-			app->fonts->BlitCombatText(170 + (110 * i), 520, app->fonts->textFont2, "2");
+			app->render->DrawTexture(rew_icons, 100 + (315 * i), 550, &rect);
+			app->fonts->BlitCombatText(170 + (315 * i), 570, app->fonts->textFont2, std::to_string(app->frontground->combat_gold).c_str());
 		}
 	}
 

@@ -127,6 +127,7 @@ private:
 public:
 	// combat xp
 	int combat_xp = 0;
+	int combat_gold = 0;
 
 	// controller
 	bool controller = false;

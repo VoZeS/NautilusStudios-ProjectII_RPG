@@ -1183,7 +1183,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_name = "Tactic Thrust";
 			skill.skill_description0 = "Medium critical damage to a single target. Critical";
 			skill.skill_description1 = "damage hits more when the target is with low";
-			skill.skill_description2 = "health or hits less if the target is with high health";
+			skill.skill_description2 = "health or hits less if the target is with high health.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 25;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1369,9 +1369,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 9: // level 3 up root skills
 			skill.owner = owner;
 			skill.skill_name = "Inmortal Peach";
-			skill.skill_description0 = "Offer to the target the inmortal peach of";
+			skill.skill_description0 = "Offer to the targets the inmortal peach of";
 			skill.skill_description1 = "Wukong. Give damage inmunity to all allies for";
-			skill.skill_description1 = "one turns.";
+			skill.skill_description2 = "one turns.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 200;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
