@@ -9,6 +9,7 @@
 #include "Frontground.h"
 #include "Menu.h"
 #include "Inventory.h"
+#include "Combat_Manager.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -206,6 +207,7 @@ bool Inventory::Start()
 		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
 		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
 		misc = app->tex->Load("Assets/textures/skill_books.png");
+		app->combat_manager->status_effects = app->tex->Load("Assets/textures/status_effects.png");
 
 		skill_button.rect.w = 250;
 		skill_button.rect.h = 70;
@@ -254,6 +256,8 @@ bool Inventory::Start()
 		coin = app->tex->Load("Assets/textures/coin.png");
 		coins_obtained = 0;
 		coins_cd = 0;
+
+		in_description = false;
 	}
 
 	return true;
@@ -490,27 +494,44 @@ bool Inventory::PreUpdate()
 		{
 			if (skill_win == 0)
 			{
-				if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+				if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !in_description)
 				{
 					skill_page = &close_skill;
 					open_skill.Reset();
 					submenu = SUB_INV::NOTHING;
 				}
+				else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && in_description)
+				{
+					in_description = false;
+				}
 
 				for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
 				{
 					SDL_Rect rect = skill_tree_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h && !CheckSkillEquiped(page_display - 2, i))
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 					{
-						if (GetSkillParent(i) == -1 || CheckSkillUnlocked(page_display - 2, GetSkillParent(i)))
+						if (!CheckSkillEquiped(page_display - 2, i))
 						{
-							if (!hover_playing)
+							if (GetSkillParent(i) == -1 || CheckSkillUnlocked(page_display - 2, GetSkillParent(i)))
 							{
-								app->audio->PlayFx(hover_sound);
-								hover_playing = true;
+								if (!hover_playing)
+								{
+									app->audio->PlayFx(hover_sound);
+									hover_playing = true;
+								}
+								chosed = i;
+								skill_tree_buttons[i].state = 1;
 							}
+							else
+							{
+								chosed = i;
+								skill_tree_buttons[i].state = -1;
+							}
+						}
+						else
+						{
 							chosed = i;
-							skill_tree_buttons[i].state = 1;
+							skill_tree_buttons[i].state = -1;
 						}
 					}
 					else
@@ -548,9 +569,13 @@ bool Inventory::PreUpdate()
 		}
 		else if (submenu == SUB_INV::ITEMS)
 		{
-			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !in_description)
 			{
 				submenu = SUB_INV::NOTHING;
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && in_description)
+			{
+				in_description = false;
 			}
 
 			for (size_t i = 0; i < NUM_ITEMS_BUTTONS_INV; i++)
@@ -558,7 +583,7 @@ bool Inventory::PreUpdate()
 				items_buttons[i].state = 0;
 			}
 
-			for (size_t i = 0; i < NUM_ITEMS_SELECT_BUTTONS; i++)
+			for (size_t i = 0; i < NUM_ITEMS_SELECT_BUTTONS && !in_description; i++)
 			{
 				SDL_Rect rect = items_select_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
@@ -769,6 +794,13 @@ bool Inventory::Update(float dt)
 
 					skill_tree_buttons[chosed].state = 2;
 				}
+				else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && (skill_tree_buttons[chosed].state == 1 || skill_tree_buttons[chosed].state == -1))
+				{
+					in_description = true;
+					desc_skill = GetSkillForInv(page_display - 2, chosed);
+
+					skill_tree_buttons[chosed].state = 0;
+				}
 			}
 			else
 			{
@@ -814,6 +846,13 @@ bool Inventory::Update(float dt)
 				submenu = SUB_INV::NOTHING;
 
 				items_select_buttons[chosed].state = 2;
+			}
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && items_select_buttons[chosed].state == 1)
+			{
+				in_description = true;
+				desc_skill = GetItemForInv(chosed);
+
+				items_select_buttons[chosed].state = 0;
 			}
 		}
 		else
@@ -1261,7 +1300,13 @@ bool Inventory::PostUpdate()
 
 				for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
 				{
-					if (skill_tree_buttons[i].state == 0)
+					if (skill_tree_buttons[i].state == -1)
+					{
+						rect = { 0, 0, 128, 128 };
+						app->fonts->BlitCombatText(50 + cx, 100 + cy, app->fonts->textFont3, "Skill Name:");
+						app->fonts->BlitCombatText(278 + cx, 100 + cy, app->fonts->textFont3, GetSkillForInv(page_display - 2, i).skill_name);
+					}
+					else if (skill_tree_buttons[i].state == 0)
 					{
 						rect = { 0, 0, 128, 128 };
 					}
@@ -1447,6 +1492,11 @@ bool Inventory::PostUpdate()
 					}
 				}
 			}
+		}
+
+		if (in_description)
+		{
+			app->menu->DisplaySkillInfo(app->inventory->desc_skill);
 		}
 	}
 	else
@@ -3269,21 +3319,41 @@ void Inventory::EquipAllMaxGear()
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("assassin").child("equiped_skills");
+	hero.attribute("skill1").set_value(1);
+	hero.attribute("skill2").set_value(10);
+	hero.attribute("skill3").set_value(11);
+	hero.attribute("skill4").set_value(15);
 	hero = saveGame.child("heroes_stats").child("healer").child("gear");
 	hero.attribute("helmet").set_value(4);
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("healer").child("equiped_skills");
+	hero.attribute("skill1").set_value(10);
+	hero.attribute("skill2").set_value(12);
+	hero.attribute("skill3").set_value(13);
+	hero.attribute("skill4").set_value(14);
 	hero = saveGame.child("heroes_stats").child("tank").child("gear");
 	hero.attribute("helmet").set_value(4);
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("tank").child("equiped_skills");
+	hero.attribute("skill1").set_value(7);
+	hero.attribute("skill2").set_value(9);
+	hero.attribute("skill3").set_value(12);
+	hero.attribute("skill4").set_value(16);
 	hero = saveGame.child("heroes_stats").child("wizard").child("gear");
 	hero.attribute("helmet").set_value(4);
 	hero.attribute("chest").set_value(4);
 	hero.attribute("boots").set_value(4);
 	hero.attribute("weapon").set_value(4);
+	hero = saveGame.child("heroes_stats").child("wizard").child("equiped_skills");
+	hero.attribute("skill1").set_value(5);
+	hero.attribute("skill2").set_value(9);
+	hero.attribute("skill3").set_value(12);
+	hero.attribute("skill4").set_value(14);
 	
 
 	saveGame.save_file(HEROES_STATS_FILENAME);
@@ -3974,6 +4044,20 @@ Skill Inventory::GetSkillForInv(int owner, int skill)
 	return comb.GetSkill(ns);
 }
 
+Skill Inventory::GetItemForInv(int skill)
+{
+	Combat_Entities comb = Combat_Entities(-1, skill / 4);
+
+	int ns = skill;
+
+	while (ns >= 4)
+	{
+		ns -= 4;
+	}
+
+	return comb.GetSkill(ns);
+}
+
 int Inventory::GetSkillParent(int skill)
 {
 	int res = -1;
@@ -4183,6 +4267,158 @@ void Inventory::AddCoins(int amount)
 	else if (amount < 0)
 	{
 		app->audio->PlayFx(spend_coins_sound);
+	}
+
+	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+}
+
+void Inventory::AddXP(int amount)
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+	pugi::xml_attribute xp;
+	int exp_stored;
+	int skill_point = 0;
+
+	if (amount > 0)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (i == 0)
+			{
+				xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
+
+				if (xp.as_int() + amount < 100)
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
+			}
+			else if (i == 1)
+			{
+				xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
+
+				if (xp.as_int() + amount < 100)
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
+			}
+			else if (i == 2)
+			{
+				xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
+
+				if (xp.as_int() + amount < 100)
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
+			}
+			else if (i == 3)
+			{
+				xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
+
+				if (xp.as_int() + amount < 100)
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+				else
+				{
+					exp_stored = xp.as_int() + amount;
+					do
+					{
+						exp_stored -= 100;
+						skill_point++;
+					} while (exp_stored >= 100);
+					xp.set_value(exp_stored);
+					AddSkillPoint(0, skill_point);
+				}
+			}
+		}
+	}
+	else if (amount < 0)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (i == 0)
+			{
+				xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+			else if (i == 1)
+			{
+				xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+			else if (i == 2)
+			{
+				xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+			else if (i == 3)
+			{
+				xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
+				if (xp.as_int() + amount < 0)
+				{
+					xp.set_value(0);
+				}
+				else
+				{
+					xp.set_value(xp.as_int() + amount);
+				}
+			}
+		}
 	}
 
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);

@@ -161,6 +161,7 @@ bool Menu::Start()
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
 		desc_icons = app->tex->Load("Assets/textures/descriptions_icons.png");
+		rew_icons = app->tex->Load("Assets/textures/rewards.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -914,7 +915,7 @@ bool Menu::PreUpdate()
 		}
 	}
 
-	if (app->combat_menu->in_description)
+	if (app->combat_menu->in_description || app->inventory->in_description)
 	{
 		description_disabled = false;
 	}
@@ -1245,6 +1246,8 @@ bool Menu::Update(float dt)
 				if (!theseion2)
 				{
 					app->frontground->ReturnToField();
+					app->inventory->AddXP(app->frontground->combat_xp);
+					app->inventory->AddCoins(2);
 				}
 				else
 				{
@@ -1258,6 +1261,7 @@ bool Menu::Update(float dt)
 					theseion2 = true;
 				}
 				
+				app->frontground->combat_xp = 0;
 				win_button.state = 2;
 				kill_enemy = true;
 
@@ -1292,6 +1296,7 @@ bool Menu::Update(float dt)
 					break;
 				}
 
+				app->inventory->AddXP(-5 - (5 * app->frontground->adventure_phase));
 				lose_buttons[chosed].state = 2;
 			}
 			if (chosed == -1)
@@ -1956,6 +1961,19 @@ bool Menu::PostUpdate()
 		}
 
 		//app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		
+		rect = { 0, 0, 64, 64 };
+		for (size_t i = 0; i < 4; i++)
+		{
+			app->render->DrawTexture(rew_icons, 100 + (300 * i), 400, &rect);
+			app->fonts->BlitCombatText(170 + (300 * i), 420, app->fonts->textFont2, std::to_string(app->frontground->combat_xp).c_str());
+		}
+		rect = { 64, 0, 64, 64 };
+		for (size_t i = 0; i < 4; i++)
+		{
+			app->render->DrawTexture(rew_icons, 100 + (300 * i), 500, &rect);
+			app->fonts->BlitCombatText(170 + (110 * i), 520, app->fonts->textFont2, "2");
+		}
 	}
 
 	if (lose)
@@ -2043,7 +2061,7 @@ bool Menu::PostUpdate()
 	}
 
 	// skills descriptions
-	if (!description_disabled)
+	if (!description_disabled && app->combat_menu->Enabled())
 	{
 		switch (app->combat_menu->description_type)
 		{
@@ -2328,12 +2346,15 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 
 void Menu::DisplaySkillInfo(Skill skill)
 {
-	app->render->DrawTexture(whitemark_1240x680, 20, 20);
+	int cx = -app->render->camera.x;
+	int cy = -app->render->camera.y;
+
+	app->render->DrawTexture(whitemark_1240x680, 20 + cx, 20 + cy);
 
 	// Name
 	std::string a = skill.skill_name;
 	const char* res = a.c_str();
-	app->fonts->BlitCombatText(50, 50, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 50 + cy, app->fonts->textFont2, res);
 
 	// Element
 	a = "Element: ";
@@ -2348,10 +2369,10 @@ void Menu::DisplaySkillInfo(Skill skill)
 	case 4: rect = { 96, 0, 32, 32 }; break;
 	default: rect = { -32, 0, 32, 32 }; break;
 	}
-	app->render->DrawTexture(desc_icons, 240, 120, &rect);
+	app->render->DrawTexture(desc_icons, 240 + cx, 120 + cy, &rect);
 	std::string r = a;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 120, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 120 + cy, app->fonts->textFont2, res);
 
 	// Objective
 	if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
@@ -2379,66 +2400,38 @@ void Menu::DisplaySkillInfo(Skill skill)
 		rect = { 160, 0, 40, 40 };
 		b = "Self";
 	}
-	app->render->DrawTexture(skills_icons, 50, 170, &rect);
+	app->render->DrawTexture(skills_icons, 50 + cx, 170 + cy, &rect);
 	a = "Objective: ";
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(90, 175, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(90 + cx, 175 + cy, app->fonts->textFont2, res);
 
 	// Mana cost
 	a = "Mana Cost: ";
 	b = std::to_string(skill.mana_cost);
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(800, 120, app->fonts->textFont2, res);
-
-	/*
-	// Attack Strenght
-	a = "Attack Strenght: ";
-	switch (skill.att_strenght)
-	{
-	case -1: b = "No damage"; break;
-	case 0: b = "Low damage"; break;
-	case 1: b = "Medium damage"; break;
-	case 2: b = "High damage"; break;
-	}
-	r = a + b;
-	res = r.c_str();
-	app->fonts->BlitCombatText(50, 225, app->fonts->textFont2, res);
-
-	// Support Strenght
-	a = "Support Strenght: ";
-	switch (skill.supp_strenght)
-	{
-	case -1: b = "No support strenght"; break;
-	case 0: b = "Low strenght"; break;
-	case 1: b = "Medium strenght"; break;
-	case 2: b = "High strenght"; break;
-	}
-	r = a + b;
-	res = r.c_str();
-	app->fonts->BlitCombatText(50, 275, app->fonts->textFont2, res);
-	*/
+	app->fonts->BlitCombatText(800 + cx, 120 + cy, app->fonts->textFont2, res);
 
 	// Buffs mand Debuffs
-	app->combat_menu->DisplaySkillEffects(skill, 50, 350);
+	app->combat_menu->DisplaySkillEffects(skill, 50 + cx, 350 + cy);
 
 	// Description
 	r = "Description:";
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 - 34, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 - 34 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description0;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description1;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 + 34, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + 34 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description2;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 + 68, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + 68 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description3;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 + 102, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + 102 + cy, app->fonts->textFont2, res);
 }
 
 bool Menu::InAnyButton()

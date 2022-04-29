@@ -183,6 +183,7 @@ private:
 	SDL_Texture* skills_icons = NULL;
 	SDL_Texture* accept_tex = NULL;
 	SDL_Texture* desc_icons = NULL;
+	SDL_Texture* rew_icons = NULL;
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;

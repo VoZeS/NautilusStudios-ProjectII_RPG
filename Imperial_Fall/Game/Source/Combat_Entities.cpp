@@ -47,6 +47,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		this->speed = 0;
 		
 		alive = 2;
+		xp = 0;
 
 		entity_type = -1;
 		break;
@@ -70,6 +71,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 1);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 20;
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
@@ -86,6 +89,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 30;
 		}
 		else if (app->frontground->adventure_phase == 2)
 		{
@@ -102,6 +107,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 40;
 		}
 		else if (app->frontground->adventure_phase == 3)
 		{
@@ -118,6 +125,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 9);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 50;
 		}
 		
 		break;
@@ -141,6 +150,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 1);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 15;
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
@@ -157,6 +168,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 25;
 		}
 		else if (app->frontground->adventure_phase == 2)
 		{
@@ -173,6 +186,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 35;
 		}
 		else if (app->frontground->adventure_phase == 3)
 		{
@@ -189,6 +204,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 9);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 45;
 		}
 
 		break;
@@ -212,6 +229,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 1);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 12;
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
@@ -228,6 +247,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 22;
 		}
 		else if (app->frontground->adventure_phase == 2)
 		{
@@ -244,6 +265,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 32;
 		}
 		else if (app->frontground->adventure_phase == 3)
 		{
@@ -260,6 +283,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 9);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 42;
 		}
 		
 		break;
@@ -283,6 +308,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 1);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 18;
 		}
 		else if (app->frontground->adventure_phase == 1)
 		{
@@ -299,6 +326,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 2);
 			skills[3] = SetSkill(entity_type, 3);
+
+			xp = 28;
 		}
 		else if (app->frontground->adventure_phase == 2)
 		{
@@ -315,6 +344,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 5);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 38;
 		}
 		else if (app->frontground->adventure_phase == 3)
 		{
@@ -331,6 +362,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[1] = SetSkill(entity_type, 9);
 			skills[2] = SetSkill(entity_type, 6);
 			skills[3] = SetSkill(entity_type, 7);
+
+			xp = 48;
 		}
 
 		break;
@@ -353,6 +386,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[2] = SetSkill(entity_type, 2);
 		skills[3] = SetSkill(entity_type, 3);
 
+		xp = 50;
+
 		break;
 	case ENEMIES::DRAGON:
 		weak_to = 3;
@@ -372,6 +407,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[1] = SetSkill(entity_type, 1);
 		skills[2] = SetSkill(entity_type, 2);
 		skills[3] = SetSkill(entity_type, 3);
+
+		xp = 0;
 
 		break;
 	case ENEMIES::THESEION:
@@ -393,6 +430,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[2] = SetSkill(entity_type, 2);
 		skills[3] = SetSkill(entity_type, 3);
 
+		xp = 0;
+
 		break;
 	case ENEMIES::NECRO_THESEION:
 		weak_to = -1;
@@ -413,6 +452,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[2] = SetSkill(entity_type, 2);
 		skills[3] = SetSkill(entity_type, 3);
 
+		xp = 0;
+
 		break;
 	case ENEMIES::A_TEMPLAR:
 		weak_to = -1;
@@ -432,6 +473,8 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[1] = SetSkill(entity_type, 1);
 		skills[2] = SetSkill(entity_type, 2);
 		skills[3] = SetSkill(entity_type, 3);
+
+		xp = 70;
 
 		break;
 	}
@@ -464,6 +507,8 @@ Combat_Entities::~Combat_Entities()
 
 bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 {
+	int health_before = actual_health;
+
 	if (shield > 0)
 	{
 		if (bonus == SKILL_BONUS::NOTHING)
@@ -477,6 +522,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 			else
 			{
 				actual_health += shield;
+				damage_recived = -shield; // display change
 				shield = 0;
 			}
 		}
@@ -484,10 +530,12 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		{
 			shield = 0;
 			actual_health -= amount;
+			damage_recived = amount; // display change
 		}
 		else if (bonus == SKILL_BONUS::IGNORE_SHIELD)
 		{
 			actual_health -= amount;
+			damage_recived = amount; // display change
 		}
 		else if (bonus == SKILL_BONUS::CRITICAL)
 		{
@@ -502,6 +550,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 				else
 				{
 					actual_health += shield;
+					damage_recived = -shield; // display change
 				}
 			}
 			else
@@ -515,6 +564,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 				else
 				{
 					actual_health += shield;
+					damage_recived = -shield; // display change
 				}
 			}
 		}
@@ -524,16 +574,19 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		if (bonus == SKILL_BONUS::NOTHING || bonus == SKILL_BONUS::IGNORE_SHIELD || bonus == SKILL_BONUS::DESTROY_SHIELD)
 		{
 			actual_health -= amount;
+			damage_recived = amount; // display change
 		}
 		else if (bonus == SKILL_BONUS::CRITICAL)
 		{
 			if (actual_health <= max_health / 2)
 			{
 				actual_health -= amount * 2;
+				damage_recived = amount * 2; // display change
 			}
 			else
 			{
 				actual_health -= amount * 0.5;
+				damage_recived = amount * 0.5; // display change
 			}
 		}
 	}
@@ -553,6 +606,11 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 	if (shield <= 0)
 	{
 		shield_turns = 0;
+	}
+
+	if (damage_recived > health_before)
+	{
+		damage_recived = health_before;
 	}
 
 	return true;
@@ -1250,7 +1308,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
-			skill.element = 4;
+			skill.element = 0;
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 4:
@@ -1312,14 +1370,14 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.owner = owner;
 			skill.skill_name = "Inmortal Peach";
 			skill.skill_description0 = "Offer to the target the inmortal peach of";
-			skill.skill_description1 = "Wukong. Give damage inmunity to an ally for";
-			skill.skill_description1 = "two turns.";
+			skill.skill_description1 = "Wukong. Give damage inmunity to all allies for";
+			skill.skill_description1 = "one turns.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
-			skill.mana_cost = 120;
-			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
+			skill.mana_cost = 200;
+			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.buff_type = BUFF_TYPE::DAMAGE_INMUNITY;
-			skill.buff_turns = 2;
+			skill.buff_turns = 1;
 			break;
 		case 10:
 			skill.owner = owner;
@@ -1362,7 +1420,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 40;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
-			skill.element = 4;
+			skill.element = 0;
 			skill.support_type = SUPPORT_TYPE::CLEAN_DEBUFFS;
 			break;
 		case 14:
@@ -1392,7 +1450,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			skill.skill_description0 = "Use a huge amount of mana to invoke the mana";
 			skill.skill_description1 = "spirit. All allies recover a good amount of mana.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = 200;
+			skill.mana_cost = 180;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 0;
