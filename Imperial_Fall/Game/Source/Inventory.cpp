@@ -28,112 +28,112 @@ Inventory::Inventory(bool enabled) : Module(enabled)
 	open.PushBack({ 3 * px, 0 * py, px, py });
 	open.PushBack({ 4 * px, 0 * py, px, py });
 	open.PushBack({ 5 * px, 0 * py, px, py });
-	open.PushBack({ 6 * px, 0 * py, px, py });
-	open.PushBack({ 7 * px, 0 * py, px, py });
-	open.PushBack({ 8 * px, 0 * py, px, py });
+	open.PushBack({ 0 * px, 1 * py, px, py });
+	open.PushBack({ 1 * px, 1 * py, px, py });
+	open.PushBack({ 2 * px, 1 * py, px, py });
 	open.speed = 0.3f;
 	open.loop = false;
 
 	//page1
-	page1.PushBack({ 8 * px, 0 * py, px, py });
+	page1.PushBack({ 2 * px, 1 * py, px, py });
 	page1.speed = 0.1f;
 	page1.loop = false;
 
 	// page2
-	page2.PushBack({ 1 * px, 1 * py, px, py });
+	page2.PushBack({ 5 * px, 1 * py, px, py });
 	page2.speed = 0.1f;
 	page2.loop = false;
 
 	// page3
-	page3.PushBack({ 4 * px, 1 * py, px, py });
+	page3.PushBack({ 2 * px, 2 * py, px, py });
 	page3.speed = 0.1f;
 	page3.loop = false;
 
 	// page4
-	page4.PushBack({ 7 * px, 1 * py, px, py });
+	page4.PushBack({ 5 * px, 2 * py, px, py });
 	page4.speed = 0.1f;
 	page4.loop = false;
 
 	// page5
-	page5.PushBack({ 0 * px, 2 * py, px, py });
+	page5.PushBack({ 2 * px, 3 * py, px, py });
 	page5.speed = 0.1f;
 	page5.loop = false;
 
 	// 1 to 2
-	pass_page1_2.PushBack({ 8 * px, 0 * py, px, py });
-	pass_page1_2.PushBack({ 9 * px, 0 * py, px, py });
-	pass_page1_2.PushBack({ 0 * px, 1 * py, px, py });
-	pass_page1_2.PushBack({ 1 * px, 1 * py, px, py });
+	pass_page1_2.PushBack({ 2 * px, 1 * py, px, py });
+	pass_page1_2.PushBack({ 3 * px, 1 * py, px, py });
+	pass_page1_2.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page1_2.PushBack({ 5 * px, 1 * py, px, py });
 	pass_page1_2.speed = PAGE_SPEED;
 	pass_page1_2.loop = false;
 
 	// 2 to 3
-	pass_page2_3.PushBack({ 1 * px, 1 * py, px, py });
-	pass_page2_3.PushBack({ 2 * px, 1 * py, px, py });
-	pass_page2_3.PushBack({ 3 * px, 1 * py, px, py });
-	pass_page2_3.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page2_3.PushBack({ 5 * px, 1 * py, px, py });
+	pass_page2_3.PushBack({ 0 * px, 2 * py, px, py });
+	pass_page2_3.PushBack({ 1 * px, 2 * py, px, py });
+	pass_page2_3.PushBack({ 2 * px, 2 * py, px, py });
 	pass_page2_3.speed = PAGE_SPEED;
 	pass_page2_3.loop = false;
 
 	// 3 to 4
-	pass_page3_4.PushBack({ 4 * px, 1 * py, px, py });
-	pass_page3_4.PushBack({ 5 * px, 1 * py, px, py });
-	pass_page3_4.PushBack({ 6 * px, 1 * py, px, py });
-	pass_page3_4.PushBack({ 7 * px, 1 * py, px, py });
+	pass_page3_4.PushBack({ 2 * px, 2 * py, px, py });
+	pass_page3_4.PushBack({ 3 * px, 2 * py, px, py });
+	pass_page3_4.PushBack({ 4 * px, 2 * py, px, py });
+	pass_page3_4.PushBack({ 5 * px, 2 * py, px, py });
 	pass_page3_4.speed = PAGE_SPEED;
 	pass_page3_4.loop = false;
 
 	// 4 to 5
-	pass_page4_5.PushBack({ 7 * px, 1 * py, px, py });
-	pass_page4_5.PushBack({ 8 * px, 1 * py, px, py });
-	pass_page4_5.PushBack({ 9 * px, 1 * py, px, py });
-	pass_page4_5.PushBack({ 0 * px, 2 * py, px, py });
+	pass_page4_5.PushBack({ 5 * px, 2 * py, px, py });
+	pass_page4_5.PushBack({ 0 * px, 3 * py, px, py });
+	pass_page4_5.PushBack({ 1 * px, 3 * py, px, py });
+	pass_page4_5.PushBack({ 2 * px, 3 * py, px, py });
 	pass_page4_5.speed = PAGE_SPEED;
 	pass_page4_5.loop = false;
 
 	// close
-	close.PushBack({ 0 * px, 2 * py, px, py });
-	close.PushBack({ 1 * px, 2 * py, px, py });
-	close.PushBack({ 2 * px, 2 * py, px, py });
-	close.PushBack({ 3 * px, 2 * py, px, py });
-	close.PushBack({ 4 * px, 2 * py, px, py });
-	close.PushBack({ 5 * px, 2 * py, px, py });
-	close.PushBack({ 6 * px, 2 * py, px, py });
-	close.PushBack({ 7 * px, 2 * py, px, py });
-	close.PushBack({ 7 * px, 2 * py, px, py });
-	close.PushBack({ 7 * px, 2 * py, px, py });
+	close.PushBack({ 2 * px, 3 * py, px, py });
+	close.PushBack({ 3 * px, 3 * py, px, py });
+	close.PushBack({ 4 * px, 3 * py, px, py });
+	close.PushBack({ 5 * px, 3 * py, px, py });
+	close.PushBack({ 0 * px, 4 * py, px, py });
+	close.PushBack({ 1 * px, 4 * py, px, py });
+	close.PushBack({ 2 * px, 4 * py, px, py });
+	close.PushBack({ 3 * px, 4 * py, px, py });
+	close.PushBack({ 3 * px, 4 * py, px, py });
+	close.PushBack({ 3 * px, 4 * py, px, py });
 	close.speed = 0.3f;
 	close.loop = false;
 
 	// 2 to 1
-	pass_page2_1.PushBack({ 1 * px, 1 * py, px, py });
-	pass_page2_1.PushBack({ 0 * px, 1 * py, px, py });
-	pass_page2_1.PushBack({ 9 * px, 0 * py, px, py });
-	pass_page2_1.PushBack({ 8 * px, 0 * py, px, py });
+	pass_page2_1.PushBack({ 5 * px, 1 * py, px, py });
+	pass_page2_1.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page2_1.PushBack({ 3 * px, 1 * py, px, py });
+	pass_page2_1.PushBack({ 2 * px, 1 * py, px, py });
 	pass_page2_1.speed = PAGE_SPEED;
 	pass_page2_1.loop = false;
 
 	// 3 to 2
-	pass_page3_2.PushBack({ 4 * px, 1 * py, px, py });
-	pass_page3_2.PushBack({ 3 * px, 1 * py, px, py });
-	pass_page3_2.PushBack({ 2 * px, 1 * py, px, py });
-	pass_page3_2.PushBack({ 1 * px, 1 * py, px, py });
+	pass_page3_2.PushBack({ 2 * px, 2 * py, px, py });
+	pass_page3_2.PushBack({ 1 * px, 2 * py, px, py });
+	pass_page3_2.PushBack({ 0 * px, 2 * py, px, py });
+	pass_page3_2.PushBack({ 5 * px, 1 * py, px, py });
 	pass_page3_2.speed = PAGE_SPEED;
 	pass_page3_2.loop = false;
 
 	// 4 to 3
-	pass_page4_3.PushBack({ 7 * px, 1 * py, px, py });
-	pass_page4_3.PushBack({ 6 * px, 1 * py, px, py });
-	pass_page4_3.PushBack({ 5 * px, 1 * py, px, py });
-	pass_page4_3.PushBack({ 4 * px, 1 * py, px, py });
+	pass_page4_3.PushBack({ 5 * px, 2 * py, px, py });
+	pass_page4_3.PushBack({ 4 * px, 2 * py, px, py });
+	pass_page4_3.PushBack({ 3 * px, 2 * py, px, py });
+	pass_page4_3.PushBack({ 2 * px, 2 * py, px, py });
 	pass_page4_3.speed = PAGE_SPEED;
 	pass_page4_3.loop = false;
 
 	// 5 to 4
+	pass_page5_4.PushBack({ 2 * px, 3 * py, px, py });
+	pass_page5_4.PushBack({ 1 * px, 2 * py, px, py });
 	pass_page5_4.PushBack({ 0 * px, 2 * py, px, py });
-	pass_page5_4.PushBack({ 9 * px, 1 * py, px, py });
-	pass_page5_4.PushBack({ 8 * px, 1 * py, px, py });
-	pass_page5_4.PushBack({ 7 * px, 1 * py, px, py });
+	pass_page5_4.PushBack({ 5 * px, 2 * py, px, py });
 	pass_page5_4.speed = PAGE_SPEED;
 	pass_page5_4.loop = false;
 
