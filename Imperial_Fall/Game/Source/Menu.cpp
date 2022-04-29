@@ -238,11 +238,21 @@ bool Menu::Start()
 		settings_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 		settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync Si
 
-		win_button.tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
-		lose_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Try again
-		lose_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
 
-		combat_back = app->tex->Load("Assets/textures/Temporal_Background.png");
+
+		win_button.tex = app->tex->Load("Assets/textures/Close_Buton_Win.png"); // Return field
+		win_button.alt_tex = app->tex->Load("Assets/textures/Close_Buton_Win_Select.png"); // Return field
+	
+		lose_buttons[0].tex = app->tex->Load("Assets/textures/Retry_Buton_Lose.png"); // Try again
+		lose_buttons[0].alt_tex = app->tex->Load("Assets/textures/Retry_Buton_Lose_Select.png"); // Try again
+
+		lose_buttons[1].tex = app->tex->Load("Assets/textures/Run_Boton_Lose.png"); // Return field
+		lose_buttons[1].alt_tex = app->tex->Load("Assets/textures/Run_Boton_Lose_Select.png"); // Return field
+
+		Scape_BackGround = app->tex->Load("Assets/textures/Temporal_Background.png");
+		Lose_BackGround = app->tex->Load("Assets/textures/Lose_Screen.png");
+		Win_BackGround = app->tex->Load("Assets/textures/Win_Screen.png");
+
 		combat_win = app->tex->Load("Assets/textures/win_text.png");
 		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
 		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
@@ -1926,29 +1936,31 @@ bool Menu::PostUpdate()
 	SDL_Rect rect;
 	if (win)
 	{
-		app->render->DrawTexture(combat_back, c_x, c_y);
-		app->render->DrawTexture(combat_win, c_x, c_y);
+		app->render->DrawTexture(Win_BackGround, c_x, c_y);
+		//app->render->DrawTexture(combat_win, c_x, c_y);
 
-		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x;
-		win_button.rect.y = (int)win_h / 2 + 200 + c_y;
+		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x+530;
+		win_button.rect.y = (int)win_h / 2 + 200 + c_y-370;
 
 		if (win_button.state == 0)
 		{
-			rect = { 0, 0, 500, 70 };
-			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
-		}
-		else if (win_button.state == 1)
-		{
-			rect = { 0, 70, 500, 70 };
-			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
-		}
-		else if (win_button.state == 2)
-		{
-			rect = { 0, 140, 500, 70 };
-			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
+			//rect = { 0, 0, 500, 70 };
+			//app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
+			app->render->DrawTexture(win_button.tex, win_button.rect.x , win_button.rect.y);
 		}
 
-		app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		else if (win_button.state == 1)
+		{
+			app->render->DrawTexture(win_button.alt_tex, win_button.rect.x-20 , win_button.rect.y-20);
+		}
+
+		else if (win_button.state == 2)
+		{
+			//rect = { 0, 140, 500, 70 };
+			//app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
+		}
+
+		//app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
 		
 		rect = { 0, 0, 64, 64 };
 		for (size_t i = 0; i < 4; i++)
@@ -1966,40 +1978,58 @@ bool Menu::PostUpdate()
 
 	if (lose)
 	{
-		app->render->DrawTexture(combat_back, c_x, c_y);
-		app->render->DrawTexture(combat_lose, c_x, c_y);
+		app->render->DrawTexture(Lose_BackGround, c_x, c_y);
+		//app->render->DrawTexture(combat_lose, c_x, c_y);
 
-		lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) - 300 + c_x;
-		lose_buttons[0].rect.y = (int)win_h / 2 + 200 + c_y;
-		lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 300 + c_x;
-		lose_buttons[1].rect.y = (int)win_h / 2 + 200 + c_y;
+		lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) + c_x-400;
+		lose_buttons[0].rect.y = (int)win_h / 2  + c_y;
+		lose_buttons[0].rect.w = 200;
+		lose_buttons[0].rect.h = 100;
+
+		lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2)  + c_x+280;
+		lose_buttons[1].rect.y = (int)win_h / 2  + c_y+130;
+		lose_buttons[1].rect.w = 200;
+		lose_buttons[1].rect.h = 100;
 
 		for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
 		{
-			if (lose_buttons[i].state == 0)
+			//Retry button
+			if (lose_buttons[0].state == 0)
 			{
-				rect = { 0, 0, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				//rect = { 0, 0, 500, 70 };
+				app->render->DrawTexture(lose_buttons[0].tex, lose_buttons[0].rect.x, lose_buttons[0].rect.y);
 			}
-			else if (lose_buttons[i].state == 1)
+			else if (lose_buttons[0].state == 1)
 			{
-				rect = { 0, 70, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				//rect = { 0, 70, 500, 70 };
+				app->render->DrawTexture(lose_buttons[0].alt_tex, lose_buttons[0].rect.x - 20, lose_buttons[0].rect.y - 20);
+			}
+
+			//Run button
+			if (lose_buttons[1].state == 0)
+			{
+				//rect = { 0, 0, 500, 70 };
+				app->render->DrawTexture(lose_buttons[1].tex, lose_buttons[1].rect.x, lose_buttons[1].rect.y);
+			}
+			else if (lose_buttons[1].state == 1)
+			{
+				//rect = { 0, 70, 500, 70 };
+				app->render->DrawTexture(lose_buttons[1].alt_tex, lose_buttons[1].rect.x-20, lose_buttons[1].rect.y-20);
 			}
 			else if (lose_buttons[i].state == 2)
 			{
-				rect = { 0, 140, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				//rect = { 0, 140, 500, 70 };
+				//app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 		}
 		
-		app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
-		app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
+		//app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
+		//app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (scape)
 	{
-		app->render->DrawTexture(combat_back, c_x, c_y);
+		app->render->DrawTexture(Scape_BackGround, c_x, c_y);
 		app->render->DrawTexture(combat_scape, c_x, c_y);
 
 		scape_buttons[0].rect.x = ((int)win_w / 2) - (scape_buttons[0].rect.w / 2) - 300 + c_x;
@@ -2152,6 +2182,7 @@ void Menu::SetWinLoseScape(int n)
 	if (n == 0)
 	{
 		win = true;
+		//lose = true;
 		if (app->frontground->controller)
 		{
 			win_button.state = 1;
@@ -2161,6 +2192,7 @@ void Menu::SetWinLoseScape(int n)
 	else if (n == 1)
 	{
 		lose = true;
+		//win = true;
 		if (app->frontground->controller)
 		{
 			lose_buttons[0].state = 1;
