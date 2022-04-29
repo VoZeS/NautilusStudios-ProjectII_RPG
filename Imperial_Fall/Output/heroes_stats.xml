@@ -5,22 +5,22 @@
 	</items_stored>
 	<assassin>
 		<basic_stats health="70" mana="50" speed="50" power="65" />
-		<gear helmet="0" chest="0" boots="0" weapon="0" />
-		<equiped_skills skill1="-1" skill2="-1" skill3="-1" skill4="-1" />
+		<gear helmet="0" chest="4" boots="4" weapon="4" />
+		<equiped_skills skill1="9" skill2="10" skill3="11" skill4="12" />
 	</assassin>
 	<healer>
 		<basic_stats health="100" mana="60" speed="30" power="50" />
-		<gear helmet="0" chest="0" boots="0" weapon="0" />
-		<equiped_skills skill1="-1" skill2="-1" skill3="-1" skill4="-1" />
+		<gear helmet="4" chest="4" boots="4" weapon="4" />
+		<equiped_skills skill1="9" skill2="10" skill3="11" skill4="12" />
 	</healer>
 	<tank>
 		<basic_stats health="140" mana="50" speed="10" power="50" />
-		<gear helmet="0" chest="0" boots="0" weapon="0" />
-		<equiped_skills skill1="-1" skill2="-1" skill3="-1" skill4="-1" />
+		<gear helmet="4" chest="4" boots="4" weapon="4" />
+		<equiped_skills skill1="9" skill2="10" skill3="11" skill4="12" />
 	</tank>
 	<wizard>
 		<basic_stats health="85" mana="70" speed="35" power="60" />
-		<gear helmet="0" chest="0" boots="0" weapon="0" />
-		<equiped_skills skill1="-1" skill2="-1" skill3="-1" skill4="-1" />
+		<gear helmet="4" chest="4" boots="4" weapon="4" />
+		<equiped_skills skill1="9" skill2="10" skill3="11" skill4="12" />
 	</wizard>
 </heroes_stats>

@@ -168,7 +168,10 @@ private:
 	Button scape_buttons[NUM_SCAPE_BUTTONS];
 	Button ask_buttons[NUM_ASK_BUTTONS];
 
-	SDL_Texture* combat_back = NULL;
+	SDL_Texture* Scape_BackGround = NULL;
+	SDL_Texture* Lose_BackGround = NULL;
+	SDL_Texture* Win_BackGround = NULL;
+
 	SDL_Texture* combat_win = NULL;
 	SDL_Texture* combat_lose = NULL;
 	SDL_Texture* combat_scape = NULL;
