@@ -427,7 +427,7 @@ void Combat_Manager::UpdateHUD()
 		}
 	}
 
-	float divider = ((float)(app->frontground->adventure_phase + 1) / 3) + 1;
+	float divider = ((float)(app->frontground->adventure_phase + 1) / 7) + 1;
 
 	// assassin
 	app->render->DrawTexture(whitemark_64x64, 8 + cx + 250, 8 + cy);

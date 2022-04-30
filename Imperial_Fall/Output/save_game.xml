@@ -6,7 +6,7 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-160" y="-500" />
 	</renderer>
 	<entities>
 		<player>
@@ -16,8 +16,8 @@
 			<comp2 x="13" y="19" />
 		</player>
 		<enemies>
-			<enemy0 state="false" />
-			<enemy1 state="false" />
+			<enemy0 state="true" />
+			<enemy1 state="true" />
 			<enemy2 state="true" />
 			<enemy3 state="true" />
 			<enemy4 state="true" />

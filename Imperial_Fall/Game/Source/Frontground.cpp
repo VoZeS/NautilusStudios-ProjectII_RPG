@@ -466,11 +466,23 @@ int Frontground::CheckAdventureState()
 	{
 		res++;
 	}
+	if (app->dialog->GetRenatoText() >= 6)
+	{
+		res++;
+	}
 	if (!atr.child("enemy2").attribute("state").as_bool()) // mision 2
 	{
 		res++;
 	}
+	if (app->dialog->GetRenatoText() >= 10)
+	{
+		res++;
+	}
 	if (!atr.child("enemy3").attribute("state").as_bool()) // mision 3
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 14)
 	{
 		res++;
 	}
@@ -483,13 +495,12 @@ int Frontground::CheckAdventureState()
 	{
 	case -1: app->dialog->SaveRenatoDialog(-1); app->dialog->SaveFarmerDialog(); break;
 	case 0: app->dialog->SaveRenatoDialog(3); app->dialog->SaveFarmerDialog(); break;
-	case 1: app->dialog->SaveRenatoDialog(3); app->dialog->SaveFarmerDialog(); break;
+	case 1: app->dialog->SaveRenatoDialog(6); app->dialog->SaveFarmerDialog(-1); break;
 	case 2: app->dialog->SaveRenatoDialog(7); app->dialog->SaveFarmerDialog(-1); break;
-	case 3: app->dialog->SaveRenatoDialog(7); app->dialog->SaveFarmerDialog(-1); break;
+	case 3: app->dialog->SaveRenatoDialog(10); app->dialog->SaveFarmerDialog(2); break;
 	case 4: app->dialog->SaveRenatoDialog(11); app->dialog->SaveFarmerDialog(2); break;
-	case 5: app->dialog->SaveRenatoDialog(11); app->dialog->SaveFarmerDialog(2); break;
+	case 5: app->dialog->SaveRenatoDialog(14); app->dialog->SaveFarmerDialog(5); break;
 	case 6: app->dialog->SaveRenatoDialog(15); app->dialog->SaveFarmerDialog(5); break;
-	case 7: app->dialog->SaveRenatoDialog(15); app->dialog->SaveFarmerDialog(5); break;
 	}
 
 	if (res > adventure_phase)

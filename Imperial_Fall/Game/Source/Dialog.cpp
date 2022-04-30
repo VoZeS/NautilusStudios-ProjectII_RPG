@@ -345,8 +345,7 @@ bool Dialog::Update(float dt)
 		{
 			if (app->frontground->adventure_phase == -1)
 			{
-				enemy_base = -1;
-				if (ContinueDialog(enemy_text, 2, enemy_base))
+				if (ContinueDialog(enemy_text, 2))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -378,8 +377,7 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == -1)
 				{
-					renato_base = -1;
-					if (ContinueDialog(renato_text, 4, renato_base))
+					if (ContinueDialog(renato_text, 4))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -395,9 +393,8 @@ bool Dialog::Update(float dt)
 						renato_text = 2;
 					}
 				}
-				else if (app->frontground->adventure_phase == 0 || app->frontground->adventure_phase == 1)
+				else if (app->frontground->adventure_phase == 0)
 				{
-					renato_base = 3;
 					if (renato_text == 3) /// reward for mision 1
 					{
 						for (size_t i = 0; i < 4; i++)
@@ -408,7 +405,7 @@ bool Dialog::Update(float dt)
 						app->inventory->UnlockObject("403"); // 3 hp potions
 					}
 					///////////////////////////////////////////
-					if (ContinueDialog(renato_text, 8, renato_base))
+					if (ContinueDialog(renato_text, 8))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -422,11 +419,29 @@ bool Dialog::Update(float dt)
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
 						renato_text = 6;
+						app->frontground->check_phase_change = true;
 					}
 				}
 				else if (app->frontground->adventure_phase == 1)
 				{
-					renato_base = 7;
+					renato_text = 6;
+					if (ContinueDialog(renato_text, 8))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+					}
+				}
+				else if (app->frontground->adventure_phase == 2)
+				{
 					if (renato_text == 7) /// reward for mision 2
 					{
 						for (size_t i = 0; i < 4; i++)
@@ -435,7 +450,27 @@ bool Dialog::Update(float dt)
 						}
 						app->inventory->AddCoins(25);
 					} ///////////////////////////////////////////
-					if (ContinueDialog(renato_text, 12, renato_base))
+					if (ContinueDialog(renato_text, 12))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 10;
+						app->frontground->check_phase_change = true;
+					}
+				}
+				else if (app->frontground->adventure_phase == 3)
+				{
+					renato_text = 10;
+					if (ContinueDialog(renato_text, 12))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -451,9 +486,8 @@ bool Dialog::Update(float dt)
 						renato_text = 10;
 					}
 				}
-				else if (app->frontground->adventure_phase == 2)
+				else if (app->frontground->adventure_phase == 4)
 				{
-					renato_base = 11;
 					if (renato_text == 11) /// reward for mision 3
 					{
 						for (size_t i = 0; i < 4; i++)
@@ -462,7 +496,27 @@ bool Dialog::Update(float dt)
 						}
 						app->inventory->AddCoins(50);
 					} ///////////////////////////////////////////
-					if (ContinueDialog(renato_text, 16, renato_base))
+					if (ContinueDialog(renato_text, 16))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 14;
+						app->frontground->check_phase_change = true;
+					}
+				}
+				else if (app->frontground->adventure_phase == 5)
+				{
+					renato_text = 14;
+					if (ContinueDialog(renato_text, 16))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -478,10 +532,10 @@ bool Dialog::Update(float dt)
 						renato_text = 14;
 					}
 				}
-				else if (app->frontground->adventure_phase == 3)
+				else if (app->frontground->adventure_phase == 6)
 				{
-					renato_base = 15;
-					if (ContinueDialog(renato_text, 17, renato_base))
+					renato_text = 15;
+					if (ContinueDialog(renato_text, 17))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -500,7 +554,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(2))
 			{
-				if (ContinueDialog(medico_text, medico_maxtext, medico_base))
+				if (ContinueDialog(medico_text, medico_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -518,7 +572,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(3))
 			{
-				if (ContinueDialog(herrero_text, herrero_maxtext, medico_base))
+				if (ContinueDialog(herrero_text, herrero_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -536,7 +590,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(4))
 			{
-				if (ContinueDialog(sabio_text, sabio_maxtext, sabio_base))
+				if (ContinueDialog(sabio_text, sabio_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -554,7 +608,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(5))
 			{
-				if (ContinueDialog(aldeano_text, aldeano_maxtext, aldeano_base))
+				if (ContinueDialog(aldeano_text, aldeano_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -573,8 +627,7 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == 1)
 				{
-					granjero_base = -1;
-					if (ContinueDialog(granjero_text, 2, granjero_base))
+					if (ContinueDialog(granjero_text, 2))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -587,12 +640,13 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 0;
 					}
 				}
 				else if (app->frontground->adventure_phase == 2)
 				{
-					granjero_base = 1;
-					if (ContinueDialog(granjero_text, 4, granjero_base))
+					granjero_text = 0;
+					if (ContinueDialog(granjero_text, 2))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -605,12 +659,12 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 0;
 					}
 				}
 				else if (app->frontground->adventure_phase == 3)
 				{
-					granjero_base = 3;
-					if (ContinueDialog(granjero_text, 6, granjero_base))
+					if (ContinueDialog(granjero_text, 4))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -623,6 +677,63 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 2;
+					}
+				}
+				else if (app->frontground->adventure_phase == 4)
+				{
+					granjero_text = 2;
+					if (ContinueDialog(granjero_text, 4))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 2;
+					}
+				}
+				else if (app->frontground->adventure_phase == 5)
+				{
+					if (ContinueDialog(granjero_text, 6))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 4;
+					}
+				}
+				else if (app->frontground->adventure_phase == 6)
+				{
+					granjero_text = 4;
+					if (ContinueDialog(granjero_text, 6))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 4;
 					}
 				}
 			}
@@ -630,8 +741,7 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == -1)
 				{
-					enemy_base = -1;
-					if (ContinueDialog(enemy_text, 2, enemy_base))
+					if (ContinueDialog(enemy_text, 2))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -1100,7 +1210,7 @@ void Dialog::PlayLetterSound()
 	}
 }
 
-bool Dialog::ContinueDialog(int& actual_text, int max_text, int base_text)
+bool Dialog::ContinueDialog(int& actual_text, int max_text)
 {
 	actual_text++;
 	if (actual_text < max_text)
@@ -1109,7 +1219,6 @@ bool Dialog::ContinueDialog(int& actual_text, int max_text, int base_text)
 	}
 	else 
 	{
-		//actual_text = base_text;
 		return false;
 	}
 }
