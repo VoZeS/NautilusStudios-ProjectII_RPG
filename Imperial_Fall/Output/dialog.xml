@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <dialog>
 	<renato>
-		<actual_text value="-1" />
+		<actual_text value="3" />
 		<text1 linea1="Buenas, mis queridos amigos." />
 		<text2 linea1="Antes de empezar la aventura, debo" linea2="comprobar vuestras habilidades en combate." />
 		<text3 linea1="Id a derrotar al lider templario" linea2="en el campo de batalla." />
