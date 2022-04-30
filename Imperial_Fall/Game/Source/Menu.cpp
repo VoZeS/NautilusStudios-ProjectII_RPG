@@ -1081,7 +1081,7 @@ bool Menu::Update(float dt)
 						saving = false;
 						intro = false;
 						paused = false;
-						app->frontground->adventure_phase = 0;
+						app->frontground->adventure_phase = -1;
 						subplaymenu = false;
 						app->inventory->BlockAll();
 						app->inventory->ResetItems();
@@ -1118,7 +1118,7 @@ bool Menu::Update(float dt)
 					saving = false;
 					intro = false;
 					paused = false;
-					app->frontground->adventure_phase = 0;
+					app->frontground->adventure_phase = -1;
 					subplaymenu = false;
 					app->inventory->BlockAll();
 					app->inventory->ResetItems();
@@ -1436,7 +1436,7 @@ bool Menu::Update(float dt)
 		app->inventory->UnlockAll();
 		app->inventory->EquipAllMaxGear();
 	}
-
+	
 	return true;
 }
 

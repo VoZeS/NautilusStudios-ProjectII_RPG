@@ -56,7 +56,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 		entity_type = 4;
 
-		if (app->frontground->adventure_phase == 0)
+		if (app->frontground->adventure_phase == -1 || app->frontground->adventure_phase == 0)
 		{
 			max_health = 100;
 			actual_health = max_health;
@@ -135,7 +135,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 		entity_type = 5;
 
-		if (app->frontground->adventure_phase == 0)
+		if (app->frontground->adventure_phase == -1 || app->frontground->adventure_phase == 0)
 		{
 			max_health = 90;
 			actual_health = max_health;
@@ -214,7 +214,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 		entity_type = 6;
 
-		if (app->frontground->adventure_phase == 0)
+		if (app->frontground->adventure_phase == -1 || app->frontground->adventure_phase == 0)
 		{
 			max_health = 50;
 			actual_health = max_health;
@@ -293,7 +293,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		alive = 1;
 		entity_type = 7;
 
-		if (app->frontground->adventure_phase == 0)
+		if (app->frontground->adventure_phase == -1 || app->frontground->adventure_phase == 0)
 		{
 			max_health = 120;
 			actual_health = max_health;

@@ -89,12 +89,12 @@ private:
 	pugi::xml_node renato;
 	pugi::xml_node text1;
 
-	std::string linea1String_Renato[5];
-	std::string linea2String_Renato[5];
-	const char* linea1Char_Renato[5];
-	const char* linea2Char_Renato[5];
+	std::string linea1String_Renato[8];
+	std::string linea2String_Renato[8];
+	const char* linea1Char_Renato[8];
+	const char* linea2Char_Renato[8];
 	int renato_text = -1;
-	int renato_maxtext = 5;
+	int renato_maxtext = 8;
 	int renato_base = -1;
 
 	std::string linea1String_Herrero;
@@ -126,7 +126,6 @@ private:
 	int aldeano_text = -1;
 	int aldeano_maxtext = 1;
 	int aldeano_base = -1;
-
 
 	std::string linea1String_Granjero[6];
 	std::string linea2String_Granjero[6];

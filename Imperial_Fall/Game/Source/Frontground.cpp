@@ -79,9 +79,10 @@ bool Frontground::PreUpdate()
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	if (check_phase_change)
 	{
-		adventure_phase++;
+		app->frontground->adventure_phase = app->frontground->CheckAdventureState();
+		check_phase_change = false;
 	}
 	
 	if (go_black)
@@ -450,6 +451,30 @@ void Frontground::SetController()
 {
 	app->menu->SetController();
 	app->combat_menu->SetController();
+}
+
+int Frontground::CheckAdventureState()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node atr;
+
+	int res = -1;
+
+	atr = saveGame.child("game_state").child("entities").child("enemies");
+	if (!atr.child("enemy0").attribute("state").as_bool() && !atr.child("enemy1").attribute("state").as_bool())
+	{
+		res++;
+	}
+
+	if (res > adventure_phase)
+	{
+		app->dialog->UpdateShop();
+		move_to = MOVE_TO::FROM_COMBAT;
+		FadeToBlack();
+	}
+
+	return res;
 }
 
 void Frontground::SaveStartUp()

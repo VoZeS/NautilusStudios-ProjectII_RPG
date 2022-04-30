@@ -67,7 +67,16 @@ bool Dialog::Start()
 	linea1String_Renato[4] = dialog.child("renato").child("text5").attribute("linea1").as_string();
 	linea2String_Renato[4] = dialog.child("renato").child("text5").attribute("linea2").as_string();
 
-	for (int i = 0; i < 5; i++)
+	linea1String_Renato[5] = dialog.child("renato").child("text6").attribute("linea1").as_string();
+	linea2String_Renato[5] = dialog.child("renato").child("text6").attribute("linea2").as_string();
+
+	linea1String_Renato[6] = dialog.child("renato").child("text7").attribute("linea1").as_string();
+	linea2String_Renato[6] = dialog.child("renato").child("text7").attribute("linea2").as_string();
+
+	linea1String_Renato[7] = dialog.child("renato").child("text8").attribute("linea1").as_string();
+	linea2String_Renato[7] = dialog.child("renato").child("text8").attribute("linea2").as_string();
+
+	for (int i = 0; i < 8; i++)
 	{
 		linea1Char_Renato[i] = linea1String_Renato[i].c_str();
 		linea2Char_Renato[i] = linea2String_Renato[i].c_str();
@@ -246,13 +255,16 @@ bool Dialog::Start()
 		shop3[i].selled = saveGame.child("objects").child("shops").child("shop3").attribute(c).as_bool();
 	}
 
-	if (app->frontground->adventure_phase == 0)
+	if (app->frontground->adventure_phase == -1)
 	{
 		renato_text = -1;
 	}
-	else if (app->frontground->adventure_phase == 1)
+	else if (app->frontground->adventure_phase == 0)
 	{
 		renato_text = 3;
+	}
+	else if (app->frontground->adventure_phase == 1)
+	{
 		granjero_text = -1;
 	}
 	else if (app->frontground->adventure_phase == 2)
@@ -372,7 +384,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(1))
 			{
-				if (app->frontground->adventure_phase == 0)
+				if (app->frontground->adventure_phase == -1)
 				{
 					renato_base = -1;
 					if (ContinueDialog(renato_text, 4, renato_base))
@@ -390,10 +402,10 @@ bool Dialog::Update(float dt)
 						actual_dialog = DIALOGS::NO_ONE;
 					}
 				}
-				else if (app->frontground->adventure_phase == 1)
+				else if (app->frontground->adventure_phase == 0)
 				{
-					renato_base = 4;
-					if (ContinueDialog(renato_text, 5, renato_base))
+					renato_base = 3;
+					if (ContinueDialog(renato_text, 8, renato_base))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
