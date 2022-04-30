@@ -86,6 +86,15 @@ public:
 	bool inEnemy = false;
 	bool showEnemy = false;
 
+	void ResetDialogs()
+	{
+		renato_text = -1;
+		granjero_text = -1;
+	}
+
+	void SaveRenatoDialog(int n = -2);
+	void SaveFarmerDialog(int n = -2);
+
 private:
 	
 	pugi::xml_document dialogFile;
@@ -93,12 +102,12 @@ private:
 	pugi::xml_node renato;
 	pugi::xml_node text1;
 
-	std::string linea1String_Renato[8];
-	std::string linea2String_Renato[8];
-	const char* linea1Char_Renato[8];
-	const char* linea2Char_Renato[8];
+	std::string linea1String_Renato[17];
+	std::string linea2String_Renato[17];
+	const char* linea1Char_Renato[17];
+	const char* linea2Char_Renato[17];
 	int renato_text = -1;
-	int renato_maxtext = 8;
+	int renato_maxtext = 17;
 	int renato_base = -1;
 
 	std::string linea1String_Herrero;

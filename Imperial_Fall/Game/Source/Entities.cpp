@@ -553,11 +553,12 @@ void Entities::KillEnemy()
 		app->menu->kill_enemy = false;
 		app->frontground->check_phase_change = true;
 
-		if (combat_entity->p_in_array == 0)
+		// enemy dialogs
+		/*if (combat_entity->p_in_array == 0)
 		{
 			app->dialog->showEnemy = true;
 			app->entities->freeze = true;
-		}
+		}*/
 	}
 }
 

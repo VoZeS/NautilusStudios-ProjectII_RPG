@@ -1,36 +1,48 @@
+<?xml version="1.0"?>
 <dialog>
 	<renato>
-		<text1 linea1="Buenas, mis queridos amigos."/>
-		<text2 linea1="Antes de empezar la aventura, debo" linea2="comprobar vuestras habilidades en combate."/>
-		<text3 linea1="Id a derrotar al lider templario" linea2="en el campo de batalla."/>	
-		<text4 linea1="Cuando lo derroteis, volved y os contare el plan."/>
-		<text5 linea1="envia a segunda mision." linea2="envia a segunda mision."/>
-		<text6 linea1="envia a segunda mision." linea2="envia a segunda mision."/>	
-		<text7 linea1="envia a segunda mision." linea2="envia a segunda mision."/>	
-		<text8 linea1="envia a segunda mision." linea2="envia a segunda mision."/>		
+		<actual_text value="6" />
+		<text1 linea1="Buenas, mis queridos amigos." />
+		<text2 linea1="Antes de empezar la aventura, debo" linea2="comprobar vuestras habilidades en combate." />
+		<text3 linea1="Id a derrotar al lider templario" linea2="en el campo de batalla." />
+		<text4 linea1="Cuando lo derroteis, volved y os contare el plan." />
+		<text5 linea1="Entrega de recompensas." linea2="envia a segunda mision." />
+		<text6 linea1="envia a segunda mision." linea2="envia a segunda mision." />
+		<text7 linea1="envia a segunda mision." linea2="envia a segunda mision." />
+		<text8 linea1="envia a segunda mision." linea2="envia a segunda mision." />
+		<text9 linea1="Entrega de recompensas." linea2="envia a tercera mision." />
+		<text10 linea1="envia a tercera mision." linea2="envia a tercera mision." />
+		<text11 linea1="envia a tercera mision." linea2="envia a tercera mision." />
+		<text12 linea1="envia a tercera mision." linea2="envia a tercera mision." />
+		<text13 linea1="Entrega de recompensas." linea2="envia a cuarta mision." />
+		<text14 linea1="envia a cuarta mision." linea2="envia a cuarta mision." />
+		<text15 linea1="envia a cuarta mision." linea2="envia a cuarta mision." />
+		<text16 linea1="envia a cuarta mision." linea2="envia a cuarta mision." />
+		<text17 linea1="A que esperais? Id a por Thesion." />
 	</renato>
 	<herrero>
-		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado"/>
+		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado" />
 	</herrero>
 	<sabio>
-		<text1 linea1="Hola! Ahora mismo estamos sin existencias." linea2="Volved mas adelante."/>
+		<text1 linea1="Hola! Ahora mismo estamos sin existencias." linea2="Volved mas adelante." />
 	</sabio>
 	<medico>
-		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!"/>
+		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!" />
 	</medico>
 	<aldeano>
-		<text1 linea1="No tengo nada que decir. No molestes."/>
+		<text1 linea1="No tengo nada que decir. No molestes." />
 	</aldeano>
 	<granjero>
-		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector."/>
-		<text2 linea1="Dicen que era un dragon!! Por lo visto murio hace ya mucho."/>
-		<text3 linea1="Dicen que hay personas con la capacidad de no perder" linea2="turno al recargar."/>
-		<text4 linea1="En vez de eso, aprovechan el momento para usar poderosos" linea2="ataques."/>
-		<text5 linea1="La leyenda cuenta que el aliento igneo de Lloyd producia" linea2="tanto calor que nadie podia soportarlo."/>
-		<text6 linea1="Esa majestuosa llamarada obtuvo el nombre de..." linea2="Flame of calamity."/>
+		<actual_text value="-1" />
+		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector." />
+		<text2 linea1="Dicen que era un dragon!! Por lo visto murio hace ya mucho." />
+		<text3 linea1="Dicen que hay personas con la capacidad de no perder" linea2="turno al recargar." />
+		<text4 linea1="En vez de eso, aprovechan el momento para usar poderosos" linea2="ataques." />
+		<text5 linea1="La leyenda cuenta que el aliento igneo de Lloyd producia" linea2="tanto calor que nadie podia soportarlo." />
+		<text6 linea1="Esa majestuosa llamarada obtuvo el nombre de..." linea2="Flame of calamity." />
 	</granjero>
 	<enemy>
 		<text1 linea1="Como es posible?" />
-		<text2 linea1="Esto no puede haber ocurrido..." linea2="Unos simples flipados...no..."/>
+		<text2 linea1="Esto no puede haber ocurrido..." linea2="Unos simples flipados...no..." />
 	</enemy>
 </dialog>

@@ -1089,6 +1089,7 @@ bool Menu::Update(float dt)
 						app->inventory->ResetSkills();
 						app->physics->ResetMiscelanea();
 						app->dialog->ResetShop();
+						app->dialog->ResetDialogs();
 					}
 					else if (!app->frontground->first_time)
 					{
@@ -1126,6 +1127,8 @@ bool Menu::Update(float dt)
 					app->inventory->ResetSkills();
 					app->physics->ResetMiscelanea();
 					app->dialog->ResetShop();
+					app->dialog->ResetDialogs();
+					app->dialog->SaveRenatoDialog();
 					sub_newgame = false;
 					break;
 				case 1:

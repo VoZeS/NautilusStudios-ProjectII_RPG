@@ -52,33 +52,17 @@ bool Dialog::Start()
 	letterA_fx = app->audio->LoadFx("Assets/audio/fx/letter_a.wav");
 	letterG_fx = app->audio->LoadFx("Assets/audio/fx/letter_g.wav");
 
-	//Text 1
-	linea1String_Renato[0] = dialog.child("renato").child("text1").attribute("linea1").as_string();
-	linea2String_Renato[0] = dialog.child("renato").child("text1").attribute("linea2").as_string();
-
-	linea1String_Renato[1] = dialog.child("renato").child("text2").attribute("linea1").as_string();
-	linea2String_Renato[1] = dialog.child("renato").child("text2").attribute("linea2").as_string();
-
-	linea1String_Renato[2] = dialog.child("renato").child("text3").attribute("linea1").as_string();
-	linea2String_Renato[2] = dialog.child("renato").child("text3").attribute("linea2").as_string();
-
-	linea1String_Renato[3] = dialog.child("renato").child("text4").attribute("linea1").as_string();
-	linea2String_Renato[3] = dialog.child("renato").child("text4").attribute("linea2").as_string();
-
-	linea1String_Renato[4] = dialog.child("renato").child("text5").attribute("linea1").as_string();
-	linea2String_Renato[4] = dialog.child("renato").child("text5").attribute("linea2").as_string();
-
-	linea1String_Renato[5] = dialog.child("renato").child("text6").attribute("linea1").as_string();
-	linea2String_Renato[5] = dialog.child("renato").child("text6").attribute("linea2").as_string();
-
-	linea1String_Renato[6] = dialog.child("renato").child("text7").attribute("linea1").as_string();
-	linea2String_Renato[6] = dialog.child("renato").child("text7").attribute("linea2").as_string();
-
-	linea1String_Renato[7] = dialog.child("renato").child("text8").attribute("linea1").as_string();
-	linea2String_Renato[7] = dialog.child("renato").child("text8").attribute("linea2").as_string();
-
-	for (int i = 0; i < 8; i++)
+	// Renato
+	for (size_t i = 0; i < 17; i++)
 	{
+		std::string p = "text";
+		std::string s = std::to_string(i + 1);
+		std::string t = p + s;
+		const char* c = t.c_str();
+
+		linea1String_Renato[i] = dialog.child("renato").child(c).attribute("linea1").as_string();
+		linea2String_Renato[i] = dialog.child("renato").child(c).attribute("linea2").as_string();
+
 		linea1Char_Renato[i] = linea1String_Renato[i].c_str();
 		linea2Char_Renato[i] = linea2String_Renato[i].c_str();
 	}
@@ -263,26 +247,8 @@ bool Dialog::Start()
 		shop3[i].selled = saveGame.child("objects").child("shops").child("shop3").attribute(c).as_bool();
 	}
 
-	if (app->frontground->adventure_phase == -1)
-	{
-		renato_text = -1;
-	}
-	else if (app->frontground->adventure_phase == 0)
-	{
-		renato_text = 3;
-	}
-	else if (app->frontground->adventure_phase == 1)
-	{
-		granjero_text = -1;
-	}
-	else if (app->frontground->adventure_phase == 2)
-	{
-		granjero_text = 1;
-	}
-	else if (app->frontground->adventure_phase == 3)
-	{
-		granjero_text = 3;
-	}
+	renato_text = dialog.child("renato").child("actual_text").attribute("value").as_int();
+	granjero_text = dialog.child("granjero").child("actual_text").attribute("value").as_int();
 
 	return true;
 }
@@ -408,7 +374,7 @@ bool Dialog::Update(float dt)
 				SetPressE_Hide(true);
 				app->physics->book_type = -1;
 			}
-			else if (app->physics->GetInNPC(1))
+			else if (app->physics->GetInNPC(1)) // Renato
 			{
 				if (app->frontground->adventure_phase == -1)
 				{
@@ -426,11 +392,22 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 2;
 					}
 				}
-				else if (app->frontground->adventure_phase == 0)
+				else if (app->frontground->adventure_phase == 0 || app->frontground->adventure_phase == 1)
 				{
 					renato_base = 3;
+					if (renato_text == 3) /// reward for mision 1
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 3);
+						}
+						app->inventory->AddCoins(10);
+						app->inventory->UnlockObject("403"); // 3 hp potions
+					}
+					///////////////////////////////////////////
 					if (ContinueDialog(renato_text, 8, renato_base))
 					{
 						letlengh = 0;
@@ -444,6 +421,80 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 6;
+					}
+				}
+				else if (app->frontground->adventure_phase == 1)
+				{
+					renato_base = 7;
+					if (renato_text == 7) /// reward for mision 2
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 5);
+						}
+						app->inventory->AddCoins(25);
+					} ///////////////////////////////////////////
+					if (ContinueDialog(renato_text, 12, renato_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 10;
+					}
+				}
+				else if (app->frontground->adventure_phase == 2)
+				{
+					renato_base = 11;
+					if (renato_text == 11) /// reward for mision 3
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 8);
+						}
+						app->inventory->AddCoins(50);
+					} ///////////////////////////////////////////
+					if (ContinueDialog(renato_text, 16, renato_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 14;
+					}
+				}
+				else if (app->frontground->adventure_phase == 3)
+				{
+					renato_base = 15;
+					if (ContinueDialog(renato_text, 17, renato_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 15;
 					}
 				}
 			}
@@ -602,6 +653,9 @@ bool Dialog::Update(float dt)
 				inDialog = false;
 				actual_dialog = DIALOGS::NO_ONE;
 			}
+
+			// save actual dialog
+			SaveRenatoDialog();
 		}
 	}
 	else if (in_shop != 0 && item_saved == NULL)
@@ -1002,6 +1056,38 @@ bool Dialog::LoadDialog()
 	return ret;
 }
 
+void Dialog::SaveRenatoDialog(int n)
+{
+	dialogFile.load_file(DIALOG_FILENAME);
+
+	if (n == -2)
+	{
+		dialogFile.child("dialog").child("renato").child("actual_text").attribute("value").set_value(renato_text);
+	}
+	else
+	{
+		dialogFile.child("dialog").child("renato").child("actual_text").attribute("value").set_value(n);
+	}
+	
+	dialogFile.save_file(DIALOG_FILENAME);
+}
+
+void Dialog::SaveFarmerDialog(int n)
+{
+	dialogFile.load_file(DIALOG_FILENAME);
+
+	if (n == -2)
+	{
+		dialogFile.child("dialog").child("granjero").child("actual_text").attribute("value").set_value(granjero_text);
+	}
+	else
+	{
+		dialogFile.child("dialog").child("granjero").child("actual_text").attribute("value").set_value(n);
+	}
+
+	dialogFile.save_file(DIALOG_FILENAME);
+}
+
 void Dialog::PlayLetterSound()
 {
 	int r = rand() % 3;
@@ -1023,7 +1109,7 @@ bool Dialog::ContinueDialog(int& actual_text, int max_text, int base_text)
 	}
 	else 
 	{
-		actual_text = base_text;
+		//actual_text = base_text;
 		return false;
 	}
 }
