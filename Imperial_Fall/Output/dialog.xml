@@ -29,10 +29,8 @@
 		<text5 linea1="La leyenda cuenta que el aliento igneo de Lloyd producia" linea2="tanto calor que nadie podia soportarlo."/>
 		<text6 linea1="Esa majestuosa llamarada obtuvo el nombre de..." linea2="Flame of calamity."/>
 	</granjero>
-	<templario>
-		<text1 linea1="Y vosotros quienes sois?" linea2="Largaos de aqui!"/>
-	</templario>
-	<seta>
-		<text1 linea1="Camino bloqueado." linea2="No puedes pasar"/>
-	</seta>
+	<enemy>
+		<text1 linea1="Como es posible?" />
+		<text2 linea1="Esto no puede haber ocurrido..." linea2="Unos simples flipados...no..."/>
+	</enemy>
 </dialog>

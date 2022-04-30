@@ -82,6 +82,10 @@ public:
 	void ResetShop();
 	void SaveShop();
 
+	// enemies dialog
+	bool inEnemy = false;
+	bool showEnemy = false;
+
 private:
 	
 	pugi::xml_document dialogFile;
@@ -135,20 +139,15 @@ private:
 	int granjero_maxtext = 6;
 	int granjero_base = -1;
 
-	/*
-	std::string linea1String_Templario;
-	std::string linea2String_Templario;
-	const char* linea1Char_Templario;
-	const char* linea2Char_Templario;
-	int templario_text = 0;
-	int templario_maxtext = 1;
+	// enemies
+	std::string linea1String_Enemy[6];
+	std::string linea2String_Enemy[6];
+	const char* linea1Char_Enemy[6];
+	const char* linea2Char_Enemy[6];
+	int enemy_text = -1;
+	int enemy_maxtext = 6;
+	int enemy_base = -1;
 
-	
-	std::string linea1String_Seta;
-	std::string linea2String_Seta;
-	const char* linea1Char_Seta;
-	const char* linea2Char_Seta;
-	*/
 	bool LoadDialog();
 	uint letter_fx; // normal
 	uint letterA_fx; // agudo
@@ -183,7 +182,6 @@ private:
 	uint hover_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
-
 };
 
 #endif

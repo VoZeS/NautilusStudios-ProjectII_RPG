@@ -10,6 +10,7 @@
 #include "Physics.h"
 #include "Frontground.h"
 #include "Dialog.h"
+#include "Entities.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -134,22 +135,29 @@ bool Dialog::Start()
 		linea2Char_Granjero[i] = linea2String_Granjero[i].c_str();
 	}
 
+	linea1String_Enemy[0] = dialog.child("enemy").child("text1").attribute("linea1").as_string();
+	linea2String_Enemy[0] = dialog.child("enemy").child("text1").attribute("linea2").as_string();
 
-	/*
-	linea1String_Templario = dialog.child("templario").child("text1").attribute("linea1").as_string();
-	linea2String_Templario = dialog.child("templario").child("text1").attribute("linea2").as_string();
+	linea1String_Enemy[1] = dialog.child("enemy").child("text2").attribute("linea1").as_string();
+	linea2String_Enemy[1] = dialog.child("enemy").child("text2").attribute("linea2").as_string();
+
+	linea1String_Enemy[2] = dialog.child("enemy").child("text3").attribute("linea1").as_string();
+	linea2String_Enemy[2] = dialog.child("enemy").child("text3").attribute("linea2").as_string();
+
+	linea1String_Enemy[3] = dialog.child("enemy").child("text4").attribute("linea1").as_string();
+	linea2String_Enemy[3] = dialog.child("enemy").child("text4").attribute("linea2").as_string();
+
+	linea1String_Enemy[4] = dialog.child("enemy").child("text5").attribute("linea1").as_string();
+	linea2String_Enemy[4] = dialog.child("enemy").child("text5").attribute("linea2").as_string();
+
+	linea1String_Enemy[5] = dialog.child("enemy").child("text6").attribute("linea1").as_string();
+	linea2String_Enemy[5] = dialog.child("enemy").child("text6").attribute("linea2").as_string();
 	
-	linea1Char_Templario = linea1String_Templario.c_str();
-	linea2Char_Templario = linea2String_Templario.c_str();
-
-
-	
-	linea1String_Seta = dialog.child("seta").child("text1").attribute("linea1").as_string();
-	linea2String_Seta = dialog.child("seta").child("text1").attribute("linea2").as_string();
-
-	linea1Char_Seta = linea1String_Seta.c_str();
-	linea2Char_Seta = linea2String_Seta.c_str();
-	*/
+	for (int i = 0; i < 6; i++)
+	{
+		linea1Char_Enemy[i] = linea1String_Enemy[i].c_str();
+		linea2Char_Enemy[i] = linea2String_Enemy[i].c_str();
+	}
 
 	in_shop = 0;
 	item_saved = NULL;
@@ -367,7 +375,25 @@ bool Dialog::Update(float dt)
 
 	if (in_shop == 0)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
+		if (showEnemy)
+		{
+			if (app->frontground->adventure_phase == -1)
+			{
+				enemy_base = -1;
+				if (ContinueDialog(enemy_text, 2, enemy_base))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::ENEMIGO;
+					inEnemy = true;
+				}
+			}
+
+			showEnemy = false;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
 		{
 			if (app->physics->inCoins)
 			{
@@ -549,6 +575,28 @@ bool Dialog::Update(float dt)
 					}
 				}
 			}
+			else if (inEnemy)
+			{
+				if (app->frontground->adventure_phase == -1)
+				{
+					enemy_base = -1;
+					if (ContinueDialog(enemy_text, 2, enemy_base))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::ENEMIGO;
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						inEnemy = false;
+						app->entities->freeze = false;
+					}
+				}
+			}
 			else
 			{
 				inDialog = false;
@@ -619,7 +667,7 @@ bool Dialog::Update(float dt)
 
 	if (app->GetFPS() == 16) // 60 fps
 	{
-		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
+		if (letter_cd >= 60 * dt * speedlet && inDialog && letlengh <= limitLenght)
 		{
 			letlengh++;
 			PlayLetterSound();
@@ -628,7 +676,7 @@ bool Dialog::Update(float dt)
 	}
 	else // 30 fps
 	{
-		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
+		if (letter_cd >= 120 * dt * speedlet && inDialog && letlengh <= limitLenght)
 		{
 			letlengh++;
 			PlayLetterSound();
@@ -706,15 +754,15 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Sabio, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Sabio, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
-		/*else if (actual_dialog == DIALOGS::ENEMIGO) // ENEMIES TALKING
+		else if (actual_dialog == DIALOGS::ENEMIGO) // ENEMIES TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
 			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ENEMY:");
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh2, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Enemy[enemy_text], 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Enemy[enemy_text], 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 
-		}*/
+		}
 		else if (actual_dialog == DIALOGS::ALDEANO) // ALDEANO TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
