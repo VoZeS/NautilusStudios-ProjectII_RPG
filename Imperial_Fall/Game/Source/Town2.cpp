@@ -46,7 +46,8 @@ bool Town2::Start()
 		app->map->Load("town_2.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player &
 		app->menu->Enable();
@@ -104,6 +105,10 @@ bool Town2::Start()
 // Called each loop iteration
 bool Town2::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+	}
 
 	return true;
 }

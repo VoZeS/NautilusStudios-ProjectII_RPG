@@ -46,7 +46,8 @@ bool Battlefield::Start()
 		app->map->Load("battlefield.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -88,6 +89,10 @@ bool Battlefield::Start()
 // Called each loop iteration
 bool Battlefield::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
+	}
 
 	return true;
 }

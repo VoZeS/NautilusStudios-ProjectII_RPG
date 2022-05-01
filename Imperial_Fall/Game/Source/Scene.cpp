@@ -46,7 +46,8 @@ bool Scene::Start()
 		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 
-		app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+		app->audio->StopMusic(1.0f);
 
 		if (!app->menu->Enabled())
 		{
@@ -60,6 +61,11 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+	}
+
 	return true;
 }
 

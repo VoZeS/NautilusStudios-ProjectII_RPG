@@ -157,13 +157,15 @@ bool Frontground::PostUpdate()
 
 	r.x = c_x;
 	r.y = c_y;
-	
-	if (a == 254)
+	if (a > 250)
 	{
-		a++;
+		app->render->DrawRectangle(r, 0, 0, 0, 255);
 	}
+	else
+	{
 
-	app->render->DrawRectangle(r, 0, 0, 0, a);
+		app->render->DrawRectangle(r, 0, 0, 0, a);
+	}
 
 	if (app->end_combat_scene->in_cutscene && app->end_combat_scene->Enabled() && app->end_combat_scene->cutcene_cd > BLACK_TIME)
 	{
@@ -505,7 +507,11 @@ int Frontground::CheckAdventureState()
 
 	if (res > adventure_phase)
 	{
-		app->dialog->UpdateShop();
+		if (res == 1 || res == 3 || res == 5)
+		{
+			app->dialog->UpdateShop();
+		}
+		
 		move_to = MOVE_TO::FROM_COMBAT;
 		FadeToBlack();
 	}

@@ -46,7 +46,8 @@ bool Forest::Start()
 		app->map->Load("forest.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/forest.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -81,6 +82,10 @@ bool Forest::Start()
 // Called each loop iteration
 bool Forest::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
+	}
 
 	return true;
 }

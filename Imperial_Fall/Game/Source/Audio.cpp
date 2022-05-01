@@ -203,3 +203,8 @@ void Audio::StopMusic(float fade_time)
 		Mix_FreeMusic(music);
 	}
 }
+
+bool Audio::MusicPlaying()
+{
+	return Mix_PlayingMusic();
+}

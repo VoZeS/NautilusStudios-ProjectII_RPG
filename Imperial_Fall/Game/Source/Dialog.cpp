@@ -158,7 +158,7 @@ bool Dialog::Start()
 		shop_interact_buttons[i].rect.h = 128;
 	}
 
-	if (app->frontground->adventure_phase == 0)
+	if (app->frontground->adventure_phase == -1 || app->frontground->adventure_phase == 0)
 	{
 		// herrero
 		shop1[0].item = "031";
@@ -190,7 +190,7 @@ bool Dialog::Start()
 		shop3[3].item = "531";
 		shop3[3].cost = 10;
 	}
-	else if (app->frontground->adventure_phase == 1)
+	else if (app->frontground->adventure_phase == 1 || app->frontground->adventure_phase == 2)
 	{
 		// herrero
 		shop1[0].item = "032";
@@ -200,6 +200,70 @@ bool Dialog::Start()
 		shop1[2].item = "232";
 		shop1[2].cost = 15;
 		shop1[3].item = "332";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "403";
+		shop2[0].cost = 5;
+		shop2[1].item = "413";
+		shop2[1].cost = 8;
+		shop2[2].item = "443";
+		shop2[2].cost = 5;
+		shop2[3].item = "453";
+		shop2[3].cost = 8;
+
+		// sabio
+		shop3[0].item = "501";
+		shop3[0].cost = 10;
+		shop3[1].item = "511";
+		shop3[1].cost = 10;
+		shop3[2].item = "521";
+		shop3[2].cost = 10;
+		shop3[3].item = "531";
+		shop3[3].cost = 10;
+	}
+	else if (app->frontground->adventure_phase == 3 || app->frontground->adventure_phase == 4)
+	{
+		// herrero
+		shop1[0].item = "033";
+		shop1[0].cost = 15;
+		shop1[1].item = "133";
+		shop1[1].cost = 15;
+		shop1[2].item = "233";
+		shop1[2].cost = 15;
+		shop1[3].item = "333";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "403";
+		shop2[0].cost = 5;
+		shop2[1].item = "413";
+		shop2[1].cost = 8;
+		shop2[2].item = "443";
+		shop2[2].cost = 5;
+		shop2[3].item = "453";
+		shop2[3].cost = 8;
+
+		// sabio
+		shop3[0].item = "501";
+		shop3[0].cost = 10;
+		shop3[1].item = "511";
+		shop3[1].cost = 10;
+		shop3[2].item = "521";
+		shop3[2].cost = 10;
+		shop3[3].item = "531";
+		shop3[3].cost = 10;
+	}
+	else if (app->frontground->adventure_phase == 5 || app->frontground->adventure_phase == 6)
+	{
+		// herrero
+		shop1[0].item = "034";
+		shop1[0].cost = 15;
+		shop1[1].item = "134";
+		shop1[1].cost = 15;
+		shop1[2].item = "234";
+		shop1[2].cost = 15;
+		shop1[3].item = "334";
 		shop1[3].cost = 15;
 
 		// medico

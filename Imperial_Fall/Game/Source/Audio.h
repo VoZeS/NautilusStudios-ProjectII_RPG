@@ -38,6 +38,8 @@ public:
 
 	void StopMusic(float fade_time);
 
+	bool MusicPlaying();
+
 private:
 
 	_Mix_Music* music;
