@@ -135,6 +135,8 @@ bool Menu::Start()
 		open_book_sound = app->audio->LoadFx("Assets/audio/fx/open_book.wav");
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
+		win_sound = app->audio->LoadFx("Assets/audio/fx/win.wav");
+		lose_sound = app->audio->LoadFx("Assets/audio/fx/lose.wav");
 
 		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
@@ -354,6 +356,7 @@ bool Menu::PreUpdate()
 		{
 			subplaymenu = false;
 			settings = false;
+			app->audio->StopMusic(0.5f);
 		}
 
 		if (app->scene->esc == true)
@@ -1020,6 +1023,7 @@ bool Menu::Update(float dt)
 					if (!subplaymenu)
 					{
 						settings = true;
+						app->audio->PlayMusic("Assets/audio/music/options.ogg");
 						if (app->frontground->controller)
 						{
 							settings_buttons[0].state = 1;
@@ -2204,8 +2208,11 @@ void Menu::SetWinLoseScape(int n)
 {
 	if (n == 0)
 	{
+		if (!win)
+		{
+			app->audio->PlayFx(win_sound);
+		}
 		win = true;
-		//lose = true;
 		if (app->frontground->controller)
 		{
 			win_button.state = 1;
@@ -2214,8 +2221,11 @@ void Menu::SetWinLoseScape(int n)
 	}
 	else if (n == 1)
 	{
+		if (!lose)
+		{
+			app->audio->PlayFx(lose_sound);
+		}
 		lose = true;
-		//win = true;
 		if (app->frontground->controller)
 		{
 			lose_buttons[0].state = 1;
