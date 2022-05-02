@@ -11,6 +11,7 @@
 #include "Pathfinding.h"
 #include "Menu.h"
 #include "Frontground.h"
+#include "Dungeon.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -336,120 +337,322 @@ void Player::HandleInput(float dt)
 
 		if (!app->menu->GetGameState())
 		{
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
+			if (app->dungeon->Enabled())
 			{
-				// move up
-				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+				if (app->dungeon->in_ice > 0)
 				{
-					body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
-					look_dir = 0;
-
-					if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+					if (body->GetLinearVelocity().x == 0 && body->GetLinearVelocity().y == 0)
 					{
-						walkAnimU.Reset();
-						currentAnimation = &walkAnimU;
+						if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
+						{
+							// move up
+							if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
+								look_dir = 0;
+
+								if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+								{
+									walkAnimU.Reset();
+									currentAnimation = &walkAnimU;
+								}
+							}
+
+							// move down
+							if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed * 2 });
+								look_dir = 1;
+
+								if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+								{
+									walkAnimD.Reset();
+									currentAnimation = &walkAnimD;
+								}
+							}
+						}
+						else
+						{
+							body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+						}
+
+						if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+						{
+							// move left
+							if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ -fixedSpeed * 2, body->GetLinearVelocity().y });
+								look_dir = 2;
+
+								if (currentAnimation != &walkAnimL)
+								{
+									walkAnimL.Reset();
+									currentAnimation = &walkAnimL;
+								}
+							}
+
+							//Move Right
+							if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ fixedSpeed * 2, body->GetLinearVelocity().y });
+								look_dir = 3;
+
+								if (currentAnimation != &walkAnimR)
+								{
+									walkAnimR.Reset();
+									currentAnimation = &walkAnimR;
+								}
+							}
+						}
+						else
+						{
+							body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+						}
 					}
 				}
-				else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+				else
 				{
-					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-
-					if (currentAnimation != &idleAnimU)
+					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 					{
-						idleAnimU.Reset();
-						currentAnimation = &idleAnimU;
+						// move up
+						if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+						{
+							body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
+							look_dir = 0;
+
+							if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+							{
+								walkAnimU.Reset();
+								currentAnimation = &walkAnimU;
+							}
+						}
+						else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+						{
+							body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+							if (currentAnimation != &idleAnimU)
+							{
+								idleAnimU.Reset();
+								currentAnimation = &idleAnimU;
+							}
+						}
+
+						// move down
+						if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+						{
+							body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
+							look_dir = 1;
+
+							if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+							{
+								walkAnimD.Reset();
+								currentAnimation = &walkAnimD;
+							}
+						}
+						else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+						{
+							body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+							if (currentAnimation != &idleAnimD)
+							{
+								idleAnimD.Reset();
+								currentAnimation = &idleAnimD;
+							}
+						}
 					}
-				}
-
-				// move down
-				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-				{
-					body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
-					look_dir = 1;
-
-					if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+					else
 					{
-						walkAnimD.Reset();
-						currentAnimation = &walkAnimD;
+						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
 					}
-				}
-				else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-				{
-					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
 
-					if (currentAnimation != &idleAnimD)
+					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
 					{
-						idleAnimD.Reset();
-						currentAnimation = &idleAnimD;
+						// move left
+						if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+						{
+							body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
+							look_dir = 2;
+
+							if (currentAnimation != &walkAnimL)
+							{
+								walkAnimL.Reset();
+								currentAnimation = &walkAnimL;
+							}
+						}
+						else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+						{
+							body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+							if (currentAnimation != &idleAnimL)
+							{
+								idleAnimL.Reset();
+								currentAnimation = &idleAnimL;
+							}
+						}
+
+						//Move Right
+						if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+						{
+							body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
+							look_dir = 3;
+
+							if (currentAnimation != &walkAnimR)
+							{
+								walkAnimR.Reset();
+								currentAnimation = &walkAnimR;
+							}
+						}
+						else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+						{
+							body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+							if (currentAnimation != &idleAnimR)
+							{
+								idleAnimR.Reset();
+								currentAnimation = &idleAnimR;
+							}
+						}
+					}
+					else
+					{
+						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+					}
+
+
+					if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
+					{
+						walk_cd -= dt;
+						if (walk_cd <= 0)
+						{
+							app->audio->PlayFx(walk_sound);
+							walk_cd = 320;
+						}
+					}
+
+					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE
+						&& app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
+					{
+						body->SetLinearVelocity({ 0, 0 });
 					}
 				}
 			}
 			else
 			{
-				body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-			}
-
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
-			{
-				// move left
-				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 				{
-					body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
-					look_dir = 2;
-
-					if (currentAnimation != &walkAnimL)
+					// move up
+					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 					{
-						walkAnimL.Reset();
-						currentAnimation = &walkAnimL;
+						body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
+						look_dir = 0;
+
+						if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+						{
+							walkAnimU.Reset();
+							currentAnimation = &walkAnimU;
+						}
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+					{
+						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+						if (currentAnimation != &idleAnimU)
+						{
+							idleAnimU.Reset();
+							currentAnimation = &idleAnimU;
+						}
+					}
+
+					// move down
+					if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+					{
+						body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
+						look_dir = 1;
+
+						if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+						{
+							walkAnimD.Reset();
+							currentAnimation = &walkAnimD;
+						}
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+					{
+						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+						if (currentAnimation != &idleAnimD)
+						{
+							idleAnimD.Reset();
+							currentAnimation = &idleAnimD;
+						}
 					}
 				}
-				else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+				else
+				{
+					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+				}
+
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+				{
+					// move left
+					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+					{
+						body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
+						look_dir = 2;
+
+						if (currentAnimation != &walkAnimL)
+						{
+							walkAnimL.Reset();
+							currentAnimation = &walkAnimL;
+						}
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+					{
+						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+						if (currentAnimation != &idleAnimL)
+						{
+							idleAnimL.Reset();
+							currentAnimation = &idleAnimL;
+						}
+					}
+
+					//Move Right
+					if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+					{
+						body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
+						look_dir = 3;
+
+						if (currentAnimation != &walkAnimR)
+						{
+							walkAnimR.Reset();
+							currentAnimation = &walkAnimR;
+						}
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+					{
+						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+						if (currentAnimation != &idleAnimR)
+						{
+							idleAnimR.Reset();
+							currentAnimation = &idleAnimR;
+						}
+					}
+				}
+				else
 				{
 					body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-
-					if (currentAnimation != &idleAnimL)
-					{
-						idleAnimL.Reset();
-						currentAnimation = &idleAnimL;
-					}
 				}
 
-				//Move Right
-				if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-				{
-					body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
-					look_dir = 3;
 
-					if (currentAnimation != &walkAnimR)
+				if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
+				{
+					walk_cd -= dt;
+					if (walk_cd <= 0)
 					{
-						walkAnimR.Reset();
-						currentAnimation = &walkAnimR;
+						app->audio->PlayFx(walk_sound);
+						walk_cd = 320;
 					}
-				}
-				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-				{
-					body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-
-					if (currentAnimation != &idleAnimR)
-					{
-						idleAnimR.Reset();
-						currentAnimation = &idleAnimR;
-					}
-				}
-			}
-			else
-			{
-				body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-			}
-
-
-			if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
-			{
-				walk_cd -= dt;
-				if (walk_cd <= 0)
-				{
-					app->audio->PlayFx(walk_sound);
-					walk_cd = 320;
 				}
 			}
 

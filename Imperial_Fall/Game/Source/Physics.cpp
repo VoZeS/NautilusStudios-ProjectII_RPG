@@ -162,6 +162,9 @@ bool Physics::PostUpdate()
 						c_g = 100;
 						c_b = 100;
 						break;
+					case 30:
+						return true;
+						break;
 					default:
 						c_r = 100;
 						c_g = 100;
@@ -170,7 +173,7 @@ bool Physics::PostUpdate()
 					}
 					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), c_r, c_g, c_b);
 				}
-
+					
 				prev = v;
 			}
 
@@ -208,6 +211,7 @@ b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 7) fixture.isSensor = true;
 	else if (collision == 12) fixture.isSensor = true;
 	else if (collision == 21) fixture.isSensor = true;
+	else if (collision == 30) fixture.isSensor = true;
 
 	// SOUKOBAN PUZZLE SENSORS
 	else if (collision == 201) fixture.isSensor = true;
@@ -227,7 +231,6 @@ b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
-	//else if (collision == 0) fixture.isSensor = true;
 
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
@@ -286,20 +289,11 @@ void Physics::BeginContact(b2Contact* contact)
 	if ((int)fixtureUserDataA == 1)
 	{
 
-		/*if ((int)fixtureUserDataB == 0)
+		if ((int)fixtureUserDataB == 30)
 		{
 			//dungeon sensor
-			if (app->dungeon->isinIce == true)
-			{
-				app->dungeon->isinIce = false;
-				printf_s("ice false \n");
-			}
-			else
-			{
-				app->dungeon->isinIce = true;
-				printf_s("ice true \n");
-			}
-		}*/
+			app->dungeon->in_ice++;
+		}
 
 
 		if ((int)fixtureUserDataB == 2)
@@ -427,22 +421,14 @@ void Physics::BeginContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataB == 1)
 	{
-		/*if ((int)fixtureUserDataA == 0)
+		if ((int)fixtureUserDataA == 30)
 		{
 			//dungeon sensor
-			if (app->dungeon->isinIce == true)
-			{
-				app->dungeon->isinIce = false;
-				printf_s("ice false \n");
-			}
-			else
-			{
-				app->dungeon->isinIce = true;
-				printf_s("ice true \n");
-			}
+			app->dungeon->in_ice++;
 
 
-		}*/
+		}
+
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
@@ -677,6 +663,11 @@ void Physics::EndContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataA == 1)
 	{
+		if ((int)fixtureUserDataB == 30)
+		{
+			//dungeon sensor
+			app->dungeon->in_ice--;
+		}
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
@@ -716,6 +707,11 @@ void Physics::EndContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataB == 1)
 	{
+		if ((int)fixtureUserDataA == 30)
+		{
+			//dungeon sensor
+			app->dungeon->in_ice--;
+		}
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact

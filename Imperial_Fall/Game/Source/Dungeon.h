@@ -35,7 +35,7 @@ public:
 	bool CleanUp();
 
 public:
-	bool isinIce = false;
+	int in_ice = 0;
 
 
 

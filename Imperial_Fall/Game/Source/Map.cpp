@@ -7,6 +7,7 @@
 #include "Fonts.h"
 #include "Scene.h"
 #include "Forest.h"
+#include "Dungeon.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -100,11 +101,11 @@ void Map::Draw()
 						int width = mapLayerItem->data->properties.GetProperty("Width");
 						int height = mapLayerItem->data->properties.GetProperty("Height");
 
-						/*if (mapLayerItem->data->properties.GetProperty("Collision") == 0)
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 30 && app->dungeon->Enabled())
 						{
 							// dungeon ice sensor
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 0);
-						}*/
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 30);
+						}
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
