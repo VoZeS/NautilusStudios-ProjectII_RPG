@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="30" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="30" nextobjectid="1">
  <tileset firstgid="1" name="village" tilewidth="32" tileheight="32" tilecount="1472" columns="46">
   <image source="sprites_tilesets_medieval_village.png" width="1496" height="1030"/>
  </tileset>
@@ -12,7 +12,6 @@
  <layer id="1" name="floor" width="100" height="100">
   <properties>
    <property name="Draw" type="int" value="1"/>
-   <property name="Layer" type="int" value="1"/>
   </properties>
   <data>
    <tile gid="2991"/>
@@ -10020,8 +10019,6 @@
  <layer id="3" name="valla" width="100" height="100">
   <properties>
    <property name="Draw" type="int" value="1"/>
-   <property name="Layer" type="int" value="2"/>
-   <property name="OrderInLayer" type="float" value="0"/>
   </properties>
   <data>
    <tile/>
@@ -20029,8 +20026,6 @@
  <layer id="4" name="props&amp;trees" width="100" height="100">
   <properties>
    <property name="Draw" type="int" value="1"/>
-   <property name="Layer" type="int" value="2"/>
-   <property name="OrderInLayer" type="float" value="0.5"/>
   </properties>
   <data>
    <tile/>
@@ -30038,8 +30033,6 @@
  <layer id="5" name="houses" width="100" height="100">
   <properties>
    <property name="Draw" type="int" value="1"/>
-   <property name="Layer" type="int" value="2"/>
-   <property name="OrderInLayer" type="float" value="2"/>
   </properties>
   <data>
    <tile/>
