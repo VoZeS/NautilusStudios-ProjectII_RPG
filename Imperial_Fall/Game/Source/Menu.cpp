@@ -1305,7 +1305,7 @@ bool Menu::Update(float dt)
 					break;
 				}
 
-				app->inventory->AddXP(-5 - (5 * app->frontground->adventure_phase));
+				app->inventory->AddXP(-5 - (2 * app->frontground->adventure_phase));
 				lose_buttons[chosed].state = 2;
 			}
 			if (chosed == -1)
@@ -2049,6 +2049,10 @@ bool Menu::PostUpdate()
 				//app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 		}
+
+		rect = { 0, 0, 64, 64 };
+		app->render->DrawTexture(rew_icons, 550, 450, &rect);
+		app->fonts->BlitCombatText(620, 470, app->fonts->textFont2, std::to_string(-5 - (2 * app->frontground->adventure_phase)).c_str());
 		
 		//app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
 		//app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");

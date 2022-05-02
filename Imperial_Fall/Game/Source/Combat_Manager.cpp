@@ -175,6 +175,17 @@ bool Combat_Manager::PreUpdate()
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (enemies[i]->FindBuff(b) == -1)
+			{
+				enemies[i]->AddBuff(BUFF_TYPE::GODMODE_STRONG, 99);
+			}
+		}
+	}
+
 	preupdatedone = true;
 
 	return true;
