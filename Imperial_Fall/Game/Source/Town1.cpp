@@ -43,7 +43,7 @@ bool Town1::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("town_1.tmx");
+		app->map->Load("town_1_64.tmx");
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
@@ -69,8 +69,8 @@ bool Town1::Start()
 		}
 		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN1)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950), PIXELS_TO_METERS(750), PIXELS_TO_METERS(950),
-				PIXELS_TO_METERS(700), PIXELS_TO_METERS(950), PIXELS_TO_METERS(650), PIXELS_TO_METERS(950));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1600), PIXELS_TO_METERS(1800), PIXELS_TO_METERS(1550), PIXELS_TO_METERS(1800),
+				PIXELS_TO_METERS(1500), PIXELS_TO_METERS(1800), PIXELS_TO_METERS(1450), PIXELS_TO_METERS(1800));
 		}
 
 		int w, h;
