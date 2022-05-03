@@ -114,7 +114,8 @@ bool Physics::PostUpdate()
 		{
 			if (coins_in_floor[i].alive)
 			{
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().y) - 32, &rect);
+				app->render->AddrenderObject(app->inventory->misc, { METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().y - 32.0f) }, rect, 1, 1.0f, 0.0f);
+				//app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().y) - 32, &rect);
 			}
 		}
 
@@ -130,7 +131,8 @@ bool Physics::PostUpdate()
 				case 4: rect = { 192, 0, 64, 64 }; break;
 				}
 
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().y) - 32, &rect);
+				app->render->AddrenderObject(app->inventory->misc, { METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().y - 32.0f) }, rect, 1, 1.0f, 0.0f);
+				//app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(books_in_floor[i].body->GetPosition().y) - 32, &rect);
 			}
 		}
 	}
