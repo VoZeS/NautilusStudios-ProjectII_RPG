@@ -72,7 +72,7 @@ public:
 
 	bool IsinCamera(const renderObject* renderObj);
 
-	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH = false, float scale = 1.0f, float speed = 1.0f);
+	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer = 1.0f, double angle = 0.0f, bool isFlipH = false, float scale = 1.0f, float speed = 1.0f);
 
 	void Draw();
 
