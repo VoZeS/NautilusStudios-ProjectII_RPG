@@ -77,8 +77,8 @@ bool LogoScreen::Update(float dt)
 // Update: draw background
 bool LogoScreen::PostUpdate()
 {
-
+	/*
 	app->render->DrawRectangle(backgroundLogo, 84, 133, 255, 255);
-	app->render->DrawTexture(logo, logoRect.x, logoRect.y, false, NULL);
+	app->render->DrawTexture(logo, logoRect.x, logoRect.y, false, NULL);*/
 	return true;
 }
