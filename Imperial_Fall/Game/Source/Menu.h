@@ -204,6 +204,14 @@ private:
 	bool saving = false;
 
 	bool count_xp;
+	int xp0;
+	int xp1;
+	int xp2;
+	int xp3;
+	int axp0;
+	int axp1;
+	int axp2;
+	int axp3;
 
 	// sound
 	uint open_book_sound;

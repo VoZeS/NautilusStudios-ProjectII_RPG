@@ -98,18 +98,18 @@ bool Render::Update(float dt)
 		{
 			camera.x = 0;
 		}
-		else if (camera.x < -5000)
+		else if (camera.x < -5120)
 		{
-			camera.x = -5000;
+			camera.x = -5120;
 		}
 
 		if (camera.y > 0)
 		{
 			camera.y = 0;
 		}
-		else if (camera.y < -1650)
+		else if (camera.y < -1648)
 		{
-			camera.y = -1650;
+			camera.y = -1648;
 		}
 	}
 	else if (app->frontground->current_level == 2)

@@ -301,6 +301,16 @@ bool Menu::Start()
 		}
 
 		count_xp = false;
+		xp0 = 0;
+		xp1 = 0;
+		xp2 = 0;
+		xp3 = 0;
+		pugi::xml_document saveGame;
+		saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+		axp0 = saveGame.child("objects").child("assassin").child("experience").attribute("value").as_int();
+		axp1 = saveGame.child("objects").child("healer").child("experience").attribute("value").as_int();
+		axp2 = saveGame.child("objects").child("tank").child("experience").attribute("value").as_int();
+		axp3 = saveGame.child("objects").child("wizard").child("experience").attribute("value").as_int();
 
 		theseion2 = false;
 	}
@@ -1023,7 +1033,6 @@ bool Menu::Update(float dt)
 					if (!subplaymenu)
 					{
 						settings = true;
-						app->audio->PlayMusic("Assets/audio/music/options.ogg");
 						if (app->frontground->controller)
 						{
 							settings_buttons[0].state = 1;
@@ -1468,18 +1477,38 @@ bool Menu::PostUpdate()
 		if (app->frontground->combat_xp0 > 0)
 		{
 			app->frontground->combat_xp0--;
+			xp0++;
+			while (axp0 + xp0 > 100)
+			{
+				xp0 -= 100;
+			}
 		}
 		if (app->frontground->combat_xp1 > 0)
 		{
 			app->frontground->combat_xp1--;
+			xp1++;
+			while (axp1 + xp1 > 100)
+			{
+				xp1 -= 100;
+			}
 		}
 		if (app->frontground->combat_xp2 > 0)
 		{
 			app->frontground->combat_xp2--;
+			xp2++;
+			while (axp2 + xp2 > 100)
+			{
+				xp2 -= 100;
+			}
 		}
 		if (app->frontground->combat_xp3 > 0)
 		{
 			app->frontground->combat_xp3--;
+			xp3++;
+			while (axp3 + xp3 > 100)
+			{
+				xp3 -= 100;
+			}
 		}
 		if (app->frontground->combat_gold > 0)
 		{
@@ -2006,30 +2035,25 @@ bool Menu::PostUpdate()
 		}
 
 		//app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
-		pugi::xml_document saveGame;
-		saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+		
 		
 		rect = { 0, 0, 64, 64 };
-		int xp0 = saveGame.child("objects").child("assassin").child("experience").attribute("value").as_int();
 		app->render->DrawTexture(rew_icons, 100 + (315 * 0), 450, &rect);
 		app->fonts->BlitCombatText(170 + (315 * 0), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp0).c_str());
 		app->render->DrawRectangle({ 60 + (315 * 0), 510, 200, 26 }, 200, 200, 200);
-		app->render->DrawRectangle({ 62 + (315 * 0), 512, xp0, 22 }, 50, 50, 50);
-		int xp1 = saveGame.child("objects").child("healer").child("experience").attribute("value").as_int();
+		app->render->DrawRectangle({ 62 + (315 * 0), 512, (axp0 + xp0) * 2 + 1, 22 }, 50, 50, 50);
 		app->render->DrawTexture(rew_icons, 100 + (315 * 1), 450, &rect);
 		app->fonts->BlitCombatText(170 + (315 * 1), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp1).c_str());
 		app->render->DrawRectangle({ 60 + (315 * 1), 510, 200, 26 }, 200, 200, 200);
-		app->render->DrawRectangle({ 62 + (315 * 1), 512, xp1, 22 }, 50, 50, 50);
-		int xp2 = saveGame.child("objects").child("tank").child("experience").attribute("value").as_int();
+		app->render->DrawRectangle({ 62 + (315 * 1), 512, (axp1 + xp1) * 2 + 1, 22 }, 50, 50, 50);
 		app->render->DrawTexture(rew_icons, 100 + (315 * 2), 450, &rect);
 		app->fonts->BlitCombatText(170 + (315 * 2), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp2).c_str());
 		app->render->DrawRectangle({ 60 + (315 * 2), 510, 200, 26 }, 200, 200, 200);
-		app->render->DrawRectangle({ 62 + (315 * 2), 512, xp2, 22 }, 50, 50, 50);
-		int xp3 = saveGame.child("objects").child("wizard").child("experience").attribute("value").as_int();
+		app->render->DrawRectangle({ 62 + (315 * 2), 512, (axp2 + xp2) * 2 + 1, 22 }, 50, 50, 50);
 		app->render->DrawTexture(rew_icons, 100 + (315 * 3), 450, &rect);
 		app->fonts->BlitCombatText(170 + (315 * 3), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp3).c_str());
 		app->render->DrawRectangle({ 60 + (315 * 3), 510, 200, 26 }, 200, 200, 200);
-		app->render->DrawRectangle({ 62 + (315 * 3), 512, xp3, 22 }, 50, 50, 50);
+		app->render->DrawRectangle({ 62 + (315 * 3), 512, (axp3 + xp3) * 2 + 1, 22 }, 50, 50, 50);
 		
 		rect = { 64, 0, 64, 64 };
 		for (size_t i = 0; i < 4; i++)
@@ -2050,7 +2074,7 @@ bool Menu::PostUpdate()
 		lose_buttons[0].rect.h = 100;
 
 		lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2)  + c_x+280;
-		lose_buttons[1].rect.y = (int)win_h / 2  + c_y+130;
+		lose_buttons[1].rect.y = (int)win_h / 2  + c_y + 130;
 		lose_buttons[1].rect.w = 200;
 		lose_buttons[1].rect.h = 100;
 
@@ -2088,7 +2112,7 @@ bool Menu::PostUpdate()
 
 		rect = { 0, 0, 64, 64 };
 		app->render->DrawTexture(rew_icons, 550, 450, &rect);
-		app->fonts->BlitCombatText(620, 470, app->fonts->textFont2, std::to_string(-5 - (2 * app->frontground->adventure_phase)).c_str());
+		app->fonts->BlitCombatText(620, 300, app->fonts->textFont2, std::to_string(-5 - (2 * app->frontground->adventure_phase)).c_str());
 		
 		//app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
 		//app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");

@@ -1638,7 +1638,7 @@ void Inventory::DisplayHero(int n)
 	app->fonts->BlitCombatText(300 + cx, 150 + cy, app->fonts->textFont2, print);
 	
 	app->render->DrawRectangle({ 300 + cx, 190 + cy, 200, 26 }, 200, 200, 200);
-	app->render->DrawRectangle({ 302 + cx, 192 + cy, xp, 22 }, 68, 200, 255);
+	app->render->DrawRectangle({ 302 + cx, 192 + cy, xp * 2 + 1, 22 }, 68, 200, 255);
 }
 
 void Inventory::DisplayItems()
