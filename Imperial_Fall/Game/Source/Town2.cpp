@@ -43,7 +43,7 @@ bool Town2::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("town_2.tmx");
+		app->map->Load("town_2_64.tmx");
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
@@ -60,27 +60,27 @@ bool Town2::Start()
 
 		if (app->frontground->move_to == MOVE_TO::TOWN1_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2000), PIXELS_TO_METERS(2000), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(256), PIXELS_TO_METERS(3200), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
 				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
 		}
 		else if (app->frontground->move_to == MOVE_TO::FOREST_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2800),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(4736), PIXELS_TO_METERS(5429), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2800),
 				PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(3000));
 		}
 		else if (app->frontground->move_to == MOVE_TO::BATTLEFIELD_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(200),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(4672), PIXELS_TO_METERS(640), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(200),
 				PIXELS_TO_METERS(2350), PIXELS_TO_METERS(100), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(0));
 		}
 		else if (app->frontground->move_to == MOVE_TO::DUNGEON_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1728), PIXELS_TO_METERS(4288), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850),
 				PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
 		}
 		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1472), PIXELS_TO_METERS(3328), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
 				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
 		}
 

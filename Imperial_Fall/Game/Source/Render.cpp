@@ -118,18 +118,18 @@ bool Render::Update(float dt)
 		{
 			camera.x = 0;
 		}
-		else if (camera.x < -1450)
+		else if (camera.x < -4224)
 		{
-			camera.x = -1450;
+			camera.x = -4224;
 		}
 
 		if (camera.y > 0)
 		{
 			camera.y = 0;
 		}
-		else if (camera.y < -2400)
+		else if (camera.y < -5616)
 		{
-			camera.y = -2400;
+			camera.y = -5616;
 		}
 
 	}
@@ -457,7 +457,7 @@ void Render::Draw()
 			{
 				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
 				{
-					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+					LOG("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
 				cont++;
 			}
@@ -465,7 +465,7 @@ void Render::Draw()
 			{
 				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
 				{
-					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+					LOG("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
 				cont++;
 			}

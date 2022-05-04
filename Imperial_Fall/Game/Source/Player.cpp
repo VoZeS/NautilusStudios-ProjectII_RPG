@@ -797,7 +797,6 @@ bool Player::Draw()
 		SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
 		SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
 
-
 		switch (char_control)
 		{
 		case 0:

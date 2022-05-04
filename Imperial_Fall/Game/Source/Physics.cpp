@@ -426,7 +426,7 @@ void Physics::BeginContact(b2Contact* contact)
 {
 	void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
 	void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
-
+	LOG("%d, %d", (int)fixtureUserDataA, (int)fixtureUserDataB);
 	if ((int)fixtureUserDataA == 1)
 	{
 		if ((int)fixtureUserDataB == 2)
@@ -706,7 +706,7 @@ void Physics::BeginContact(b2Contact* contact)
 
 			app->frontground->FadeToBlack();
 		}
-		else if ((int)fixtureUserDataB == 42)
+		else if ((int)fixtureUserDataA == 42)
 		{
 			// battlefield --> town_2
 			app->frontground->move_to = MOVE_TO::BATTLEFIELD_TOWN2;
