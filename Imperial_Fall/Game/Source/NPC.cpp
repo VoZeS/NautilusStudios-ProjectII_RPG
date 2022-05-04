@@ -97,23 +97,23 @@ bool NPC::Draw()
 	
 	switch (npc_type)
 	{
-	case 1: app->render->AddrenderObject(app->entities->renato_bueno, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+	case 1: app->render->AddrenderObject(app->entities->renato_bueno, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->renato_bueno, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 40.0f), &rect);
 		break;
-	case 2:app->render->AddrenderObject(app->entities->curandero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+	case 2:app->render->AddrenderObject(app->entities->curandero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->curandero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 		break;
-	case 3: app->render->AddrenderObject(app->entities->herrero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+	case 3: app->render->AddrenderObject(app->entities->herrero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->herrero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 		break;
-	case 4: app->render->AddrenderObject(app->entities->sabio, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+	case 4: app->render->AddrenderObject(app->entities->sabio, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->sabio, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 
 		break;
-	case 5:  app->render->AddrenderObject(app->entities->aldeano, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+	case 5:  app->render->AddrenderObject(app->entities->aldeano, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->aldeano, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 		break;
-	case 7:  app->render->AddrenderObject(app->entities->granjero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 2, 1.0f, 0.0f);
+	case 7:  app->render->AddrenderObject(app->entities->granjero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 		break;
 	default:

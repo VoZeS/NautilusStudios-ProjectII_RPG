@@ -201,22 +201,22 @@ bool Enemies::Draw()
 		switch (enemy_type)
 		{
 		case 1: 
-			app->render->DrawTexture(app->entities->white_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->white_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 2:
-			app->render->DrawTexture(app->entities->mushroom, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->mushroom, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 3:
-			app->render->DrawTexture(app->entities->goblin, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->goblin, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 4:
-			app->render->DrawTexture(app->entities->skeleton, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->skeleton, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 5:
-			app->render->DrawTexture(app->entities->red_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->red_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 6:
-			app->render->DrawTexture(app->entities->armored_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->armored_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		}
 	}

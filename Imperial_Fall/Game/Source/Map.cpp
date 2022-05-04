@@ -72,8 +72,6 @@ void Map::Draw()
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
 
-	//app->physics->CleanNormalCollisions();
-
 	while (mapLayerItem != NULL) {
 		
 		for (int x = 0; x < mapLayerItem->data->width; x++)
@@ -91,44 +89,23 @@ void Map::Draw()
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
-							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						if (mapLayerItem->data->properties.GetProperty("Layer") == 0)
 						{
-							app->render->DrawTexture(tileset->texture,
-								pos.x,
-								pos.y,
-								&r);
-						}
-					}
-
-					/*int width = mapLayerItem->data->properties.GetProperty("Width");
-					int height = mapLayerItem->data->properties.GetProperty("Height");
-					int w, h;
-
-					if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
-					{
-						// collision ground
-						for (size_t i = 0; i < 20; i++)
-						{
-							for (size_t j = 0; j < 20; j++)
+							if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+								(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
 							{
-								w = r.w * width / 20 * i;
-								h = r.h * height / 20 * j;
-								if ((-app->render->camera.x < pos.x + 350 && -app->render->camera.x > pos.x - 730) &&
-									(-app->render->camera.y < pos.y - 260 && -app->render->camera.y > pos.y - 400))
-								{
-									app->physics->CreateNormalCollisions(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
-									break;
-								}
-								else if ((-app->render->camera.x < pos.x + 350 + w && -app->render->camera.x > pos.x - 730 + w) &&
-									(-app->render->camera.y < pos.y - 260 + h && -app->render->camera.y > pos.y - 400 + h))
-								{
-									app->physics->CreateNormalCollisions(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
-									break;
-								}
+								app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
 							}
 						}
-					}*/
+						else
+						{
+							if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+								(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+							{
+								app->render->AddrenderObject(tileset->texture, pos, r, mapLayerItem->data->properties.GetProperty("Layer"));
+							}
+						}
+					}
 
 					if (!collision_loaded)
 					{

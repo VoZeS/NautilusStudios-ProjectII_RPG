@@ -335,6 +335,11 @@ void Player::HandleInput(float dt)
 			}
 		}
 
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			fixedSpeed *= 1.5f;
+		}
+
 		if (!app->menu->GetGameState())
 		{
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
@@ -797,10 +802,10 @@ bool Player::Draw()
 		{
 		case 0:
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
-			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 1, 1.0f, 0.0f);
 			
 			break;
 		case 1:
