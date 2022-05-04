@@ -74,6 +74,7 @@ bool Render::Start()
 bool Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
+	cont = 0;
 	return true;
 }
 
@@ -235,13 +236,6 @@ bool Render::Update(float dt)
 
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 
-	return true;
-}
-
-bool Render::PostUpdate()
-{
-	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
-
 	//Sort
 	for (int j = 0; j < 3; j++)
 	{
@@ -251,16 +245,22 @@ bool Render::PostUpdate()
 
 	Draw();
 
-
-	SDL_RenderPresent(renderer);
-
-	printf_s("Sprites Rendered: %d \n", cont);
-	
 	//Clear layers
 	for (int i = 0; i < MAX_LAYERS; i++)
 	{
 		layers[i].clear();
 	}
+
+	return true;
+}
+
+bool Render::PostUpdate()
+{
+	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+
+	//printf_s("Sprites Rendered: %d \n", cont);
+	
+	SDL_RenderPresent(renderer);
 
 	return true;
 }
@@ -560,25 +560,8 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	renderobject.Ordeninlayer = ordeninlayer;
 	renderobject.speed = speed;
 	renderobject.angle = angle;
-
-	/*if (renderobject.renderRect.x <= app->render->camera.w / 2)
-	{
-		renderobject.renderRect.x = app->render->camera.w / 2;
-	}
-	else
-	{
-		renderobject.renderRect.x = (int)(-app->render->camera.x * speed) + pos.x * scale;
-
-	}
-	if (renderobject.renderRect.y >= app->render->camera.h / 2)
-	{
-		renderobject.renderRect.y = app->render->camera.h / 2;
-	}
-	else
-	{
-		renderobject.renderRect.y = (int)(-app->render->camera.y * speed) + pos.y * scale;
-
-	}*/
+	renderobject.renderRect.x = (int)(app->render->camera.x * speed) + pos.x * scale;
+	renderobject.renderRect.y = (int)(app->render->camera.y * speed) + pos.y * scale;
 
 	if (layer == 3) renderobject.speed = 0;
 
