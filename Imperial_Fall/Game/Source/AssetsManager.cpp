@@ -2,7 +2,7 @@
 #include "AssetsManager.h"
 
 
-ModuleAssetsManager::ModuleAssetsManager() : Module()
+ModuleAssetsManager::ModuleAssetsManager(bool enabled) : Module(enabled)
 {
 	name = ("assetsManager");
 	

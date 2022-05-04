@@ -44,6 +44,7 @@
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\End_Combat_Scene.cpp" />
+    <ClCompile Include="Source\AssetsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\End_Combat_Scene.h" />
+    <ClInclude Include="Source\AssetsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

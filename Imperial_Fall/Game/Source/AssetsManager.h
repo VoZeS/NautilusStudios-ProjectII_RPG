@@ -11,9 +11,8 @@
 class ModuleAssetsManager : public Module
 {
 public:
-
 	// Constructor
-	ModuleAssetsManager();
+	ModuleAssetsManager(bool enabled);
 
 	// Destructor
 	~ModuleAssetsManager();

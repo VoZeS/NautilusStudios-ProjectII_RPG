@@ -63,10 +63,10 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Source\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\SDL_image\libx86;$(ProjectDir)Source\External\Box2D\libx86\Release;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\SDL_mixer\libx86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;physfs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\SDL_image\libx86;$(ProjectDir)Source\External\Box2D\libx86\Release;$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\PhysFS\libx86;$(ProjectDir)Source\External\SDL_mixer\libx86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AssetsManager.cpp" />
     <ClCompile Include="Source\Battlefield.cpp" />
     <ClCompile Include="Source\Combat_Entities.cpp" />
     <ClCompile Include="Source\Combat_Manager.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="Source\Town2.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\AssetsManager.h" />
     <ClInclude Include="Source\Battlefield.h" />
     <ClInclude Include="Source\Combat_Entities.h" />
     <ClInclude Include="Source\Combat_Manager.h" />

@@ -27,6 +27,7 @@
 #include "End_Combat_Scene.h"
 #include "Dialog.h"
 #include "LogoScreen.h"
+#include "AssetsManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -65,6 +66,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	end_combat_scene = new End_Combat_Scene(false);
 	dialog = new Dialog(false);
 	logo = new LogoScreen(true);
+	assetsmanager = new ModuleAssetsManager(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -95,6 +97,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(inventory);
 	AddModule(logo);
 	AddModule(frontground);
+	AddModule(assetsmanager);
 
 	// Render last to swap buffer
 	AddModule(render);
