@@ -12,6 +12,7 @@
 #include "Combat_Entities.h"
 #include "Player.h"
 #include "Town1.h"
+#include "AssetsManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -37,7 +38,24 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	if (this->Enabled() && !this->Disabled())
+	// TODO 5: Uncomment all of this, resolve how to load the document from the memory with the link
+
+	char* buffer = NULL;
+	pugi::xml_document dataFile;
+
+	int bytesFile = app->assetsmanager->LoadData("data.xml", &buffer);
+
+	// Loading from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
+	pugi::xml_parse_result result = dataFile.load_buffer(buffer, bytesFile);
+
+	RELEASE_ARRAY(buffer);
+
+	LoadTexFile(dataFile);
+	LoadFxFile(dataFile);
+	LoadMusFile(dataFile);
+
+
+	/*if (this->Enabled() && !this->Disabled())
 	{
 		app->fonts->Enable();
 
@@ -54,7 +72,7 @@ bool Scene::Start()
 			app->menu->Enable();
 		}
 	}
-
+	*/
 	return true;
 }
 
@@ -153,4 +171,23 @@ bool Scene::CleanUp()
 	settings_screen = NULL;
 
 	return true;
+}
+
+void Scene::LoadTexFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node tex_node = dataFile.child("data").child("texture");
+	texture1 = app->tex->Load(tex_node.attribute("file").as_string());
+	texture2 = app->tex->Load(tex_node.attribute("file2").as_string());
+}
+
+void Scene::LoadFxFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node fx_node = dataFile.child("data").child("fx");
+	app->audio->LoadFx(fx_node.attribute("file").as_string());
+}
+
+void Scene::LoadMusFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node mus_node = dataFile.child("data").child("mus");
+	app->audio->PlayMusic(mus_node.attribute("file").as_string());
 }

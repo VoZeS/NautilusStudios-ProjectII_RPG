@@ -32,12 +32,12 @@ bool LogoScreen::Start()
 	backgroundLogo.y = 0;
 	backgroundLogo.w = 1280;
 	backgroundLogo.h = 720;
-
+	
 	logoRect.w = 283;
 	logoRect.h = 260;
 	logoRect.x = (app->win->screenSurface->w / 3) - (logoRect.w / 2);
 	logoRect.y = (app->win->screenSurface->h / 4) - (logoRect.h / 2);
-
+	
 
 	// Members Texture
 

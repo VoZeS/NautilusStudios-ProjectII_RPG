@@ -56,7 +56,6 @@ SDL_RWops* ModuleAssetsManager::Load(const char* path) const
 
 }
 
-
 uint ModuleAssetsManager::LoadData(const char* path, char** buffer) const
 {
 	uint ret = 0;

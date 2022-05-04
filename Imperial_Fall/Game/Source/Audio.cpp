@@ -1,6 +1,8 @@
 #include "App.h"
 #include "Audio.h"
 
+#include "AssetsManager.h"
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -109,7 +111,9 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	/*TODO 6: Replace Mix_LoadMUS for Mix_LoadMUS_RW to read from buffer and not from hard disck*/
+	music = Mix_LoadMUS_RW(app->assetsmanager->Load(path), 1);
+	//music = Mix_LoadMUS(path);
 
 	if(music == NULL)
 	{
@@ -149,6 +153,10 @@ unsigned int Audio::LoadFx(const char* path)
 		return 0;
 
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
+
+	/*TODO 6: Replace Mix_LoadMUS for Mix_LoadWAV_RW to read from buffer and not from hard disck*/
+	chunk = Mix_LoadWAV_RW(app->assetsmanager->Load(path), 1);
+	//chunk = Mix_LoadWAV(path);
 
 	if(chunk == NULL)
 	{

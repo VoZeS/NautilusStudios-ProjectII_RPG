@@ -53,6 +53,17 @@ public:
 
 private:
 
+	//load the texture
+	void LoadTexFile(const pugi::xml_document& dataFile);
+
+	//load the fx
+	void LoadFxFile(const pugi::xml_document& dataFile);
+
+	//load and play the music
+	void LoadMusFile(const pugi::xml_document& dataFile);
+
+	SDL_Texture* texture1 = nullptr;
+	SDL_Texture* texture2 = nullptr;
 	SDL_Texture* start_screen;
 	SDL_Texture* settings_screen;
 

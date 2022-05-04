@@ -2,6 +2,8 @@
 #include "Render.h"
 #include "Textures.h"
 
+#include "AssetsManager.h"
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -81,9 +83,13 @@ bool Textures::CleanUp()
 SDL_Texture* const Textures::Load(const char* path)
 {
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load(path);
+	SDL_Surface* surface = nullptr;
 
-	if(surface == NULL)
+	/*TODO 6: Replace IMG_Load for IMG_Load_RW to read from buffer and not from hard disck*/
+	surface = IMG_Load_RW(app->assetsmanager->Load(path), 1);
+	//surface = IMG_Load(path);
+
+	if (surface == NULL)
 	{
 		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
 	}
