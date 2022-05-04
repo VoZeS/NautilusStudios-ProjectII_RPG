@@ -126,7 +126,10 @@ private:
 
 public:
 	// combat xp
-	int combat_xp = 0;
+	int combat_xp0 = 0;
+	int combat_xp1 = 0;
+	int combat_xp2 = 0;
+	int combat_xp3 = 0;
 	int combat_gold = 0;
 
 	// controller

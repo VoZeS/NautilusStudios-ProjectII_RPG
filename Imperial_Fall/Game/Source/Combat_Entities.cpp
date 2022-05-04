@@ -596,6 +596,15 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		actual_health = 0;
 		prepared_to_die = true;
 		app->particles->AddParticle(app->particles->blood_smoke, position.x - 32, position.y - 35);
+		
+		switch (app->combat_manager->GetActualEntity()->entity_type)
+		{
+		case 0: app->frontground->combat_xp0 += 8; break;
+		case 2: app->frontground->combat_xp2 += 8; break;
+		case 3: app->frontground->combat_xp3 += 8; break;
+		default:
+			break;
+		}
 
 		if (entity_type == 10)
 		{

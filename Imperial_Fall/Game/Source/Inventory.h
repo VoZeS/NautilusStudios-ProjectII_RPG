@@ -94,7 +94,7 @@ public:
 	void AddCoins(int amount);
 
 	// xp
-	void AddXP(int amount);
+	void AddXP(int owner, int amount);
 
 	// description
 	bool in_description;

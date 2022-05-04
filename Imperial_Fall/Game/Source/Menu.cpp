@@ -1094,6 +1094,7 @@ bool Menu::Update(float dt)
 						app->physics->ResetMiscelanea();
 						app->dialog->ResetShop();
 						app->dialog->ResetDialogs();
+						app->dialog->SaveRenatoDialog();
 					}
 					else if (!app->frontground->first_time)
 					{
@@ -1255,7 +1256,10 @@ bool Menu::Update(float dt)
 				if (!theseion2)
 				{
 					app->frontground->ReturnToField();
-					app->inventory->AddXP(app->frontground->combat_xp);
+					app->inventory->AddXP(0, app->frontground->combat_xp0);
+					app->inventory->AddXP(1, app->frontground->combat_xp1);
+					app->inventory->AddXP(2, app->frontground->combat_xp2);
+					app->inventory->AddXP(3, app->frontground->combat_xp3);
 					app->inventory->AddCoins(app->frontground->combat_gold);
 				}
 				else
@@ -1305,7 +1309,10 @@ bool Menu::Update(float dt)
 					break;
 				}
 
-				app->inventory->AddXP(-5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(0, -5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(1, -5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(2, -5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(3, -5 - (2 * app->frontground->adventure_phase));
 				lose_buttons[chosed].state = 2;
 			}
 			if (chosed == -1)
@@ -1456,19 +1463,30 @@ bool Menu::PostUpdate()
 	r.x = c_x;
 	r.y = c_y;
 
-
-
 	if (count_xp)
 	{
-		if (app->frontground->combat_xp > 0)
+		if (app->frontground->combat_xp0 > 0)
 		{
-			app->frontground->combat_xp--;
+			app->frontground->combat_xp0--;
+		}
+		if (app->frontground->combat_xp1 > 0)
+		{
+			app->frontground->combat_xp1--;
+		}
+		if (app->frontground->combat_xp2 > 0)
+		{
+			app->frontground->combat_xp2--;
+		}
+		if (app->frontground->combat_xp3 > 0)
+		{
+			app->frontground->combat_xp3--;
 		}
 		if (app->frontground->combat_gold > 0)
 		{
 			app->frontground->combat_gold--;
 		}
-		if (app->frontground->combat_xp == 0 && app->frontground->combat_gold == 0)
+		if (app->frontground->combat_xp0 == 0 && app->frontground->combat_xp1 == 0 && app->frontground->combat_xp2 == 0 && 
+			app->frontground->combat_xp3 == 0 && app->frontground->combat_gold == 0)
 		{
 			count_xp = false;
 		}
@@ -1988,13 +2006,31 @@ bool Menu::PostUpdate()
 		}
 
 		//app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		pugi::xml_document saveGame;
+		saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
 		
 		rect = { 0, 0, 64, 64 };
-		for (size_t i = 0; i < 4; i++)
-		{
-			app->render->DrawTexture(rew_icons, 100 + (315 * i), 450, &rect);
-			app->fonts->BlitCombatText(170 + (315 * i), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp).c_str());
-		}
+		int xp0 = saveGame.child("objects").child("assassin").child("experience").attribute("value").as_int();
+		app->render->DrawTexture(rew_icons, 100 + (315 * 0), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 0), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp0).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 0), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 0), 512, xp0, 22 }, 50, 50, 50);
+		int xp1 = saveGame.child("objects").child("healer").child("experience").attribute("value").as_int();
+		app->render->DrawTexture(rew_icons, 100 + (315 * 1), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 1), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp1).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 1), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 1), 512, xp1, 22 }, 50, 50, 50);
+		int xp2 = saveGame.child("objects").child("tank").child("experience").attribute("value").as_int();
+		app->render->DrawTexture(rew_icons, 100 + (315 * 2), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 2), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp2).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 2), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 2), 512, xp2, 22 }, 50, 50, 50);
+		int xp3 = saveGame.child("objects").child("wizard").child("experience").attribute("value").as_int();
+		app->render->DrawTexture(rew_icons, 100 + (315 * 3), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 3), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp3).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 3), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 3), 512, xp3, 22 }, 50, 50, 50);
+		
 		rect = { 64, 0, 64, 64 };
 		for (size_t i = 0; i < 4; i++)
 		{

@@ -1542,8 +1542,11 @@ void Inventory::DisplayHero(int n)
 	int cy = -app->render->camera.y;
 
 	pugi::xml_document saveGame;
+	pugi::xml_document saveGame1;
 	pugi::xml_parse_result result = saveGame.load_file(HEROES_STATS_FILENAME);
+	pugi::xml_parse_result result1 = saveGame1.load_file(UNLOCKABLE_OBJECTS_FILENAME);
 	pugi::xml_node hero;
+	int xp, lvl;
 	SDL_Rect hero_rect;
 	const char* name = "";
 
@@ -1553,21 +1556,29 @@ void Inventory::DisplayHero(int n)
 		hero = saveGame.child("heroes_stats").child("assassin");
 		hero_rect = { 0, 0, 128, 128 };
 		name = "Igol";
+		xp = saveGame1.child("objects").child("assassin").child("experience").attribute("value").as_int();
+		lvl = saveGame1.child("objects").child("assassin").child("experience").attribute("level").as_int();
 		break;
 	case 1:
 		hero = saveGame.child("heroes_stats").child("healer");
 		hero_rect = { 128, 0, 128, 128 };
 		name = "Gera";
+		xp = saveGame1.child("objects").child("healer").child("experience").attribute("value").as_int();
+		lvl = saveGame1.child("objects").child("healer").child("experience").attribute("level").as_int();
 		break;
 	case 2:
 		hero = saveGame.child("heroes_stats").child("tank");
 		hero_rect = { 256, 0, 128, 128 };
 		name = "Asteriol";
+		xp = saveGame1.child("objects").child("tank").child("experience").attribute("value").as_int();
+		lvl = saveGame1.child("objects").child("tank").child("experience").attribute("level").as_int();
 		break;
 	case 3:
 		hero = saveGame.child("heroes_stats").child("wizard");
 		hero_rect = { 384, 0, 128, 128 };
 		name = "Fernan";
+		xp = saveGame1.child("objects").child("wizard").child("experience").attribute("value").as_int();
+		lvl = saveGame1.child("objects").child("wizard").child("experience").attribute("level").as_int();
 		break;
 	}
 
@@ -1620,6 +1631,14 @@ void Inventory::DisplayHero(int n)
 	c = "+ " + g;
 	print = c.c_str();
 	app->fonts->BlitCombatText(388 + cx, 450 + cy, app->fonts->textFont3, print);
+
+	// xp
+	c = "Level: " + std::to_string(lvl);
+	print = c.c_str();
+	app->fonts->BlitCombatText(300 + cx, 150 + cy, app->fonts->textFont2, print);
+	
+	app->render->DrawRectangle({ 300 + cx, 190 + cy, 200, 26 }, 200, 200, 200);
+	app->render->DrawRectangle({ 302 + cx, 192 + cy, xp, 22 }, 68, 200, 255);
 }
 
 void Inventory::DisplayItems()
@@ -2029,6 +2048,7 @@ void Inventory::BlockAll()
 		}
 
 		hero.child("experience").attribute("value").set_value(0);
+		hero.child("experience").attribute("level").set_value(1);
 
 		set = hero.child("skills");
 		for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
@@ -4158,6 +4178,8 @@ void Inventory::DisplayCoins()
 	pugi::xml_document saveGame;
 	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
 	int coins = saveGame.child("objects").child("currency").attribute("gold").as_int();
+	int xp = saveGame.child("objects").child("assassin").child("experience").attribute("value").as_int();
+	int lvl = saveGame.child("objects").child("assassin").child("experience").attribute("level").as_int();
 
 	std::string s;
 	if (coins < 100)
@@ -4176,8 +4198,8 @@ void Inventory::DisplayCoins()
 		s = std::to_string(coins);
 	}
 	
-	app->fonts->BlitCombatText(1120 + cx, 50 + cy, app->fonts->textFont2, s.c_str());
-	app->render->DrawTexture(coin, 1182 + cx, 34 + cy);
+	app->fonts->BlitCombatText(1120 + cx, 20 + cy, app->fonts->textFont2, s.c_str());
+	app->render->DrawTexture(coin, 1182 + cx, 4 + cy);
 
 	if (coins_obtained != 0)
 	{
@@ -4199,7 +4221,7 @@ void Inventory::DisplayCoins()
 				s = "+" + std::to_string(coins_obtained);
 			}
 			
-			app->fonts->BlitCombatText(1094 + cx, 85 + cy, app->fonts->textFont4, s.c_str());
+			app->fonts->BlitCombatText(1094 + cx, 55 + cy, app->fonts->textFont4, s.c_str());
 		}
 		else
 		{
@@ -4218,7 +4240,7 @@ void Inventory::DisplayCoins()
 			{
 				s = "-" + std::to_string(abs(coins_obtained));
 			}
-			app->fonts->BlitCombatText(1100 + cx, 85 + cy, app->fonts->textFont3, s.c_str());
+			app->fonts->BlitCombatText(1100 + cx, 55 + cy, app->fonts->textFont3, s.c_str());
 		}
 
 		coins_cd++;
@@ -4228,6 +4250,11 @@ void Inventory::DisplayCoins()
 			coins_cd = 0;
 		}
 	}
+
+	// quest display
+	app->fonts->BlitText(cx, cy, app->fonts->textFont1, "Ve al bosque");
+
+	
 }
 
 int Inventory::GetCoins()
@@ -4274,154 +4301,55 @@ void Inventory::AddCoins(int amount)
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }
 
-void Inventory::AddXP(int amount)
+void Inventory::AddXP(int owner, int amount)
 {
+	const char* s = "";
+	switch (owner)
+	{
+	case 0: s = "assassin"; break;
+	case 1: s = "healer"; break;
+	case 2: s = "tank"; break;
+	case 3: s = "wizard"; break;
+	}
+
 	pugi::xml_document saveGame;
 	pugi::xml_parse_result result = saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
-	pugi::xml_attribute xp;
+	pugi::xml_attribute xp = saveGame.child("objects").child(s).child("experience").attribute("value");
+	int lvl = saveGame.child("objects").child(s).child("experience").attribute("level").as_int();
 	int exp_stored;
 	int skill_point = 0;
 
 	if (amount > 0)
 	{
-		for (size_t i = 0; i < 4; i++)
+		if (xp.as_int() + amount < 100)
 		{
-			if (i == 0)
+			xp.set_value(xp.as_int() + amount);
+		}
+		else
+		{
+			exp_stored = xp.as_int() + amount;
+			do
 			{
-				xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
-
-				if (xp.as_int() + amount < 100)
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-				else
-				{
-					exp_stored = xp.as_int() + amount;
-					do
-					{
-						exp_stored -= 100;
-						skill_point++;
-					} while (exp_stored >= 100);
-					xp.set_value(exp_stored);
-					AddSkillPoint(0, skill_point);
-				}
-			}
-			else if (i == 1)
-			{
-				xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
-
-				if (xp.as_int() + amount < 100)
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-				else
-				{
-					exp_stored = xp.as_int() + amount;
-					do
-					{
-						exp_stored -= 100;
-						skill_point++;
-					} while (exp_stored >= 100);
-					xp.set_value(exp_stored);
-					AddSkillPoint(0, skill_point);
-				}
-			}
-			else if (i == 2)
-			{
-				xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
-
-				if (xp.as_int() + amount < 100)
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-				else
-				{
-					exp_stored = xp.as_int() + amount;
-					do
-					{
-						exp_stored -= 100;
-						skill_point++;
-					} while (exp_stored >= 100);
-					xp.set_value(exp_stored);
-					AddSkillPoint(0, skill_point);
-				}
-			}
-			else if (i == 3)
-			{
-				xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
-
-				if (xp.as_int() + amount < 100)
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-				else
-				{
-					exp_stored = xp.as_int() + amount;
-					do
-					{
-						exp_stored -= 100;
-						skill_point++;
-					} while (exp_stored >= 100);
-					xp.set_value(exp_stored);
-					AddSkillPoint(0, skill_point);
-				}
-			}
+				exp_stored -= 100;
+				skill_point++;
+				lvl++;
+			} while (exp_stored >= 100);
+			xp.set_value(exp_stored);
+			AddSkillPoint(owner, skill_point);
 		}
 	}
 	else if (amount < 0)
 	{
-		for (size_t i = 0; i < 4; i++)
+		if (xp.as_int() + amount < 0)
 		{
-			if (i == 0)
-			{
-				xp = saveGame.child("objects").child("assassin").child("experience").attribute("value");
-				if (xp.as_int() + amount < 0)
-				{
-					xp.set_value(0);
-				}
-				else
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-			}
-			else if (i == 1)
-			{
-				xp = saveGame.child("objects").child("healer").child("experience").attribute("value");
-				if (xp.as_int() + amount < 0)
-				{
-					xp.set_value(0);
-				}
-				else
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-			}
-			else if (i == 2)
-			{
-				xp = saveGame.child("objects").child("tank").child("experience").attribute("value");
-				if (xp.as_int() + amount < 0)
-				{
-					xp.set_value(0);
-				}
-				else
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-			}
-			else if (i == 3)
-			{
-				xp = saveGame.child("objects").child("wizard").child("experience").attribute("value");
-				if (xp.as_int() + amount < 0)
-				{
-					xp.set_value(0);
-				}
-				else
-				{
-					xp.set_value(xp.as_int() + amount);
-				}
-			}
+			xp.set_value(0);
+		}
+		else
+		{
+			xp.set_value(xp.as_int() + amount);
 		}
 	}
 
+	saveGame.child("objects").child(s).child("experience").attribute("level").set_value(lvl);
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
 }

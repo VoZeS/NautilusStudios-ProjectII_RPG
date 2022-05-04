@@ -62,14 +62,20 @@ bool Combat_Manager::Start()
 		HeroesStats(health, mana, speed, power, 3, skill1, skill2, skill3, skill4); // wizard
 		allies[3] = new Combat_Entities(health, mana, speed, power, 3, skill1, skill2, skill3, skill4);
 
-		app->frontground->combat_xp = 0;
+		app->frontground->combat_xp0 = 0;
+		app->frontground->combat_xp1 = 0;
+		app->frontground->combat_xp2 = 0;
+		app->frontground->combat_xp3 = 0;
 		app->frontground->combat_gold = 0;
 
 		//init enemies
 		for (size_t i = 0; i < 4; i++)
 		{
 			enemies[i] = new Combat_Entities(app->frontground->GetEnemiesToFight(i));
-			app->frontground->combat_xp += enemies[i]->xp;
+			app->frontground->combat_xp0 += enemies[i]->xp;
+			app->frontground->combat_xp1 += enemies[i]->xp * 1.2f;
+			app->frontground->combat_xp2 += enemies[i]->xp;
+			app->frontground->combat_xp3 += enemies[i]->xp;
 		}
 		app->frontground->combat_gold = 2;
 		for (size_t i = 0; i < 4; i++)
