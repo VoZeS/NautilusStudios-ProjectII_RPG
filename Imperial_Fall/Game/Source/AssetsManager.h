@@ -6,7 +6,6 @@
 #include "PhysFS/include/physfs.h"
 #include "SDL/include/SDL.h"
 
-#pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
 class ModuleAssetsManager : public Module
 {
