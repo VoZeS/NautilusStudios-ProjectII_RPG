@@ -10,6 +10,7 @@
 #include "Physics.h"
 #include "Frontground.h"
 #include "Dialog.h"
+#include "Entities.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -51,24 +52,17 @@ bool Dialog::Start()
 	letterA_fx = app->audio->LoadFx("Assets/audio/fx/letter_a.wav");
 	letterG_fx = app->audio->LoadFx("Assets/audio/fx/letter_g.wav");
 
-	//Text 1
-	linea1String_Renato[0] = dialog.child("renato").child("text1").attribute("linea1").as_string();
-	linea2String_Renato[0] = dialog.child("renato").child("text1").attribute("linea2").as_string();
-
-	linea1String_Renato[1] = dialog.child("renato").child("text2").attribute("linea1").as_string();
-	linea2String_Renato[1] = dialog.child("renato").child("text2").attribute("linea2").as_string();
-
-	linea1String_Renato[2] = dialog.child("renato").child("text3").attribute("linea1").as_string();
-	linea2String_Renato[2] = dialog.child("renato").child("text3").attribute("linea2").as_string();
-
-	linea1String_Renato[3] = dialog.child("renato").child("text4").attribute("linea1").as_string();
-	linea2String_Renato[3] = dialog.child("renato").child("text4").attribute("linea2").as_string();
-
-	linea1String_Renato[4] = dialog.child("renato").child("text5").attribute("linea1").as_string();
-	linea2String_Renato[4] = dialog.child("renato").child("text5").attribute("linea2").as_string();
-
-	for (int i = 0; i < 5; i++)
+	// Renato
+	for (size_t i = 0; i < 17; i++)
 	{
+		std::string p = "text";
+		std::string s = std::to_string(i + 1);
+		std::string t = p + s;
+		const char* c = t.c_str();
+
+		linea1String_Renato[i] = dialog.child("renato").child(c).attribute("linea1").as_string();
+		linea2String_Renato[i] = dialog.child("renato").child(c).attribute("linea2").as_string();
+
 		linea1Char_Renato[i] = linea1String_Renato[i].c_str();
 		linea2Char_Renato[i] = linea2String_Renato[i].c_str();
 	}
@@ -125,22 +119,29 @@ bool Dialog::Start()
 		linea2Char_Granjero[i] = linea2String_Granjero[i].c_str();
 	}
 
+	linea1String_Enemy[0] = dialog.child("enemy").child("text1").attribute("linea1").as_string();
+	linea2String_Enemy[0] = dialog.child("enemy").child("text1").attribute("linea2").as_string();
 
-	/*
-	linea1String_Templario = dialog.child("templario").child("text1").attribute("linea1").as_string();
-	linea2String_Templario = dialog.child("templario").child("text1").attribute("linea2").as_string();
+	linea1String_Enemy[1] = dialog.child("enemy").child("text2").attribute("linea1").as_string();
+	linea2String_Enemy[1] = dialog.child("enemy").child("text2").attribute("linea2").as_string();
+
+	linea1String_Enemy[2] = dialog.child("enemy").child("text3").attribute("linea1").as_string();
+	linea2String_Enemy[2] = dialog.child("enemy").child("text3").attribute("linea2").as_string();
+
+	linea1String_Enemy[3] = dialog.child("enemy").child("text4").attribute("linea1").as_string();
+	linea2String_Enemy[3] = dialog.child("enemy").child("text4").attribute("linea2").as_string();
+
+	linea1String_Enemy[4] = dialog.child("enemy").child("text5").attribute("linea1").as_string();
+	linea2String_Enemy[4] = dialog.child("enemy").child("text5").attribute("linea2").as_string();
+
+	linea1String_Enemy[5] = dialog.child("enemy").child("text6").attribute("linea1").as_string();
+	linea2String_Enemy[5] = dialog.child("enemy").child("text6").attribute("linea2").as_string();
 	
-	linea1Char_Templario = linea1String_Templario.c_str();
-	linea2Char_Templario = linea2String_Templario.c_str();
-
-
-	
-	linea1String_Seta = dialog.child("seta").child("text1").attribute("linea1").as_string();
-	linea2String_Seta = dialog.child("seta").child("text1").attribute("linea2").as_string();
-
-	linea1Char_Seta = linea1String_Seta.c_str();
-	linea2Char_Seta = linea2String_Seta.c_str();
-	*/
+	for (int i = 0; i < 6; i++)
+	{
+		linea1Char_Enemy[i] = linea1String_Enemy[i].c_str();
+		linea2Char_Enemy[i] = linea2String_Enemy[i].c_str();
+	}
 
 	in_shop = 0;
 	item_saved = NULL;
@@ -157,7 +158,7 @@ bool Dialog::Start()
 		shop_interact_buttons[i].rect.h = 128;
 	}
 
-	if (app->frontground->adventure_phase == 0)
+	if (app->frontground->adventure_phase == -1 || app->frontground->adventure_phase == 0)
 	{
 		// herrero
 		shop1[0].item = "031";
@@ -189,7 +190,7 @@ bool Dialog::Start()
 		shop3[3].item = "531";
 		shop3[3].cost = 10;
 	}
-	else if (app->frontground->adventure_phase == 1)
+	else if (app->frontground->adventure_phase == 1 || app->frontground->adventure_phase == 2)
 	{
 		// herrero
 		shop1[0].item = "032";
@@ -199,6 +200,70 @@ bool Dialog::Start()
 		shop1[2].item = "232";
 		shop1[2].cost = 15;
 		shop1[3].item = "332";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "403";
+		shop2[0].cost = 5;
+		shop2[1].item = "413";
+		shop2[1].cost = 8;
+		shop2[2].item = "443";
+		shop2[2].cost = 5;
+		shop2[3].item = "453";
+		shop2[3].cost = 8;
+
+		// sabio
+		shop3[0].item = "501";
+		shop3[0].cost = 10;
+		shop3[1].item = "511";
+		shop3[1].cost = 10;
+		shop3[2].item = "521";
+		shop3[2].cost = 10;
+		shop3[3].item = "531";
+		shop3[3].cost = 10;
+	}
+	else if (app->frontground->adventure_phase == 3 || app->frontground->adventure_phase == 4)
+	{
+		// herrero
+		shop1[0].item = "033";
+		shop1[0].cost = 15;
+		shop1[1].item = "133";
+		shop1[1].cost = 15;
+		shop1[2].item = "233";
+		shop1[2].cost = 15;
+		shop1[3].item = "333";
+		shop1[3].cost = 15;
+
+		// medico
+		shop2[0].item = "403";
+		shop2[0].cost = 5;
+		shop2[1].item = "413";
+		shop2[1].cost = 8;
+		shop2[2].item = "443";
+		shop2[2].cost = 5;
+		shop2[3].item = "453";
+		shop2[3].cost = 8;
+
+		// sabio
+		shop3[0].item = "501";
+		shop3[0].cost = 10;
+		shop3[1].item = "511";
+		shop3[1].cost = 10;
+		shop3[2].item = "521";
+		shop3[2].cost = 10;
+		shop3[3].item = "531";
+		shop3[3].cost = 10;
+	}
+	else if (app->frontground->adventure_phase == 5 || app->frontground->adventure_phase == 6)
+	{
+		// herrero
+		shop1[0].item = "034";
+		shop1[0].cost = 15;
+		shop1[1].item = "134";
+		shop1[1].cost = 15;
+		shop1[2].item = "234";
+		shop1[2].cost = 15;
+		shop1[3].item = "334";
 		shop1[3].cost = 15;
 
 		// medico
@@ -246,23 +311,8 @@ bool Dialog::Start()
 		shop3[i].selled = saveGame.child("objects").child("shops").child("shop3").attribute(c).as_bool();
 	}
 
-	if (app->frontground->adventure_phase == 0)
-	{
-		renato_text = -1;
-	}
-	else if (app->frontground->adventure_phase == 1)
-	{
-		renato_text = 3;
-		granjero_text = -1;
-	}
-	else if (app->frontground->adventure_phase == 2)
-	{
-		granjero_text = 1;
-	}
-	else if (app->frontground->adventure_phase == 3)
-	{
-		granjero_text = 3;
-	}
+	renato_text = dialog.child("renato").child("actual_text").attribute("value").as_int();
+	granjero_text = dialog.child("granjero").child("actual_text").attribute("value").as_int();
 
 	return true;
 }
@@ -355,7 +405,24 @@ bool Dialog::Update(float dt)
 
 	if (in_shop == 0)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
+		if (showEnemy)
+		{
+			if (app->frontground->adventure_phase == -1)
+			{
+				if (ContinueDialog(enemy_text, 2))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::ENEMIGO;
+					inEnemy = true;
+				}
+			}
+
+			showEnemy = false;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
 		{
 			if (app->physics->inCoins)
 			{
@@ -370,12 +437,59 @@ bool Dialog::Update(float dt)
 				SetPressE_Hide(true);
 				app->physics->book_type = -1;
 			}
-			else if (app->physics->GetInNPC(1))
+			else if (app->physics->GetInNPC(1)) // Renato
 			{
-				if (app->frontground->adventure_phase == 0)
+				if (app->frontground->adventure_phase == -1)
 				{
-					renato_base = -1;
-					if (ContinueDialog(renato_text, 4, renato_base))
+					if (ContinueDialog(renato_text, 4))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 2;
+					}
+				}
+				else if (app->frontground->adventure_phase == 0)
+				{
+					if (renato_text == 3) /// reward for mision 1
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 3);
+						}
+						app->inventory->AddCoins(10);
+						app->inventory->UnlockObject("403"); // 3 hp potions
+					}
+					///////////////////////////////////////////
+					if (ContinueDialog(renato_text, 8))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 6;
+						app->frontground->check_phase_change = true;
+					}
+				}
+				else if (app->frontground->adventure_phase == 1)
+				{
+					renato_text = 6;
+					if (ContinueDialog(renato_text, 8))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -390,10 +504,17 @@ bool Dialog::Update(float dt)
 						actual_dialog = DIALOGS::NO_ONE;
 					}
 				}
-				else if (app->frontground->adventure_phase == 1)
+				else if (app->frontground->adventure_phase == 2)
 				{
-					renato_base = 4;
-					if (ContinueDialog(renato_text, 5, renato_base))
+					if (renato_text == 7) /// reward for mision 2
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 5);
+						}
+						app->inventory->AddCoins(25);
+					} ///////////////////////////////////////////
+					if (ContinueDialog(renato_text, 12))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -406,12 +527,98 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 10;
+						app->frontground->check_phase_change = true;
+					}
+				}
+				else if (app->frontground->adventure_phase == 3)
+				{
+					renato_text = 10;
+					if (ContinueDialog(renato_text, 12))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 10;
+					}
+				}
+				else if (app->frontground->adventure_phase == 4)
+				{
+					if (renato_text == 11) /// reward for mision 3
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 8);
+						}
+						app->inventory->AddCoins(50);
+					} ///////////////////////////////////////////
+					if (ContinueDialog(renato_text, 16))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 14;
+						app->frontground->check_phase_change = true;
+					}
+				}
+				else if (app->frontground->adventure_phase == 5)
+				{
+					renato_text = 14;
+					if (ContinueDialog(renato_text, 16))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 14;
+					}
+				}
+				else if (app->frontground->adventure_phase == 6)
+				{
+					renato_text = 15;
+					if (ContinueDialog(renato_text, 17))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::RENATO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 15;
 					}
 				}
 			}
 			else if (app->physics->GetInNPC(2))
 			{
-				if (ContinueDialog(medico_text, medico_maxtext, medico_base))
+				if (ContinueDialog(medico_text, medico_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -429,7 +636,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(3))
 			{
-				if (ContinueDialog(herrero_text, herrero_maxtext, medico_base))
+				if (ContinueDialog(herrero_text, herrero_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -447,7 +654,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(4))
 			{
-				if (ContinueDialog(sabio_text, sabio_maxtext, sabio_base))
+				if (ContinueDialog(sabio_text, sabio_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -465,7 +672,7 @@ bool Dialog::Update(float dt)
 			}
 			else if (app->physics->GetInNPC(5))
 			{
-				if (ContinueDialog(aldeano_text, aldeano_maxtext, aldeano_base))
+				if (ContinueDialog(aldeano_text, aldeano_maxtext))
 				{
 					letlengh = 0;
 					letlengh2 = 0;
@@ -484,8 +691,7 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == 1)
 				{
-					granjero_base = -1;
-					if (ContinueDialog(granjero_text, 2, granjero_base))
+					if (ContinueDialog(granjero_text, 2))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -498,12 +704,13 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 0;
 					}
 				}
 				else if (app->frontground->adventure_phase == 2)
 				{
-					granjero_base = 1;
-					if (ContinueDialog(granjero_text, 4, granjero_base))
+					granjero_text = 0;
+					if (ContinueDialog(granjero_text, 2))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -516,12 +723,12 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 0;
 					}
 				}
 				else if (app->frontground->adventure_phase == 3)
 				{
-					granjero_base = 3;
-					if (ContinueDialog(granjero_text, 6, granjero_base))
+					if (ContinueDialog(granjero_text, 4))
 					{
 						letlengh = 0;
 						letlengh2 = 0;
@@ -534,6 +741,84 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 2;
+					}
+				}
+				else if (app->frontground->adventure_phase == 4)
+				{
+					granjero_text = 2;
+					if (ContinueDialog(granjero_text, 4))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 2;
+					}
+				}
+				else if (app->frontground->adventure_phase == 5)
+				{
+					if (ContinueDialog(granjero_text, 6))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 4;
+					}
+				}
+				else if (app->frontground->adventure_phase == 6)
+				{
+					granjero_text = 4;
+					if (ContinueDialog(granjero_text, 6))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::GRANJERO;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						granjero_text = 4;
+					}
+				}
+			}
+			else if (inEnemy)
+			{
+				if (app->frontground->adventure_phase == -1)
+				{
+					if (ContinueDialog(enemy_text, 2))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::ENEMIGO;
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+						inEnemy = false;
+						app->entities->freeze = false;
 					}
 				}
 			}
@@ -542,6 +827,9 @@ bool Dialog::Update(float dt)
 				inDialog = false;
 				actual_dialog = DIALOGS::NO_ONE;
 			}
+
+			// save actual dialog
+			SaveRenatoDialog();
 		}
 	}
 	else if (in_shop != 0 && item_saved == NULL)
@@ -607,7 +895,7 @@ bool Dialog::Update(float dt)
 
 	if (app->GetFPS() == 16) // 60 fps
 	{
-		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
+		if (letter_cd >= 60 * dt * speedlet && inDialog && letlengh <= limitLenght)
 		{
 			letlengh++;
 			PlayLetterSound();
@@ -616,7 +904,7 @@ bool Dialog::Update(float dt)
 	}
 	else // 30 fps
 	{
-		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
+		if (letter_cd >= 120 * dt * speedlet && inDialog && letlengh <= limitLenght)
 		{
 			letlengh++;
 			PlayLetterSound();
@@ -694,15 +982,15 @@ bool Dialog::PostUpdate()
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Sabio, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Sabio, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
-		/*else if (actual_dialog == DIALOGS::ENEMIGO) // ENEMIES TALKING
+		else if (actual_dialog == DIALOGS::ENEMIGO) // ENEMIES TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
 			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
 			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "ENEMY:");
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh, 1);
-			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Templario, 1, 255, 255, 255, 1920, 1, letlengh2, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Enemy[enemy_text], 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Enemy[enemy_text], 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 
-		}*/
+		}
 		else if (actual_dialog == DIALOGS::ALDEANO) // ALDEANO TALKING
 		{
 			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
@@ -942,6 +1230,38 @@ bool Dialog::LoadDialog()
 	return ret;
 }
 
+void Dialog::SaveRenatoDialog(int n)
+{
+	dialogFile.load_file(DIALOG_FILENAME);
+
+	if (n == -2)
+	{
+		dialogFile.child("dialog").child("renato").child("actual_text").attribute("value").set_value(renato_text);
+	}
+	else
+	{
+		dialogFile.child("dialog").child("renato").child("actual_text").attribute("value").set_value(n);
+	}
+	
+	dialogFile.save_file(DIALOG_FILENAME);
+}
+
+void Dialog::SaveFarmerDialog(int n)
+{
+	dialogFile.load_file(DIALOG_FILENAME);
+
+	if (n == -2)
+	{
+		dialogFile.child("dialog").child("granjero").child("actual_text").attribute("value").set_value(granjero_text);
+	}
+	else
+	{
+		dialogFile.child("dialog").child("granjero").child("actual_text").attribute("value").set_value(n);
+	}
+
+	dialogFile.save_file(DIALOG_FILENAME);
+}
+
 void Dialog::PlayLetterSound()
 {
 	int r = rand() % 3;
@@ -954,7 +1274,7 @@ void Dialog::PlayLetterSound()
 	}
 }
 
-bool Dialog::ContinueDialog(int& actual_text, int max_text, int base_text)
+bool Dialog::ContinueDialog(int& actual_text, int max_text)
 {
 	actual_text++;
 	if (actual_text < max_text)
@@ -963,7 +1283,6 @@ bool Dialog::ContinueDialog(int& actual_text, int max_text, int base_text)
 	}
 	else 
 	{
-		actual_text = base_text;
 		return false;
 	}
 }

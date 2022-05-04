@@ -551,16 +551,14 @@ void Entities::KillEnemy()
 		combat_entity->plan_to_delete = true;
 		combat_entity->SaveSingleEnemy();
 		app->menu->kill_enemy = false;
-		if (combat_entity->entity_type == ENTITY_TYPE::R_TEMPLAR) 
+		app->frontground->check_phase_change = true;
+
+		// enemy dialogs
+		/*if (combat_entity->p_in_array == 0)
 		{
-			app->frontground->adventure_phase = 1;
-			app->dialog->UpdateShop();
-		}
-		else if (combat_entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
-		{
-			app->frontground->adventure_phase = 2;
-			app->dialog->UpdateShop();
-		}
+			app->dialog->showEnemy = true;
+			app->entities->freeze = true;
+		}*/
 	}
 }
 

@@ -46,7 +46,8 @@ bool Dungeon::Start()
 		app->map->Load("dungeon.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -82,6 +83,10 @@ bool Dungeon::Start()
 // Called each loop iteration
 bool Dungeon::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
+	}
 
 	return true;
 }

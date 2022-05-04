@@ -43,10 +43,11 @@ bool Town2::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("town_2.tmx");
+		app->map->Load("town_2_64.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player &
 		app->menu->Enable();
@@ -59,7 +60,7 @@ bool Town2::Start()
 
 		if (app->frontground->move_to == MOVE_TO::TOWN1_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2000), PIXELS_TO_METERS(2000), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
 				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
 		}
 		else if (app->frontground->move_to == MOVE_TO::FOREST_TOWN2)
@@ -104,6 +105,10 @@ bool Town2::Start()
 // Called each loop iteration
 bool Town2::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+	}
 
 	return true;
 }

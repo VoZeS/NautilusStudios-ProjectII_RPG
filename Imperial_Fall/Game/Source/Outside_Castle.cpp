@@ -46,7 +46,8 @@ bool Outside_Castle::Start()
 		app->map->Load("outside_castle.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/outside_castle.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/outside_castle.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
@@ -89,6 +90,10 @@ bool Outside_Castle::Start()
 // Called each loop iteration
 bool Outside_Castle::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/outside_castle.ogg");
+	}
 
 	return true;
 }

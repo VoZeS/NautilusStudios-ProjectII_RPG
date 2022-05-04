@@ -79,9 +79,10 @@ bool Frontground::PreUpdate()
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	if (check_phase_change)
 	{
-		adventure_phase++;
+		app->frontground->adventure_phase = app->frontground->CheckAdventureState();
+		check_phase_change = false;
 	}
 	
 	if (go_black)
@@ -156,13 +157,15 @@ bool Frontground::PostUpdate()
 
 	r.x = c_x;
 	r.y = c_y;
-	
-	if (a == 254)
+	if (a > 250)
 	{
-		a++;
+		app->render->DrawRectangle(r, 0, 0, 0, 255);
 	}
+	else
+	{
 
-	app->render->DrawRectangle(r, 0, 0, 0, a);
+		app->render->DrawRectangle(r, 0, 0, 0, a);
+	}
 
 	if (app->end_combat_scene->in_cutscene && app->end_combat_scene->Enabled() && app->end_combat_scene->cutcene_cd > BLACK_TIME)
 	{
@@ -450,6 +453,70 @@ void Frontground::SetController()
 {
 	app->menu->SetController();
 	app->combat_menu->SetController();
+}
+
+int Frontground::CheckAdventureState()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node atr;
+
+	int res = -1;
+
+	atr = saveGame.child("game_state").child("entities").child("enemies");
+	if (!atr.child("enemy0").attribute("state").as_bool() && !atr.child("enemy1").attribute("state").as_bool()) // mison 1
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 6)
+	{
+		res++;
+	}
+	if (!atr.child("enemy2").attribute("state").as_bool()) // mision 2
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 10)
+	{
+		res++;
+	}
+	if (!atr.child("enemy3").attribute("state").as_bool()) // mision 3
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 14)
+	{
+		res++;
+	}
+	if (!atr.child("enemy4").attribute("state").as_bool()) // castillo
+	{
+		res++;
+	}
+
+	switch (res)
+	{
+	case -1: app->dialog->SaveRenatoDialog(-1); app->dialog->SaveFarmerDialog(); break;
+	case 0: app->dialog->SaveRenatoDialog(3); app->dialog->SaveFarmerDialog(); break;
+	case 1: app->dialog->SaveRenatoDialog(6); app->dialog->SaveFarmerDialog(-1); break;
+	case 2: app->dialog->SaveRenatoDialog(7); app->dialog->SaveFarmerDialog(-1); break;
+	case 3: app->dialog->SaveRenatoDialog(10); app->dialog->SaveFarmerDialog(2); break;
+	case 4: app->dialog->SaveRenatoDialog(11); app->dialog->SaveFarmerDialog(2); break;
+	case 5: app->dialog->SaveRenatoDialog(14); app->dialog->SaveFarmerDialog(5); break;
+	case 6: app->dialog->SaveRenatoDialog(15); app->dialog->SaveFarmerDialog(5); break;
+	}
+
+	if (res > adventure_phase)
+	{
+		if (res == 1 || res == 3 || res == 5)
+		{
+			app->dialog->UpdateShop();
+		}
+		
+		move_to = MOVE_TO::FROM_COMBAT;
+		FadeToBlack();
+	}
+
+	return res;
 }
 
 void Frontground::SaveStartUp()

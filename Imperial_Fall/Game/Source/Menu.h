@@ -211,6 +211,8 @@ private:
 	uint hover_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
+	uint win_sound;
+	uint lose_sound;
 
 	// unlock object animation
 	int unlock_cd;

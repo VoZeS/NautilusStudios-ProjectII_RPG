@@ -135,7 +135,7 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 			}
 		}
 	}
-
+	
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -202,4 +202,9 @@ void Audio::StopMusic(float fade_time)
 
 		Mix_FreeMusic(music);
 	}
+}
+
+bool Audio::MusicPlaying()
+{
+	return Mix_PlayingMusic();
 }

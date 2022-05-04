@@ -175,6 +175,17 @@ bool Combat_Manager::PreUpdate()
 		}
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			if (enemies[i]->FindBuff(b) == -1)
+			{
+				enemies[i]->AddBuff(BUFF_TYPE::GODMODE_STRONG, 99);
+			}
+		}
+	}
+
 	preupdatedone = true;
 
 	return true;
@@ -427,7 +438,7 @@ void Combat_Manager::UpdateHUD()
 		}
 	}
 
-	float divider = ((float)app->frontground->adventure_phase / 3) + 1;
+	float divider = ((float)(app->frontground->adventure_phase + 1) / 7) + 1;
 
 	// assassin
 	app->render->DrawTexture(whitemark_64x64, 8 + cx + 250, 8 + cy);

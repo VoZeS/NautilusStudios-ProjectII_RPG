@@ -135,6 +135,8 @@ bool Menu::Start()
 		open_book_sound = app->audio->LoadFx("Assets/audio/fx/open_book.wav");
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
+		win_sound = app->audio->LoadFx("Assets/audio/fx/win.wav");
+		lose_sound = app->audio->LoadFx("Assets/audio/fx/lose.wav");
 
 		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
@@ -354,6 +356,7 @@ bool Menu::PreUpdate()
 		{
 			subplaymenu = false;
 			settings = false;
+			app->audio->StopMusic(0.5f);
 		}
 
 		if (app->scene->esc == true)
@@ -1020,6 +1023,7 @@ bool Menu::Update(float dt)
 					if (!subplaymenu)
 					{
 						settings = true;
+						app->audio->PlayMusic("Assets/audio/music/options.ogg");
 						if (app->frontground->controller)
 						{
 							settings_buttons[0].state = 1;
@@ -1081,7 +1085,7 @@ bool Menu::Update(float dt)
 						saving = false;
 						intro = false;
 						paused = false;
-						app->frontground->adventure_phase = 0;
+						app->frontground->adventure_phase = -1;
 						subplaymenu = false;
 						app->inventory->BlockAll();
 						app->inventory->ResetItems();
@@ -1089,6 +1093,7 @@ bool Menu::Update(float dt)
 						app->inventory->ResetSkills();
 						app->physics->ResetMiscelanea();
 						app->dialog->ResetShop();
+						app->dialog->ResetDialogs();
 					}
 					else if (!app->frontground->first_time)
 					{
@@ -1118,7 +1123,7 @@ bool Menu::Update(float dt)
 					saving = false;
 					intro = false;
 					paused = false;
-					app->frontground->adventure_phase = 0;
+					app->frontground->adventure_phase = -1;
 					subplaymenu = false;
 					app->inventory->BlockAll();
 					app->inventory->ResetItems();
@@ -1126,6 +1131,8 @@ bool Menu::Update(float dt)
 					app->inventory->ResetSkills();
 					app->physics->ResetMiscelanea();
 					app->dialog->ResetShop();
+					app->dialog->ResetDialogs();
+					app->dialog->SaveRenatoDialog();
 					sub_newgame = false;
 					break;
 				case 1:
@@ -1298,7 +1305,7 @@ bool Menu::Update(float dt)
 					break;
 				}
 
-				app->inventory->AddXP(-5 - (5 * app->frontground->adventure_phase));
+				app->inventory->AddXP(-5 - (2 * app->frontground->adventure_phase));
 				lose_buttons[chosed].state = 2;
 			}
 			if (chosed == -1)
@@ -1436,7 +1443,7 @@ bool Menu::Update(float dt)
 		app->inventory->UnlockAll();
 		app->inventory->EquipAllMaxGear();
 	}
-
+	
 	return true;
 }
 
@@ -2042,6 +2049,10 @@ bool Menu::PostUpdate()
 				//app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 		}
+
+		rect = { 0, 0, 64, 64 };
+		app->render->DrawTexture(rew_icons, 550, 450, &rect);
+		app->fonts->BlitCombatText(620, 470, app->fonts->textFont2, std::to_string(-5 - (2 * app->frontground->adventure_phase)).c_str());
 		
 		//app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
 		//app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
@@ -2201,8 +2212,11 @@ void Menu::SetWinLoseScape(int n)
 {
 	if (n == 0)
 	{
+		if (!win)
+		{
+			app->audio->PlayFx(win_sound);
+		}
 		win = true;
-		//lose = true;
 		if (app->frontground->controller)
 		{
 			win_button.state = 1;
@@ -2211,8 +2225,11 @@ void Menu::SetWinLoseScape(int n)
 	}
 	else if (n == 1)
 	{
+		if (!lose)
+		{
+			app->audio->PlayFx(lose_sound);
+		}
 		lose = true;
-		//win = true;
 		if (app->frontground->controller)
 		{
 			lose_buttons[0].state = 1;

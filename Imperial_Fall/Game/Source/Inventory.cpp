@@ -2028,6 +2028,8 @@ void Inventory::BlockAll()
 			set.attribute("gear4").set_value(false);
 		}
 
+		hero.child("experience").attribute("value").set_value(0);
+
 		set = hero.child("skills");
 		for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
 		{

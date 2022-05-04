@@ -143,6 +143,8 @@ public:
 
 	// adventure phase
 	int adventure_phase = 0;
+	int CheckAdventureState();
+	bool check_phase_change = false;
 
 	// is there a save
 	bool first_time = false;
