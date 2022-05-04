@@ -26,10 +26,11 @@ Forest::Forest(bool enabled) : Module(enabled)
 
 	// moving animation
 	movingBox_Anim.PushBack({ 0, 0, 64, 65 });
-	movingBox_Anim.PushBack({ 0, 64, 64, 65 });
-	movingBox_Anim.PushBack({ 0, 128, 64, 65 });
+	movingBox_Anim.PushBack({ 64, 0, 64, 65 });
+	movingBox_Anim.PushBack({ 128, 0, 64, 65 });
 	movingBox_Anim.speed = 0.03f;
 	movingBox_Anim.loop = true;
+
 }
 
 // Destructor
@@ -81,6 +82,10 @@ bool Forest::Start()
 		{
 			app->LoadGameRequest(false);
 		}
+
+		boxRect = { 0, 0, 64,65 };
+
+		currentAnimation = &movingBox_Anim;
 	}
 
 
@@ -101,21 +106,22 @@ bool Forest::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
+	if (app->map->S1_Box != nullptr)
+	{
+		currentAnimation->Update();
+	}
+
 	return true;
 }
 
 // Called each loop iteration
 bool Forest::PostUpdate()
 {
-	currentAnimation = &movingBox_Anim;
+	
 
 	if (app->map->S1_Box != nullptr)
 	{
-		if (app->map->S1_Box->GetBody()->GetLinearVelocity() == b2Vec2{ 0,0 })
-		{
-			currentAnimation->Update();
-
-		}
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
 	}
 	
 
