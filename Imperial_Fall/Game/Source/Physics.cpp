@@ -221,6 +221,10 @@ b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 205) fixture.isSensor = true;
 	else if (collision == 206) fixture.isSensor = true;
 
+	else if (collision == 231) fixture.isSensor = true;
+	else if (collision == 232) fixture.isSensor = true;
+	else if (collision == 233) fixture.isSensor = true;
+
 	else if (collision == 23) fixture.isSensor = true;
 	else if (collision == 32) fixture.isSensor = true;
 	else if (collision == 24) fixture.isSensor = true;
@@ -565,26 +569,30 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			app->map->S2_Coll->SetSensor(true);
 
+		}
+		else if ((int)fixtureUserDataB == 231)
+		{
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
-
-
 		}
 		else if ((int)fixtureUserDataB == 203)
 		{
 			app->map->S3_Coll->SetSensor(true);
 
+		}
+		else if ((int)fixtureUserDataB == 232)
+		{
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
-
 		}
 		else if ((int)fixtureUserDataB == 204)
 		{
 			app->map->S4_Coll->SetSensor(true);
-
+		}
+		else if ((int)fixtureUserDataB == 233)
+		{
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
-
 		}
 		else if ((int)fixtureUserDataB == 205)
 		{
@@ -611,30 +619,36 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			app->map->S1_Coll->SetSensor(true);
 
+
 		}
 		else if ((int)fixtureUserDataA == 202)
 		{
 			app->map->S2_Coll->SetSensor(true);
 
+		}
+		else if ((int)fixtureUserDataA == 231)
+		{
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);
-
 		}
 		else if ((int)fixtureUserDataA == 203)
 		{
 			app->map->S3_Coll->SetSensor(true);
 
+		}
+		else if ((int)fixtureUserDataA == 232)
+		{
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);
-
 		}
 		else if ((int)fixtureUserDataA == 204)
 		{
 			app->map->S4_Coll->SetSensor(true);
-
+		}
+		else if ((int)fixtureUserDataA == 233)
+		{
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);
-
 		}
 		else if ((int)fixtureUserDataA == 205)
 		{

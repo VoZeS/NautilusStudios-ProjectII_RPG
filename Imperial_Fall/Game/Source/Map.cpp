@@ -196,6 +196,21 @@ void Map::Draw()
 							S6_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 206);
 
 						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 231)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 231);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 232)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 232);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 233)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 233);
+
+						}
 
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
 						{

@@ -117,11 +117,21 @@ bool Forest::Update(float dt)
 // Called each loop iteration
 bool Forest::PostUpdate()
 {
-	
-
 	if (app->map->S1_Box != nullptr)
 	{
 		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S2_Box != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S3_Box != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S4_Box != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32), &boxRect);
 	}
 	
 
