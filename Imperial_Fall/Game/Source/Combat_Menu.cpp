@@ -268,7 +268,7 @@ bool Combat_Menu::PreUpdate()
 				}
 				break;
 			case 9:
-				if (skill_prepared.zero_mana)
+				if (skill_prepared.zero_mana && skill_prepared.owner == 9)
 				{
 					if (dragon_ultAnim.HasFinished())
 					{

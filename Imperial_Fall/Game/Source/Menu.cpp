@@ -2152,7 +2152,7 @@ bool Menu::PostUpdate()
 		}
 
 		rect = { 0, 0, 64, 64 };
-		app->render->DrawTexture(rew_icons, 550, 450, &rect);
+		app->render->DrawTexture(rew_icons, 550, 300, &rect);
 		app->fonts->BlitCombatText(620, 300, app->fonts->textFont2, std::to_string(-5 - (2 * app->frontground->adventure_phase)).c_str());
 		
 		//app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
