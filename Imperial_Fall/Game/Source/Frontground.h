@@ -122,7 +122,6 @@ private:
 	// cutscene
 	uint letlengh = 0;
 	int letter_cd = 0;
-	bool fix = true;
 
 public:
 	// combat xp
@@ -162,6 +161,8 @@ public:
 	}
 
 	void SaveStartUp();
+
+	bool fix = true;
 };
 
 #endif

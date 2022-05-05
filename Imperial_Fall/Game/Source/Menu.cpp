@@ -343,7 +343,7 @@ bool Menu::PreUpdate()
 	if (!app->frontground->controller) // keyboard
 	{
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide && unlock_state == 0
-			&& !app->dialog->InDialog())
+			&& !app->dialog->InDialog() && app->frontground->fix)
 		{
 			paused = !paused;
 		}
@@ -599,12 +599,25 @@ bool Menu::PreUpdate()
 		{
 			app->input->SetKey(SDL_SCANCODE_U, KEY_REPEAT);
 		}
+		if (pad.start == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_B, KEY_REPEAT);
+		}
 
 
-		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_UP && !intro)
+		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_UP && !intro && description_disabled && app->inventory->hide && unlock_state == 0
+			&& !app->dialog->InDialog() && app->frontground->fix)
 		{
 			paused = !paused;
 			chosed = 0;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_B) == KEY_UP && !intro && !paused && !settings && description_disabled
+			&& app->inventory->hide && app->inventory->Enabled() && unlock_state == 0)
+		{
+			app->inventory->hide = false;
+			app->inventory->SetTextCd(30);
+			app->audio->PlayFx(open_book_sound);
 		}
 
 		if (intro && subplaymenu && app->input->GetKey(SDL_SCANCODE_U) == KEY_UP)
@@ -722,7 +735,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && !settings)
+			else if (intro && !settings && !subplaymenu)
 			{
 				if (menu_buttons[0].state == 1)
 				{
@@ -779,7 +792,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && subplaymenu)
+			else if (intro && subplaymenu && !sub_newgame)
 			{
 				if (menu_buttons[4].state == 1)
 				{
@@ -798,6 +811,29 @@ bool Menu::PreUpdate()
 						menu_buttons[5].state = 0;
 						menu_buttons[4].state = 1;
 						chosed = 4;
+						app->audio->PlayFx(hover_sound);
+					}
+				}
+			}
+			else if (intro && subplaymenu && sub_newgame)
+			{
+				if (ask_buttons[0].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+					{
+						ask_buttons[0].state = 0;
+						ask_buttons[1].state = 1;
+						chosed = 1;
+						app->audio->PlayFx(hover_sound);
+					}
+				}
+				else if (ask_buttons[1].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP && !app->frontground->first_time)
+					{
+						ask_buttons[1].state = 0;
+						ask_buttons[0].state = 1;
+						chosed = 0;
 						app->audio->PlayFx(hover_sound);
 					}
 				}
@@ -1002,7 +1038,7 @@ bool Menu::Update(float dt)
 		}
 
 		//menu buttons
-		if (intro && !settings && !credits)
+		if (intro && !settings && !credits && !sub_newgame)
 		{
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && menu_buttons[chosed].state == 1)
 			{
@@ -1108,6 +1144,8 @@ bool Menu::Update(float dt)
 					else if (!app->frontground->first_time)
 					{
 						sub_newgame = true;
+						ask_buttons[0].state = 1;
+						chosed = 0;
 					}
 					break;
 				}
@@ -1118,7 +1156,7 @@ bool Menu::Update(float dt)
 			}
 		}
 
-		if (sub_newgame)
+		else if (sub_newgame)
 		{
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && ask_buttons[chosed].state == 1)
 			{
@@ -1147,6 +1185,9 @@ bool Menu::Update(float dt)
 					break;
 				case 1:
 					sub_newgame = false;
+					menu_buttons[5].state = 1;
+					ask_buttons[1].state = 0;
+					chosed = 5;
 					break;
 				}
 

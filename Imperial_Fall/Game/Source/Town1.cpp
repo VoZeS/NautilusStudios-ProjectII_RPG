@@ -112,7 +112,7 @@ bool Town1::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
 		ENEMIES enemies[4];
-		enemies[0] = ENEMIES::SKELETON;
+		enemies[0] = ENEMIES::THESEION;
 		enemies[1] = ENEMIES::NOTHING;
 		enemies[2] = ENEMIES::NOTHING;
 		enemies[3] = ENEMIES::NOTHING;

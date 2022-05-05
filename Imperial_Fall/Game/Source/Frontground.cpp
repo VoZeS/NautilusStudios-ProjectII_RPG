@@ -19,6 +19,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "Inventory.h"
 #include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 #include "Dialog.h"
@@ -194,6 +195,11 @@ bool Frontground::PostUpdate()
 			return_black = true;
 			fix = true;
 		}
+	}
+	else if (!fix)
+	{
+		return_black = true;
+		fix = true;
 	}
 
 	return true;

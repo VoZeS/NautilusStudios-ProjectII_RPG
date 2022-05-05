@@ -102,6 +102,7 @@ public:
 
 private:
 	Cursor cursor;
+	iPoint c_mouse_pos;
 
 	// book
 	Animation* book;

@@ -120,6 +120,7 @@ public:
 		win_button.state = 1;
 		lose_buttons[0].state = 1;
 		scape_buttons[0].state = 1;
+		ask_buttons[0].state = 1;
 	}
 
 	//Descriptions
