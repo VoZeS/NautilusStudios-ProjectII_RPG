@@ -106,6 +106,30 @@ void Map::Draw()
 							}
 						}
 					}
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 2 && app->frontground->adventure_phase < 2)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 3 && app->frontground->adventure_phase < 4)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 4 && app->frontground->adventure_phase < 6)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
 
 					if (!collision_loaded)
 					{
@@ -113,6 +137,21 @@ void Map::Draw()
 						int height = mapLayerItem->data->properties.GetProperty("Height");
 
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 92 && app->frontground->adventure_phase < 2)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 93 && app->frontground->adventure_phase < 4)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 94 && app->frontground->adventure_phase < 6)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);

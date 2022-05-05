@@ -60,7 +60,7 @@ bool Town2::Start()
 
 		if (app->frontground->move_to == MOVE_TO::TOWN1_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(256), PIXELS_TO_METERS(3200), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(256), PIXELS_TO_METERS(3328), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
 				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
 		}
 		else if (app->frontground->move_to == MOVE_TO::FOREST_TOWN2)
