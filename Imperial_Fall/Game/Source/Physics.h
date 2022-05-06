@@ -55,6 +55,7 @@ public:
 	bool inHerrero = false;
 	bool inGranjero = false;
 	bool inAldeano = false;
+	bool inSignal = false;
 
 	//Soukoban Puzzles Colliders River Booleans
 	bool isActive_S1 = true;
@@ -75,6 +76,7 @@ public:
 		case 3: ret = inHerrero; break;
 		case 4: ret = inGranjero; break;
 		case 5: ret = inAldeano; break;
+		case 6: ret = inSignal; break;
 		}
 
 		return ret;

@@ -335,6 +335,12 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
+		else if ((int)fixtureUserDataB == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(false);
+			inSignal = true;
+		}
 
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataB == 12)
@@ -468,7 +474,12 @@ void Physics::BeginContact(b2Contact* contact)
 			// enemy contact
 			app->entities->StartCombat();
 		}
-
+		else if ((int)fixtureUserDataA == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(false);
+			inSignal = true;
+		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)
 		{
@@ -712,9 +723,16 @@ void Physics::EndContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 6)
 		{
-			// granjero contact
+			// aldeano contact
 			app->dialog->SetPressE_Hide(true);
 			inAldeano = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(true);
+			inSignal = false;
 			app->dialog->QuitDialogs();
 		}
 	}
@@ -759,6 +777,13 @@ void Physics::EndContact(b2Contact* contact)
 			// granjero contact
 			app->dialog->SetPressE_Hide(true);
 			inAldeano = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 9)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inSignal = false;
 			app->dialog->QuitDialogs();
 		}
 	}

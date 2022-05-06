@@ -12,6 +12,7 @@ enum class DIALOGS
 	MEDICO,
 	GRANJERO,
 	ALDEANO,
+	SIGNAL,
 	ENEMIGO
 };
 
@@ -98,6 +99,13 @@ private:
 	const char* linea1Char_Aldeano;
 	int aldeano_text = -1;
 	int aldeano_maxtext = 1;
+
+	std::string linea1String_Signal;
+	std::string linea2String_Signal;
+	const char* linea1Char_Signal;
+	const char* linea2Char_Signal;
+	int signal_text = -1;
+	int signal_maxtext = 1;
 
 	/*
 	std::string linea1String_Templario;

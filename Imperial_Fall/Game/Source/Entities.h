@@ -17,6 +17,7 @@ enum class ENTITY_TYPE
 	HERRERO,
 	GRANJERO,
 	ALDEANO,
+	SIGNAL,
 	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
@@ -135,6 +136,7 @@ public:
 	SDL_Texture* herrero = NULL;
 	SDL_Texture* granjero = NULL;
 	SDL_Texture* aldeano = NULL;
+	SDL_Texture* signal = NULL;
 	SDL_Texture* renato_bueno = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* mushroom = NULL;

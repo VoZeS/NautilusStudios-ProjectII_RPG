@@ -39,6 +39,7 @@ public:
 	Animation* currentAnimation = NULL;
 	Animation movingBox_Anim;
 	SDL_Rect boxRect;
+
 };
 
 #endif // __FOREST_H__

@@ -83,10 +83,12 @@ bool Forest::Start()
 			app->LoadGameRequest(false);
 		}
 
-		boxRect = { 0, 0, 64,65 };
 
 		currentAnimation = &movingBox_Anim;
+
 	}
+
+	boxRect = { 0, 0, 64,65 };
 
 
 	return true;
@@ -95,14 +97,20 @@ bool Forest::Start()
 // Called each loop iteration
 bool Forest::PreUpdate()
 {
-
 	return true;
 }
 
 // Called each loop iteration
 bool Forest::Update(float dt)
 {
-	
+	if (app->physics->inSignal && app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		// town_2 --> forest
+		app->frontground->move_to = MOVE_TO::TOWN2_FOREST;
+
+		app->frontground->FadeToBlack();
+	}
+
 	// Draw map
 	app->map->Draw();
 
@@ -111,30 +119,28 @@ bool Forest::Update(float dt)
 		currentAnimation->Update();
 	}
 
+	if (app->map->S1_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S2_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S3_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S4_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
 	return true;
 }
 
 // Called each loop iteration
 bool Forest::PostUpdate()
 {
-	if (app->map->S1_Box != nullptr)
-	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
-	}
-	if (app->map->S2_Box != nullptr)
-	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32), &boxRect);
-	}
-	if (app->map->S3_Box != nullptr)
-	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32), &boxRect);
-	}
-	if (app->map->S4_Box != nullptr)
-	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32), &boxRect);
-	}
-	
-
 	return true;
 }
 

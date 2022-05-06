@@ -18,6 +18,9 @@
 	<aldeano>
 		<text1 linea1="No tengo nada que decir. No molestes."/>
 	</aldeano>
+	<signal>
+		<text1 linea1="¿Te has quedado encallado?" linea2="Pulsa R para resetear las cajas."/>
+	</signal>
 	<templario>
 		<text1 linea1="Y vosotros quienes sois?" linea2="Largaos de aqui!"/>
 	</templario>

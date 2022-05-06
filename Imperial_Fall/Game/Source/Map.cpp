@@ -237,6 +237,11 @@ void Map::Draw()
 							// Aldeano
 							app->entities->CreateEntity(ENTITY_TYPE::ALDEANO, pos.x, pos.y);
 						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 16)
+						{
+						// SIGNAL SOUKOBAN
+						app->entities->CreateEntity(ENTITY_TYPE::SIGNAL, pos.x, pos.y);
+						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// White templar
