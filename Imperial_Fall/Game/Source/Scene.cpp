@@ -102,6 +102,10 @@ bool Scene::PostUpdate()
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;	
 
+
+		//app->render->DrawTexture(texture1, app->render->camera.x, app->render->camera.y);
+		
+
 	if (app->frontground->controller)
 	{
 		GamePad& pad = app->input->pads[0];

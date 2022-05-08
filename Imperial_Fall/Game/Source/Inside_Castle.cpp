@@ -43,7 +43,7 @@ bool Inside_Castle::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("inside_castle.tmx");
+		app->map->Load("inside_castle.tmx", app->tex);
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/inside_castle.ogg");

@@ -623,7 +623,7 @@ bool Map::CleanUp()
 }
 
 // Load new map
-bool Map::Load(const char* filename)
+bool Map::Load(const char* filename, Textures* tex)
 {
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
@@ -644,11 +644,13 @@ bool Map::Load(const char* filename)
 		ret = LoadMap(mapFile);
 	}
 
-    // L03: DONE 4: Create and call a private function to load a tileset
-    // remember to support more any number of tilesets!
-	if (ret == true)
+	pugi::xml_node tileset;
+	for (tileset = mapFile.child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
-		ret = LoadTileSets(mapFile.child("map"));
+		TileSet* set = new TileSet();
+		if (ret == true) ret = LoadTilesetDetails(tileset, set);
+		if (ret == true) ret = LoadTilesetImage(tileset, set,tex);
+		mapData.tilesets.Add(set);
 	}
 
 	// L04: DONE 4: Iterate all layers and load each of them
@@ -760,21 +762,7 @@ bool Map::LoadMap(pugi::xml_node mapFile)
 }
 
 // L03: DONE 4: Implement the LoadTileSet function to load the tileset properties
-bool Map::LoadTileSets(pugi::xml_node mapFile) {
 
-	bool ret = true;
-
-	pugi::xml_node tileset;
-	for (tileset = mapFile.child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
-	{
-		TileSet* set = new TileSet();
-		if (ret == true) ret = LoadTilesetDetails(tileset, set);
-		if (ret == true) ret = LoadTilesetImage(tileset, set);
-		mapData.tilesets.Add(set);
-	}
-
-	return ret;
-}
 
 // L03: DONE 4: Load Tileset attributes
 bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
@@ -795,7 +783,7 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 }
 
 // L03: DONE 4: Load Tileset image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set, Textures* tex)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
@@ -809,7 +797,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	{
 		// Load Tileset image
 		SString tmp("%s%s", folder.GetString(), image.attribute("source").as_string());
-		set->texture = app->tex->Load(tmp.GetString());
+		set->texture = tex->Load(tmp.GetString());
 	}
 
 	return ret;
