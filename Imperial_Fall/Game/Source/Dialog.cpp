@@ -459,7 +459,7 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 0)
 				{
-					if (renato_text == 3) /// reward for mision 1
+					if (renato_text == 2) /// reward for mision 1
 					{
 						for (size_t i = 0; i < 4; i++)
 						{
@@ -467,6 +467,7 @@ bool Dialog::Update(float dt)
 						}
 						app->inventory->AddCoins(10);
 						app->inventory->UnlockObject("403"); // 3 hp potions
+						renato_text++;
 					}
 					///////////////////////////////////////////
 					if (ContinueDialog(renato_text, 8))
@@ -488,7 +489,6 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 1)
 				{
-					renato_text = 6;
 					if (ContinueDialog(renato_text, 8))
 					{
 						letlengh = 0;
@@ -502,17 +502,19 @@ bool Dialog::Update(float dt)
 					{
 						inDialog = false;
 						actual_dialog = DIALOGS::NO_ONE;
+						renato_text = 6;
 					}
 				}
 				else if (app->frontground->adventure_phase == 2)
 				{
-					if (renato_text == 7) /// reward for mision 2
+					if (renato_text == 6) /// reward for mision 2
 					{
 						for (size_t i = 0; i < 4; i++)
 						{
 							app->inventory->AddSkillPoint(i, 5);
 						}
 						app->inventory->AddCoins(25);
+						renato_text++;
 					} ///////////////////////////////////////////
 					if (ContinueDialog(renato_text, 12))
 					{
@@ -533,7 +535,6 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 3)
 				{
-					renato_text = 10;
 					if (ContinueDialog(renato_text, 12))
 					{
 						letlengh = 0;
@@ -552,13 +553,14 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 4)
 				{
-					if (renato_text == 11) /// reward for mision 3
+					if (renato_text == 10) /// reward for mision 3
 					{
 						for (size_t i = 0; i < 4; i++)
 						{
 							app->inventory->AddSkillPoint(i, 8);
 						}
 						app->inventory->AddCoins(50);
+						renato_text++;
 					} ///////////////////////////////////////////
 					if (ContinueDialog(renato_text, 16))
 					{
@@ -579,7 +581,6 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 5)
 				{
-					renato_text = 14;
 					if (ContinueDialog(renato_text, 16))
 					{
 						letlengh = 0;
@@ -598,7 +599,10 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 6)
 				{
-					renato_text = 15;
+					if (renato_text == 14) /// reward for mision 3
+					{
+						renato_text++;
+					}	
 					if (ContinueDialog(renato_text, 17))
 					{
 						letlengh = 0;
