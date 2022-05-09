@@ -1443,19 +1443,19 @@ bool Menu::Update(float dt)
 
 			app->frontground->FadeToBlack();
 		}
-		/*else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		else if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
 			app->frontground->move_to = MOVE_TO::SCENE_FOREST;
 
 			app->frontground->FadeToBlack();
-		}*/
+		}
 		else if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
 			app->frontground->move_to = MOVE_TO::SCENE_BATTLEFIELD;
 
 			app->frontground->FadeToBlack();
 		}
-		/*else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
 			app->frontground->move_to = MOVE_TO::SCENE_DUNGEON;
 
@@ -1472,7 +1472,7 @@ bool Menu::Update(float dt)
 			app->frontground->move_to = MOVE_TO::SCENE_INSIDE;
 
 			app->frontground->FadeToBlack();
-		}*/
+		}
 		else if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
 			app->SaveGameRequest();

@@ -25,7 +25,7 @@ struct Miscelenea
 	b2Body* body;
 	int number = -1;
 	bool alive = false;
-	int misc_type; // 0 --> coins, 1 --> assassin, 2 --> healer, 3 --> tank, 4 --> wizard
+	int misc_type; // 0 --> coins, 1 --> assassin, 2 --> healer, 3 --> tank, 4 --> wizard, 5 --> palancas
 };
 
 class Physics : public Module, public b2ContactListener
@@ -48,12 +48,10 @@ public:
 	bool CleanUp();
 
 	bool CreateMapBox(int x, int y, int w, int h, int collision);
-	bool CreateNormalCollisions(int x, int y, int w, int h);
 
 	bool CreateMiscelanea(int x, int y, int w, int h, int collision);
 
 	bool CleanMapBoxes();
-	bool CleanNormalCollisions();
 
 	void BeginContact(b2Contact* contact);
 
@@ -64,6 +62,7 @@ public:
 
 	Miscelenea coins_in_floor[MAX_COINS];
 	Miscelenea books_in_floor[MAX_BOOKS];
+	Miscelenea lever[2];
 
 	int on_collosion;
 
@@ -76,6 +75,10 @@ public:
 	bool inCoins = false;
 	bool inBook = false;
 	int book_type = -1;
+
+	bool inLever1 = false;
+	bool inLever2 = false;
+
 
 	bool GetInNPC(int npc)
 	{

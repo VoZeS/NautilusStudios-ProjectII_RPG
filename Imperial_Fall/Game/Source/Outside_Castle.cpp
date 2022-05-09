@@ -23,6 +23,18 @@
 Outside_Castle::Outside_Castle(bool enabled) : Module(enabled)
 {
 	name.Create("ouside_castle");
+
+	lever1Anim.PushBack({ 0, 0, 32,  32});
+	lever1Anim.PushBack({ 0, 32, 32,  32});
+	lever1Anim.PushBack({ 0, 64, 32,  32});
+	lever1Anim.speed = 1.0f;
+	lever1Anim.loop = false;
+
+	lever2Anim.PushBack({ 0, 0, 32,  32 });
+	lever2Anim.PushBack({ 0, 32, 32,  32 });
+	lever2Anim.PushBack({ 0, 64, 32,  32 });
+	lever2Anim.speed = 1.0f;
+	lever2Anim.loop = false;
 }
 
 // Destructor
@@ -81,6 +93,12 @@ bool Outside_Castle::Start()
 		{
 			app->LoadGameRequest(false);
 		}
+
+		leverText = app->tex->Load("Assets/textures/lever.png");
+
+		currentAnimL1 = &lever1Anim;
+		currentAnimL2 = &lever2Anim;
+
 	}
 
 
@@ -101,6 +119,18 @@ bool Outside_Castle::PreUpdate()
 // Called each loop iteration
 bool Outside_Castle::Update(float dt)
 {
+	if (app->physics->inLever1 && app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		currentAnimL1->Update();
+		lever1Active = true;
+	}
+	if (app->physics->inLever2 && app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		currentAnimL2->Update();
+		lever2Active = true;
+
+	}
+
 	// Draw map
 	app->map->Draw();
 
@@ -110,7 +140,13 @@ bool Outside_Castle::Update(float dt)
 // Called each loop iteration
 bool Outside_Castle::PostUpdate()
 {
+	if (app->physics->lever[0].body != nullptr && app->physics->lever[1].body != nullptr)
+	{
+		app->render->AddrenderObject(leverText, { METERS_TO_PIXELS(app->physics->lever[0].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(app->physics->lever[0].body->GetPosition().y - 32.0f) }, currentAnimL1->GetCurrentFrame(), 1, 1.0f, 0.0f);
+		app->render->AddrenderObject(leverText, { METERS_TO_PIXELS(app->physics->lever[1].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(app->physics->lever[1].body->GetPosition().y - 32.0f) }, currentAnimL2->GetCurrentFrame(), 1, 1.0f, 0.0f);
 
+	}
+	
 	return true;
 }
 

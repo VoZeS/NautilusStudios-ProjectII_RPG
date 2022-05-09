@@ -6,6 +6,7 @@
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
+#include "Outside_Castle.h"
 #include "Frontground.h"
 
 #include "Defs.h"
@@ -141,6 +142,11 @@ void Map::Draw()
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 90)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 92 && app->frontground->adventure_phase < 2)
 						{
 							// collision ground
@@ -181,7 +187,7 @@ void Map::Draw()
 							// Aldeano
 							app->entities->CreateEntity(ENTITY_TYPE::ALDEANO, pos.x, pos.y);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 16)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							if (app->frontground->adventure_phase > 0)
 							{
@@ -438,6 +444,16 @@ void Map::Draw()
 								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 28);
 							}
 							books3_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 60)
+						{
+							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 60);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 70)
+						{
+							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 70);
+
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)

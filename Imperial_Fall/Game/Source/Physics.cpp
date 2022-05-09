@@ -297,26 +297,6 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	return true;
 }
 
-bool Physics::CreateNormalCollisions(int x, int y, int w, int h)
-{
-	b2BodyDef g;
-	g.type = b2_staticBody;
-	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
-
-	b2Body* p = world->CreateBody(&g);
-
-	b2PolygonShape box;
-	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
-
-	b2FixtureDef fixture;
-	fixture.shape = &box;
-	b2Fixture* fix = p->CreateFixture(&fixture);
-
-	fix->SetUserData((void*)100);
-
-	return true;
-}
-
 bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 {
 	b2BodyDef g;
@@ -358,6 +338,21 @@ bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 		books_in_floor[book_number].alive = true;
 		books_in_floor[book_number].misc_type = 4;
 	}
+	// PALANCAS
+	else if (collision == 60)
+	{
+		lever[0].body = world->CreateBody(&g);
+		lever[0].number = 0;
+		lever[0].alive = true;
+		lever[0].misc_type = 5;
+	}
+	else if (collision == 70)
+	{
+		lever[1].body = world->CreateBody(&g);
+		lever[1].number = 1;
+		lever[1].alive = true;
+		lever[1].misc_type = 5;
+	}
 
 	b2PolygonShape box;
 	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
@@ -366,6 +361,8 @@ bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 	fixture.shape = &box;
 	// miscelanea
 	if (collision == 20) fixture.isSensor = true;
+	else if (collision == 60) fixture.isSensor = true;
+	else if (collision == 70) fixture.isSensor = true;
 	else if (collision == 22) fixture.isSensor = true;
 	else if (collision == 26) fixture.isSensor = true;
 	else if (collision == 27) fixture.isSensor = true;
@@ -376,6 +373,16 @@ bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision)
 	{
 		fix = coins_in_floor[coins_number].body->CreateFixture(&fixture);
 		coins_number++;
+		fix->SetUserData((void*)collision);
+	}
+	else if (collision == 60)
+	{
+		fix = lever[0].body->CreateFixture(&fixture);
+		fix->SetUserData((void*)collision);
+	}
+	else if (collision == 70)
+	{
+		fix = lever[1].body->CreateFixture(&fixture);
 		fix->SetUserData((void*)collision);
 	}
 	else if (collision == 22 || collision == 26 || collision == 27 || collision == 28)
@@ -395,23 +402,6 @@ bool Physics::CleanMapBoxes()
 		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 		{
 			if ((int)f->GetUserData() >= 2)
-			{
-				b->DestroyFixture(f);
-				world->DestroyBody(b);
-			}
-		}
-	}
-
-	return true;
-}
-
-bool Physics::CleanNormalCollisions()
-{
-	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
-	{
-		for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
-		{
-			if ((int)f->GetUserData() == 100)
 			{
 				b->DestroyFixture(f);
 				world->DestroyBody(b);
@@ -475,6 +465,18 @@ void Physics::BeginContact(b2Contact* contact)
 			// coins in floor contact
 			app->dialog->SetPressE_Hide(false);
 			inCoins = true;
+		}
+		else if ((int)fixtureUserDataB == 60)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inLever1 = true;
+		}
+		else if ((int)fixtureUserDataB == 70)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inLever2 = true;
 		}
 		else if ((int)fixtureUserDataB == 22)
 		{
@@ -641,6 +643,18 @@ void Physics::BeginContact(b2Contact* contact)
 			// coins in floor contact
 			app->dialog->SetPressE_Hide(false);
 			inCoins = true;
+		}
+		else if ((int)fixtureUserDataA == 60)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inLever1 = true;
+		}
+		else if ((int)fixtureUserDataA == 70)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(false);
+			inLever2 = true;
 		}
 		else if ((int)fixtureUserDataA == 22)
 		{
@@ -813,6 +827,18 @@ void Physics::EndContact(b2Contact* contact)
 			app->dialog->SetPressE_Hide(true);
 			inCoins = false;
 		}
+		else if ((int)fixtureUserDataB == 60)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inLever1 = false;
+		}
+		else if ((int)fixtureUserDataB == 70)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inLever2 = false;
+		}
 		else if ((int)fixtureUserDataB == 22)
 		{
 			// coins in floor contact
@@ -892,6 +918,18 @@ void Physics::EndContact(b2Contact* contact)
 			// coins in floor contact
 			app->dialog->SetPressE_Hide(true);
 			inCoins = false;
+		}
+		else if ((int)fixtureUserDataA == 60)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inLever1 = false;
+		}
+		else if ((int)fixtureUserDataA == 70)
+		{
+			// lever 1 in floor contact
+			app->dialog->SetPressE_Hide(true);
+			inLever2 = false;
 		}
 		else if ((int)fixtureUserDataA == 22)
 		{
