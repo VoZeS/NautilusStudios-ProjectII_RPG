@@ -95,6 +95,13 @@ public:
 		return f_item_uses[n];
 	}
 
+	SDL_Texture* heroes_icons = NULL;
+	SDL_Texture* enemies_icons = NULL;
+	SDL_Texture* turn_icon = NULL;
+	SDL_Texture* dead_icon = NULL;
+	SDL_Texture* turns_icons = NULL;
+	SDL_Texture* whitemark_64x64 = NULL;
+	SDL_Texture* whitemark_32x32 = NULL;
 private:
 	bool preupdatedone = false;
 
@@ -126,14 +133,6 @@ private:
 	pugi::xml_node heroes_stats;
 
 	// textures
-	SDL_Texture* heroes_icons = NULL;
-	SDL_Texture* enemies_icons = NULL;
-	SDL_Texture* turn_icon = NULL;
-	SDL_Texture* dead_icon = NULL;
-	SDL_Texture* turns_icons = NULL;
-	SDL_Texture* whitemark_64x64 = NULL;
-	SDL_Texture* whitemark_32x32 = NULL;
-
 	uint dragon_breath;
 
 	// enemy casting skill

@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Town1.h"
 #include "AssetsManager.h"
+#include "Combat_Manager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -182,6 +183,7 @@ void Scene::LoadTexFile(const pugi::xml_document& dataFile)
 	pugi::xml_node tex_node = dataFile.child("data").child("texture");
 	texture1 = app->tex->Load(tex_node.attribute("file").as_string());
 	texture2 = app->tex->Load(tex_node.attribute("file2").as_string());
+	//app->combat_manager->
 }
 
 void Scene::LoadFxFile(const pugi::xml_document& dataFile)
