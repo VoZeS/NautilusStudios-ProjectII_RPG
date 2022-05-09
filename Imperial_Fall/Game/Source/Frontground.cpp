@@ -82,8 +82,13 @@ bool Frontground::PreUpdate()
 
 	if (check_phase_change)
 	{
-		app->frontground->adventure_phase = app->frontground->CheckAdventureState();
+		//adventure_phase = CheckAdventureState();
 		check_phase_change = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		adventure_phase++;
 	}
 	
 	if (go_black)
