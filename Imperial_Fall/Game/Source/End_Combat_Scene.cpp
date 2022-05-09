@@ -44,7 +44,7 @@ bool End_Combat_Scene::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("end_combat.tmx", app->tex);
+		app->map->Load("end_combat.tmx");
 
 		// Load music
 		app->audio->StopMusic(1.0f);

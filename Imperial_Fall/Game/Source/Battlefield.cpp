@@ -43,7 +43,7 @@ bool Battlefield::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("battlefield.tmx", app->tex);
+		app->map->Load("battlefield.tmx");
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");

@@ -623,7 +623,7 @@ bool Map::CleanUp()
 }
 
 // Load new map
-bool Map::Load(const char* filename, Textures* tex)
+bool Map::Load(const char* filename)
 {
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
@@ -649,7 +649,7 @@ bool Map::Load(const char* filename, Textures* tex)
 	{
 		TileSet* set = new TileSet();
 		if (ret == true) ret = LoadTilesetDetails(tileset, set);
-		if (ret == true) ret = LoadTilesetImage(tileset, set,tex);
+		if (ret == true) ret = LoadTilesetImage(tileset, set);
 		mapData.tilesets.Add(set);
 	}
 
@@ -783,7 +783,7 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 }
 
 // L03: DONE 4: Load Tileset image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set, Textures* tex)
+bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
@@ -797,7 +797,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set, Textures*
 	{
 		// Load Tileset image
 		SString tmp("%s%s", folder.GetString(), image.attribute("source").as_string());
-		set->texture = tex->Load(tmp.GetString());
+		set->texture = app->tex->Load(tmp.GetString());
 	}
 
 	return ret;

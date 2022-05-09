@@ -43,7 +43,7 @@ bool Town1::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("town.tmx", app->tex);
+		app->map->Load("town.tmx");
 
 
 		// Load music

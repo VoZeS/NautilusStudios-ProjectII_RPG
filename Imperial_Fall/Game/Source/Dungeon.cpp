@@ -43,7 +43,7 @@ bool Dungeon::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("dungeon.tmx", app->tex);
+		app->map->Load("dungeon.tmx");
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");

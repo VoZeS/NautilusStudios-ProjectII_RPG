@@ -133,7 +133,7 @@ public:
     bool CleanUp();
 
     // Load new map
-    bool Load(const char* path, Textures* tex);
+    bool Load(const char* path);
 
 	bool CleanMaps();
 
@@ -151,7 +151,7 @@ private:
 	bool LoadMap(pugi::xml_node mapFile);
 	bool LoadTileSets(pugi::xml_node mapFile);
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set, Textures* tex);
+	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 
 	// L04
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);

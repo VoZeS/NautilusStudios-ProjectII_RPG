@@ -43,7 +43,7 @@ bool Combat_Scene::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("combat.tmx", app->tex);
+		app->map->Load("combat.tmx");
 
 		// Load music
 		/*if (!app->entities->in_boss)

@@ -43,7 +43,7 @@ bool Forest::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("forest.tmx", app->tex);
+		app->map->Load("forest.tmx");
 
 		// Load music
 		//app->audio->PlayMusic("Assets/audio/music/forest.ogg");
