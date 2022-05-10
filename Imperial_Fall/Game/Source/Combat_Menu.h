@@ -78,6 +78,30 @@ public:
 	Skill desc_skill;
 	void DisplaySkillEffects(Skill skill, int cx, int cy);
 
+	SDL_Texture* assassin_texture = NULL;
+	SDL_Texture* tank_texture = NULL;
+	SDL_Texture* healer_texture = NULL;
+	SDL_Texture* wizard_texture = NULL;
+	SDL_Texture* target = NULL;
+	SDL_Texture* tombstone = NULL;
+	SDL_Texture* goblin = NULL;
+	SDL_Texture* skeleton = NULL;
+	SDL_Texture* mushroom = NULL;
+	SDL_Texture* white_templar = NULL;
+	SDL_Texture* red_templar = NULL;
+	SDL_Texture* dragon_idle = NULL;
+	SDL_Texture* dragon_ult = NULL;
+	SDL_Texture* theseion = NULL;
+	SDL_Texture* armored_templar = NULL;
+	SDL_Texture* whitemark_400x50 = NULL;
+	SDL_Texture* whitemark_110x110 = NULL;
+	SDL_Texture* whitemark_128x128 = NULL;
+	SDL_Texture* whitemark_800x50 = NULL;
+	SDL_Texture* special_buttons = NULL;
+	SDL_Texture* items = NULL;
+	SDL_Texture* casting = NULL;
+	SDL_Texture* skills_icons = NULL;
+
 private:
 	bool preupdatedone = false;
 	bool updatedone = false;
@@ -144,29 +168,6 @@ private:
 	iPoint objective_pos;
 
 	// textures
-	SDL_Texture* assassin_texture = NULL;
-	SDL_Texture* tank_texture = NULL;
-	SDL_Texture* healer_texture = NULL;
-	SDL_Texture* wizard_texture = NULL;
-	SDL_Texture* target = NULL;
-	SDL_Texture* tombstone = NULL;
-	SDL_Texture* goblin = NULL;
-	SDL_Texture* skeleton = NULL;
-	SDL_Texture* mushroom = NULL;
-	SDL_Texture* white_templar = NULL;
-	SDL_Texture* red_templar = NULL;
-	SDL_Texture* dragon_idle = NULL;
-	SDL_Texture* dragon_ult = NULL;
-	SDL_Texture* theseion = NULL;
-	SDL_Texture* armored_templar = NULL;
-	SDL_Texture* whitemark_400x50 = NULL;
-	SDL_Texture* whitemark_110x110 = NULL;
-	SDL_Texture* whitemark_128x128 = NULL;
-	SDL_Texture* whitemark_800x50 = NULL;
-	SDL_Texture* special_buttons = NULL;
-	SDL_Texture* items = NULL;
-	SDL_Texture* casting = NULL;
-	SDL_Texture* skills_icons = NULL;
 
 	// skills fx
 	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal, 5 --> buff
