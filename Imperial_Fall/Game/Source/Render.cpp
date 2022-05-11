@@ -11,6 +11,8 @@
 
 #define VSYNC true
 
+#define MAX_LAYERS 3
+
 Render::Render(bool enabled) : Module(enabled)
 {
 	name.Create("renderer");
@@ -52,6 +54,8 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.x = 0;
 		camera.y = 0;
 	}
+
+	layers.resize(MAX_LAYERS);
 
 	return ret;
 }
@@ -236,7 +240,27 @@ bool Render::Update(float dt)
 bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+
+	//Sort
+	for (int j = 0; j < 3; j++)
+	{
+		SortingRenderObjectsWithPosition(layers[j]);
+	}
+
+
+	Draw();
+
+
 	SDL_RenderPresent(renderer);
+
+	
+	
+	//Clear layers
+	for (int i = 0; i < MAX_LAYERS; i++)
+	{
+		layers[i].clear();
+	}
+
 	return true;
 }
 
@@ -419,4 +443,168 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 void Render::MoveCamera(int movement)
 {
 	camera.x -= movement;
+}
+
+void Render::Draw()
+{
+	for (int i = 0; i < MAX_LAYERS; i++)
+	{
+		for each (auto renderObj in layers[i])
+		{
+
+			if (renderObj.section.w == 0 || renderObj.section.h == 0)
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+				cont++;
+			}
+			else
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+				cont++;
+			}
+		}
+	}
+	/*for each (auto renderObj in layers[1])
+	{
+			if (renderObj.section.w == 0 || renderObj.section.h == 0)
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+				cont++;
+			}
+			else
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+				cont++;
+			}
+
+	}
+
+	for each (auto renderObj in layers[2])
+	{
+
+			if (renderObj.section.w == 0 || renderObj.section.h == 0)
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+				cont++;
+			}
+			else
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+				cont++;
+			}
+
+	}*/
+
+}
+
+
+bool Render::IsinCamera(const renderObject* renderObj)
+{
+
+	iPoint renderRectinWorldCoords = ScreenToWorld(renderObj->renderRect.x,renderObj->renderRect.y);
+	SDL_Rect cameraa = { -app->render->camera.x, -app->render->camera.y, app->render->camera.w, app->render->camera.h};
+	SDL_Rect r = { renderRectinWorldCoords.x,renderRectinWorldCoords.y, renderObj->renderRect.w ,renderObj->renderRect.h };
+
+	return SDL_HasIntersection(&cameraa, &r);
+}
+
+void Render::SortingRenderObjectsWithPosition(vector<renderObject>& vectorofobjectstosort)
+{
+
+	int small;
+	int length = vectorofobjectstosort.size();
+
+	for (int i = 0; i < length - 1; i++)
+	{
+		small = i;
+		for (int j = i + 1; j < length; j++)
+		{
+
+			if ((vectorofobjectstosort[j].renderRect.y + vectorofobjectstosort[j].renderRect.h) < (vectorofobjectstosort[small].renderRect.y + vectorofobjectstosort[small].renderRect.h))
+			{
+				small = j;
+			}
+
+		}
+		swap(vectorofobjectstosort[i], vectorofobjectstosort[small]);
+
+	}
+
+}
+
+void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH, float scale, float speed)
+{
+	renderObject renderobject;
+
+	renderobject.texture = texture;
+	renderobject.section = section;
+	renderobject.Ordeninlayer = ordeninlayer;
+	renderobject.speed = speed;
+	renderobject.angle = angle;
+
+	/*if (renderobject.renderRect.x <= app->render->camera.w / 2)
+	{
+		renderobject.renderRect.x = app->render->camera.w / 2;
+	}
+	else
+	{
+		renderobject.renderRect.x = (int)(-app->render->camera.x * speed) + pos.x * scale;
+
+	}
+	if (renderobject.renderRect.y >= app->render->camera.h / 2)
+	{
+		renderobject.renderRect.y = app->render->camera.h / 2;
+	}
+	else
+	{
+		renderobject.renderRect.y = (int)(-app->render->camera.y * speed) + pos.y * scale;
+
+	}*/
+
+	if (layer == 3) renderobject.speed = 0;
+
+	if (section.w != 0 && section.h != 0)
+	{
+		renderobject.renderRect.w = section.w;
+		renderobject.renderRect.h = section.h;
+	}
+	else
+	{
+		// Get the texture size 
+		SDL_QueryTexture(texture, nullptr, nullptr, &renderobject.renderRect.w, &renderobject.renderRect.h);
+	}
+
+	renderobject.renderRect.w *= scale;
+	renderobject.renderRect.h *= scale;
+
+	if (isFlipH == false)
+	{
+		renderobject.flip = SDL_FLIP_NONE;
+	}
+	else
+	{
+		renderobject.flip = SDL_FLIP_HORIZONTAL;
+	}
+	if (IsinCamera(&renderobject))
+	{
+		layers[layer].push_back(renderobject);
+	}
 }

@@ -64,7 +64,7 @@ bool Physics::Start()
 // Called each loop iteration
 bool Physics::PreUpdate()
 {
-	
+
 	if (!app->menu->GetGameState())
 	{
 		world->Step(1.0f / 60.0f, 6, 2);
@@ -109,7 +109,7 @@ bool Physics::PostUpdate()
 				if (i > 0)
 				{
 					void* userData = f->GetUserData();
-					
+
 					switch ((int)userData)
 					{
 					case 1: // player
@@ -162,6 +162,9 @@ bool Physics::PostUpdate()
 						c_g = 100;
 						c_b = 100;
 						break;
+					case 30:
+						return true;
+						break;
 					default:
 						c_r = 100;
 						c_g = 100;
@@ -170,7 +173,7 @@ bool Physics::PostUpdate()
 					}
 					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), c_r, c_g, c_b);
 				}
-
+					
 				prev = v;
 			}
 
@@ -189,7 +192,7 @@ bool Physics::CleanUp()
 	return true;
 }
 
-bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
+b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 {
 	b2BodyDef g;
 	g.type = b2_staticBody;
@@ -202,11 +205,26 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 
 	b2FixtureDef fixture;
 	fixture.shape = &box;
+
 	if (collision == 5) fixture.isSensor = true;
 	else if (collision == 6) fixture.isSensor = true;
 	else if (collision == 7) fixture.isSensor = true;
 	else if (collision == 12) fixture.isSensor = true;
 	else if (collision == 21) fixture.isSensor = true;
+	else if (collision == 30) fixture.isSensor = true;
+
+	// SOUKOBAN PUZZLE SENSORS
+	else if (collision == 201) fixture.isSensor = true;
+	else if (collision == 202) fixture.isSensor = true;
+	else if (collision == 203) fixture.isSensor = true;
+	else if (collision == 204) fixture.isSensor = true;
+	else if (collision == 205) fixture.isSensor = true;
+	else if (collision == 206) fixture.isSensor = true;
+
+	else if (collision == 231) fixture.isSensor = true;
+	else if (collision == 232) fixture.isSensor = true;
+	else if (collision == 233) fixture.isSensor = true;
+
 	else if (collision == 23) fixture.isSensor = true;
 	else if (collision == 32) fixture.isSensor = true;
 	else if (collision == 24) fixture.isSensor = true;
@@ -217,11 +235,37 @@ bool Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 61) fixture.isSensor = true;
 	else if (collision == 67) fixture.isSensor = true;
 	else if (collision == 76) fixture.isSensor = true;
+
 	b2Fixture* fix = p->CreateFixture(&fixture);
 
 	fix->SetUserData((void*)collision);
 
-	return true;
+
+	return fix;
+}
+
+b2Fixture* Physics::CreateDynamicBox(int x, int y, int w, int h)
+{
+	b2BodyDef g;
+	g.type = b2_dynamicBody;
+	g.position.Set(PIXELS_TO_METERS(x), PIXELS_TO_METERS(y));
+	g.fixedRotation = true;
+	g.linearDamping = 100.0f;
+
+	b2Body* p = world->CreateBody(&g);
+
+	b2PolygonShape box;
+	box.SetAsBox(PIXELS_TO_METERS(w), PIXELS_TO_METERS(h));
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.friction = 1.0f;
+	fixture.restitution = 0.0f;
+	
+	b2Fixture* fix = p->CreateFixture(&fixture);
+	fix->SetUserData((void*)8);
+
+	return fix;
 }
 
 bool Physics::CleanMapBoxes()
@@ -248,6 +292,14 @@ void Physics::BeginContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataA == 1)
 	{
+
+		if ((int)fixtureUserDataB == 30)
+		{
+			//dungeon sensor
+			app->dungeon->in_ice++;
+		}
+
+
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
@@ -282,6 +334,12 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataB == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(false);
+			inSignal = true;
 		}
 
 		// --------------------------------------------------------------- PASS LEVELS
@@ -371,9 +429,16 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 	}
 
-	
 	if ((int)fixtureUserDataB == 1)
 	{
+		if ((int)fixtureUserDataA == 30)
+		{
+			//dungeon sensor
+			app->dungeon->in_ice++;
+
+
+		}
+
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
@@ -408,6 +473,12 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			// enemy contact
 			app->entities->StartCombat();
+		}
+		else if ((int)fixtureUserDataA == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(false);
+			inSignal = true;
 		}
 		// --------------------------------------------------------------- PASS LEVELS
 		else if ((int)fixtureUserDataA == 12)
@@ -495,6 +566,119 @@ void Physics::BeginContact(b2Contact* contact)
 			app->frontground->FadeToBlack();
 		}
 	}
+
+	if ((int)fixtureUserDataA == 8)
+	{
+		// COLLIDERS --> SENSORS (RIVER) SOUKOBAN PUZZLE
+		if ((int)fixtureUserDataB == 201)
+		{
+			app->map->S1_Coll->SetSensor(true);
+
+			
+		}
+		else if ((int)fixtureUserDataB == 202)
+		{
+			app->map->S2_Coll->SetSensor(true);
+
+		}
+		else if ((int)fixtureUserDataB == 231)
+		{
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+		}
+		else if ((int)fixtureUserDataB == 203)
+		{
+			app->map->S3_Coll->SetSensor(true);
+
+		}
+		else if ((int)fixtureUserDataB == 232)
+		{
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+		}
+		else if ((int)fixtureUserDataB == 204)
+		{
+			app->map->S4_Coll->SetSensor(true);
+		}
+		else if ((int)fixtureUserDataB == 233)
+		{
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+		}
+		else if ((int)fixtureUserDataB == 205)
+		{
+			app->map->S5_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
+		}
+		else if ((int)fixtureUserDataB == 206)
+		{
+			app->map->S6_Coll->SetSensor(true);
+
+			contact->GetFixtureA()->SetSensor(true);
+			contact->GetFixtureB()->GetBody()->SetActive(false);
+
+		}
+	}
+
+	if ((int)fixtureUserDataB == 8)
+	{
+		// COLLIDERS --> SENSORS (RIVER) SOUKOBAN PUZZLE
+		if ((int)fixtureUserDataA == 201)
+		{
+			app->map->S1_Coll->SetSensor(true);
+
+
+		}
+		else if ((int)fixtureUserDataA == 202)
+		{
+			app->map->S2_Coll->SetSensor(true);
+
+		}
+		else if ((int)fixtureUserDataA == 231)
+		{
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+		}
+		else if ((int)fixtureUserDataA == 203)
+		{
+			app->map->S3_Coll->SetSensor(true);
+
+		}
+		else if ((int)fixtureUserDataA == 232)
+		{
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+		}
+		else if ((int)fixtureUserDataA == 204)
+		{
+			app->map->S4_Coll->SetSensor(true);
+		}
+		else if ((int)fixtureUserDataA == 233)
+		{
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+		}
+		else if ((int)fixtureUserDataA == 205)
+		{
+			app->map->S5_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
+		}
+		else if ((int)fixtureUserDataA == 206)
+		{
+			app->map->S6_Coll->SetSensor(true);
+
+			contact->GetFixtureB()->SetSensor(true);
+			contact->GetFixtureA()->GetBody()->SetActive(false);
+
+		}
+	}
+	
 }
 
 void Physics::EndContact(b2Contact* contact)
@@ -504,6 +688,11 @@ void Physics::EndContact(b2Contact* contact)
 
 	if ((int)fixtureUserDataA == 1)
 	{
+		if ((int)fixtureUserDataB == 30)
+		{
+			//dungeon sensor
+			app->dungeon->in_ice--;
+		}
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
@@ -534,15 +723,27 @@ void Physics::EndContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 6)
 		{
-			// granjero contact
+			// aldeano contact
 			app->dialog->SetPressE_Hide(true);
 			inAldeano = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(true);
+			inSignal = false;
 			app->dialog->QuitDialogs();
 		}
 	}
 
 	if ((int)fixtureUserDataB == 1)
 	{
+		if ((int)fixtureUserDataA == 30)
+		{
+			//dungeon sensor
+			app->dungeon->in_ice--;
+		}
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact
@@ -576,6 +777,13 @@ void Physics::EndContact(b2Contact* contact)
 			// granjero contact
 			app->dialog->SetPressE_Hide(true);
 			inAldeano = false;
+			app->dialog->QuitDialogs();
+		}
+		else if ((int)fixtureUserDataB == 9)
+		{
+			// granjero contact
+			app->dialog->SetPressE_Hide(true);
+			inSignal = false;
 			app->dialog->QuitDialogs();
 		}
 	}

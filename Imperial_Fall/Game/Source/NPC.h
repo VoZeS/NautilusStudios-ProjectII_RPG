@@ -28,7 +28,7 @@ private:
 
 private:
 	int w = 20, h = 32;
-	int npc_type = 0; // renato = 1, curandero = 2, herrero = 3, granjero = 4, aldeano = 5
+	int npc_type = 0; // renato = 1, curandero = 2, herrero = 3, granjero = 4, aldeano = 5, signal = 8
 
 public:
 	Animation* currentAnimation = NULL;

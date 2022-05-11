@@ -30,6 +30,7 @@ bool Fonts::Start()
 	{
 		char lookupTableChars[] = { " !'#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]^_ abcdefghijklmnopqrstuvwxyz{|}~ çüéâäàaçêëèïîìäaéÆæôöòûù" };
 		textFont1 = app->fonts->Load("Assets/textures/Tipografia_Titulos.png", lookupTableChars, 8);
+		textFont2 = app->fonts->Load("Assets/textures/my_font.png", lookupTableChars, 8);
 	}
 
 	return true;
@@ -151,7 +152,6 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 		}
 
 
-
 		/*
 		else if (text[i] == 'I') {
 
@@ -178,6 +178,97 @@ void Fonts::BlitText(int x, int y, int font_id, const char* text, int zoom, int 
 			y += spriteRect.h * zoom + zoom * down;
 		}
 		*/
+	}
+}
+
+void Fonts::BlitCombatText(int x, int y, int font_id, const char* text, int zoom, int r, int g, int b, int max, int down) const
+{
+	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || fonts[font_id].texture == nullptr)
+	{
+		return;
+	}
+	int x0 = x;
+	int y0 = y;
+
+	x += 5;
+	y -= 5;
+
+	const Font* font = &fonts[font_id];
+	SDL_Rect spriteRect;
+
+	uint len = strlen(text);
+
+	spriteRect.w = 32;
+	spriteRect.h = 40;
+
+	for (uint i = 0; i < len; ++i)
+	{
+		uint charIndex = 0;
+
+		for (uint j = 0; j < font->totalLength; ++j)
+		{
+			if (font->table[j] == text[i])
+			{
+				charIndex = j;
+				break;
+			}
+		}
+
+		spriteRect.x = spriteRect.w * (charIndex % font->columns);
+		spriteRect.y = spriteRect.h * (charIndex / font->columns);
+		if (text[i] == '!' || text[i] == '¡' || text[i] == ',' || text[i] == '.' || text[i] == ':' || text[i] == ';' || text[i] == '|')
+		{
+			app->render->DrawTexture(font->texture, x - 10, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 24;
+		}
+		else if (text[i] == '"' || text[i] == '*' || text[i] == '1' || text[i] == 'j' || text[i] == '(' || text[i] == ')' || text[i] == 'I'
+			|| text[i] == '{' || text[i] == '}' || text[i] == ' ')
+		{
+			app->render->DrawTexture(font->texture, x - 6, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 16;
+		}
+		else if (text[i] == '#' || text[i] == '@')
+		{
+			app->render->DrawTexture(font->texture, x + 4, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w + 4;
+		}
+		else if (text[i] == '%')
+		{
+			app->render->DrawTexture(font->texture, x + 1, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 2;
+		}
+		else if (text[i] == '¿' || text[i] == '-' || text[i] == '/' || text[i] == '0' || text[i] == '2' || text[i] == '3' || text[i] == '5'
+			|| text[i] == '6' || text[i] == '7' || text[i] == '8' || text[i] == '9' || text[i] == '<' || text[i] == '=' || text[i] == '>'
+			|| text[i] == '?' || text[i] == 'A' || text[i] == 'B' || text[i] == 'C' || text[i] == 'D' || text[i] == 'E' || text[i] == 'F'
+			|| text[i] == 'G' || text[i] == 'H' || text[i] == 'J' || text[i] == 'K' || text[i] == 'L' || text[i] == 'N' || text[i] == 'O'
+			|| text[i] == 'P' || text[i] == 'R' || text[i] == 'S' || text[i] == 'U' || text[i] == 'V' || text[i] == 'X' || text[i] == 'Y'
+			|| text[i] == 'Z' || text[i] == '-' || text[i] == 'c' || text[i] == 'f' || text[i] == 'r' || text[i] == 's' || text[i] == 'z')
+		{
+			app->render->DrawTexture(font->texture, x - 4, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 12;
+		}
+		else if (text[i] == '+' || text[i] == '4' || text[i] == 'M' || text[i] == 'Q' || text[i] == 'T' || text[i] == 'W' || text[i] == '^'
+			|| text[i] == 't' || text[i] == 'u' || text[i] == 'v' || text[i] == 'x' || text[i] == 'y')
+		{
+			app->render->DrawTexture(font->texture, x - 2, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 6;
+		}
+		else if (text[i] == '[' || text[i] == ']' || text[i] == 'i' || text[i] == 'l')
+		{
+			app->render->DrawTexture(font->texture, x - 8, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 20;
+		}
+		else if (text[i] == 'w')
+		{
+			app->render->DrawTexture(font->texture, x + 2, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w;
+		}
+		else
+		{
+			app->render->DrawTexture(font->texture, x, y, &spriteRect, 1.0f, 0, INT_MAX, INT_MAX);
+			x += spriteRect.w - 4;
+		}
+		
 	}
 }
 

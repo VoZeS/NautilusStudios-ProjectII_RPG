@@ -34,6 +34,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	SDL_Texture* box_texture = NULL;
+
+	Animation* currentAnimation = NULL;
+	Animation movingBox_Anim;
+	SDL_Rect boxRect;
+
 };
 
 #endif // __FOREST_H__

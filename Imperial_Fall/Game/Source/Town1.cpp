@@ -101,6 +101,18 @@ bool Town1::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
+	//testing
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		ENEMIES enemies[4];
+		enemies[0] = ENEMIES::MUSHROOM;
+		enemies[1] = ENEMIES::MUSHROOM;
+		enemies[2] = ENEMIES::MUSHROOM;
+		enemies[3] = ENEMIES::MUSHROOM;
+		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
+		app->frontground->FadeInCombat(enemies);
+	}
+
 	return true;
 }
 

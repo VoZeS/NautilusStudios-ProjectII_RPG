@@ -69,7 +69,12 @@ public:
 
 	// description
 	bool in_description;
-	SDL_Texture* description = NULL;
+	int description_type = 0; // 0 --> entity, 1 --> skill
+	Combat_Entities* desc_entity = NULL;
+	int enemy_chosed;
+	int ally_chosed;
+	Skill desc_skill;
+	void DisplaySkillEffects(Skill skill, int cx, int cy);
 
 private:
 	bool preupdatedone = false;
@@ -151,6 +156,7 @@ private:
 	SDL_Texture* special_buttons = NULL;
 	SDL_Texture* items = NULL;
 	SDL_Texture* casting = NULL;
+	SDL_Texture* skills_icons = NULL;
 
 	void BlittAttackText(int c_x, int c_y);
 

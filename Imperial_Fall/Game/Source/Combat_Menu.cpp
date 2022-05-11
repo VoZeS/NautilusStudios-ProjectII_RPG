@@ -74,6 +74,8 @@ bool Combat_Menu::Start()
 		skill_prepared_is_item = -1;
 
 		chosed = 0;
+		enemy_chosed = -1;
+		ally_chosed = -1;
 		app->win->GetWindowSize(win_w, win_h);
 
 		// textures
@@ -95,7 +97,7 @@ bool Combat_Menu::Start()
 		special_buttons = app->tex->Load("Assets/textures/special_buttons.png");
 		items = app->tex->Load("Assets/textures/Objects/items.png");
 		casting = app->tex->Load("Assets/textures/casting.png");
-		description = NULL;
+		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 
 		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
@@ -412,6 +414,38 @@ bool Combat_Menu::PreUpdate()
 					{
 						allies_buttons[i].state = 0;
 					}
+				}
+			}
+
+			// enemy description
+			int e = 0;
+			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+			{
+				SDL_Rect rect = enemies_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					enemy_chosed = i;
+					e++;
+				}
+				else if (e == 0)
+				{
+					enemy_chosed = -1;
+				}
+			}
+
+			// ally description
+			int a = 0;
+			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+			{
+				SDL_Rect rect = allies_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+				{
+					ally_chosed = i;
+					a++;
+				}
+				else if (a == 0)
+				{
+					ally_chosed = -1;
 				}
 			}
 		}
@@ -1384,22 +1418,26 @@ bool Combat_Menu::Update(float dt)
 				case 0:
 					//attack 1 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(0).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(0);
 					break;
 				case 1:
 					//attack 2 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(1).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(1);
 					break;
 				case 2:
 					//attack 3 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(2).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(2);
 					break;
 				case 3:
 					//attack 4 description
 					in_description = true;
-					description = app->tex->Load(app->combat_manager->GetActualEntity()->GetSkill(3).skill_description);
+					description_type = 1;
+					desc_skill = app->combat_manager->GetActualEntity()->GetSkill(3);
 					break;
 				}
 			}
@@ -1476,6 +1514,37 @@ bool Combat_Menu::Update(float dt)
 
 				prep_in_items = 1;
 				items_buttons[chosed].state = 2;
+			}
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && items_buttons[chosed].state == 1 && chosed != 4)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					//attack 1 description
+					in_description = true;
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(0);
+					break;
+				case 1:
+					//attack 2 description
+					in_description = true;
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(1);
+					break;
+				case 2:
+					//attack 3 description
+					in_description = true;
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(2);
+					break;
+				case 3:
+					//attack 4 description
+					in_description = true;
+					description_type = 1;
+					desc_skill = app->combat_manager->GetItemList()->GetSkill(3);
+					break;
+				}
 			}
 		}
 
@@ -1592,6 +1661,69 @@ bool Combat_Menu::Update(float dt)
 
 				prep_in_allies = 1;
 				allies_buttons[chosed].state = 2;
+			}
+		}
+
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && enemy_chosed != -1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (enemy_chosed)
+			{
+			case 0:
+				//enemy 1 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(0);
+				break;
+			case 1:
+				//enemy 2 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(1);
+				break;
+			case 2:
+				//enemy 3 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(2);
+				break;
+			case 3:
+				//enemy 4 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetEnemyByNumber(3);
+				break;
+			}
+		}
+		else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && ally_chosed != -1)
+		{
+			app->audio->PlayFx(click_sound);
+			switch (ally_chosed)
+			{
+			case 0:
+				//ally 1 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(0);
+				break;
+			case 1:
+				//ally 2 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(1);
+				break;
+			case 2:
+				//ally 3 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(2);
+				break;
+			case 3:
+				//ally 4 description
+				in_description = true;
+				description_type = 0;
+				desc_entity = app->combat_manager->GetAllyByNumber(3);
+				break;
 			}
 		}
 	}
@@ -1737,22 +1869,18 @@ bool Combat_Menu::PostUpdate()
 				{
 					if (general_buttons[i].state == 1 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
 						g_rect = { 0, 50, 400, 50 };
 					}
 					else if (general_buttons[i].state == 2 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 						g_rect = { 0, 100, 400, 50 };
 					}
 					else if (general_buttons[i].state == 3)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 						g_rect = { 0, 100, 400, 50 };
 					}
 					else if (general_buttons[i].state == 0)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, idleColorR, idleColorG, idleColorB);
 						switch (app->combat_manager->GetActualEntity()->GetSkill(i).element)
 						{
 						case 0: g_rect = { 0, 0, 400, 50 };
@@ -1765,18 +1893,17 @@ bool Combat_Menu::PostUpdate()
 							  break;
 						}
 					}
+
 					texture = whitemark_400x50;
 				}
 				else
 				{
 					if (general_buttons[i].state == 1 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, inColorR, inColorG, inColorB);
 						g_rect = { 0, 110, 110, 110 };
 					}
 					else if (general_buttons[i].state == 2 && !in_action)
 					{
-						//app->render->DrawRectangle(general_buttons[i].rect, pColorR, pColorG, pColorB);
 						g_rect = { 0, 220, 110, 110 };
 					}
 					else if (general_buttons[i].state == 0)
@@ -1794,7 +1921,29 @@ bool Combat_Menu::PostUpdate()
 				general_buttons[i].rect.x = action_pos[i].x + c_x;
 				general_buttons[i].rect.y = action_pos[i].y + c_y;
 
-				app->fonts->BlitText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont1, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
+				app->fonts->BlitCombatText(general_buttons[i].rect.x, general_buttons[i].rect.y + 10, app->fonts->textFont2, app->combat_manager->GetActualEntity()->GetSkill(i).skill_name);
+				
+				if (app->combat_manager->GetActualEntity()->GetSkill(i).enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+				{
+					sp_rect = { 40, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+				{
+					sp_rect = { 0, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+				{
+					sp_rect = { 120, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+				{
+					sp_rect = { 80, 0, 40, 40 };
+				}
+				else if (app->combat_manager->GetActualEntity()->GetSkill(i).ally_objective == ALLY_OBJECTIVE::SELF)
+				{
+					sp_rect = { 160, 0, 40, 40 };
+				}
+				app->render->DrawTexture(skills_icons, general_buttons[i].rect.x + 350, general_buttons[i].rect.y + 5, &sp_rect);
 			}
 			for (size_t i = 4; i < 7; i++)
 			{
@@ -1914,7 +2063,29 @@ bool Combat_Menu::PostUpdate()
 
 				if (i == 4)
 				{
-					app->fonts->BlitText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, app->fonts->textFont1, skill_prepared.skill_name);
+					app->fonts->BlitCombatText(enemies_buttons[i].rect.x, enemies_buttons[i].rect.y + 10, app->fonts->textFont2, skill_prepared.skill_name);
+				
+					if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+					{
+						e_rect = { 40, 0, 40, 40 };
+					}
+					else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+					{
+						e_rect = { 0, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+					{
+						e_rect = { 120, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+					{
+						e_rect = { 80, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
+					{
+						e_rect = { 160, 0, 40, 40 };
+					}
+					app->render->DrawTexture(skills_icons, enemies_buttons[i].rect.x + 350, enemies_buttons[i].rect.y + 5, &e_rect);
 				}
 			}
 		}
@@ -1973,7 +2144,29 @@ bool Combat_Menu::PostUpdate()
 
 				if (i == 4)
 				{
-					app->fonts->BlitText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, app->fonts->textFont1, skill_prepared.skill_name);
+					app->fonts->BlitCombatText(allies_buttons[i].rect.x, allies_buttons[i].rect.y + 15, app->fonts->textFont2, skill_prepared.skill_name);
+				
+					if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+					{
+						a_rect = { 40, 0, 40, 40 };
+					}
+					else if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+					{
+						a_rect = { 0, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ONE_ALLY)
+					{
+						a_rect = { 120, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY)
+					{
+						a_rect = { 80, 0, 40, 40 };
+					}
+					else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF)
+					{
+						a_rect = { 160, 0, 40, 40 };
+					}
+					app->render->DrawTexture(skills_icons, allies_buttons[i].rect.x + 350, allies_buttons[i].rect.y + 5, &a_rect);
 				}
 			}
 		}
@@ -2116,8 +2309,6 @@ bool Combat_Menu::CleanUp()
 	special_buttons = NULL;
 	app->tex->UnLoad(items);
 	items = NULL;
-	app->tex->UnLoad(description);
-	description = NULL;
 
 	return true;
 }
@@ -2146,31 +2337,31 @@ void Combat_Menu::BlittAttackText(int c_x, int c_y)
 	switch (app->combat_manager->GetActualEntity()->GetType())
 	{
 	case 0:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 1:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 2:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 3:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 4:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 5:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 6:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 7:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 	case 8:
-		app->fonts->BlitText(c_x, c_y, app->fonts->textFont1, skill_prepared.skill_name);
+		app->fonts->BlitCombatText(c_x, c_y, app->fonts->textFont2, skill_prepared.skill_name);
 		break;
 
 	}
@@ -2193,5 +2384,117 @@ void Combat_Menu::PlaySkillFx(int n)
 		break;
 	case 5: app->audio->PlayFx(buff_fx);
 		break;
+	}
+}
+
+void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
+{
+	int i = 0;
+	SDL_Rect rect;
+	std::string description0;
+	std::string description1;
+	const char* res;
+
+	if (skill.buff_type != BUFF_TYPE::NOTHING)
+	{
+		switch (skill.buff_type)
+		{
+		case BUFF_TYPE::STEALTH:
+			rect = { 32, 64, 32, 32 };
+			description0 = "Stealth, makes the enemy unable to target the";
+			description1 = "user with single target skills.";
+			break;
+		case BUFF_TYPE::DODGE:
+			rect = { 0, 64, 32, 32 };
+			description0 = "Dodge, the user avoid multi-target attacks.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::DAMAGE_INMUNITY:
+			rect = { 64, 32, 32, 32 };
+			description0 = "Damage Inmunity, the user can't take damage.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::DEBUFF_INMUNITY:
+			rect = { 96, 32, 32, 32 };
+			description0 = "Debuff Inmunity, the user can't obtain debuffs.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::TAUNT:
+			rect = { 96, 0, 32, 32 };
+			description0 = "Taunt, the user provoke enemies. Enemies single";
+			description1 = "target attacks will hit the user.";
+			break;
+		case BUFF_TYPE::QUICK:
+			rect = { 96, 64, 32, 32 };
+			description0 = "Quick, increases 2 times the user speed.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::STRONG:
+			rect = { 32, 96, 32, 32 };
+			description0 = "Strong, increases 1.5 times the user power.";
+			description1 = "";
+			break;
+		case BUFF_TYPE::RELAX:
+			rect = { 32, 32, 32, 32 };
+			description0 = "Relax, each turn the user will be healed by a";
+			description1 = "25% of this max health.";
+			break;
+		case BUFF_TYPE::GODMODE_STRONG:
+			rect = { 64, 96, 32, 32 };
+			description0 = "Grace of the Gods, increases 5 times the user";
+			description1 = "power. Only the real gods can use it.";
+			break;
+		default:
+			break;
+		}
+
+		app->render->DrawRectangle({ cx + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+		app->render->DrawTexture(app->combat_manager->status_effects, cx, cy, &rect);
+		res = description0.c_str();
+		app->fonts->BlitCombatText(cx + 33, cy, app->fonts->textFont2, res);
+		res = description1.c_str();
+		app->fonts->BlitCombatText(cx + 33, cy + 32, app->fonts->textFont2, res);
+		i++;
+	}
+
+	if (skill.debuff_type != DEBUFF_TYPE::NOTHING)
+	{
+		switch (skill.debuff_type)
+		{
+		case DEBUFF_TYPE::BURN:
+			rect = { 0, 32, 32, 32 };
+			description0 = "Burn, the user takes a 10% of his max health";
+			description1 = "as damage each turn.";
+			break;
+		case DEBUFF_TYPE::DEF_REDUCC:
+			rect = { 32, 0, 32, 32 };
+			description0 = "Defense Reduction, user will receive extra damage from";
+			description1 = "physic damage.";
+			break;
+		case DEBUFF_TYPE::STUN:
+			rect = { 0, 0, 32, 32 };
+			description0 = "Stun, user is unable to act.";
+			description1 = "";
+			break;
+		case DEBUFF_TYPE::ANTI_QUICK:
+			rect = { 64, 64, 32, 32 };
+			description0 = "Slow, decreases by 50% the user speed.";
+			description1 = "";
+			break;
+		case DEBUFF_TYPE::ANTI_STRONG:
+			rect = { 0, 96, 32, 32 };
+			description0 = "Weak, decreases by 30% the user power.";
+			description1 = "";
+			break;
+		default:
+			break;
+		}
+
+		app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
+		app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+		res = description0.c_str();
+		app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
+		res = description1.c_str();
+		app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont2, res);
 	}
 }

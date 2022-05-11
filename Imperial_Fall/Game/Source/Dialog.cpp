@@ -13,6 +13,9 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 Dialog::Dialog(bool enabled) : Module(enabled)
 {
 	name.Create("dialog");
@@ -43,6 +46,9 @@ bool Dialog::Start()
 	anim = &idle_e;
 
 	LoadDialog();
+	letter_fx = app->audio->LoadFx("Assets/audio/fx/letter.wav");
+	letterA_fx = app->audio->LoadFx("Assets/audio/fx/letter_a.wav");
+	letterG_fx = app->audio->LoadFx("Assets/audio/fx/letter_g.wav");
 
 	//Text 1
 	linea1String_Renato[0] = dialog.child("renato").child("text1").attribute("linea1").as_string();
@@ -92,6 +98,12 @@ bool Dialog::Start()
 
 	linea1Char_Aldeano = linea1String_Aldeano.c_str();
 
+	linea1String_Signal = dialog.child("signal").child("text1").attribute("linea1").as_string();
+	linea2String_Signal = dialog.child("signal").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Signal = linea1String_Signal.c_str();
+	linea2Char_Signal = linea2String_Signal.c_str();
+
 
 	/*
 	linea1String_Templario = dialog.child("templario").child("text1").attribute("linea1").as_string();
@@ -114,6 +126,7 @@ bool Dialog::Start()
 // Called each loop iteration
 bool Dialog::PreUpdate()
 {
+	srand(time(NULL));
 
 	return true;
 }
@@ -241,6 +254,23 @@ bool Dialog::Update(float dt)
 				actual_dialog = DIALOGS::NO_ONE;
 			}
 		}
+		else if (app->physics->GetInNPC(6))
+		{
+		if (ContinueDialog(signal_text, signal_maxtext))
+		{
+			letlengh = 0;
+			letlengh2 = 0;
+
+			inDialog = true;
+			actual_dialog = DIALOGS::SIGNAL;
+			SetPressE_Hide(true);
+		}
+		else
+		{
+			inDialog = false;
+			actual_dialog = DIALOGS::NO_ONE;
+		}
+		}
 		else
 		{
 			inDialog = false;
@@ -262,7 +292,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
 			letlengh++;
-
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -271,7 +301,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh <= limitLenght)
 		{
 			letlengh++;
-			
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -281,7 +311,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 60 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
 			letlengh2++;
-
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -290,7 +320,7 @@ bool Dialog::Update(float dt)
 		if (letter_cd >= 120 * dt * speedlet && inDialog == true && letlengh2 <= limitLenght2)
 		{
 			letlengh2++;
-
+			PlayLetterSound();
 			letter_cd = 0;
 		}
 	}
@@ -363,6 +393,15 @@ bool Dialog::PostUpdate()
 
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Aldeano, 1, 255, 255, 255, 1920, 1, letlengh, 1);
 		}
+		else if (actual_dialog == DIALOGS::SIGNAL) // ALLY TALKING
+		{
+			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
+			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "SIGNAL:");
+
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Signal, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Signal, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		}
 	}
 	else
 	{
@@ -410,6 +449,18 @@ bool Dialog::LoadDialog()
 	}
 
 	return ret;
+}
+
+void Dialog::PlayLetterSound()
+{
+	int r = rand() % 3;
+
+	switch (r)
+	{
+	case 0: app->audio->PlayFx(letter_fx); break;
+	case 1: app->audio->PlayFx(letterA_fx); break;
+	case 2: app->audio->PlayFx(letterG_fx); break;
+	}
 }
 
 bool Dialog::ContinueDialog(int& actual_text, int max_text)

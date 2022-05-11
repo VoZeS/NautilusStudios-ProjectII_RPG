@@ -35,7 +35,9 @@ public:
 
 	bool CleanUp();
 
-	bool CreateMapBox(int x, int y, int w, int h, int collision);
+	b2Fixture* CreateMapBox(int x, int y, int w, int h, int collision);
+
+	b2Fixture* CreateDynamicBox(int x, int y, int w, int h);
 
 	bool CleanMapBoxes();
 
@@ -53,6 +55,15 @@ public:
 	bool inHerrero = false;
 	bool inGranjero = false;
 	bool inAldeano = false;
+	bool inSignal = false;
+
+	//Soukoban Puzzles Colliders River Booleans
+	bool isActive_S1 = true;
+	bool isActive_S2 = true;
+	bool isActive_S3 = true;
+	bool isActive_S4 = true;
+	bool isActive_S5 = true;
+	bool isActive_S6 = true;
 
 	bool GetInNPC(int npc)
 	{
@@ -65,6 +76,7 @@ public:
 		case 3: ret = inHerrero; break;
 		case 4: ret = inGranjero; break;
 		case 5: ret = inAldeano; break;
+		case 6: ret = inSignal; break;
 		}
 
 		return ret;

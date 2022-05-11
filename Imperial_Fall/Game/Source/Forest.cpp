@@ -15,6 +15,7 @@
 #include "Pathfinding.h"
 #include "Fonts.h"
 #include "Dialog.h"
+#include "Physics.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -22,6 +23,14 @@
 Forest::Forest(bool enabled) : Module(enabled)
 {
 	name.Create("forest");
+
+	// moving animation
+	movingBox_Anim.PushBack({ 0, 0, 64, 65 });
+	movingBox_Anim.PushBack({ 64, 0, 64, 65 });
+	movingBox_Anim.PushBack({ 128, 0, 64, 65 });
+	movingBox_Anim.speed = 0.03f;
+	movingBox_Anim.loop = true;
+
 }
 
 // Destructor
@@ -47,6 +56,9 @@ bool Forest::Start()
 		// Load music
 		app->audio->PlayMusic("Assets/audio/music/forest.ogg");
 
+		//Load Box Tex
+		box_texture = app->tex->Load("Assets/textures/S_Box.png");
+
 		//Enable Player & map
 		app->menu->Enable();
 		app->entities->Enable();
@@ -70,7 +82,13 @@ bool Forest::Start()
 		{
 			app->LoadGameRequest(false);
 		}
+
+
+		currentAnimation = &movingBox_Anim;
+
 	}
+
+	boxRect = { 0, 0, 64,65 };
 
 
 	return true;
@@ -79,23 +97,50 @@ bool Forest::Start()
 // Called each loop iteration
 bool Forest::PreUpdate()
 {
-
 	return true;
 }
 
 // Called each loop iteration
 bool Forest::Update(float dt)
 {
+	if (app->physics->inSignal && app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		// town_2 --> forest
+		app->frontground->move_to = MOVE_TO::TOWN2_FOREST;
+
+		app->frontground->FadeToBlack();
+	}
+
 	// Draw map
 	app->map->Draw();
 
+	if (app->map->S1_Box != nullptr)
+	{
+		currentAnimation->Update();
+	}
+
+	if (app->map->S1_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S2_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S3_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
+	if (app->map->S4_Box != nullptr && box_texture != nullptr)
+	{
+		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32), &boxRect);
+	}
 	return true;
 }
 
 // Called each loop iteration
 bool Forest::PostUpdate()
 {
-
 	return true;
 }
 

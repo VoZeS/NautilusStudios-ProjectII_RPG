@@ -44,6 +44,10 @@ public:
 	Particle heal;
 	Particle buff;
 	Particle anti_heal;
+	Particle stun;
+	Particle weak;
+	Particle null;
+	Particle blood_smoke;
 };
 
 #endif

@@ -12,6 +12,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include "Fonts.h"
+#include "Particles.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -170,6 +171,7 @@ bool Combat_Manager::Update(float dt)
 			if (turn_order[turn]->FindDebuff(b) != -1)
 			{
 				in_animation = 1;
+				app->particles->AddParticle(app->particles->stun, turn_order[turn]->position.x - 32, turn_order[turn]->position.y - 100);
 			}
 		}
 		else // enemies
@@ -708,10 +710,12 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			if (objective->GetWeakness() == skill.element)
 			{
 				damage *= 1.5f;
+				app->particles->AddParticle(app->particles->weak, objective->position.x - 32, objective->position.y - 100);
 			}
 			else if (objective->FindDebuff(d) != -1 && skill.element == 0)
 			{
 				damage *= 1.5f;
+				app->particles->AddParticle(app->particles->weak, objective->position.x - 32, objective->position.y - 100);
 			}
 
 			BUFF b;
@@ -719,6 +723,7 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 			if (objective->FindBuff(b) != -1)
 			{
 				damage = 0;
+				app->particles->AddParticle(app->particles->null, objective->position.x - 32, objective->position.y - 100);
 			}
 
 			objective->DamageEntity(damage, skill.skill_bonus);
@@ -895,10 +900,12 @@ void Combat_Manager::UseSkill(Combat_Entities* user, Skill skill, Combat_Entitie
 						if (enemies[i]->FindBuff(b2) != -1)
 						{
 							damage = 0;
+							app->particles->AddParticle(app->particles->null, enemies[i]->position.x - 32, enemies[i]->position.y - 100);
 						}
 						else if ((enemies[i]->GetWeakness() == skill.element) || (enemies[i]->FindDebuff(d) != -1 && skill.element == 0))
 						{
 							enemies[i]->DamageEntity(damage * 1.5f, skill.skill_bonus);
+							app->particles->AddParticle(app->particles->weak, enemies[i]->position.x - 32, enemies[i]->position.y - 100);
 						}
 						else
 						{
@@ -1289,7 +1296,7 @@ void Combat_Manager::UpdateBuffs()
 
 void Combat_Manager::EnemyTurn(Combat_Entities* user)
 {
-	int objective, skill = 0, rounds = 0;
+	int objective, skill, rounds = 0;
 
 	DEBUFF b;
 	b.debuff_type = DEBUFF_TYPE::STUN;
@@ -1299,14 +1306,15 @@ void Combat_Manager::EnemyTurn(Combat_Entities* user)
 		null.skill_name = "null";
 		app->combat_menu->SetSkillPrepared(null);
 		in_animation = 1;
+		app->particles->AddParticle(app->particles->stun, turn_order[turn]->position.x - 32, turn_order[turn]->position.y - 100);
 		return;
 	}
 
-	/*do
+	do
 	{
 		skill = rand() % 4;
 		rounds++;
-	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);*/
+	} while ((user->GetActualMana() < user->GetSkill(skill).mana_cost && rounds < 10) || user->GetSkill(skill).zero_mana);
 	
 	if (user->GetActualMana() < user->GetSkill(skill).mana_cost || enemies_loops == 10)
 	{
@@ -1522,14 +1530,14 @@ void Combat_Manager::KillPreparedEntities()
 {
 	for (size_t i = 0; i < 4; i++)
 	{
-		if (allies[i]->prepared_to_die == true)
+		if (allies[i]->prepared_to_die)
 		{
 			allies[i]->KillEntity();
 			allies[i]->RemoveAllBuffs();
 			allies[i]->RemoveAllDebuffs();
 			allies[i]->DestroyShield();
 		}
-		if (enemies[i]->prepared_to_die == true)
+		if (enemies[i]->prepared_to_die)
 		{
 			enemies[i]->KillEntity();
 			enemies[i]->RemoveAllBuffs();

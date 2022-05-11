@@ -91,6 +91,52 @@ Particles::Particles(bool enabled) : Module(enabled)
 	anti_heal.anim.PushBack({ pix * 5, pix * 6, pix, pix });
 	anti_heal.anim.loop = false;
 	anti_heal.anim.speed = speed;
+
+	// stun
+	stun.anim.PushBack({ pix * 0, pix * 7, pix, pix });
+	stun.anim.PushBack({ pix * 1, pix * 7, pix, pix });
+	stun.anim.PushBack({ pix * 2, pix * 7, pix, pix });
+	stun.anim.PushBack({ pix * 3, pix * 7, pix, pix });
+	stun.anim.PushBack({ pix * 4, pix * 7, pix, pix });
+	stun.anim.PushBack({ pix * 5, pix * 7, pix, pix });
+	stun.anim.loop = false;
+	stun.anim.speed = speed;
+
+	// weak
+	weak.anim.PushBack({ pix * 0, pix * 8, pix, pix });
+	weak.anim.PushBack({ pix * 1, pix * 8, pix, pix });
+	weak.anim.PushBack({ pix * 2, pix * 8, pix, pix });
+	weak.anim.PushBack({ pix * 3, pix * 8, pix, pix });
+	weak.anim.PushBack({ pix * 4, pix * 8, pix, pix });
+	weak.anim.PushBack({ pix * 5, pix * 8, pix, pix });
+	weak.anim.loop = false;
+	weak.anim.speed = speed;
+
+	// null
+	null.anim.PushBack({ pix * 0, pix * 9, pix, pix });
+	null.anim.PushBack({ pix * 1, pix * 9, pix, pix });
+	null.anim.PushBack({ pix * 2, pix * 9, pix, pix });
+	null.anim.PushBack({ pix * 3, pix * 9, pix, pix });
+	null.anim.PushBack({ pix * 4, pix * 9, pix, pix });
+	null.anim.PushBack({ pix * 5, pix * 9, pix, pix });
+	null.anim.loop = false;
+	null.anim.speed = speed;
+
+	// blood_smoke
+	blood_smoke.anim.PushBack({ pix * 0, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 1, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 2, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 3, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 4, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 5, pix * 10, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 0, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 1, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 2, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 3, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 4, pix * 11, pix, pix });
+	blood_smoke.anim.PushBack({ pix * 5, pix * 11, pix, pix });
+	blood_smoke.anim.loop = false;
+	blood_smoke.anim.speed = speed;
 }
 
 Particles::~Particles()

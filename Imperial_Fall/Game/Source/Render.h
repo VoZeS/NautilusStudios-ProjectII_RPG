@@ -7,6 +7,30 @@
 
 #include "SDL/include/SDL.h"
 
+#include <vector>
+
+using namespace std;
+
+struct renderObject
+{
+	SDL_Texture* texture;
+
+	SDL_Rect section = { 0,0,0,0 };
+
+	SDL_Rect renderRect = { 0,0 };
+
+	SDL_RendererFlip flip;
+
+	double angle = 0.0f;
+
+	int layer = 0;
+
+	float Ordeninlayer = 1.0f;
+
+	float speed = 1.0f;
+
+};
+
 class Render : public Module
 {
 public:
@@ -44,6 +68,14 @@ public:
 	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool useCamera = true) const;
 	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool useCamera = true) const;
 
+	void SortingRenderObjectsWithPosition(vector<renderObject>& vectorofobjectstosort);
+
+	bool IsinCamera(const renderObject* renderObj);
+
+	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH = false, float scale = 1.0f, float speed = 1.0f);
+
+	void Draw();
+
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
@@ -55,6 +87,12 @@ public:
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
+
+private:
+	vector< vector<renderObject>> layers;
+
+	int cont = 0;
+
 };
 
 #endif // __RENDER_H__

@@ -50,6 +50,7 @@ bool Entities::Start()
 		herrero = app->tex->Load("Assets/textures/herrero.png");
 		granjero = app->tex->Load("Assets/textures/granjero.png");
 		aldeano = app->tex->Load("Assets/textures/aldeano.png");
+		signal = app->tex->Load("Assets/textures/signal.png");
 		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
 		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
@@ -98,6 +99,9 @@ bool Entities::PreUpdate()
 				break;
 			case ENTITY_TYPE::ALDEANO:
 				entity->InitCustomEntity(5);
+				break;
+			case ENTITY_TYPE::SIGNAL:
+				entity->InitCustomEntity(8);
 				break;
 			case ENTITY_TYPE::W_TEMPLAR:
 				entity->InitCustomEntity(1);
@@ -190,7 +194,14 @@ bool Entities::PostUpdate()
 
 		if (entity->init)
 		{
+			
 			ret = item->data->Draw();
+
+			/*if (item->next != NULL && item != NULL && item->data->position.y > item->next->data->position.y)
+			{
+				swap(item->data, item->next->data);
+			}*/
+
 		}
 	}	
 
@@ -326,6 +337,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(npc, ENTITY_TYPE::ALDEANO, p);
 	}
 		break;
+	case ENTITY_TYPE::SIGNAL:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::SIGNAL, p);
+	}
+	break;
 	case ENTITY_TYPE::W_TEMPLAR:
 	{
 		Enemies* enemy = new Enemies(index, en1, en2, en3, en4);
@@ -388,6 +405,8 @@ int Entities::FindNPC()
 			case ENTITY_TYPE::GRANJERO: ret = 4;
 				break;
 			case ENTITY_TYPE::ALDEANO: ret = 5;
+				break;
+			case ENTITY_TYPE::SIGNAL: ret = 8;
 				break;
 			}
 

@@ -71,6 +71,7 @@ bool Dungeon::Start()
 		{
 			app->LoadGameRequest(false);
 		}
+		in_ice = 0;
 	}
 
 
@@ -80,6 +81,7 @@ bool Dungeon::Start()
 // Called each loop iteration
 bool Dungeon::PreUpdate()
 {
+	LOG("%d", in_ice);
 
 	return true;
 }

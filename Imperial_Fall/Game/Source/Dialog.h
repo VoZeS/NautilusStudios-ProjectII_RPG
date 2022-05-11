@@ -12,6 +12,7 @@ enum class DIALOGS
 	MEDICO,
 	GRANJERO,
 	ALDEANO,
+	SIGNAL,
 	ENEMIGO
 };
 
@@ -99,6 +100,13 @@ private:
 	int aldeano_text = -1;
 	int aldeano_maxtext = 1;
 
+	std::string linea1String_Signal;
+	std::string linea2String_Signal;
+	const char* linea1Char_Signal;
+	const char* linea2Char_Signal;
+	int signal_text = -1;
+	int signal_maxtext = 1;
+
 	/*
 	std::string linea1String_Templario;
 	std::string linea2String_Templario;
@@ -114,6 +122,10 @@ private:
 	const char* linea2Char_Seta;
 	*/
 	bool LoadDialog();
+	uint letter_fx; // normal
+	uint letterA_fx; // agudo
+	uint letterG_fx; // grave
+	void PlayLetterSound();
 
 	SDL_Texture* whitemark_300x80 = NULL;
 	SDL_Texture* whitemark_1200x140 = NULL;

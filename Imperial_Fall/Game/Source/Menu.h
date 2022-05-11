@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Animation.h"
-
+#include "Combat_Entities.h"
 
 #define NUM_PAUSE_BUTTONS 4
 #define NUM_MENU_BUTTONS 6
@@ -123,6 +123,10 @@ public:
 	//Dialog checker
 	bool redtemplar_killed = false;
 
+	//Descriptions
+	void DisplayEntityInfo(Combat_Entities* entity);
+	void DisplaySkillInfo(Skill skill);
+
 private:
 
 	Cursor cursor;
@@ -162,6 +166,8 @@ private:
 	SDL_Texture* combat_scape = NULL;
 
 	SDL_Texture* whitemark_500x70 = NULL;
+	SDL_Texture* whitemark_1240x680 = NULL;
+	SDL_Texture* skills_icons = NULL;
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;

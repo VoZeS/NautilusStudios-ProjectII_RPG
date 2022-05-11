@@ -1,9 +1,11 @@
 #include "App.h"
 #include "Render.h"
+#include "Fonts.h"
 #include "Combat_Entities.h"
 #include "Combat_Manager.h"
 #include "Defs.h"
 #include "Log.h"
+#include "Particles.h"
 
 Combat_Entities::Combat_Entities(int health, int mana, int speed, int power, int owner, int skill1, int skill2, int skill3, int skill4)
 {
@@ -226,6 +228,7 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 	{
 		actual_health = 0;
 		prepared_to_die = true;
+		app->particles->AddParticle(app->particles->blood_smoke, position.x - 32, position.y - 35);
 	}
 
 	return true;
@@ -555,6 +558,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "HP Potion";
+			skill.skill_description0 = "Heal the objective.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -565,8 +569,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "MP Potion";
+			skill.skill_description0 = "Restore the objective and the user mana.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
-			skill.mana_cost = -1; // reload the half of the mana from the user
+			skill.mana_cost = 1; // reload the half of the mana from the user
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
 			skill.element = 0;
 			skill.supp_strenght = 1;
@@ -575,22 +580,22 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Fire Jar";
+			skill.skill_description0 = "Set all enemies on fire for 3 turns.";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
 			skill.element = 1;
-			skill.att_strenght = 0;
 			skill.debuff_type = DEBUFF_TYPE::BURN;
-			skill.buff_turns = 1;
+			skill.buff_turns = 3;
 			break;
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Lightning Jar";
+			skill.skill_description0 = "Break the armor of an enemy for 2 turns.";
 			skill.att_effect = ATT_EFFECT::LIGHTNING;
 			skill.mana_cost = 0;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.element = 2;
-			skill.att_strenght = 1;
 			skill.debuff_type = DEBUFF_TYPE::DEF_REDUCC;
 			skill.buff_turns = 2;
 			break;
@@ -603,7 +608,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Stab";
-			skill.skill_description = "Assets/textures/skills_descriptions/stab.png";
+			skill.skill_description0 = "Low damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -613,7 +618,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Strong Stab";
-			skill.skill_description = "Assets/textures/skills_descriptions/strong_stab.png";
+			skill.skill_description0 = "Medium damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -623,7 +628,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Bomb";
-			skill.skill_description = "Assets/textures/skills_descriptions/bomb.png";
+			skill.skill_description0 = "Low damage to all targets.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ALL_ENEMY;
@@ -633,7 +638,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Stealth";
-			skill.skill_description = "Assets/textures/skills_descriptions/stealth.png";
+			skill.skill_description0 = "The user obtain stealth for one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -784,7 +789,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Staff Blow";
-			skill.skill_description = "Assets/textures/skills_descriptions/staff_blow.png";
+			skill.skill_description0 = "Low damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -794,7 +799,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Shield";
-			skill.skill_description = "Assets/textures/skills_descriptions/shield.png";
+			skill.skill_description0 = "Give an ally a small shield during one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -806,7 +811,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Heal";
-			skill.skill_description = "Assets/textures/skills_descriptions/heal.png";
+			skill.skill_description0 = "Heal a small amount of health to an ally.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 15;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -817,7 +822,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Clean";
-			skill.skill_description = "Assets/textures/skills_descriptions/clean.png";
+			skill.skill_description0 = "Clean all the debuffs from an ally.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 10;
 			skill.ally_objective = ALLY_OBJECTIVE::ONE_ALLY;
@@ -962,7 +967,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0: // initial skills
 			skill.owner = owner;
 			skill.skill_name = "Slash";
-			skill.skill_description = "Assets/textures/skills_descriptions/slash.png";
+			skill.skill_description0 = "Low damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -972,7 +977,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Heavy Slash";
-			skill.skill_description = "Assets/textures/skills_descriptions/heavy_slash.png";
+			skill.skill_description0 = "Medium damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -982,7 +987,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Taunt";
-			skill.skill_description = "Assets/textures/skills_descriptions/taunt.png";
+			skill.skill_description0 = "Provoke all enemies, obtain taunt for one turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 20;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
@@ -993,7 +998,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Pierce Slash";
-			skill.skill_description = "Assets/textures/skills_descriptions/pierce_slash.png";
+			skill.skill_description0 = "Low damage to a single target, this tactical attack ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1155,7 +1160,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 0:
 			skill.owner = owner;
 			skill.skill_name = "Stone";
-			skill.skill_description = "Assets/textures/skills_descriptions/stone.png";
+			skill.skill_description0 = "Low damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1165,7 +1170,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 1:
 			skill.owner = owner;
 			skill.skill_name = "Rock";
-			skill.skill_description = "Assets/textures/skills_descriptions/rock.png";
+			skill.skill_description0 = "Medium damage to a single target.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 20;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1175,7 +1180,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 2:
 			skill.owner = owner;
 			skill.skill_name = "Fire Ball";
-			skill.skill_description = "Assets/textures/skills_descriptions/fire_ball.png";
+			skill.skill_description0 = "Low fire damage to a single target.";
 			skill.att_effect = ATT_EFFECT::FIRE;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1185,7 +1190,7 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Water Jet";
-			skill.skill_description = "Assets/textures/skills_descriptions/water_jet.png";
+			skill.skill_description0 = "Low water damage to a single target.";
 			skill.att_effect = ATT_EFFECT::WATER;
 			skill.mana_cost = 10;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
@@ -1623,9 +1628,21 @@ void Combat_Entities::DisplayStatus(int cx, int cy)
 				break;
 			}
 
-			app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
-			app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
-			i++;
+			if (item->data.buff_type == BUFF_TYPE::QUICK || item->data.buff_type == BUFF_TYPE::STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 104, 193, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+				i++;
+			}
 		}
 	}
 
@@ -1656,9 +1673,176 @@ void Combat_Entities::DisplayStatus(int cx, int cy)
 				break;
 			}
 
-			app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
-			app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
-			i++;
+			if (item->data.debuff_type == DEBUFF_TYPE::STUN || item->data.debuff_type == DEBUFF_TYPE::ANTI_QUICK || item->data.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + (32 * i) + 1, cy + 1, 30, 30 }, 193, 56, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx + (32 * i), cy, &rect);
+				i++;
+			}
+		}
+	}
+}
+
+void Combat_Entities::DisplayStatusDescription(int cx, int cy)
+{
+	int i = 0;
+	SDL_Rect rect;
+	std::string description0;
+	std::string description1;
+	const char* res;
+
+	if (buffs.Count() > 0)
+	{
+		ListItem<BUFF>* item;
+
+		for (item = buffs.start; item != NULL; item = item->next)
+		{
+			switch (item->data.buff_type)
+			{
+			case BUFF_TYPE::STEALTH:
+				rect = { 32, 64, 32, 32 };
+				description0 = "Stealth, makes the enemy unable to target the";
+				description1 = "user with single target skills.";
+				break;
+			case BUFF_TYPE::DODGE:
+				rect = { 0, 64, 32, 32 };
+				description0 = "Dodge, the user avoid multi-target attacks.";
+				description1 = "";
+				break;
+			case BUFF_TYPE::DAMAGE_INMUNITY:
+				rect = { 64, 32, 32, 32 };
+				description0 = "Damage Inmunity, the user can't take damage.";
+				description1 = "";
+				break;
+			case BUFF_TYPE::DEBUFF_INMUNITY:
+				rect = { 96, 32, 32, 32 };
+				description0 = "Debuff Inmunity, the user can't obtain debuffs.";
+				description1 = "";
+				break;
+			case BUFF_TYPE::TAUNT:
+				rect = { 96, 0, 32, 32 };
+				description0 = "Taunt, the user provoke enemies. Enemies single";
+				description1 = "target attacks will hit the user.";
+				break;
+			case BUFF_TYPE::QUICK:
+				rect = { 96, 64, 32, 32 };
+				description0 = "Quick, increases 2 times the user speed.";
+				description1 = "";
+				break;
+			case BUFF_TYPE::STRONG:
+				rect = { 32, 96, 32, 32 };
+				description0 = "Strong, increases 1.5 times the user power.";
+				description1 = "";
+				break;
+			case BUFF_TYPE::RELAX:
+				rect = { 32, 32, 32, 32 };
+				description0 = "Relax, each turn the user will be healed by a";
+				description1 = "25% of this max health.";
+				break;
+			case BUFF_TYPE::GODMODE_STRONG:
+				rect = { 64, 96, 32, 32 };
+				description0 = "Grace of the Gods, increases 5 times the user";
+				description1 = "power. Only the real gods can use it.";
+				break;
+			default:
+				break;
+			}
+
+			if (item->data.buff_type == BUFF_TYPE::QUICK || item->data.buff_type == BUFF_TYPE::STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+					res = description0.c_str();
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
+					res = description1.c_str();
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 104, 193, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+				res = description0.c_str();
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
+				res = description1.c_str();
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
+				i++;
+			}
+		}
+	}
+
+	if (debuffs.Count() > 0)
+	{
+		ListItem<DEBUFF>* item;
+
+		for (item = debuffs.start; item != NULL && i < MAX_EFFECTS_DISPLAYED; item = item->next)
+		{
+			switch (item->data.debuff_type)
+			{
+			case DEBUFF_TYPE::BURN:
+				rect = { 0, 32, 32, 32 };
+				description0 = "Burn, the user takes a 10% of his max health";
+				description1 = "as damage each turn.";
+				break;
+			case DEBUFF_TYPE::DEF_REDUCC:
+				rect = { 32, 0, 32, 32 };
+				description0 = "Defense Reduction, user will receive extra damage from";
+				description1 = "physic damage.";
+				break;
+			case DEBUFF_TYPE::STUN:
+				rect = { 0, 0, 32, 32 };
+				description0 = "Stun, user is unable to act.";
+				description1 = "";
+				break;
+			case DEBUFF_TYPE::ANTI_QUICK:
+				rect = { 64, 64, 32, 32 };
+				description0 = "Slow, decreases by 50% the user speed.";
+				description1 = "";
+				break;
+			case DEBUFF_TYPE::ANTI_STRONG:
+				rect = { 0, 96, 32, 32 };
+				description0 = "Weak, decreases by 30% the user power.";
+				description1 = "";
+				break;
+			default:
+				break;
+			}
+
+			if (item->data.debuff_type == DEBUFF_TYPE::STUN || item->data.debuff_type == DEBUFF_TYPE::ANTI_QUICK || item->data.debuff_type == DEBUFF_TYPE::ANTI_STRONG)
+			{
+				if (item->data.turns > 1)
+				{
+					app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
+					app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+					res = description0.c_str();
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
+					res = description1.c_str();
+					app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
+					i++;
+				}
+			}
+			else
+			{
+				app->render->DrawRectangle({ cx + 1, cy + ((64 + 25) * i) + 1, 30, 30 }, 193, 56, 4, 200);
+				app->render->DrawTexture(app->combat_manager->status_effects, cx, cy + ((64 + 25) * i), &rect);
+				res = description0.c_str();
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i), app->fonts->textFont2, res);
+				res = description1.c_str();
+				app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 34, app->fonts->textFont2, res);
+				i++;
+			}
 		}
 	}
 }
