@@ -89,6 +89,11 @@ public:
 	SDL_Texture* accept_tex;
 	SDL_Texture* misc;
 
+	SDL_Texture* whitemark_128x128;
+	SDL_Texture* whitemark_250x70;
+	SDL_Texture* whitemark_800x150;
+	SDL_Texture* hero_tex;
+
 	// coins
 	int GetCoins();
 	void AddCoins(int amount);
@@ -99,6 +104,23 @@ public:
 	// description
 	bool in_description;
 	Skill desc_skill;
+
+	SDL_Texture* book_tex;
+	SDL_Texture* arrows_tex;
+	Animation* left_arrow;
+	Animation* right_arrow;
+	Animation l_arrow;
+	Animation r_arrow;
+	SDL_Texture* skill_tree_tex;
+	Animation* skill_page;
+	Animation open_skill;
+	Animation close_skill;
+
+	SDL_Texture* skill_image0; // assassin
+	SDL_Texture* skill_image1; // healer
+	SDL_Texture* skill_image2; // tank
+	SDL_Texture* skill_image3; // wizard
+	SDL_Texture* coin;
 
 private:
 	Cursor cursor;
@@ -121,16 +143,6 @@ private:
 	Animation pass_page2_1;
 	Animation close;
 
-	SDL_Texture* book_tex;
-	SDL_Texture* arrows_tex;
-	Animation* left_arrow;
-	Animation* right_arrow;
-	Animation l_arrow;
-	Animation r_arrow;
-	SDL_Texture* skill_tree_tex;
-	Animation* skill_page;
-	Animation open_skill;
-	Animation close_skill;
 
 	int book_pos; // 0 --> open, 1 --> page1, 2 --> page2, 3 --> page3, 4 --> page4, 5 --> page5, 6 --> close
 	int info_cd;
@@ -142,10 +154,6 @@ private:
 
 	// display
 	void DisplayHero(int n);
-	SDL_Texture* whitemark_128x128;
-	SDL_Texture* whitemark_250x70;
-	SDL_Texture* whitemark_800x150;
-	SDL_Texture* hero_tex;
 	void DisplayItems();
 	void DisplayGear(int n);
 	void DisplayGearHover(int user, int piece, int level);
@@ -194,14 +202,9 @@ private:
 	int skill_saved;
 	SDL_Rect GetSkillRect(int skill, bool unlocked); // 1 to 4
 	int GetSkillBySlot(int owner, int slot);
-	SDL_Texture* skill_image0; // assassin
-	SDL_Texture* skill_image1; // healer
-	SDL_Texture* skill_image2; // tank
-	SDL_Texture* skill_image3; // wizard
 
 	// coins
 	void DisplayCoins();
-	SDL_Texture* coin;
 	int coins_obtained;
 	int coins_cd;
 	

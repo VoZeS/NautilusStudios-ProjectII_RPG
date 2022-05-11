@@ -108,29 +108,6 @@ bool Combat_Menu::Start()
 		app->win->GetWindowSize(win_w, win_h);
 
 		// textures
-		assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
-		tank_texture = app->tex->Load("Assets/textures/Tanque.png");
-		healer_texture = app->tex->Load("Assets/textures/Healer.png");
-		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
-		target = app->tex->Load("Assets/textures/target.png");
-		tombstone = app->tex->Load("Assets/textures/tombstone.png");
-		goblin = app->tex->Load("Assets/textures/goblin_b.png");
-		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
-		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
-		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
-		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
-		dragon_idle = app->tex->Load("Assets/textures/dragon_idle.png");
-		dragon_ult = app->tex->Load("Assets/textures/dragon_ult.png");
-		theseion = app->tex->Load("Assets/textures/Theseion.png");
-		armored_templar = app->tex->Load("Assets/textures/armored_templar.png");
-		whitemark_400x50 = app->tex->Load("Assets/textures/400x50_whitemark.png");
-		whitemark_110x110 = app->tex->Load("Assets/textures/110x110_whitemark.png");
-		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
-		whitemark_800x50 = app->tex->Load("Assets/textures/800x50_whitemark.png");
-		special_buttons = app->tex->Load("Assets/textures/special_buttons.png");
-		items = app->tex->Load("Assets/textures/Objects/items.png");
-		casting = app->tex->Load("Assets/textures/casting.png");
-		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
 
 		// sounds
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");

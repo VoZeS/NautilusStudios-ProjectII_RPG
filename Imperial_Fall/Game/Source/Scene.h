@@ -51,6 +51,11 @@ public:
 
 	bool space_boton = true; // Desactiva el boton ESPACIO del principio
 
+	SDL_Texture* texture1 = nullptr;
+	SDL_Texture* texture2 = nullptr;
+	SDL_Texture* start_screen;
+	SDL_Texture* settings_screen;
+
 private:
 
 	//load the texture
@@ -61,11 +66,6 @@ private:
 
 	//load and play the music
 	void LoadMusFile(const pugi::xml_document& dataFile);
-
-	SDL_Texture* texture1 = nullptr;
-	SDL_Texture* texture2 = nullptr;
-	SDL_Texture* start_screen;
-	SDL_Texture* settings_screen;
 
 };
 

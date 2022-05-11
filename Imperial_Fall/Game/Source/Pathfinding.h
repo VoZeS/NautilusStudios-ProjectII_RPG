@@ -45,6 +45,7 @@ public:
 
 	void DrawPath(PathFinding* path, fPoint pos);
 
+	SDL_Texture* tileX = NULL;
 private:
 
 	// size of the map
@@ -57,7 +58,6 @@ private:
 	// we store the created path here
 	DynArray<iPoint> lastPath;
 
-	SDL_Texture* tileX = NULL;
 };
 
 // forward declaration

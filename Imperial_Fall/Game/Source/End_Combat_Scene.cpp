@@ -51,8 +51,6 @@ bool End_Combat_Scene::Start()
 		evil_laugh = app->audio->LoadFx("Assets/audio/fx/evil_laugh.wav");
 		dragon_roar = app->audio->LoadFx("Assets/audio/fx/dragon_roar.wav");
 
-		whitemark_1200x140 = app->tex->Load("Assets/textures/1200x140_whitemark.png");
-
 		//Enable combat
 		app->menu->Enable();
 		app->map->Enable();

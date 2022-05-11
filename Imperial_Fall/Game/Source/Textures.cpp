@@ -58,8 +58,8 @@ bool Textures::Start()
 	whitemark_300x80 = Load("Assets/textures/300x80_whitemark.png");
 	particles_texture = Load("Assets/textures/particles.png");
 
-	tileX = Load("Assets/textures/x.png");*/
-
+	tileX = Load("Assets/textures/x.png");
+	*/
 	return ret;
 }
 

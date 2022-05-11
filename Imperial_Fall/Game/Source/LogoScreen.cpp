@@ -41,8 +41,6 @@ bool LogoScreen::Start()
 
 	// Members Texture
 
-	logo = app->tex->Load("Assets/textures/logo_nautilus.png");
-
 	//Aqui podem posar algun so a veure amb la pantalla d'inici
 	//app->audio->PlayMusic("Assets/Audio/02_character_selection.ogg", 1.0f);
 

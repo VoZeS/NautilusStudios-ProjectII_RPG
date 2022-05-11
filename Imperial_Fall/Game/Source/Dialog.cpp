@@ -41,10 +41,7 @@ bool Dialog::Awake()
 // Called before the first frame
 bool Dialog::Start()
 {
-	whitemark_1200x140 = app->tex->Load("Assets/textures/1200x140_whitemark.png");
-	whitemark_300x80 = app->tex->Load("Assets/textures/300x80_whitemark.png");
 
-	press_e = app->tex->Load("Assets/textures/Boton_E.png");
 	anim = &idle_e;
 
 	LoadDialog();
@@ -286,10 +283,6 @@ bool Dialog::Start()
 		shop3[3].item = "531";
 		shop3[3].cost = 10;
 	}
-	
-	whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
-	whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
-	whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 
 	click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 	hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");

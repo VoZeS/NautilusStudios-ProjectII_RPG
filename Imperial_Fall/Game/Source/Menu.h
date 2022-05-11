@@ -134,6 +134,26 @@ public:
 	// final battle
 	bool theseion2 = false;
 
+	SDL_Texture* Scape_BackGround = NULL;
+	SDL_Texture* Lose_BackGround = NULL;
+	SDL_Texture* Win_BackGround = NULL;
+
+	SDL_Texture* combat_win = NULL;
+	SDL_Texture* combat_lose = NULL;
+	SDL_Texture* combat_scape = NULL;
+
+	SDL_Texture* whitemark_128x128 = NULL;
+	SDL_Texture* whitemark_500x70 = NULL;
+	SDL_Texture* whitemark_800x150 = NULL;
+	SDL_Texture* whitemark_1240x680 = NULL;
+	SDL_Texture* skills_icons = NULL;
+	SDL_Texture* accept_tex = NULL;
+	SDL_Texture* desc_icons = NULL;
+	SDL_Texture* rew_icons = NULL;
+
+	SDL_Texture* unknow_tex;
+	SDL_Texture* gear_tex;
+	SDL_Texture* items_tex;
 private:
 
 	Cursor cursor;
@@ -168,22 +188,7 @@ private:
 	Button scape_buttons[NUM_SCAPE_BUTTONS];
 	Button ask_buttons[NUM_ASK_BUTTONS];
 
-	SDL_Texture* Scape_BackGround = NULL;
-	SDL_Texture* Lose_BackGround = NULL;
-	SDL_Texture* Win_BackGround = NULL;
-
-	SDL_Texture* combat_win = NULL;
-	SDL_Texture* combat_lose = NULL;
-	SDL_Texture* combat_scape = NULL;
-
-	SDL_Texture* whitemark_128x128 = NULL;
-	SDL_Texture* whitemark_500x70 = NULL;
-	SDL_Texture* whitemark_800x150 = NULL;
-	SDL_Texture* whitemark_1240x680 = NULL;
-	SDL_Texture* skills_icons = NULL;
-	SDL_Texture* accept_tex = NULL;
-	SDL_Texture* desc_icons = NULL;
-	SDL_Texture* rew_icons = NULL;
+	
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;
@@ -220,9 +225,7 @@ private:
 	SDL_Rect unlock_rect;
 	uint unlock_fx;
 	uint equip_sound;
-	SDL_Texture* unknow_tex;
-	SDL_Texture* gear_tex;
-	SDL_Texture* items_tex;
+	
 	Button object_buttons[NUM_OBJECT_BUTTONS];
 
 	// ask new game

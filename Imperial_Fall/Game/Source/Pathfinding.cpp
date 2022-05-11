@@ -25,7 +25,6 @@ bool PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
-	tileX = app->tex->Load("Assets/textures/x.png");
 
 	lastPath.Clear();
 	RELEASE_ARRAY(map);

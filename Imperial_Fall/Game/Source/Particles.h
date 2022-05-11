@@ -30,8 +30,10 @@ public:
 
 	void PlayParticle(ATT_EFFECT att_effect, SUPP_EFFECT supp_effect, int x, int y);
 
-private:
 	SDL_Texture* texture = nullptr;
+
+private:
+	
 
 	// An array to store and handle all the particles
 	Particle* particles[MAX_ACTIVE_PARTICLES] = { nullptr };

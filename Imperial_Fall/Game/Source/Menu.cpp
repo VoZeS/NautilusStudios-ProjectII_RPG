@@ -156,15 +156,6 @@ bool Menu::Start()
 			settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1);
 		}
 
-		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
-		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
-		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
-		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
-		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
-		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
-		desc_icons = app->tex->Load("Assets/textures/descriptions_icons.png");
-		rew_icons = app->tex->Load("Assets/textures/rewards.png");
-
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
 		win_button.rect.y = (int)win_h / 2 + 200;
@@ -251,32 +242,6 @@ bool Menu::Start()
 		lose_buttons[1].tex = app->tex->Load("Assets/textures/Run_Boton_Lose.png"); // Return field
 		lose_buttons[1].alt_tex = app->tex->Load("Assets/textures/Run_Boton_Lose_Select.png"); // Return field
 
-		Scape_BackGround = app->tex->Load("Assets/textures/Temporal_Background.png");
-		Lose_BackGround = app->tex->Load("Assets/textures/Lose_Screen.png");
-		Win_BackGround = app->tex->Load("Assets/textures/Win_Screen.png");
-
-		combat_win = app->tex->Load("Assets/textures/win_text.png");
-		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
-		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
-
-		torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
-		light_fire1 = app->tex->Load("Assets/textures/Torch1_light.png");
-		light_fire2 = app->tex->Load("Assets/textures/Torch2_light.png");
-		light_fire3 = app->tex->Load("Assets/textures/Torch3_light.png");
-		light_fire4 = app->tex->Load("Assets/textures/Torch4_light.png");
-
-		big_fire = app->tex->Load("Assets/textures/Big_Fire.png");
-		big_fire_light = app->tex->Load("Assets/textures/Big_Fire_Light.png");
-		smook_big_fire = app->tex->Load("Assets/textures/Smoke.png");
-
-		space_boton = app->tex->Load("Assets/textures/Space_Boton_Anim.png");
-
-		menu_in_game = app->tex->Load("Assets/textures/OpcionesInGame.png");
-
-		menu_play = app->tex->Load("Assets/textures/Menu_Play.png");
-
-		team_photo = app->tex->Load("Assets/textures/TeamPhoto.png");
-
 		hover_playing = false;
 		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
 
@@ -285,9 +250,6 @@ bool Menu::Start()
 		unlock_state = 0;
 		unlock_pos = { 576, 200 };
 		unlock_rect = { 0, 0, 128, 128 };
-		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
-		gear_tex = app->tex->Load("Assets/textures/gear.png");
-		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
 		object_buttons[0].rect.w = 500;
 		object_buttons[1].rect.w = 500;
 		unlock_fx = app->audio->LoadFx("Assets/audio/fx/unlock.wav");

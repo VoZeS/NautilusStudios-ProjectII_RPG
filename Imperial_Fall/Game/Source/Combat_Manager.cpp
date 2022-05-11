@@ -42,15 +42,6 @@ bool Combat_Manager::Start()
 	{
 		LoadHeroesStats();
 
-		heroes_icons = app->tex->Load("Assets/textures/heroes_icons.png");
-		enemies_icons = app->tex->Load("Assets/textures/enemies_icons.png");
-		turn_icon = app->tex->Load("Assets/textures/turn_icon.png");
-		dead_icon = app->tex->Load("Assets/textures/dead_icon.png");
-		turns_icons = app->tex->Load("Assets/textures/turns_icons.png");
-		whitemark_64x64 = app->tex->Load("Assets/textures/64x64_whitemark.png");
-		whitemark_32x32 = app->tex->Load("Assets/textures/32x32_whitemark.png"); 
-		status_effects = app->tex->Load("Assets/textures/status_effects.png");
-
 		//init allies
 		int health, mana, speed, power, skill1, skill2, skill3, skill4;
 		HeroesStats(health, mana, speed, power, 0, skill1, skill2, skill3, skill4); // assassin

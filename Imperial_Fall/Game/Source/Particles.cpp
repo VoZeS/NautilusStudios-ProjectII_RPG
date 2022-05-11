@@ -147,7 +147,7 @@ bool Particles::Start()
 {
 	if (this->Enabled() && !this->Disabled())
 	{
-		texture = app->tex->Load("Assets/textures/particles.png");
+		//texture = app->tex->Load("Assets/textures/particles.png"); Adri
 	}
 
 	return true;

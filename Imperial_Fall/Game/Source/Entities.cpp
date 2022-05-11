@@ -43,23 +43,6 @@ bool Entities::Start()
 
 	if (this->Enabled() && !this->Disabled())
 	{
-		assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
-		tank_texture = app->tex->Load("Assets/textures/Tanque.png");
-		healer_texture = app->tex->Load("Assets/textures/Healer.png");
-		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
-		curandero = app->tex->Load("Assets/textures/curandero.png");
-		herrero = app->tex->Load("Assets/textures/herrero.png");
-		sabio = app->tex->Load("Assets/textures/sage.png");
-		aldeano = app->tex->Load("Assets/textures/aldeano.png");
-		granjero = app->tex->Load("Assets/textures/granjero.png");
-		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
-		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
-		mushroom = app->tex->Load("Assets/textures/mushroom_b.png");
-		goblin = app->tex->Load("Assets/textures/goblin_b.png");
-		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
-		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
-		armored_templar = app->tex->Load("Assets/textures/armored_templar.png");
-
 		freeze = false;
 		in_boss = false;
 	}
