@@ -179,8 +179,8 @@ bool Menu::Start()
 		pause_buttons[0].tex = pause_buttons0; //app->tex->Load("Assets/textures/Continue_In_game.png"); // Continue
 		pause_buttons[0].alt_tex_selec = pause_buttons02; //app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 
-		pause_buttons[1].tex = pause_buttons1; //app->tex->Load("Assets/textures/Settings_In_game.png"); // Settings
-		pause_buttons[1].alt_tex_selec = pause_buttons12; //app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+		pause_buttons[1].tex = pause_buttons1; //app->tex->Load("Assets/textures/"); // Settings
+		pause_buttons[1].alt_tex_selec = pause_buttons12; //app->tex->Load("Assets/textures/");
 
 		pause_buttons[2].tex = pause_buttons2;//app->tex->Load("Assets/textures/Back_In_game.png"); // Back to Menu
 		pause_buttons[2].alt_tex_selec = pause_buttons22;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png");

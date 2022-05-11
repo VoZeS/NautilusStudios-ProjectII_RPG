@@ -298,6 +298,54 @@ void Scene::LoadTexFile(const pugi::xml_document& dataFile)
 	
 	app->menu->whitemark_500x70 = app->tex->Load(tex_node.attribute("whitemark_500x70").as_string());
 
+	app->menu->pause_buttons0 = app->tex->Load(tex_node.attribute("pause_buttons0").as_string());
+	app->menu->pause_buttons02 = app->tex->Load(tex_node.attribute("pause_buttons02").as_string());
+	app->menu->pause_buttons1 = app->tex->Load(tex_node.attribute("pause_buttons1").as_string());
+	app->menu->pause_buttons12 = app->tex->Load(tex_node.attribute("pause_buttons12").as_string());
+	app->menu->pause_buttons2 = app->tex->Load(tex_node.attribute("pause_buttons2").as_string());
+	app->menu->pause_buttons22 = app->tex->Load(tex_node.attribute("pause_buttons22").as_string());
+	app->menu->pause_buttons3 = app->tex->Load(tex_node.attribute("pause_buttons3").as_string());
+	app->menu->pause_buttons32 = app->tex->Load(tex_node.attribute("pause_buttons32").as_string());
+
+	app->menu->menu_buttons0 = app->tex->Load(tex_node.attribute("menu_buttons0").as_string());
+	app->menu->menu_buttons02 = app->tex->Load(tex_node.attribute("menu_buttons02").as_string());
+	app->menu->menu_buttons1 = app->tex->Load(tex_node.attribute("menu_buttons1").as_string());
+	app->menu->menu_buttons12 = app->tex->Load(tex_node.attribute("menu_buttons12").as_string());
+	app->menu->menu_buttons2 = app->tex->Load(tex_node.attribute("menu_buttons2").as_string());
+	app->menu->menu_buttons22 = app->tex->Load(tex_node.attribute("menu_buttons22").as_string());
+	app->menu->menu_buttons3 = app->tex->Load(tex_node.attribute("menu_buttons3").as_string());
+	app->menu->menu_buttons32 = app->tex->Load(tex_node.attribute("menu_buttons32").as_string());
+	app->menu->menu_buttons4 = app->tex->Load(tex_node.attribute("menu_buttons4").as_string());
+	app->menu->menu_buttons42 = app->tex->Load(tex_node.attribute("menu_buttons42").as_string());
+	app->menu->menu_buttons43 = app->tex->Load(tex_node.attribute("menu_buttons43").as_string());
+	app->menu->menu_buttons5 = app->tex->Load(tex_node.attribute("menu_buttons5").as_string());
+	app->menu->menu_buttons52 = app->tex->Load(tex_node.attribute("menu_buttons52").as_string());
+
+	app->menu->settings_buttons0 = app->tex->Load(tex_node.attribute("settings_buttons0").as_string());
+	app->menu->settings_buttons02 = app->tex->Load(tex_node.attribute("settings_buttons02").as_string());
+	app->menu->settings_buttons03 = app->tex->Load(tex_node.attribute("settings_buttons03").as_string());
+	app->menu->settings_buttons04 = app->tex->Load(tex_node.attribute("settings_buttons04").as_string());
+	app->menu->settings_buttons1 = app->tex->Load(tex_node.attribute("settings_buttons1").as_string());
+	app->menu->settings_buttons12 = app->tex->Load(tex_node.attribute("settings_buttons12").as_string());
+	app->menu->settings_buttons13 = app->tex->Load(tex_node.attribute("settings_buttons13").as_string());
+	app->menu->settings_buttons2 = app->tex->Load(tex_node.attribute("settings_buttons2").as_string());
+	app->menu->settings_buttons22 = app->tex->Load(tex_node.attribute("settings_buttons22").as_string());
+	app->menu->settings_buttons23 = app->tex->Load(tex_node.attribute("settings_buttons23").as_string());
+	app->menu->settings_buttons3 = app->tex->Load(tex_node.attribute("settings_buttons3").as_string());
+	app->menu->settings_buttons32 = app->tex->Load(tex_node.attribute("settings_buttons32").as_string());
+	app->menu->settings_buttons33 = app->tex->Load(tex_node.attribute("settings_buttons33").as_string());
+
+	app->menu->winbutton0 = app->tex->Load(tex_node.attribute("winbutton0").as_string());
+	app->menu->winbutton02 = app->tex->Load(tex_node.attribute("winbutton02").as_string());
+
+	app->menu->lose_button0 = app->tex->Load(tex_node.attribute("lose_button0").as_string());
+	app->menu->lose_button02 = app->tex->Load(tex_node.attribute("lose_button02").as_string());
+	app->menu->lose_button1 = app->tex->Load(tex_node.attribute("lose_button1").as_string());
+	app->menu->lose_button12 = app->tex->Load(tex_node.attribute("lose_button12").as_string());
+
+
+
+
 	
 }
 
