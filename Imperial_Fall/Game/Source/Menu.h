@@ -154,6 +154,53 @@ public:
 	SDL_Texture* unknow_tex;
 	SDL_Texture* gear_tex;
 	SDL_Texture* items_tex;
+
+	SDL_Texture* pause_buttons0 = NULL;
+	SDL_Texture* pause_buttons02 = NULL;
+	SDL_Texture* pause_buttons1 = NULL;
+	SDL_Texture* pause_buttons12 = NULL;
+	SDL_Texture* pause_buttons2 = NULL;
+	SDL_Texture* pause_buttons22 = NULL;
+	SDL_Texture* pause_buttons3 = NULL;
+	SDL_Texture* pause_buttons33 = NULL;
+
+	SDL_Texture* menu_buttons0 = NULL;
+	SDL_Texture* menu_buttons02 = NULL;
+	SDL_Texture* menu_buttons1 = NULL;
+	SDL_Texture* menu_buttons12 = NULL;
+	SDL_Texture* menu_buttons2 = NULL;
+	SDL_Texture* menu_buttons22 = NULL;
+	SDL_Texture* menu_buttons3 = NULL;
+	SDL_Texture* menu_buttons32 = NULL;
+	SDL_Texture* menu_buttons4 = NULL;
+	SDL_Texture* menu_buttons42 = NULL;
+	SDL_Texture* menu_buttons43 = NULL;
+	SDL_Texture* menu_buttons5 = NULL;
+	SDL_Texture* menu_buttons52 = NULL;
+
+	SDL_Texture* settings_buttons0 = NULL;
+	SDL_Texture* settings_buttons02 = NULL;
+	SDL_Texture* settings_buttons03 = NULL;
+	SDL_Texture* settings_buttons04 = NULL;
+	SDL_Texture* settings_buttons1 = NULL;
+	SDL_Texture* settings_buttons12 = NULL;
+	SDL_Texture* settings_buttons13 = NULL;
+	SDL_Texture* settings_buttons2 = NULL;
+	SDL_Texture* settings_buttons22 = NULL;
+	SDL_Texture* settings_buttons23 = NULL;
+	SDL_Texture* settings_buttons3 = NULL;
+	SDL_Texture* settings_buttons32 = NULL;
+	SDL_Texture* settings_buttons33 = NULL;
+
+	SDL_Texture* winbutton0 = NULL;
+	SDL_Texture* winbutton02 = NULL;
+
+	SDL_Texture* lose_button0 = NULL;
+	SDL_Texture* lose_button02 = NULL;
+	SDL_Texture* lose_button1 = NULL;
+	SDL_Texture* lose_button12 = NULL;
+
+	SDL_Texture* cursor = NULL;
 private:
 
 	Cursor cursor;
