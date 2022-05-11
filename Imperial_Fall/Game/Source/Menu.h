@@ -162,7 +162,7 @@ public:
 	SDL_Texture* pause_buttons2 = NULL;
 	SDL_Texture* pause_buttons22 = NULL;
 	SDL_Texture* pause_buttons3 = NULL;
-	SDL_Texture* pause_buttons33 = NULL;
+	SDL_Texture* pause_buttons32 = NULL;
 
 	SDL_Texture* menu_buttons0 = NULL;
 	SDL_Texture* menu_buttons02 = NULL;
