@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Combat_Entities.h"
+#include "SString.h"
 
 #define NUM_PAUSE_BUTTONS 4
 #define NUM_MENU_BUTTONS 6
@@ -201,6 +202,9 @@ public:
 	SDL_Texture* lose_button12 = NULL;
 
 	SDL_Texture* cursor1 = NULL;
+
+	//std::string options = "Assets/audio/music/options.ogg";
+
 private:
 
 	Cursor cursor;
