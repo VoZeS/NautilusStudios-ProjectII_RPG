@@ -174,76 +174,78 @@ bool Menu::Start()
 		scape_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 600;
 		scape_buttons[1].rect.y = (int)win_h / 2 + 200;
 
-		pause_buttons[0].tex = app->tex->Load("Assets/textures/Continue_In_game.png"); // Continue
-		pause_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 
-		pause_buttons[1].tex = app->tex->Load("Assets/textures/Settings_In_game.png"); // Settings
-		pause_buttons[1].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 
-		pause_buttons[2].tex = app->tex->Load("Assets/textures/Back_In_game.png"); // Back to Menu
-		pause_buttons[2].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+		pause_buttons[0].tex = pause_buttons0; //app->tex->Load("Assets/textures/Continue_In_game.png"); // Continue
+		pause_buttons[0].alt_tex_selec = pause_buttons02; //app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 
-		pause_buttons[3].tex = app->tex->Load("Assets/textures/Exit_In_game.png"); // Exit
-		pause_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+		pause_buttons[1].tex = pause_buttons1; //app->tex->Load("Assets/textures/Settings_In_game.png"); // Settings
+		pause_buttons[1].alt_tex_selec = pause_buttons12; //app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+		pause_buttons[2].tex = pause_buttons2;//app->tex->Load("Assets/textures/Back_In_game.png"); // Back to Menu
+		pause_buttons[2].alt_tex_selec = pause_buttons22;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+
+		pause_buttons[3].tex = pause_buttons3;//app->tex->Load("Assets/textures/Exit_In_game.png"); // Exit
+		pause_buttons[3].alt_tex_selec = pause_buttons32;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 
 		//----------------------------------------------------------------MENU INICIO BOTONES------------------------
-		menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/PlaySprite.png"); // Play
-		menu_buttons[0].tex = app->tex->Load("Assets/textures/PlayDarkSprite.png"); // Play
+		menu_buttons[0].alt_tex = menu_buttons0;//app->tex->Load("Assets/textures/PlaySprite.png"); // Play
+		menu_buttons[0].tex = menu_buttons02;//app->tex->Load("Assets/textures/PlayDarkSprite.png"); // Play
 
 		//menu_buttons[0].alt_tex = app->tex->Load("Assets/textures/Continue.png"); // Continue
 
-		menu_buttons[1].alt_tex = app->tex->Load("Assets/textures/SettingsSprite.png"); // Settings
-		menu_buttons[1].tex = app->tex->Load("Assets/textures/SettingsDarkSprite.png"); // Settings
+		menu_buttons[1].alt_tex = menu_buttons1;//app->tex->Load("Assets/textures/SettingsSprite.png"); // Settings
+		menu_buttons[1].tex = menu_buttons12;//app->tex->Load("Assets/textures/SettingsDarkSprite.png"); // Settings
 
-		menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsSprite.png"); // Credits
-		menu_buttons[2].tex = app->tex->Load("Assets/textures/CreditsDarkSprite.png"); // Credits
+		menu_buttons[2].alt_tex = menu_buttons2;//app->tex->Load("Assets/textures/CreditsSprite.png"); // Credits
+		menu_buttons[2].tex = menu_buttons22;//app->tex->Load("Assets/textures/CreditsDarkSprite.png"); // Credits
 
 		//menu_buttons[2].alt_tex = app->tex->Load("Assets/textures/CreditsImage.png"); // Credits
 
-		menu_buttons[3].alt_tex = app->tex->Load("Assets/textures/ExitSprite.png"); // Exit
-		menu_buttons[3].tex = app->tex->Load("Assets/textures/ExitDarkSprite.png"); // Exit
+		menu_buttons[3].alt_tex = menu_buttons3;//app->tex->Load("Assets/textures/ExitSprite.png"); // Exit
+		menu_buttons[3].tex = menu_buttons32;//app->tex->Load("Assets/textures/ExitDarkSprite.png"); // Exit
 
 
-		menu_buttons[4].tex = app->tex->Load("Assets/textures/ContinueBlackSprite.png"); // Credits
-		menu_buttons[4].alt_tex = app->tex->Load("Assets/textures/ContinueSprite.png"); // Credits
-		menu_buttons[4].alt_tex2 = app->tex->Load("Assets/textures/Fx.png");
+		menu_buttons[4].tex = menu_buttons4;//app->tex->Load("Assets/textures/ContinueBlackSprite.png"); // Credits
+		menu_buttons[4].alt_tex = menu_buttons42;//app->tex->Load("Assets/textures/ContinueSprite.png"); // Credits
+		menu_buttons[4].alt_tex2 = menu_buttons43;//app->tex->Load("Assets/textures/Fx.png");
 
-		menu_buttons[5].tex = app->tex->Load("Assets/textures/NewGameBlackSprite.png"); // Credits
-		menu_buttons[5].alt_tex = app->tex->Load("Assets/textures/NewGameSprite.png"); // Credits
+		menu_buttons[5].tex = menu_buttons5;//app->tex->Load("Assets/textures/NewGameBlackSprite.png"); // Credits
+		menu_buttons[5].alt_tex = menu_buttons52;//app->tex->Load("Assets/textures/NewGameSprite.png"); // Credits
 		//----------------------------------------------------------------
 
-		settings_buttons[0].alt_tex = settings_buttons[1].alt_tex = app->tex->Load("Assets/textures/Slider.png"); // Slider
+		settings_buttons[0].alt_tex = settings_buttons[1].alt_tex = settings_buttons0;//app->tex->Load("Assets/textures/Slider.png"); // Slider
 
-		settings_buttons[0].tex = app->tex->Load("Assets/textures/Sound.png"); // Audio
-		settings_buttons[0].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
-		settings_buttons[0].alt_tex2 = app->tex->Load("Assets/textures/SoundSprite.png");
+		settings_buttons[0].tex = settings_buttons02;//app->tex->Load("Assets/textures/Sound.png"); // Audio
+		settings_buttons[0].alt_tex_selec = settings_buttons03;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+		settings_buttons[0].alt_tex2 = settings_buttons04;//app->tex->Load("Assets/textures/SoundSprite.png");
 
-		settings_buttons[1].tex = app->tex->Load("Assets/textures/Fx.png"); // Fx slider
-		settings_buttons[1].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
-		settings_buttons[1].alt_tex2 = app->tex->Load("Assets/textures/FxSprite.png");
+		settings_buttons[1].tex = settings_buttons1;//app->tex->Load("Assets/textures/Fx.png"); // Fx slider
+		settings_buttons[1].alt_tex_selec = settings_buttons12;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+		settings_buttons[1].alt_tex2 = settings_buttons13;//app->tex->Load("Assets/textures/FxSprite.png");
 
-		settings_buttons[2].tex = app->tex->Load("Assets/textures/Fullscreen_no.png"); // Fullscreen No
-		settings_buttons[2].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png"); // Fullscreen No Selec
-		settings_buttons[2].alt_tex = app->tex->Load("Assets/textures/Fullscreen_si.png"); // Fullscreen Si
-
-
-		settings_buttons[3].tex = app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync No
-		settings_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
-		settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync Si
+		settings_buttons[2].tex = settings_buttons2;//app->tex->Load("Assets/textures/Fullscreen_no.png"); // Fullscreen No
+		settings_buttons[2].alt_tex_selec = settings_buttons22;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png"); // Fullscreen No Selec
+		settings_buttons[2].alt_tex = settings_buttons23;//app->tex->Load("Assets/textures/Fullscreen_si.png"); // Fullscreen Si
 
 
+		settings_buttons[3].tex = settings_buttons3;//app->tex->Load("Assets/textures/Vsync_no.png"); // Vsync No
+		settings_buttons[3].alt_tex_selec = settings_buttons32;//app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
+		settings_buttons[3].alt_tex = settings_buttons33;//app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync Si
 
-		win_button.tex = app->tex->Load("Assets/textures/Close_Buton_Win.png"); // Return field
-		win_button.alt_tex = app->tex->Load("Assets/textures/Close_Buton_Win_Select.png"); // Return field
+
+
+		win_button.tex = winbutton0;//app->tex->Load("Assets/textures/Close_Buton_Win.png"); // Return field
+		win_button.alt_tex = winbutton02;//app->tex->Load("Assets/textures/Close_Buton_Win_Select.png"); // Return field
 	
-		lose_buttons[0].tex = app->tex->Load("Assets/textures/Retry_Buton_Lose.png"); // Try again
-		lose_buttons[0].alt_tex = app->tex->Load("Assets/textures/Retry_Buton_Lose_Select.png"); // Try again
+		lose_buttons[0].tex = lose_button0;//app->tex->Load("Assets/textures/Retry_Buton_Lose.png"); // Try again
+		lose_buttons[0].alt_tex = lose_button02;//app->tex->Load("Assets/textures/Retry_Buton_Lose_Select.png"); // Try again
 
-		lose_buttons[1].tex = app->tex->Load("Assets/textures/Run_Boton_Lose.png"); // Return field
-		lose_buttons[1].alt_tex = app->tex->Load("Assets/textures/Run_Boton_Lose_Select.png"); // Return field
+		lose_buttons[1].tex = lose_button1;//app->tex->Load("Assets/textures/Run_Boton_Lose.png"); // Return field
+		lose_buttons[1].alt_tex = lose_button12;//app->tex->Load("Assets/textures/Run_Boton_Lose_Select.png"); // Return field
 
 		hover_playing = false;
-		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
+		cursor.tex = cursor1;//app->tex->Load("Assets/textures/cursor_default.png");
 
 		// unlock animation
 		unlock_cd = 120;

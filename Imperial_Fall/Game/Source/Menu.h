@@ -200,7 +200,7 @@ public:
 	SDL_Texture* lose_button1 = NULL;
 	SDL_Texture* lose_button12 = NULL;
 
-	SDL_Texture* cursor = NULL;
+	SDL_Texture* cursor1 = NULL;
 private:
 
 	Cursor cursor;
