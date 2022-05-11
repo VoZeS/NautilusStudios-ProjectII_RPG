@@ -205,6 +205,7 @@ private:
 	SDL_Texture* coin;
 	int coins_obtained;
 	int coins_cd;
+	SDL_Texture* whitemark_500x70;
 	
 };
 

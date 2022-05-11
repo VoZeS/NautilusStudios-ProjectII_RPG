@@ -82,7 +82,7 @@ bool Frontground::PreUpdate()
 
 	if (check_phase_change)
 	{
-		//adventure_phase = CheckAdventureState();
+		adventure_phase = CheckAdventureState();
 		check_phase_change = false;
 	}
 

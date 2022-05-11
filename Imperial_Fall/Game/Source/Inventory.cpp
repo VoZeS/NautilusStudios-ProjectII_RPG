@@ -256,6 +256,7 @@ bool Inventory::Start()
 		coin = app->tex->Load("Assets/textures/coin.png");
 		coins_obtained = 0;
 		coins_cd = 0;
+		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
 
 		in_description = false;
 
@@ -4307,9 +4308,35 @@ void Inventory::DisplayCoins()
 	}
 
 	// quest display
-	app->fonts->BlitText(cx, cy, app->fonts->textFont1, "Ve al bosque");
-
-	
+	SDL_Rect r = { 0, 0, 500, 70 };
+	app->render->DrawTexture(whitemark_500x70, cx, cy, &r);
+	switch (app->frontground->adventure_phase)
+	{
+	case -1:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Haz caso a Renato");
+		break;
+	case 0:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Regresa con Renato");
+		break;
+	case 1:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Elimina al Suboficial");
+		break;
+	case 2:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Informa a Renato");
+		break;
+	case 3:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Derrota al Almirante");
+		break;
+	case 4:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Vuelve con Renato");
+		break;
+	case 5:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Entra al castillo");
+		break;
+	case 6:
+		app->fonts->BlitText(cx + 2, cy + 19, app->fonts->textFont1, "Acaba con Theseion");
+		break;
+	}
 }
 
 int Inventory::GetCoins()
