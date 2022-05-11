@@ -51,6 +51,7 @@ bool Entities::Start()
 		herrero = app->tex->Load("Assets/textures/herrero.png");
 		sabio = app->tex->Load("Assets/textures/sage.png");
 		aldeano = app->tex->Load("Assets/textures/aldeano.png");
+		signal = app->tex->Load("Assets/textures/signal.png");
 		granjero = app->tex->Load("Assets/textures/granjero.png");
 		renato_bueno = app->tex->Load("Assets/textures/renato_bueno.png");
 		white_templar = app->tex->Load("Assets/textures/white_templar_b.png");
@@ -104,6 +105,9 @@ bool Entities::PreUpdate()
 				break;
 			case ENTITY_TYPE::GRANJERO:
 				entity->InitCustomEntity(7);
+				break;
+			case ENTITY_TYPE::SIGNAL:
+				entity->InitCustomEntity(8);
 				break;
 			case ENTITY_TYPE::W_TEMPLAR:
 				entity->InitCustomEntity(1);
@@ -347,6 +351,11 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(npc, ENTITY_TYPE::GRANJERO, p);
 	}
 		break;
+	case ENTITY_TYPE::SIGNAL:
+	{
+		NPC* npc = new NPC();
+		AddEntity(npc, ENTITY_TYPE::SIGNAL, p);
+	}
 	case ENTITY_TYPE::W_TEMPLAR:
 	{
 		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
@@ -418,6 +427,8 @@ int Entities::FindNPC()
 			case ENTITY_TYPE::ALDEANO: ret = 5;
 				break;
 			case ENTITY_TYPE::GRANJERO: ret = 6;
+				break;
+			case ENTITY_TYPE::SIGNAL: ret = 8;
 				break;
 			}
 

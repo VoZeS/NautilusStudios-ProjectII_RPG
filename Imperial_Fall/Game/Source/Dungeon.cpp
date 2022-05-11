@@ -74,6 +74,8 @@ bool Dungeon::Start()
 		{
 			app->LoadGameRequest(false);
 		}
+
+		in_ice = 0;
 	}
 
 

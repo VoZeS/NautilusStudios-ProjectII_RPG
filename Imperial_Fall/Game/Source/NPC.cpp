@@ -116,6 +116,9 @@ bool NPC::Draw()
 	case 7:  app->render->AddrenderObject(app->entities->granjero, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 65.0f) }, rect, 1);
 		//app->render->DrawTexture(app->entities->granjero, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
 		break;
+	case 8: app->render->AddrenderObject(app->entities->signal, { METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f) }, rect, 1);
+		//app->render->DrawTexture(app->entities->signal, METERS_TO_PIXELS(position.x - 30.0f), METERS_TO_PIXELS(position.y - 42.0f), &rect);
+		break;
 	default:
 		break;
 	}

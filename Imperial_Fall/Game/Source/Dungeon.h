@@ -34,6 +34,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+public:
+	int in_ice = 0;
+
 };
 
 #endif // __DUNGEON_H__

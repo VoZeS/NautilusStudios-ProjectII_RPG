@@ -314,6 +314,12 @@ bool Dialog::Start()
 	renato_text = dialog.child("renato").child("actual_text").attribute("value").as_int();
 	granjero_text = dialog.child("granjero").child("actual_text").attribute("value").as_int();
 
+	linea1String_Signal = dialog.child("signal").child("text1").attribute("linea1").as_string();
+	linea2String_Signal = dialog.child("signal").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Signal = linea1String_Signal.c_str();
+	linea2Char_Signal = linea2String_Signal.c_str();
+
 	return true;
 }
 
@@ -711,6 +717,23 @@ bool Dialog::Update(float dt)
 						granjero_text = 0;
 					}
 				}
+				else if (app->physics->GetInNPC(7))
+				{
+					if (ContinueDialog(signal_text, signal_maxtext))
+					{
+						letlengh = 0;
+						letlengh2 = 0;
+
+						inDialog = true;
+						actual_dialog = DIALOGS::SIGNAL;
+						SetPressE_Hide(true);
+					}
+					else
+					{
+						inDialog = false;
+						actual_dialog = DIALOGS::NO_ONE;
+					}
+				}
 				else if (app->frontground->adventure_phase == 2)
 				{
 					if (ContinueDialog(granjero_text, 2))
@@ -1016,6 +1039,15 @@ bool Dialog::PostUpdate()
 
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Granjero[granjero_text], 1, 255, 255, 255, 1920, 1, letlengh, 1);
 			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Granjero[granjero_text], 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		}
+		else if (actual_dialog == DIALOGS::SIGNAL) // ALLY TALKING
+		{
+			app->render->DrawTexture(whitemark_300x80, 30 + c_x, 480 + c_y);
+			app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
+			app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "SIGNAL:");
+
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, linea1Char_Signal, 1, 255, 255, 255, 1920, 1, letlengh, 1);
+			app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, linea2Char_Signal, 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 		}
 	}
 	else

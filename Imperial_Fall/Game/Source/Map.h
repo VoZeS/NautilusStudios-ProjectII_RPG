@@ -6,6 +6,7 @@
 #include "PQueue.h"
 #include "Point.h"
 #include "DynArray.h"
+#include "Physics.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -144,6 +145,25 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+	b2Fixture* S1_Coll;
+	b2Fixture* S2_Coll;
+	b2Fixture* S3_Coll;
+	b2Fixture* S4_Coll;
+	b2Fixture* S5_Coll;
+	b2Fixture* S6_Coll;
+
+	b2Fixture* S1_Sens;
+	b2Fixture* S2_Sens;
+	b2Fixture* S3_Sens;
+	b2Fixture* S4_Sens;
+	b2Fixture* S5_Sens;
+	b2Fixture* S6_Sens;
+
+	b2Fixture* S1_Box;
+	b2Fixture* S2_Box;
+	b2Fixture* S3_Box;
+	b2Fixture* S4_Box;
 
 private:
 

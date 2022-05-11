@@ -8,6 +8,8 @@
 #include "Scene.h"
 #include "Outside_Castle.h"
 #include "Frontground.h"
+#include "Forest.h"
+#include "Dungeon.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -137,11 +139,116 @@ void Map::Draw()
 						int width = mapLayerItem->data->properties.GetProperty("Width");
 						int height = mapLayerItem->data->properties.GetProperty("Height");
 
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 30 && app->dungeon->Enabled())
+						{
+							// dungeon ice sensor
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 30);
+						}
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
+						// -------------------------------------------------------------------------- BOXES SOUKOBAN
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 301)
+						{
+							S1_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 302)
+						{
+							S2_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 303)
+						{
+							S3_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 304)
+						{
+							S4_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
+
+						}
+
+						// -------------------------------------------------------------------- RIVER COLLISIONS SOUKOBAN PUZZLE
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 101)
+						{
+							S1_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 101);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 102)
+						{
+							S2_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 102);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 103)
+						{
+							S3_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 103);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 104)
+						{
+							S4_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 104);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 105)
+						{
+							S5_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 105);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 106)
+						{
+							S6_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 106);
+
+						}
+						// --------------------------------------------------------------------- SENSOR SOUKOBAN PUZZLE
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 201)
+						{
+							S1_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 201);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 202)
+						{
+							S2_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 202);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 203)
+						{
+							S3_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 203);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 204)
+						{
+							S4_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 204);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 205)
+						{
+							S5_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 205);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 206)
+						{
+							S6_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 206);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 231)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 231);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 232)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 232);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 233)
+						{
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 233);
+
+						}
+
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 90)
 						{
 							// collision ground
@@ -186,6 +293,11 @@ void Map::Draw()
 						{
 							// Aldeano
 							app->entities->CreateEntity(ENTITY_TYPE::ALDEANO, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 16)
+						{
+							// SIGNAL SOUKOBAN
+							app->entities->CreateEntity(ENTITY_TYPE::SIGNAL, pos.x, pos.y);
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
