@@ -599,7 +599,7 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 6)
 				{
-					if (renato_text == 14) /// reward for mision 3
+					if (renato_text == 14)
 					{
 						renato_text++;
 					}	
@@ -713,7 +713,6 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 2)
 				{
-					granjero_text = 0;
 					if (ContinueDialog(granjero_text, 2))
 					{
 						letlengh = 0;
@@ -732,6 +731,10 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 3)
 				{
+					if (granjero_text == 0)
+					{
+						granjero_text++;
+					}
 					if (ContinueDialog(granjero_text, 4))
 					{
 						letlengh = 0;
@@ -750,7 +753,6 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 4)
 				{
-					granjero_text = 2;
 					if (ContinueDialog(granjero_text, 4))
 					{
 						letlengh = 0;
@@ -769,6 +771,10 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 5)
 				{
+					if (granjero_text == 2)
+					{
+						granjero_text++;
+					}
 					if (ContinueDialog(granjero_text, 6))
 					{
 						letlengh = 0;
@@ -787,7 +793,6 @@ bool Dialog::Update(float dt)
 				}
 				else if (app->frontground->adventure_phase == 6)
 				{
-					granjero_text = 4;
 					if (ContinueDialog(granjero_text, 6))
 					{
 						letlengh = 0;

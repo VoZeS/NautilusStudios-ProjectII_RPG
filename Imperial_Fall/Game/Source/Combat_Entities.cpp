@@ -1052,7 +1052,9 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 6:
 			skill.owner = owner;
 			skill.skill_name = "Rainbow Grace";
-			skill.skill_description0 = "All allies obtain damage inmunity for 2 turns.";
+			skill.skill_description0 = "This potion was used to prevent extreme heat";
+			skill.skill_description1 = "conditions. All allies obtain damage inmunity";
+			skill.skill_description2 = "for 2 turns.";
 			skill.supp_effect = SUPP_EFFECT::HEAL;
 			skill.mana_cost = 0;
 			skill.ally_objective = ALLY_OBJECTIVE::ALL_ALLY;
