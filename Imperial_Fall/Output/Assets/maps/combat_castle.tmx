@@ -9,6 +9,9 @@
  <tileset firstgid="3547" name="[Base]BaseChip_pipo2" tilewidth="32" tileheight="32" tilecount="1064" columns="8">
   <image source="BaseBaseChip_pipo2.png" width="256" height="4256"/>
  </tileset>
+ <tileset firstgid="4611" name="sprites_tilesets_forest (4)" tilewidth="32" tileheight="32" tilecount="280" columns="14">
+  <image source="sprites_tilesets_forest (4).png" width="448" height="640"/>
+ </tileset>
  <layer id="1" name="Floor" width="40" height="23">
   <properties>
    <property name="Draw" type="int" value="1"/>
