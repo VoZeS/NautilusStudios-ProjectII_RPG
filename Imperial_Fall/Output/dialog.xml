@@ -33,7 +33,7 @@
 		<text1 linea1="No tengo nada que decir. No molestes." />
 	</aldeano>
 	<signal>
-		<text1 linea1="¿Te has quedado encallado?" linea2="Pulsa R para resetear las cajas." />
+		<text1 linea1="Te has quedado encallado?" linea2="Pulsa R para resetear las cajas." />
 	</signal>
 	<granjero>
 		<actual_text value="-1" />

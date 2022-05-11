@@ -125,19 +125,27 @@ bool Forest::Update(float dt)
 
 	if (app->map->S1_Box != nullptr && box_texture != nullptr)
 	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
+		app->render->AddrenderObject(box_texture, { METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32) }, boxRect, 0, 1.0f, 0.0f);
+
+		//app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S1_Box->GetBody()->GetPosition().y - 32), &boxRect);
 	}
 	if (app->map->S2_Box != nullptr && box_texture != nullptr)
 	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32), &boxRect);
+		app->render->AddrenderObject(box_texture, { METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32) }, boxRect, 0, 1.0f, 0.0f);
+
+		//app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S2_Box->GetBody()->GetPosition().y - 32), &boxRect);
 	}
 	if (app->map->S3_Box != nullptr && box_texture != nullptr)
 	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32), &boxRect);
+		app->render->AddrenderObject(box_texture, { METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32) }, boxRect, 0, 1.0f, 0.0f);
+
+		//app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S3_Box->GetBody()->GetPosition().y - 32), &boxRect);
 	}
 	if (app->map->S4_Box != nullptr && box_texture != nullptr)
 	{
-		app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32), &boxRect);
+		app->render->AddrenderObject(box_texture, { METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32) }, boxRect, 0, 1.0f, 0.0f);
+
+		//app->render->DrawTexture(box_texture, METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().x - 32), METERS_TO_PIXELS(app->map->S4_Box->GetBody()->GetPosition().y - 32), &boxRect);
 	}
 
 	return true;

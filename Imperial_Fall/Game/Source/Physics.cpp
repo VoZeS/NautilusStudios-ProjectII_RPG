@@ -1108,6 +1108,13 @@ void Physics::EndContact(b2Contact* contact)
 			inGranjero = false;
 			app->dialog->QuitDialogs();
 		}
+		else if ((int)fixtureUserDataA == 9)
+		{
+			// signal contact
+			app->dialog->SetPressE_Hide(true);
+			inSignal = false;
+			app->dialog->QuitDialogs();
+		}
 		else if ((int)fixtureUserDataA == 20)
 		{
 			// coins in floor contact

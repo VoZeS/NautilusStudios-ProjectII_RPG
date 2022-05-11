@@ -642,6 +642,8 @@ bool Dialog::Update(float dt)
 					inDialog = false;
 					actual_dialog = DIALOGS::NO_ONE;
 					in_shop = 2;
+					medico_text = -1;
+
 				}
 			}
 			else if (app->physics->GetInNPC(3))
@@ -660,6 +662,7 @@ bool Dialog::Update(float dt)
 					inDialog = false;
 					actual_dialog = DIALOGS::NO_ONE;
 					in_shop = 1;
+					herrero_text = -1;
 				}
 			}
 			else if (app->physics->GetInNPC(4))
@@ -678,6 +681,7 @@ bool Dialog::Update(float dt)
 					inDialog = false;
 					actual_dialog = DIALOGS::NO_ONE;
 					in_shop = 3;
+					sabio_text = -1;
 				}
 			}
 			else if (app->physics->GetInNPC(5))
@@ -695,6 +699,7 @@ bool Dialog::Update(float dt)
 				{
 					inDialog = false;
 					actual_dialog = DIALOGS::NO_ONE;
+					aldeano_text = -1;
 				}
 			}
 			else if (app->physics->GetInNPC(6))
@@ -717,23 +722,7 @@ bool Dialog::Update(float dt)
 						granjero_text = 0;
 					}
 				}
-				else if (app->physics->GetInNPC(7))
-				{
-					if (ContinueDialog(signal_text, signal_maxtext))
-					{
-						letlengh = 0;
-						letlengh2 = 0;
-
-						inDialog = true;
-						actual_dialog = DIALOGS::SIGNAL;
-						SetPressE_Hide(true);
-					}
-					else
-					{
-						inDialog = false;
-						actual_dialog = DIALOGS::NO_ONE;
-					}
-				}
+				
 				else if (app->frontground->adventure_phase == 2)
 				{
 					if (ContinueDialog(granjero_text, 2))
@@ -831,6 +820,24 @@ bool Dialog::Update(float dt)
 						actual_dialog = DIALOGS::NO_ONE;
 						granjero_text = 4;
 					}
+				}
+			}
+			else if (app->physics->GetInNPC(7))
+			{
+				if (ContinueDialog(signal_text, signal_maxtext))
+				{
+					letlengh = 0;
+					letlengh2 = 0;
+
+					inDialog = true;
+					actual_dialog = DIALOGS::SIGNAL;
+					SetPressE_Hide(true);
+				}
+				else
+				{
+					inDialog = false;
+					actual_dialog = DIALOGS::NO_ONE;
+					signal_text = -1;
 				}
 			}
 			else if (inEnemy)

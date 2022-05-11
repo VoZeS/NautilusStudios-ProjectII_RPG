@@ -356,6 +356,7 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		NPC* npc = new NPC();
 		AddEntity(npc, ENTITY_TYPE::SIGNAL, p);
 	}
+	break;
 	case ENTITY_TYPE::W_TEMPLAR:
 	{
 		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
