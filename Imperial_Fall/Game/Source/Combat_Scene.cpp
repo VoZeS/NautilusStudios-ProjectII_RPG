@@ -43,7 +43,16 @@ bool Combat_Scene::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("combat.tmx");
+		switch (app->frontground->current_level)
+		{
+		case 1: app->map->Load("combat.tmx"); break;
+		case 2: app->map->Load("combat.tmx"); break;
+		case 3: app->map->Load("combat_dark.tmx"); break;
+		case 4: app->map->Load("combat_light.tmx"); break;
+		case 5: app->map->Load("combat.tmx"); break;
+		case 6: app->map->Load("combat.tmx"); break;
+		case 7: app->map->Load("combat_castle.tmx"); break;
+		}
 
 		// Load music
 		/*if (!app->entities->in_boss)

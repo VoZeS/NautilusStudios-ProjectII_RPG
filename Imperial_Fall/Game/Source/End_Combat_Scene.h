@@ -44,6 +44,10 @@ public:
 	uint evil_laugh;
 	uint dragon_roar;
 
+	SDL_Texture* fire_tex;
+	Animation* fire = NULL;
+	Animation fire_loop;
+
 };
 
 #endif // __END_COMBAT_SCENE_H__

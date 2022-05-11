@@ -24,6 +24,15 @@
 End_Combat_Scene::End_Combat_Scene(bool enabled) : Module(enabled)
 {
 	name.Create("end_combat_scene");
+
+	fire_loop.PushBack({ 0, 0, 64, 64 });
+	fire_loop.PushBack({ 64, 0, 64, 64 });
+	fire_loop.PushBack({ 128, 0, 64, 64 });
+	fire_loop.PushBack({ 192, 0, 64, 64 });
+	fire_loop.PushBack({ 256, 0, 64, 64 });
+	fire_loop.PushBack({ 320, 0, 64, 64 });
+	fire_loop.PushBack({ 384, 0, 64, 64 });
+	fire_loop.speed = 0.03f;
 }
 
 // Destructor
@@ -52,6 +61,7 @@ bool End_Combat_Scene::Start()
 		dragon_roar = app->audio->LoadFx("Assets/audio/fx/dragon_roar.wav");
 
 		whitemark_1200x140 = app->tex->Load("Assets/textures/1200x140_whitemark.png");
+		fire_tex = app->tex->Load("Assets/textures/fire.png");
 
 		//Enable combat
 		app->menu->Enable();
@@ -64,6 +74,8 @@ bool End_Combat_Scene::Start()
 
 		in_cutscene = true;
 		cutcene_cd = 0;
+
+		fire = &fire_loop;
 	}
 
 
@@ -110,12 +122,41 @@ bool End_Combat_Scene::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
+	fire->Update();
+
 	return true;
 }
 
 // Called each loop iteration
 bool End_Combat_Scene::PostUpdate()
 {
+	app->render->DrawTexture(fire_tex, 50, 500, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 450, 100, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 863, 600, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 700, 150, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 968, 200, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 230, 387, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 140, 450, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 268, 560, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 1030, 40, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 1140, 135, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 650, 420, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 700, 480, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 530, 563, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 830, 354, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 426, 475, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 678, 387, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 598, 362, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 543, 156, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 1030, 132, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 1140, 478, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 990, 450, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 256, 120, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 154, 162, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 400, 300, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 324, 224, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 1030, 256, &fire->GetCurrentFrame());
+	app->render->DrawTexture(fire_tex, 114, 123, &fire->GetCurrentFrame());
 
 	return true;
 }
