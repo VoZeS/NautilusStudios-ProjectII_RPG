@@ -32,6 +32,9 @@
 	<aldeano>
 		<text1 linea1="No tengo nada que decir. No molestes." />
 	</aldeano>
+	<signal>
+		<text1 linea1="¿Te has quedado encallado?" linea2="Pulsa R para resetear las cajas."/>
+	</signal>
 	<granjero>
 		<actual_text value="-1" />
 		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector." />
