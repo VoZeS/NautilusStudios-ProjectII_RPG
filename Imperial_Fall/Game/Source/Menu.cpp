@@ -255,8 +255,6 @@ bool Menu::Start()
 		Lose_BackGround = app->tex->Load("Assets/textures/Lose_Screen.png");
 		Win_BackGround = app->tex->Load("Assets/textures/Win_Screen.png");
 
-		combat_win = app->tex->Load("Assets/textures/win_text.png");
-		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
 		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
 
 		torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
@@ -1564,8 +1562,7 @@ bool Menu::PostUpdate()
 
 	if (app->scene->fuegoSeguir == true )
 	{
-		seguir-=10;
-	
+		seguir -= 10;
 	}
 	if (seguir <= 900 )
 	{
@@ -2059,8 +2056,6 @@ bool Menu::PostUpdate()
 
 		if (win_button.state == 0)
 		{
-			//rect = { 0, 0, 500, 70 };
-			//app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
 			app->render->DrawTexture(win_button.tex, win_button.rect.x , win_button.rect.y);
 		}
 
@@ -2069,15 +2064,6 @@ bool Menu::PostUpdate()
 			app->render->DrawTexture(win_button.alt_tex, win_button.rect.x - 20 , win_button.rect.y - 20);
 		}
 
-		else if (win_button.state == 2)
-		{
-			//rect = { 0, 140, 500, 70 };
-			//app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
-		}
-
-		//app->fonts->BlitText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
-		
-		
 		rect = { 0, 0, 64, 64 };
 		app->render->DrawTexture(rew_icons, 100 + (315 * 0), 450, &rect);
 		app->fonts->BlitCombatText(170 + (315 * 0), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp0).c_str());
@@ -2364,17 +2350,17 @@ bool Menu::ReturnStartScreen()
 
 void Menu::DisableAll()
 {
-	app->logo->Disable();
-	app->scene->Disable();
-	app->town1->Disable();
-	app->town2->Disable();
-	app->forest->Disable();
-	app->battlefield->Disable();
-	app->dungeon->Disable();
-	app->outside->Disable();
-	app->inside->Disable();
-	app->combat_scene->Disable();
-	app->end_combat_scene->Disable();
+	if (app->logo->Enabled()) { app->logo->Disable(); }
+	if (app->scene->Enabled()) { app->scene->Disable(); }
+	if (app->town1->Enabled()) { app->town1->Disable(); }
+	if (app->town2->Enabled()) { app->town2->Disable(); }
+	if (app->forest->Enabled()) { app->forest->Disable(); }
+	if (app->battlefield->Enabled()) { app->battlefield->Disable(); }
+	if (app->dungeon->Enabled()) { app->dungeon->Disable(); }
+	if (app->outside->Enabled()) { app->outside->Disable(); }
+	if (app->inside->Enabled()) { app->inside->Disable(); }
+	if (app->combat_scene->Enabled()) { app->combat_scene->Disable(); }
+	if (app->end_combat_scene->Enabled()) { app->end_combat_scene->Disable(); }
 }
 
 void Menu::InitPlayer()

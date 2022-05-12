@@ -86,17 +86,20 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew)
 	skeletonAnim.PushBack({ 384, 0, 192, 205 });
 	skeletonAnim.speed = 0.03f;
 
-	armoredAnim.PushBack({ 0, 0, 110, 70 });
-	armoredAnim.PushBack({ 110, 0, 110, 70 });
-	armoredAnim.PushBack({ 220, 0, 110, 70 });
-	armoredAnim.PushBack({ 330, 0, 110, 70 });
-	armoredAnim.PushBack({ 440, 0, 110, 70 });
-	armoredAnim.PushBack({ 0, 70, 110, 70 });
-	armoredAnim.PushBack({ 110, 70, 110, 70 });
-	armoredAnim.PushBack({ 220, 70, 110, 70 });
-	armoredAnim.PushBack({ 330, 70, 110, 70 });
-	armoredAnim.PushBack({ 440, 70, 110, 70 });
+	armoredAnim.PushBack({ 0, 0, 220, 140 });
+	armoredAnim.PushBack({ 220, 0, 220, 140 });
+	armoredAnim.PushBack({ 440, 0, 220, 140 });
+	armoredAnim.PushBack({ 660, 0, 220, 140 });
+	armoredAnim.PushBack({ 880, 0, 220, 140 });
+	armoredAnim.PushBack({ 0, 140, 220, 140 });
+	armoredAnim.PushBack({ 220, 140, 220, 140 });
+	armoredAnim.PushBack({ 440, 140, 220, 140 });
+	armoredAnim.PushBack({ 660, 140, 220, 140 });
+	armoredAnim.PushBack({ 880, 140, 220, 140 });
 	armoredAnim.speed = 0.08f;
+
+	theseionAnim.PushBack({ 68, 4, 46, 74 });
+	theseionAnim.speed = 0.03f;
 }
 
 // Destructor
@@ -115,6 +118,7 @@ void Enemies::InitCustomEntity(int enemy)
 	case 4: currentAnimation = &skeletonAnim; break;
 	case 5: currentAnimation = &mushroomAnim; break;
 	case 6: currentAnimation = &armoredAnim; break;
+	case 7: currentAnimation = &theseionAnim; break;
 	}
 
 	// body
@@ -221,6 +225,9 @@ bool Enemies::Draw()
 			break;
 		case 6:
 			app->render->AddrenderObject(app->entities->armored_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
+			break;
+		case 7:
+			app->render->AddrenderObject(app->entities->theseion, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		}
 	}

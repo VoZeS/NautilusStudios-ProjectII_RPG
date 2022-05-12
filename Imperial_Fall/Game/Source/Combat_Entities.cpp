@@ -73,8 +73,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 20;
+			gold = 1;
 		}
-		else if (app->frontground->adventure_phase == 1)
+		else if (app->frontground->adventure_phase == 1 || app->frontground->adventure_phase == 2)
 		{
 			max_health = 140;
 			actual_health = max_health;
@@ -91,8 +92,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 30;
+			gold = 2;
 		}
-		else if (app->frontground->adventure_phase == 2)
+		else if (app->frontground->adventure_phase == 3 || app->frontground->adventure_phase == 4)
 		{
 			max_health = 180;
 			actual_health = max_health;
@@ -109,8 +111,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 40;
+			gold = 3;
 		}
-		else if (app->frontground->adventure_phase == 3)
+		else if (app->frontground->adventure_phase == 5 || app->frontground->adventure_phase == 6)
 		{
 			max_health = 220;
 			actual_health = max_health;
@@ -127,6 +130,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 50;
+			gold = 5;
 		}
 		
 		break;
@@ -152,8 +156,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 15;
+			gold = 1;
 		}
-		else if (app->frontground->adventure_phase == 1)
+		else if (app->frontground->adventure_phase == 1 || app->frontground->adventure_phase == 2)
 		{
 			max_health = 125;
 			actual_health = max_health;
@@ -170,8 +175,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 25;
+			gold = 1;
 		}
-		else if (app->frontground->adventure_phase == 2)
+		else if (app->frontground->adventure_phase == 3 || app->frontground->adventure_phase == 4)
 		{
 			max_health = 160;
 			actual_health = max_health;
@@ -188,8 +194,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 35;
+			gold = 2;
 		}
-		else if (app->frontground->adventure_phase == 3)
+		else if (app->frontground->adventure_phase == 5 || app->frontground->adventure_phase == 6)
 		{
 			max_health = 190;
 			actual_health = max_health;
@@ -206,6 +213,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 45;
+			gold = 3;
 		}
 
 		break;
@@ -231,8 +239,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 12;
+			gold = 0;
 		}
-		else if (app->frontground->adventure_phase == 1)
+		else if (app->frontground->adventure_phase == 1 || app->frontground->adventure_phase == 2)
 		{
 			max_health = 75;
 			actual_health = max_health;
@@ -249,8 +258,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 22;
+			gold = 1;
 		}
-		else if (app->frontground->adventure_phase == 2)
+		else if (app->frontground->adventure_phase == 3 || app->frontground->adventure_phase == 4)
 		{
 			max_health = 100;
 			actual_health = max_health;
@@ -267,8 +277,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 32;
+			gold = 2;
 		}
-		else if (app->frontground->adventure_phase == 3)
+		else if (app->frontground->adventure_phase == 5 || app->frontground->adventure_phase == 6)
 		{
 			max_health = 110;
 			actual_health = max_health;
@@ -285,6 +296,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 42;
+			gold = 4;
 		}
 		
 		break;
@@ -310,8 +322,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 18;
+			gold = 1;
 		}
-		else if (app->frontground->adventure_phase == 1)
+		else if (app->frontground->adventure_phase == 1 || app->frontground->adventure_phase == 2)
 		{
 			max_health = 160;
 			actual_health = max_health;
@@ -328,8 +341,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 3);
 
 			xp = 28;
+			gold = 1;
 		}
-		else if (app->frontground->adventure_phase == 2)
+		else if (app->frontground->adventure_phase == 3 || app->frontground->adventure_phase == 4)
 		{
 			max_health = 200;
 			actual_health = max_health;
@@ -346,8 +360,9 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 38;
+			gold = 2;
 		}
-		else if (app->frontground->adventure_phase == 3)
+		else if (app->frontground->adventure_phase == 5 || app->frontground->adventure_phase == 6)
 		{
 			max_health = 250;
 			actual_health = max_health;
@@ -364,6 +379,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 			skills[3] = SetSkill(entity_type, 7);
 
 			xp = 48;
+			gold = 3;
 		}
 
 		break;
@@ -387,6 +403,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 3);
 
 		xp = 50;
+		gold = 15;
 
 		break;
 	case ENEMIES::DRAGON:
@@ -475,6 +492,7 @@ Combat_Entities::Combat_Entities(ENEMIES enemy)
 		skills[3] = SetSkill(entity_type, 3);
 
 		xp = 70;
+		gold = 25;
 
 		break;
 	}

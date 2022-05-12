@@ -62,6 +62,7 @@ public:
 	Animation goblinAnim;
 	Animation skeletonAnim;
 	Animation armoredAnim;
+	Animation theseionAnim;
 
 	ENEMY_STATE state;
 

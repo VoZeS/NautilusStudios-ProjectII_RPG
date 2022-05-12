@@ -169,7 +169,6 @@ bool Frontground::PostUpdate()
 	}
 	else
 	{
-
 		app->render->DrawRectangle(r, 0, 0, 0, a);
 	}
 

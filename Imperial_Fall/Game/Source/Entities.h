@@ -24,7 +24,8 @@ enum class ENTITY_TYPE
 	GOBLIN,
 	SKELETON,
 	R_TEMPLAR,
-	A_TEMPLAR
+	A_TEMPLAR,
+	THESEION
 };
 
 class Entity
@@ -148,6 +149,7 @@ public:
 	SDL_Texture* skeleton = NULL;
 	SDL_Texture* red_templar = NULL;
 	SDL_Texture* armored_templar = NULL;
+	SDL_Texture* theseion = NULL;
 	
 };
 

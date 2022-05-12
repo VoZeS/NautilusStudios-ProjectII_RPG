@@ -173,8 +173,6 @@ private:
 	SDL_Texture* Lose_BackGround = NULL;
 	SDL_Texture* Win_BackGround = NULL;
 
-	SDL_Texture* combat_win = NULL;
-	SDL_Texture* combat_lose = NULL;
 	SDL_Texture* combat_scape = NULL;
 
 	SDL_Texture* whitemark_128x128 = NULL;

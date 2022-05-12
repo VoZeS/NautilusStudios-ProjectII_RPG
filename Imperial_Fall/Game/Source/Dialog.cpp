@@ -1138,6 +1138,7 @@ bool Dialog::PostUpdate()
 					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 26, app->fonts->textFont2, object_cost.c_str());
 					object_cost = "Cost: " + std::to_string(shop2[i].cost) + " coins";
 					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 150, shop_buttons[i].rect.y + 66, app->fonts->textFont2, object_cost.c_str());
+					app->fonts->BlitCombatText(shop_buttons[i].rect.x + 100, shop_buttons[i].rect.y + 100, app->fonts->textFont2, std::to_string(shop2[i].item[2] - '0').c_str());
 					if (shop2[i].selled)
 					{
 						s_rect = { 256, 0, 128, 128 };

@@ -207,6 +207,7 @@ public:
 
 	// enemies xp
 	int xp = 0;
+	int gold = 0;
 
 private:
 	Skill SetSkill(int owner, int skill_number);

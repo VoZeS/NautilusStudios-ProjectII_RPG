@@ -76,8 +76,9 @@ bool Combat_Manager::Start()
 			app->frontground->combat_xp1 += enemies[i]->xp * 1.2f;
 			app->frontground->combat_xp2 += enemies[i]->xp;
 			app->frontground->combat_xp3 += enemies[i]->xp;
+			app->frontground->combat_gold += enemies[i]->gold;
 		}
-		app->frontground->combat_gold = 2;
+
 		for (size_t i = 0; i < 4; i++)
 		{
 			if (enemies[i]->GetSkill(0).owner == 9)

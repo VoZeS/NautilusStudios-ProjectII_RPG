@@ -60,6 +60,7 @@ bool Entities::Start()
 		skeleton = app->tex->Load("Assets/textures/skeleton_b.png");
 		red_templar = app->tex->Load("Assets/textures/red_templar_b.png");
 		armored_templar = app->tex->Load("Assets/textures/armored_templar.png");
+		theseion = app->tex->Load("Assets/textures/Theseion.png");
 
 		freeze = false;
 		in_boss = false;
@@ -126,6 +127,9 @@ bool Entities::PreUpdate()
 				break;
 			case ENTITY_TYPE::A_TEMPLAR:
 				entity->InitCustomEntity(6);
+				break;
+			case ENTITY_TYPE::THESEION:
+				entity->InitCustomEntity(7);
 				break;
 			default:
 				entity->InitCustomEntity();
@@ -393,6 +397,12 @@ void Entities::CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index
 		AddEntity(enemy, ENTITY_TYPE::A_TEMPLAR, p);
 	}
 		break;
+	case ENTITY_TYPE::THESEION:
+	{
+		Enemies* enemy = new Enemies(index, en1, en2, en3, en4, rew);
+		AddEntity(enemy, ENTITY_TYPE::THESEION, p);
+	}
+		break;
 	default:
 		break;
 	}
@@ -454,7 +464,8 @@ fPoint Entities::GetEnemyPos()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
-			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR
+			|| entity->entity_type == ENTITY_TYPE::THESEION)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			combat_entity = entity;
@@ -495,7 +506,7 @@ void Entities::StartCombat()
 		{
 			combat_entity = entity;
 			max = GetPlayer()->GetPlayerPosition().DistanceTo(entity->position);
-			if (entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
+			if (entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR || entity->entity_type == ENTITY_TYPE::THESEION)
 			{
 				in_boss = true;
 			}
@@ -549,7 +560,8 @@ void Entities::KillEnemy()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
-			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR
+			|| entity->entity_type == ENTITY_TYPE::THESEION)
 			&& (abs(pos.DistanceTo(entity->position)) < max))
 		{
 			combat_entity = entity;

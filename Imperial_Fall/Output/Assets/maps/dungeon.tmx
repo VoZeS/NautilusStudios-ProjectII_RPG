@@ -193821,9 +193821,9 @@
   <properties>
    <property name="Collision" type="int" value="17"/>
    <property name="Enemy1" type="int" value="4"/>
-   <property name="Enemy2" type="int" value="0"/>
+   <property name="Enemy2" type="int" value="4"/>
    <property name="Enemy3" type="int" value="6"/>
-   <property name="Enemy4" type="int" value="4"/>
+   <property name="Enemy4" type="int" value="0"/>
    <property name="Index" type="int" value="4"/>
    <property name="Phase" type="int" value="3"/>
    <property name="Reward" type="int" value="461"/>

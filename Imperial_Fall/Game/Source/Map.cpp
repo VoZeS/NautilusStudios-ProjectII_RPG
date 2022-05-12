@@ -109,7 +109,7 @@ void Map::Draw()
 							}
 						}
 					}
-					else if (mapLayerItem->data->properties.GetProperty("Draw") == 2 && app->frontground->adventure_phase < 2)
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 2 && app->frontground->adventure_phase < 1)
 					{
 						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
 							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
@@ -117,7 +117,7 @@ void Map::Draw()
 							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
 						}
 					}
-					else if (mapLayerItem->data->properties.GetProperty("Draw") == 3 && app->frontground->adventure_phase < 4)
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 3 && app->frontground->adventure_phase < 3)
 					{
 						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
 							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
@@ -125,7 +125,7 @@ void Map::Draw()
 							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
 						}
 					}
-					else if (mapLayerItem->data->properties.GetProperty("Draw") == 4 && app->frontground->adventure_phase < 6)
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 4 && app->frontground->adventure_phase < 5)
 					{
 						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
 							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
@@ -402,7 +402,7 @@ void Map::Draw()
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
 								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
-								app->entities->CreateEntity(ENTITY_TYPE::A_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
+								app->entities->CreateEntity(ENTITY_TYPE::THESEION, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						// ------------------------ miscelanea

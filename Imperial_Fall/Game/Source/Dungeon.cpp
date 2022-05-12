@@ -87,7 +87,7 @@ bool Dungeon::PreUpdate()
 {
 	if (!app->audio->MusicPlaying())
 	{
-		app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
+		app->audio->PlayMusic("Assets/audio/music/zone3.ogg");
 	}
 
 	return true;
