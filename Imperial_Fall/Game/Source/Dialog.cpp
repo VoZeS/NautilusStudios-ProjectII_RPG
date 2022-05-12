@@ -162,25 +162,25 @@ bool Dialog::Start()
 	{
 		// herrero
 		shop1[0].item = "031";
-		shop1[0].cost = 15;
+		shop1[0].cost = 5;
 		shop1[1].item = "131";
-		shop1[1].cost = 15;
+		shop1[1].cost = 5;
 		shop1[2].item = "231";
-		shop1[2].cost = 15;
+		shop1[2].cost = 5;
 		shop1[3].item = "331";
-		shop1[3].cost = 15;
+		shop1[3].cost = 5;
 
 		// medico
 		shop2[0].item = "403";
-		shop2[0].cost = 5;
+		shop2[0].cost = 3;
 		shop2[1].item = "413";
 		shop2[1].cost = 8;
-		shop2[2].item = "442";
-		shop2[2].cost = 5;
-		shop2[3].item = "452";
-		shop2[3].cost = 8;
+		shop2[2].item = "422";
+		shop2[2].cost = 4;
+		shop2[3].item = "432";
+		shop2[3].cost = 4;
 
-		// granjero
+		// sabio
 		shop3[0].item = "501";
 		shop3[0].cost = 10;
 		shop3[1].item = "511";
@@ -194,23 +194,23 @@ bool Dialog::Start()
 	{
 		// herrero
 		shop1[0].item = "032";
-		shop1[0].cost = 15;
+		shop1[0].cost = 12;
 		shop1[1].item = "132";
-		shop1[1].cost = 15;
+		shop1[1].cost = 12;
 		shop1[2].item = "232";
-		shop1[2].cost = 15;
+		shop1[2].cost = 12;
 		shop1[3].item = "332";
-		shop1[3].cost = 15;
+		shop1[3].cost = 12;
 
 		// medico
 		shop2[0].item = "403";
-		shop2[0].cost = 5;
+		shop2[0].cost = 6;
 		shop2[1].item = "413";
 		shop2[1].cost = 8;
-		shop2[2].item = "443";
-		shop2[2].cost = 5;
-		shop2[3].item = "453";
-		shop2[3].cost = 8;
+		shop2[2].item = "432";
+		shop2[2].cost = 4;
+		shop2[3].item = "471";
+		shop2[3].cost = 10;
 
 		// sabio
 		shop3[0].item = "501";
@@ -226,23 +226,23 @@ bool Dialog::Start()
 	{
 		// herrero
 		shop1[0].item = "033";
-		shop1[0].cost = 15;
+		shop1[0].cost = 20;
 		shop1[1].item = "133";
-		shop1[1].cost = 15;
+		shop1[1].cost = 20;
 		shop1[2].item = "233";
-		shop1[2].cost = 15;
+		shop1[2].cost = 20;
 		shop1[3].item = "333";
-		shop1[3].cost = 15;
+		shop1[3].cost = 20;
 
 		// medico
-		shop2[0].item = "403";
-		shop2[0].cost = 5;
-		shop2[1].item = "413";
-		shop2[1].cost = 8;
-		shop2[2].item = "443";
-		shop2[2].cost = 5;
-		shop2[3].item = "453";
-		shop2[3].cost = 8;
+		shop2[0].item = "441";
+		shop2[0].cost = 15;
+		shop2[1].item = "416";
+		shop2[1].cost = 12;
+		shop2[2].item = "451";
+		shop2[2].cost = 15;
+		shop2[3].item = "472";
+		shop2[3].cost = 15;
 
 		// sabio
 		shop3[0].item = "501";
@@ -258,23 +258,23 @@ bool Dialog::Start()
 	{
 		// herrero
 		shop1[0].item = "034";
-		shop1[0].cost = 15;
+		shop1[0].cost = 30;
 		shop1[1].item = "134";
-		shop1[1].cost = 15;
+		shop1[1].cost = 30;
 		shop1[2].item = "234";
-		shop1[2].cost = 15;
+		shop1[2].cost = 30;
 		shop1[3].item = "334";
-		shop1[3].cost = 15;
+		shop1[3].cost = 30;
 
 		// medico
-		shop2[0].item = "403";
-		shop2[0].cost = 5;
-		shop2[1].item = "413";
-		shop2[1].cost = 8;
-		shop2[2].item = "443";
-		shop2[2].cost = 5;
-		shop2[3].item = "453";
-		shop2[3].cost = 8;
+		shop2[0].item = "443";
+		shop2[0].cost = 35;
+		shop2[1].item = "416";
+		shop2[1].cost = 12;
+		shop2[2].item = "453";
+		shop2[2].cost = 30;
+		shop2[3].item = "435";
+		shop2[3].cost = 15;
 
 		// sabio
 		shop3[0].item = "501";

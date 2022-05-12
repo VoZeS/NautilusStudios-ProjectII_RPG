@@ -475,7 +475,7 @@ int Frontground::CheckAdventureState()
 	int res = -1;
 
 	atr = saveGame.child("game_state").child("entities").child("enemies");
-	if (!atr.child("enemy0").attribute("state").as_bool() && !atr.child("enemy1").attribute("state").as_bool()) // mison 1
+	if (!atr.child("enemy0").attribute("state").as_bool() && !atr.child("enemy1").attribute("state").as_bool() && !atr.child("enemy2").attribute("state").as_bool()) // mison 1
 	{
 		res++;
 	}
@@ -483,7 +483,7 @@ int Frontground::CheckAdventureState()
 	{
 		res++;
 	}
-	if (!atr.child("enemy2").attribute("state").as_bool()) // mision 2
+	if (!atr.child("enemy3").attribute("state").as_bool()) // mision 2
 	{
 		res++;
 	}
@@ -491,7 +491,7 @@ int Frontground::CheckAdventureState()
 	{
 		res++;
 	}
-	if (!atr.child("enemy3").attribute("state").as_bool()) // mision 3
+	if (!atr.child("enemy4").attribute("state").as_bool()) // mision 3
 	{
 		res++;
 	}
@@ -499,7 +499,7 @@ int Frontground::CheckAdventureState()
 	{
 		res++;
 	}
-	if (!atr.child("enemy4").attribute("state").as_bool()) // castillo
+	if (!atr.child("enemy5").attribute("state").as_bool()) // castillo
 	{
 		res++;
 	}

@@ -254,17 +254,17 @@ void Map::Draw()
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 92 && app->frontground->adventure_phase < 2)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 92 && app->frontground->adventure_phase < 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 93 && app->frontground->adventure_phase < 4)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 93 && app->frontground->adventure_phase < 3)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 94 && app->frontground->adventure_phase < 6)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 94 && app->frontground->adventure_phase < 5)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
@@ -299,7 +299,7 @@ void Map::Draw()
 							// SIGNAL SOUKOBAN
 							app->entities->CreateEntity(ENTITY_TYPE::SIGNAL, pos.x, pos.y);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 901)
 						{
 							if (app->frontground->adventure_phase > 0)
 							{
@@ -311,7 +311,7 @@ void Map::Draw()
 						{
 							// White templar
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
@@ -325,7 +325,7 @@ void Map::Draw()
 						{
 							// Mushroom
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
@@ -339,7 +339,7 @@ void Map::Draw()
 						{
 							// Goblin
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
@@ -353,7 +353,7 @@ void Map::Draw()
 						{
 							// Skeleton
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
@@ -367,7 +367,7 @@ void Map::Draw()
 						{
 							// Red Templar
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
@@ -381,7 +381,21 @@ void Map::Draw()
 						{
 							// Armored Templar
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::A_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
+							}
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 18)
+						{
+							// Theseion
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
