@@ -144,6 +144,7 @@ private:
 	// display
 	void DisplayHero(int n);
 	SDL_Texture* whitemark_128x128;
+	SDL_Texture* whitemark_150x150;
 	SDL_Texture* whitemark_250x70;
 	SDL_Texture* whitemark_800x150;
 	SDL_Texture* hero_tex;
