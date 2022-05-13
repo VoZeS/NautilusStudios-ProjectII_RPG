@@ -40,6 +40,8 @@ public:
 	Animation movingBox_Anim;
 	SDL_Rect boxRect;
 
+	bool allBoxesDone = false;
+
 };
 
 #endif // __FOREST_H__

@@ -878,6 +878,7 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 231)
 		{
+			box1Done = true;
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
 		}
@@ -888,6 +889,8 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 232)
 		{
+			box2Done = true;
+
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
 		}
@@ -897,12 +900,16 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataB == 233)
 		{
+			box3Done = true;
+
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
 		}
 		else if ((int)fixtureUserDataB == 205)
 		{
 			app->map->S5_Coll->SetSensor(true);
+
+			box4Done = true;
 
 			contact->GetFixtureA()->SetSensor(true);
 			contact->GetFixtureB()->GetBody()->SetActive(false);
@@ -934,6 +941,8 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataA == 231)
 		{
+			box1Done = true;
+
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);
 		}
@@ -944,6 +953,8 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataA == 232)
 		{
+			box2Done = true;
+
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);
 		}
@@ -953,12 +964,16 @@ void Physics::BeginContact(b2Contact* contact)
 		}
 		else if ((int)fixtureUserDataA == 233)
 		{
+			box3Done = true;
+
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);
 		}
 		else if ((int)fixtureUserDataA == 205)
 		{
 			app->map->S5_Coll->SetSensor(true);
+
+			box4Done = true;
 
 			contact->GetFixtureB()->SetSensor(true);
 			contact->GetFixtureA()->GetBody()->SetActive(false);

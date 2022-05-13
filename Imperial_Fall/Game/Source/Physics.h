@@ -94,6 +94,10 @@ public:
 	bool isActive_S5 = true;
 	bool isActive_S6 = true;
 
+	bool box1Done = false;
+	bool box2Done = false;
+	bool box3Done = false;
+	bool box4Done = false;
 
 	bool GetInNPC(int npc)
 	{
