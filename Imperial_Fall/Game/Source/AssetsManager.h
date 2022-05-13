@@ -6,6 +6,8 @@
 #include "PhysFS/include/physfs.h"
 #include "SDL/include/SDL.h"
 
+#include "External/SDL_image/include/SDL_image.h"
+#include "External/SDL_mixer/include/SDL_mixer.h"
 
 class ModuleAssetsManager : public Module
 {
@@ -26,7 +28,10 @@ public:
 	uint LoadData(const char* path, char** buffer) const;
 
 	// Allows you to use pointers to memory instead of files or things such as images or samples
-	SDL_RWops* Load(const char* path) const;
+	SDL_Surface* LoadPhysfsTexture(const char* path) const;
+	Mix_Chunk* LoadPhysfsFx(const char* path) const;
+	Mix_Music* LoadPhysfsMusic(const char* path) const;
+	pugi::xml_document* LoadPhysfsXML(const char* path) const;
 
 };
 

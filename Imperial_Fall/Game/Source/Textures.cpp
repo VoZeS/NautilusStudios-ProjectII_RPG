@@ -80,13 +80,12 @@ bool Textures::CleanUp()
 }
 
 // Load new texture from file path
-SDL_Texture* const Textures::Load(const char* path)
+SDL_Texture* const Textures::Load(std::string path)
 {
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = nullptr;
 
 	/*TODO 6: Replace IMG_Load for IMG_Load_RW to read from buffer and not from hard disck*/
-	surface = IMG_Load_RW(app->assetsmanager->Load(path), 1);
+	SDL_Surface* surface = app->assetsmanager->LoadPhysfsTexture(path.c_str());
 	//surface = IMG_Load(path);
 
 	if (surface == NULL)

@@ -116,6 +116,7 @@
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\End_Combat_Scene.h" />
     <ClInclude Include="Source\AssetsManager.h" />
+    <ClInclude Include="Source\Globals.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

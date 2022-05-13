@@ -144,6 +144,7 @@
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Forest.h" />
     <ClInclude Include="Source\Frontground.h" />
+    <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Inside_Castle.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\LogoScreen.h" />

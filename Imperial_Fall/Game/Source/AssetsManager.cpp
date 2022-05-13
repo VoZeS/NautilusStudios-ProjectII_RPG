@@ -38,22 +38,83 @@ bool ModuleAssetsManager::CleanUp()
 	return false;
 }
 
-SDL_RWops* ModuleAssetsManager::Load(const char* path) const
+SDL_Surface* ModuleAssetsManager::LoadPhysfsTexture(const char* path) const
 {
 	char* buffer;
 	uint bytes = LoadData(path, &buffer); //get the size of the data from the function Load Data
-
-	//https://wiki.libsdl.org/SDL_RWops
 
 	if (bytes > 0)
 	{
 		SDL_RWops* r = SDL_RWFromConstMem(buffer, bytes);
 
-		return r;
+		SDL_Surface* surface = IMG_Load_RW(r, 1);
+		RELEASE(buffer);
+
+		return surface;
 	}
 	else
 		return nullptr;
 
+}
+
+Mix_Chunk* ModuleAssetsManager::LoadPhysfsFx(const char* path) const
+{
+	char* buffer;
+	uint bytes = LoadData(path, &buffer); //get the size of the data from the function Load Data
+
+	if (bytes > 0)
+	{
+		SDL_RWops* r = SDL_RWFromConstMem(buffer, bytes);
+
+		Mix_Chunk* c = Mix_LoadWAV_RW(r, 1);
+		RELEASE(buffer);
+
+		return c;
+	}
+	else
+		return nullptr;
+}
+
+Mix_Music* ModuleAssetsManager::LoadPhysfsMusic(const char* path) const
+{
+	char* buffer;
+	uint bytes = LoadData(path, &buffer); //get the size of the data from the function Load Data
+
+	if (bytes > 0)
+	{
+		SDL_RWops* r = SDL_RWFromConstMem(buffer, bytes);
+
+		Mix_Music* m = Mix_LoadMUS_RW(r, 1);
+		RELEASE(buffer);
+
+		return m;
+	}
+	else
+		return nullptr;
+}
+
+pugi::xml_document* ModuleAssetsManager::LoadPhysfsXML(const char* path) const
+{
+	char* buffer;
+	uint bytes = LoadData(path, &buffer); //get the size of the data from the function Load Data
+	pugi::xml_document* d = nullptr;
+
+	if (bytes > 0)
+	{
+		SDL_RWops* r = SDL_RWFromConstMem(buffer, bytes);
+
+		pugi::xml_parse_result result = d->load_buffer(buffer, bytes);
+
+		RELEASE(buffer);
+
+		if (result == NULL) {
+			LOG("Could not load xml file: %s. pugi error: %s", path, result.description());
+			return nullptr;
+		}
+		return d;
+	}
+	else
+		return nullptr;
 }
 
 uint ModuleAssetsManager::LoadData(const char* path, char** buffer) const

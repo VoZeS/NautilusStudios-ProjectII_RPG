@@ -27,7 +27,7 @@ public:
 	bool CleanUp();
 
 	// Load Texture
-	SDL_Texture* const Load(const char* path);
+	SDL_Texture* const Load(std::string path);
 	SDL_Texture* const LoadSurface(SDL_Surface* surface);
 	bool UnLoad(SDL_Texture* texture);
 	void GetSize(const SDL_Texture* texture, uint& width, uint& height) const;

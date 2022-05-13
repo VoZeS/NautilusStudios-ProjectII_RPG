@@ -5,6 +5,7 @@
 #include "PerfTimer.h"
 #include "Timer.h"
 #include "List.h"
+#include "Globals.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
