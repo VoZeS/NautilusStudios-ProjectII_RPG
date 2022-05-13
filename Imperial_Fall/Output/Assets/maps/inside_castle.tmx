@@ -39899,7 +39899,7 @@
    <property name="Enemy4" type="int" value="4"/>
    <property name="Index" type="int" value="53"/>
    <property name="Phase" type="int" value="6"/>
-   <property name="Reward" type="int" value="234"/>
+   <property name="Reward" type="int" value="224"/>
   </properties>
   <data>
    <tile/>

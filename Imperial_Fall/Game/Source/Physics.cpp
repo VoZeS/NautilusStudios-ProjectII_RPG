@@ -97,7 +97,8 @@ bool Physics::Update(float dt)
 bool Physics::PostUpdate()
 {
 	if (coin_picked)
-	{		DestroyCoins();
+	{		
+		DestroyCoins();
 		coin_picked = false;
 	}
 	else if (book_picked)
