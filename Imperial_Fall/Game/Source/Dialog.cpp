@@ -447,6 +447,14 @@ bool Dialog::Update(float dt)
 			{
 				if (app->frontground->adventure_phase == -1)
 				{
+					if (renato_text == -1) /// reward for mision 1
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							app->inventory->AddSkillPoint(i, 1);
+						}
+					}
+					///////////////////////////////////////////
 					if (ContinueDialog(renato_text, 4))
 					{
 						letlengh = 0;

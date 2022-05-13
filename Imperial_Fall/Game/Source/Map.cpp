@@ -474,7 +474,7 @@ void Map::Draw()
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 26)
 						{
-							// assassin book
+							// healer book
 							pugi::xml_document saveGame;
 							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
 
@@ -507,7 +507,7 @@ void Map::Draw()
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 27)
 						{
-							// assassin book
+							// tank book
 							pugi::xml_document saveGame;
 							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
 
@@ -540,7 +540,7 @@ void Map::Draw()
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 28)
 						{
-							// assassin book
+							// wizard book
 							pugi::xml_document saveGame;
 							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
 

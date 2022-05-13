@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <miscelanea>
 	<coins>
-		<coins_in_room0 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
-		<coins_in_room1 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<coins_in_room0 picked0="true" picked1="true" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<coins_in_room1 picked0="true" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<coins_in_room2 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<coins_in_room3 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<coins_in_room4 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
@@ -10,9 +10,9 @@
 		<coins_in_room6 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 	</coins>
 	<books0>
-		<books_in_room0 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<books_in_room0 picked0="true" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room1 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
-		<books_in_room2 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<books_in_room2 picked0="true" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room3 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room4 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room5 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
@@ -20,7 +20,7 @@
 	</books0>
 	<books1>
 		<books_in_room0 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
-		<books_in_room1 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<books_in_room1 picked0="true" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room2 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room3 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room4 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
@@ -28,7 +28,7 @@
 		<books_in_room6 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 	</books1>
 	<books2>
-		<books_in_room0 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<books_in_room0 picked0="false" picked1="true" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room1 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room2 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room3 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
@@ -38,7 +38,7 @@
 	</books2>
 	<books3>
 		<books_in_room0 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
-		<books_in_room1 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<books_in_room1 picked0="false" picked1="false" picked2="true" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room2 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room3 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room4 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
