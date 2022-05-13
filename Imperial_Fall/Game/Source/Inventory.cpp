@@ -553,7 +553,7 @@ bool Inventory::PreUpdate()
 					in_description = false;
 				}
 
-				for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS; i++)
+				for (size_t i = 0; i < NUM_SKILL_TREE_BUTTONS && skill_win == 0; i++)
 				{
 					SDL_Rect rect = skill_tree_buttons[i].rect;
 					if ((x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h) ||
@@ -945,7 +945,7 @@ bool Inventory::Update(float dt)
 		pass_page2_1.Reset();
 		close.Reset();
 	}
-
+	LOG("%d", chosed);
 	return true;
 }
 
@@ -1582,7 +1582,10 @@ bool Inventory::CleanUp()
 	}
 	for (size_t i = 0; i < MAX_BOOKS; i++)
 	{
-		app->physics->books_in_floor[i].alive = false;
+		app->physics->books_in_floor0[i].alive = false;
+		app->physics->books_in_floor1[i].alive = false;
+		app->physics->books_in_floor2[i].alive = false;
+		app->physics->books_in_floor3[i].alive = false;
 	}
 	app->physics->coin_picked = false;
 	app->physics->coins_number = 0;
