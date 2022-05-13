@@ -199,6 +199,7 @@ bool Inventory::Start()
 		arrows_tex = app->tex->Load("Assets/textures/book_arrows.png"); 
 		skill_tree_tex = app->tex->Load("Assets/textures/skill_tree_page.png");
 		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
+		whitemark_150x150 = app->tex->Load("Assets/textures/150x150_whitemark.png");
 		whitemark_250x70 = app->tex->Load("Assets/textures/250x70_whitemark.png");
 		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
 		hero_tex = app->tex->Load("Assets/textures/heroes_icons_128x128.png");
@@ -945,7 +946,7 @@ bool Inventory::Update(float dt)
 		pass_page2_1.Reset();
 		close.Reset();
 	}
-	LOG("%d", chosed);
+	
 	return true;
 }
 
@@ -1311,6 +1312,24 @@ bool Inventory::PostUpdate()
 			{
 				DisplaySkillPoints(page_display - 2);
 
+				// lines
+				for (size_t i = 1; i < 5; i++)
+				{
+					app->render->DrawLine(skill_tree_buttons[0].rect.x + 64, skill_tree_buttons[0].rect.y + 128, skill_tree_buttons[i].rect.x + 64, skill_tree_buttons[i].rect.y, 0, 0, 0);
+				}
+				for (size_t i = 1; i < 5; i++)
+				{
+					app->render->DrawLine(skill_tree_buttons[i].rect.x + 64, skill_tree_buttons[i].rect.y + 128, skill_tree_buttons[i + 4].rect.x + 64, skill_tree_buttons[i + 4].rect.y, 0, 0, 0);
+				}
+				app->render->DrawLine(skill_tree_buttons[5].rect.x + 64, skill_tree_buttons[5].rect.y + 128, skill_tree_buttons[9].rect.x + 64, skill_tree_buttons[9].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[5].rect.x + 64, skill_tree_buttons[5].rect.y + 128, skill_tree_buttons[10].rect.x + 64, skill_tree_buttons[10].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[6].rect.x + 64, skill_tree_buttons[6].rect.y + 128, skill_tree_buttons[11].rect.x + 64, skill_tree_buttons[11].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[6].rect.x + 64, skill_tree_buttons[6].rect.y + 128, skill_tree_buttons[12].rect.x + 64, skill_tree_buttons[12].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[13].rect.x + 64, skill_tree_buttons[13].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[14].rect.x + 64, skill_tree_buttons[14].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[15].rect.x + 64, skill_tree_buttons[15].rect.y, 0, 0, 0);
+				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[16].rect.x + 64, skill_tree_buttons[16].rect.y, 0, 0, 0);
+
 				// row 1
 				skill_tree_buttons[0].rect.x = 576 + cx;
 				skill_tree_buttons[0].rect.y = 42 + cy;
@@ -1354,30 +1373,30 @@ bool Inventory::PostUpdate()
 				{
 					if (skill_tree_buttons[i].state == -1)
 					{
-						rect = { 0, 0, 128, 128 };
+						rect = { 0, 0, 150, 150 };
 						app->fonts->BlitCombatText(50 + cx, 100 + cy, app->fonts->textFont3, "Skill Name:");
 						app->fonts->BlitCombatText(278 + cx, 100 + cy, app->fonts->textFont3, GetSkillForInv(page_display - 2, i).skill_name);
 					}
 					else if (skill_tree_buttons[i].state == 0)
 					{
-						rect = { 0, 0, 128, 128 };
+						rect = { 0, 0, 150, 150 };
 					}
 					else if (skill_tree_buttons[i].state == 1)
 					{
-						rect = { 0, 128, 128, 128 };
+						rect = { 0, 150, 150, 150 };
 						app->fonts->BlitCombatText(50 + cx, 100 + cy, app->fonts->textFont3, "Skill Name:");
 						app->fonts->BlitCombatText(278 + cx, 100 + cy, app->fonts->textFont3, GetSkillForInv(page_display - 2, i).skill_name);
 					}
 					else if (skill_tree_buttons[i].state == 2)
 					{
-						rect = { 0, 256, 128, 128 };
+						rect = { 0, 300, 150, 150 };
 					}
 
 					if (skill_win != 0)
 					{
-						rect = { 0, 0, 128, 128 };
+						rect = { 0, 0, 150, 150 };
 					}
-					app->render->DrawTexture(whitemark_128x128, skill_tree_buttons[i].rect.x, skill_tree_buttons[i].rect.y, &rect);
+					app->render->DrawTexture(whitemark_150x150, skill_tree_buttons[i].rect.x - 11, skill_tree_buttons[i].rect.y - 11, &rect);
 					switch (page_display)
 					{
 					case 2: 
@@ -1399,23 +1418,7 @@ bool Inventory::PostUpdate()
 					}
 				}
 
-				// lines
-				for (size_t i = 1; i < 5; i++)
-				{
-					app->render->DrawLine(skill_tree_buttons[0].rect.x + 64, skill_tree_buttons[0].rect.y + 128, skill_tree_buttons[i].rect.x + 64, skill_tree_buttons[i].rect.y, 0, 0, 0);
-				}
-				for (size_t i = 1; i < 5; i++)
-				{
-					app->render->DrawLine(skill_tree_buttons[i].rect.x + 64, skill_tree_buttons[i].rect.y + 128, skill_tree_buttons[i + 4].rect.x + 64, skill_tree_buttons[i + 4].rect.y, 0, 0, 0);
-				}
-				app->render->DrawLine(skill_tree_buttons[5].rect.x + 64, skill_tree_buttons[5].rect.y + 128, skill_tree_buttons[9].rect.x + 64, skill_tree_buttons[9].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[5].rect.x + 64, skill_tree_buttons[5].rect.y + 128, skill_tree_buttons[10].rect.x + 64, skill_tree_buttons[10].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[6].rect.x + 64, skill_tree_buttons[6].rect.y + 128, skill_tree_buttons[11].rect.x + 64, skill_tree_buttons[11].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[6].rect.x + 64, skill_tree_buttons[6].rect.y + 128, skill_tree_buttons[12].rect.x + 64, skill_tree_buttons[12].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[13].rect.x + 64, skill_tree_buttons[13].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[7].rect.x + 64, skill_tree_buttons[7].rect.y + 128, skill_tree_buttons[14].rect.x + 64, skill_tree_buttons[14].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[15].rect.x + 64, skill_tree_buttons[15].rect.y, 0, 0, 0);
-				app->render->DrawLine(skill_tree_buttons[8].rect.x + 64, skill_tree_buttons[8].rect.y + 128, skill_tree_buttons[16].rect.x + 64, skill_tree_buttons[16].rect.y, 0, 0, 0);
+				
 
 				// skill win
 				if (skill_win != 0)
@@ -1453,29 +1456,29 @@ bool Inventory::PostUpdate()
 					SDL_Rect b2;
 					if (skill_interact_buttons[2].state == 0)
 					{
-						b2 = { 0, 0, 128, 128 };
+						b2 = { 0, 0, 150, 150 };
 					}
 					else if (skill_interact_buttons[2].state == 1)
 					{
-						b2 = { 0, 128, 128, 128 };
+						b2 = { 0, 150, 150, 150 };
 					}
 					else if (skill_interact_buttons[2].state == 2)
 					{
-						b2 = { 0, 256, 128, 128 };
+						b2 = { 0, 300, 150, 150 };
 					}
 
 					SDL_Rect b3;
 					if (skill_interact_buttons[3].state == 0)
 					{
-						b3 = { 0, 0, 128, 128 };
+						b3 = { 0, 0, 150, 150 };
 					}
 					else if (skill_interact_buttons[3].state == 1)
 					{
-						b3 = { 0, 128, 128, 128 };
+						b3 = { 0, 150, 150, 150 };
 					}
 					else if (skill_interact_buttons[3].state == 2)
 					{
-						b3 = { 0, 256, 128, 128 };
+						b3 = { 0, 300, 150, 150 };
 					}
 
 					SDL_Rect a_rect = { 0, 0, 128, 128 };
@@ -1483,6 +1486,31 @@ bool Inventory::PostUpdate()
 					switch (skill_win)
 					{
 					case 1:
+						if (skill_interact_buttons[0].state == 0)
+						{
+							b0 = { 0, 0, 150, 150 };
+						}
+						else if (skill_interact_buttons[0].state == 1)
+						{
+							b0 = { 0, 150, 150, 150 };
+						}
+						else if (skill_interact_buttons[0].state == 2)
+						{
+							b0 = { 0, 300, 150, 150 };
+						}
+
+						if (skill_interact_buttons[1].state == 0)
+						{
+							b1 = { 0, 0, 150, 150 };
+						}
+						else if (skill_interact_buttons[1].state == 1)
+						{
+							b1 = { 0, 150, 150, 150 };
+						}
+						else if (skill_interact_buttons[1].state == 2)
+						{
+							b1 = { 0, 300, 150, 150 };
+						}
 						skill_interact_buttons[0].rect.x = 300 + cx;
 						skill_interact_buttons[0].rect.y = 380 + cy;
 						skill_interact_buttons[1].rect.x = skill_interact_buttons[0].rect.x + 170;
@@ -1491,10 +1519,10 @@ bool Inventory::PostUpdate()
 						skill_interact_buttons[2].rect.y = skill_interact_buttons[0].rect.y;
 						skill_interact_buttons[3].rect.x = skill_interact_buttons[2].rect.x + 170;
 						skill_interact_buttons[3].rect.y = skill_interact_buttons[0].rect.y;
-						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[0].rect.x, skill_interact_buttons[0].rect.y, &b0);
-						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[1].rect.x, skill_interact_buttons[1].rect.y, &b1);
-						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[2].rect.x, skill_interact_buttons[2].rect.y, &b2);
-						app->render->DrawTexture(whitemark_128x128, skill_interact_buttons[3].rect.x, skill_interact_buttons[3].rect.y, &b3);
+						app->render->DrawTexture(whitemark_150x150, skill_interact_buttons[0].rect.x - 11, skill_interact_buttons[0].rect.y - 11, &b0);
+						app->render->DrawTexture(whitemark_150x150, skill_interact_buttons[1].rect.x - 11, skill_interact_buttons[1].rect.y - 11, &b1);
+						app->render->DrawTexture(whitemark_150x150, skill_interact_buttons[2].rect.x - 11, skill_interact_buttons[2].rect.y - 11, &b2);
+						app->render->DrawTexture(whitemark_150x150, skill_interact_buttons[3].rect.x - 11, skill_interact_buttons[3].rect.y - 11, &b3);
 						app->fonts->BlitCombatText(300 + cx, 310 + cy, app->fonts->textFont2, "Choose slot to equip the skill");
 
 						for (size_t i = 0; i < 4; i++)

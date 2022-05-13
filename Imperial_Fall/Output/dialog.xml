@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <dialog>
 	<renato>
-		<actual_text value="-1" />
+		<actual_text value="3" />
 		<text1 linea1="Buenas, mis queridos amigos." linea2="Tened, os doy unos libros de habilidades." />
 		<text2 linea1="Nuestro primer objetivo es el Suboficial Templario." linea2="Sin embargo, desconozco su paradero actual." />
 		<text3 linea1="Lo que si se es donde podeis encontrar a sus lacayos." linea2="Estan acampando en el bosque al sur este del pueblo." />
