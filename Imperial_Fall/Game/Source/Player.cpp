@@ -20,43 +20,43 @@
 Player::Player() : Entity()
 {
 	// main idle animation
-	idleAnimD.PushBack({ 5, 2, 50, 72 });
-	idleAnimD.PushBack({ 65, 2, 50, 72 });
+	idleAnimD.PushBack({ 5, 0, 50, 74 });
+	idleAnimD.PushBack({ 65, 0, 50, 74 });
 	idleAnimD.speed = 0.03f;
 
-	idleAnimU.PushBack({ 5, 242, 50, 72 });
-	idleAnimU.PushBack({ 65, 242, 50, 72 });
+	idleAnimU.PushBack({ 5, 240, 50, 74 });
+	idleAnimU.PushBack({ 65, 240, 50, 74 });
 	idleAnimU.speed = 0.03f;
 
-	idleAnimL.PushBack({ 5, 82, 50, 72 });
-	idleAnimL.PushBack({ 65, 82, 50, 72 });
+	idleAnimL.PushBack({ 5, 80, 50, 74 });
+	idleAnimL.PushBack({ 65, 80, 50, 74 });
 	idleAnimL.speed = 0.03f;
 
-	idleAnimR.PushBack({ 5, 161, 50, 72 });
-	idleAnimR.PushBack({ 65, 161, 50, 72 });
+	idleAnimR.PushBack({ 5, 159, 50, 74 });
+	idleAnimR.PushBack({ 65, 159, 50, 74 });
 	idleAnimR.speed = 0.03f;
 
 	// main walk animation
-	walkAnimD.PushBack({ 5, 2, 50, 72 });
-	walkAnimD.PushBack({ 65, 2, 50, 72 });
-	walkAnimD.PushBack({ 125, 2, 50, 72 });
+	walkAnimD.PushBack({ 5, 0, 50, 74 });
+	walkAnimD.PushBack({ 65, 0, 50, 74 });
+	walkAnimD.PushBack({ 125, 0, 50, 74 });
 	walkAnimD.speed = 0.1f;
 
-	walkAnimU.PushBack({ 5, 242, 50, 72 });
-	walkAnimU.PushBack({ 65, 242, 50, 72 });
-	walkAnimU.PushBack({ 125, 242, 50, 72 });
+	walkAnimU.PushBack({ 5, 240, 50, 74 });
+	walkAnimU.PushBack({ 65, 240, 50, 74 });
+	walkAnimU.PushBack({ 125, 240, 50, 74 });
 	walkAnimU.speed = 0.1f;
 
-	walkAnimL.PushBack({ 5, 82, 50, 72 });
-	walkAnimL.PushBack({ 65, 82, 50, 72 });
-	walkAnimL.PushBack({ 125, 82, 50, 72 });
+	walkAnimL.PushBack({ 5, 80, 50, 74 });
+	walkAnimL.PushBack({ 65, 80, 50, 74 });
+	walkAnimL.PushBack({ 125, 80, 50, 74 });
 	walkAnimL.speed = 0.1f;
 
-	walkAnimR.PushBack({ 5, 161, 50, 72 });
-	walkAnimR.PushBack({ 65, 161, 50, 72 });
-	walkAnimR.PushBack({ 125, 161, 50, 72 });
+	walkAnimR.PushBack({ 5, 159, 50, 74 });
+	walkAnimR.PushBack({ 65, 159, 50, 74 });
+	walkAnimR.PushBack({ 125, 159, 50, 74 });
 	walkAnimR.speed = 0.1f;
-
+	/*
 	// c0 idle animation
 	c0_idleAnimD.PushBack({ 5, 2, 50, 72 });
 	c0_idleAnimD.PushBack({ 65, 2, 50, 72 });
@@ -169,7 +169,7 @@ Player::Player() : Entity()
 	c2_walkAnimR.PushBack({ 5, 161, 50, 72 });
 	c2_walkAnimR.PushBack({ 65, 161, 50, 72 });
 	c2_walkAnimR.PushBack({ 125, 161, 50, 72 });
-	c2_walkAnimR.speed = 0.1f;
+	c2_walkAnimR.speed = 0.1f;*/
 }
 
 // Destructor
@@ -205,7 +205,7 @@ void Player::InitCustomEntity(int npc)
 	bodyFixture = body->CreateFixture(&fixture);
 	bodyFixture->SetSensor(false);
 	bodyFixture->SetUserData((void*)1); // player collision
-
+	/*
 	// companion 0
 	c0.comp_number = 0;
 	c0.currentAnimation = &c0_idleAnimD;
@@ -246,7 +246,7 @@ void Player::InitCustomEntity(int npc)
 	c2.body = app->physics->world->CreateBody(&c2_body);
 
 	b2Fixture* c2_Fixture = body->CreateFixture(&fixture);
-	c2_Fixture->SetSensor(true);
+	c2_Fixture->SetSensor(true);*/
 }
 
 // Called each loop iteration
@@ -256,14 +256,14 @@ bool Player::PreUpdate()
 	{
 		position.x = body->GetPosition().x;
 		position.y = body->GetPosition().y;
-
+		/*
 		// companions
 		c0.position.x = c0.body->GetPosition().x;
 		c0.position.y = c0.body->GetPosition().y;
 		c1.position.x = c1.body->GetPosition().x;
 		c1.position.y = c1.body->GetPosition().y;
 		c2.position.x = c2.body->GetPosition().x;
-		c2.position.y = c2.body->GetPosition().y;
+		c2.position.y = c2.body->GetPosition().y;*/
 	}
 
 	return true;
@@ -730,7 +730,7 @@ void Player::HandleInput(float dt)
 // Called each loop iteration
 bool Player::Update(float dt)
 {
-	if (player_enabled)
+	/*if (player_enabled)
 	{
 		FollowPlayer(c0, c0, dt);
 		FollowPlayer(c1, c0, dt);
@@ -975,7 +975,7 @@ bool Player::Update(float dt)
 		}
 
 		c2.currentAnimation->Update();
-	}
+	}*/
 
 	return true;
 }
@@ -986,20 +986,20 @@ bool Player::Draw()
 	if (plan_to_delete)
 	{
 		app->physics->world->DestroyBody(body);
-		app->physics->world->DestroyBody(c0.body);
-		app->physics->world->DestroyBody(c1.body);
-		app->physics->world->DestroyBody(c2.body);
+		//app->physics->world->DestroyBody(c0.body);
+		//app->physics->world->DestroyBody(c1.body);
+		//app->physics->world->DestroyBody(c2.body);
 		plan_to_delete = false;
 	}
 
 	if (player_enabled)
 	{
 		SDL_Rect rect = currentAnimation->GetCurrentFrame();
-		SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
-		SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
-		SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
+		//SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
+		//SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
+		//SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
 
-		switch (char_control)
+		/*switch (char_control)
 		{
 		case 0:
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
@@ -1030,7 +1030,8 @@ bool Player::Draw()
 			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 
 			break;
-		}
+		}*/
+		app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 62.0f) }, rect, 2, 1.0f, 0.0f);
 	}
 	
 	return true;
@@ -1040,17 +1041,17 @@ bool Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("player").child("position").attribute("x").as_int();
 	position.y = data.child("player").child("position").attribute("y").as_int();
-	c0.position.x = data.child("player").child("comp0").attribute("x").as_int();
+	/*c0.position.x = data.child("player").child("comp0").attribute("x").as_int();
 	c0.position.y = data.child("player").child("comp0").attribute("y").as_int();
 	c1.position.x = data.child("player").child("comp1").attribute("x").as_int();
 	c1.position.y = data.child("player").child("comp1").attribute("y").as_int();
 	c2.position.x = data.child("player").child("comp2").attribute("x").as_int();
-	c2.position.y = data.child("player").child("comp2").attribute("y").as_int();
+	c2.position.y = data.child("player").child("comp2").attribute("y").as_int();*/
 
 	body->SetTransform({ position.x + PIXELS_TO_METERS(w), position.y + PIXELS_TO_METERS(h) }, body->GetAngle());
-	c0.body->SetTransform({ c0.position.x + PIXELS_TO_METERS(w), c0.position.y + PIXELS_TO_METERS(h) }, c0.body->GetAngle());
+	/*c0.body->SetTransform({c0.position.x + PIXELS_TO_METERS(w), c0.position.y + PIXELS_TO_METERS(h)}, c0.body->GetAngle());
 	c1.body->SetTransform({ c1.position.x + PIXELS_TO_METERS(w), c1.position.y + PIXELS_TO_METERS(h) }, c1.body->GetAngle());
-	c2.body->SetTransform({ c2.position.x + PIXELS_TO_METERS(w), c2.position.y + PIXELS_TO_METERS(h) }, c2.body->GetAngle());
+	c2.body->SetTransform({ c2.position.x + PIXELS_TO_METERS(w), c2.position.y + PIXELS_TO_METERS(h) }, c2.body->GetAngle());*/
 
 	look_dir = 1;
 
@@ -1061,12 +1062,12 @@ bool Player::Save(pugi::xml_node& data)
 {
 	data.child("player").child("position").attribute("x").set_value(position.x);
 	data.child("player").child("position").attribute("y").set_value(position.y);
-	data.child("player").child("comp0").attribute("x").set_value(c0.position.x);
+	/*data.child("player").child("comp0").attribute("x").set_value(c0.position.x);
 	data.child("player").child("comp0").attribute("y").set_value(c0.position.y);
 	data.child("player").child("comp1").attribute("x").set_value(c1.position.x);
 	data.child("player").child("comp1").attribute("y").set_value(c1.position.y);
 	data.child("player").child("comp2").attribute("x").set_value(c2.position.x);
-	data.child("player").child("comp2").attribute("y").set_value(c2.position.y);
+	data.child("player").child("comp2").attribute("y").set_value(c2.position.y);*/
 
 	return true;
 }
@@ -1075,7 +1076,7 @@ fPoint Player::GetPlayerPosition()
 {
 	return position;
 }
-fPoint Player::GetCompanion0Position()
+/*fPoint Player::GetCompanion0Position()
 {
 	return c0.position;
 
@@ -1087,7 +1088,7 @@ fPoint Player::GetCompanion1Position()
 fPoint Player::GetCompanion2Position()
 {
 	return c2.position;
-}
+}*/
 
 void Player::SetPlayerPosition(int new_x, int new_y)
 {
@@ -1098,7 +1099,7 @@ void Player::SetPlayerPosition(int new_x, int new_y)
 	body->ApplyForceToCenter({ 0, 1 }, true);
 }
 
-void Player::SetCompanion0Position(int new_x, int new_y)
+/*void Player::SetCompanion0Position(int new_x, int new_y)
 {
 	c0.position.x = new_x;
 	c0.position.y = new_y;
@@ -1138,7 +1139,7 @@ void Player::SetCompanion1LookDir(int lookDir)
 void Player::SetCompanion2LookDir(int lookDir)
 {
 	c2.look_dir = lookDir;
-}
+}*/
 
 void Player::SetPlayerLookDir(int lookDir)
 {
@@ -1164,7 +1165,7 @@ int Player::GetCharControl()
 	return char_control;
 }
 
-void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
+/*void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 {
 	fPoint obj;
 
@@ -1264,4 +1265,4 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 	}
 
 	c.body->SetLinearVelocity({ distx * speed * dt,  disty * speed * dt });
-}
+}*/

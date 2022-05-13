@@ -1470,6 +1470,11 @@ bool Menu::Update(float dt)
 
 			app->frontground->FadeToBlack();
 		}
+		else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		{
+			app->inventory->UnlockAll();
+			app->inventory->EquipAllMaxGear();
+		}
 		else if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
 			app->SaveGameRequest();
@@ -1477,6 +1482,14 @@ bool Menu::Update(float dt)
 		else if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		{
 			app->LoadGameRequest(false);
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		{
+			app->inventory->AddCoins(30);
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+		{
+			app->inventory->AddCoins(-30);
 		}
 	}
 	
@@ -1491,11 +1504,6 @@ bool Menu::Update(float dt)
 	else if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		app->frontground->fast_combat = !app->frontground->fast_combat;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		app->inventory->UnlockAll();
-		app->inventory->EquipAllMaxGear();
 	}
 	
 	return true;
@@ -2193,6 +2201,12 @@ bool Menu::PostUpdate()
 	{
 		SDL_Rect or = { 0, 0, 128, 128 };
 		unlock_cd--;
+
+		if (app->frontground->fast_combat)
+		{
+			unlock_cd -= 4;
+		}
+
 		if (unlock_cd <= 0)
 		{
 			unlock_state = 2;

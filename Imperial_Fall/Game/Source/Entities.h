@@ -52,7 +52,7 @@ public:
 	virtual void SetPlayerPosition(int new_x, int new_y);
 	virtual void SetPlayerLookDir(int lookDir);
 
-	virtual fPoint GetCompanion0Position();
+	/*virtual fPoint GetCompanion0Position();
 	virtual fPoint GetCompanion1Position();
 	virtual fPoint GetCompanion2Position();
 
@@ -62,7 +62,7 @@ public:
 
 	virtual void SetCompanion0LookDir(int lookDir);
 	virtual void SetCompanion1LookDir(int lookDir);
-	virtual void SetCompanion2LookDir(int lookDir);
+	virtual void SetCompanion2LookDir(int lookDir);*/
 
 	virtual bool IsPlayerEnabled();
 	virtual void ImpulsePlayer();
@@ -112,7 +112,7 @@ public:
 	bool SaveState(pugi::xml_node&);
 
 	fPoint GetPlayerSavedPos();
-	void SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y);
+	void SetPlayerSavedPos(float x, float y);//, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y);
 
 public:
 	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1, const char* rew = "999");

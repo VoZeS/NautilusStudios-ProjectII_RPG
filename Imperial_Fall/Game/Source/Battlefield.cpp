@@ -59,13 +59,11 @@ bool Battlefield::Start()
 
 	if (app->frontground->move_to == MOVE_TO::TOWN2_BATTLEFIELD)
 	{
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000),
-			PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
 	}
 	else if (app->frontground->move_to == MOVE_TO::SCENE_BATTLEFIELD)
 	{
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000),
-			PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
 	}
 		int w, h;
 		uchar* data = NULL;

@@ -68,8 +68,7 @@ bool Forest::Start()
 		app->fonts->Enable();
 		app->dialog->Enable();
 
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500), PIXELS_TO_METERS(450), PIXELS_TO_METERS(300),
-			PIXELS_TO_METERS(450), PIXELS_TO_METERS(200), PIXELS_TO_METERS(450), PIXELS_TO_METERS(100));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(450), PIXELS_TO_METERS(500));
 
 		int w, h;
 		uchar* data = NULL;

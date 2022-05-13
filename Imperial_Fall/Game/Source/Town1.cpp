@@ -59,18 +59,15 @@ bool Town1::Start()
 	
 		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(5504), PIXELS_TO_METERS(1984), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000),
-				PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(5504), PIXELS_TO_METERS(1984));
 		}
 		else if (app->frontground->move_to == MOVE_TO::OUTSIDE_TOWN1 == true)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1568), PIXELS_TO_METERS(704), PIXELS_TO_METERS(800), PIXELS_TO_METERS(100),
-				PIXELS_TO_METERS(800), PIXELS_TO_METERS(0), PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1568), PIXELS_TO_METERS(704));
 		}
 		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN1)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1600), PIXELS_TO_METERS(1800), PIXELS_TO_METERS(1550), PIXELS_TO_METERS(1800),
-				PIXELS_TO_METERS(1500), PIXELS_TO_METERS(1800), PIXELS_TO_METERS(1450), PIXELS_TO_METERS(1800));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1600), PIXELS_TO_METERS(1800));
 		}
 
 		int w, h;
@@ -107,26 +104,6 @@ bool Town1::Update(float dt)
 {
 	// Draw map
 	app->map->Draw();
-
-	//testing
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	{
-		ENEMIES enemies[4];
-		enemies[0] = ENEMIES::THESEION;
-		enemies[1] = ENEMIES::NOTHING;
-		enemies[2] = ENEMIES::NOTHING;
-		enemies[3] = ENEMIES::NOTHING;
-		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
-		app->frontground->FadeInCombat(enemies, "999");
-	}
-	else if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		app->inventory->AddCoins(30);
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		app->inventory->AddCoins(-30);
-	}
 
 	return true;
 }

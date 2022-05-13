@@ -57,8 +57,7 @@ bool Dungeon::Start()
 		app->fonts->Enable();
 		app->dialog->Enable();
 
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
-			PIXELS_TO_METERS(950), PIXELS_TO_METERS(200), PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
 
 
 		int w, h;

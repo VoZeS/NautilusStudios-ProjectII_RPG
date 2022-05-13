@@ -83,13 +83,11 @@ bool Outside_Castle::Start()
 
 		if (app->frontground->move_to == MOVE_TO::TOWN1_OUTSIDE)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1500),
-				PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1700));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300));
 		}
 		else if (app->frontground->move_to == MOVE_TO::INSIDE_OUTSIDE == true)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
-				PIXELS_TO_METERS(1000), PIXELS_TO_METERS(100), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
 		}
 
 		int w, h;

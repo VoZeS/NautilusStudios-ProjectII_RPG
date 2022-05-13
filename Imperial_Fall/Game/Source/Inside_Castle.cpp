@@ -57,8 +57,7 @@ bool Inside_Castle::Start()
 		app->fonts->Enable();
 		app->dialog->Enable();
 
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200),
-			PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000));
 
 		int w, h;
 		uchar* data = NULL;

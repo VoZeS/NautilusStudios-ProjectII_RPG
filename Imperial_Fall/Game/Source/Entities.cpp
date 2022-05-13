@@ -673,7 +673,7 @@ void Entity::SetPlayerLookDir(int lookDir)
 {
 }
 
-fPoint Entity::GetCompanion0Position()
+/*fPoint Entity::GetCompanion0Position()
 {
 	return { 0,0 };
 }
@@ -710,7 +710,7 @@ void Entity::SetCompanion1LookDir(int lookDir)
 
 void Entity::SetCompanion2LookDir(int lookDir)
 {
-}
+}*/
 
 bool Entity::IsPlayerEnabled()
 {
@@ -756,7 +756,7 @@ fPoint Entities::GetPlayerSavedPos()
 	return p;
 }
 
-void Entities::SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y)
+void Entities::SetPlayerSavedPos(float x, float y)//, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y)
 {
 	pugi::xml_document saveGame;
 	saveGame.load_file(SAVE_STATE_FILENAME);
@@ -764,12 +764,12 @@ void Entities::SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c
 
 	player.child("position").attribute("x").set_value(x);
 	player.child("position").attribute("y").set_value(y);
-	player.child("comp0").attribute("x").set_value(c0x);
+	/*player.child("comp0").attribute("x").set_value(c0x);
 	player.child("comp0").attribute("y").set_value(c0y);
 	player.child("comp1").attribute("x").set_value(c1x);
 	player.child("comp1").attribute("y").set_value(c1y);
 	player.child("comp2").attribute("x").set_value(c2x);
-	player.child("comp2").attribute("y").set_value(c2y);
+	player.child("comp2").attribute("y").set_value(c2y);*/
 
 	saveGame.save_file(SAVE_STATE_FILENAME);
 }
