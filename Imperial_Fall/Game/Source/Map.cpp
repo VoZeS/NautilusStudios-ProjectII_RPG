@@ -435,7 +435,7 @@ void Map::Draw()
 
 							if (!saveGame.child("miscelanea").child("coins").child(c1).attribute(c2).as_bool())
 							{
-								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 20);
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 20, 0);
 							}
 							coins_index++;
 						}
@@ -462,13 +462,13 @@ void Map::Draw()
 							const char* c1 = t1.c_str();
 
 							std::string p2 = "picked";
-							std::string s2 = std::to_string(books0_index);
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
 							std::string t2 = p2 + s2;
 							const char* c2 = t2.c_str();
 
 							if (!saveGame.child("miscelanea").child("books0").child(c1).attribute(c2).as_bool())
 							{
-								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 22);
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 22, mapLayerItem->data->properties.GetProperty("Index"));
 							}
 							books0_index++;
 						}
@@ -501,7 +501,7 @@ void Map::Draw()
 
 							if (!saveGame.child("miscelanea").child("books1").child(c1).attribute(c2).as_bool())
 							{
-								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 26);
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 26, mapLayerItem->data->properties.GetProperty("Index"));
 							}
 							books1_index++;
 						}
@@ -534,7 +534,7 @@ void Map::Draw()
 
 							if (!saveGame.child("miscelanea").child("books2").child(c1).attribute(c2).as_bool())
 							{
-								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 27);
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 27, mapLayerItem->data->properties.GetProperty("Index"));
 							}
 							books2_index++;
 						}
@@ -567,18 +567,18 @@ void Map::Draw()
 
 							if (!saveGame.child("miscelanea").child("books3").child(c1).attribute(c2).as_bool())
 							{
-								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 28);
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 28, mapLayerItem->data->properties.GetProperty("Index"));
 							}
 							books3_index++;
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 60)
 						{
-							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 60);
+							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 60, 0);
 
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 70)
 						{
-							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 70);
+							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 70, 0);
 
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
