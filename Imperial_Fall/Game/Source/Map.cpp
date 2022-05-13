@@ -149,6 +149,7 @@ void Map::Draw()
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
 						}
+						
 						// -------------------------------------------------------------------------- BOXES SOUKOBAN
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 301)
 						{
@@ -170,7 +171,11 @@ void Map::Draw()
 							S4_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
 
 						}
-
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 40)
+						{
+							// collision door castle
+							doorCastle = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 40);
+						}
 						// -------------------------------------------------------------------- RIVER COLLISIONS SOUKOBAN PUZZLE
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 101)
 						{
@@ -249,11 +254,7 @@ void Map::Draw()
 
 						}
 
-						if (mapLayerItem->data->properties.GetProperty("Collision") == 90)
-						{
-							// collision ground
-							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
-						}
+						
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 92 && app->frontground->adventure_phase < 1)
 						{
 							// collision ground

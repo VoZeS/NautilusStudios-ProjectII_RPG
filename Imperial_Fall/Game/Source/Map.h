@@ -165,6 +165,8 @@ public:
 	b2Fixture* S3_Box;
 	b2Fixture* S4_Box;
 
+	b2Fixture* doorCastle;
+
 private:
 
 	// L03: Methods to load all required map data
