@@ -103,7 +103,7 @@ bool Scene::PostUpdate()
 	int c_y = -app->render->camera.y;	
 
 
-		//app->render->DrawTexture(texture1, app->render->camera.x, app->render->camera.y);
+		app->render->DrawTexture(texture1, app->render->camera.x, app->render->camera.y);
 		
 
 	if (app->frontground->controller)
