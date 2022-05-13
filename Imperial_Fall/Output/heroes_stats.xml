@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <heroes_stats>
 	<items_stored>
-		<equiped item0="-1" item1="-1" item2="-1" item3="-1" />
+		<equiped item0="2" item1="6" item2="3" item3="5" />
 	</items_stored>
 	<assassin>
 		<basic_stats health="70" mana="50" speed="50" power="65" />
 		<gear helmet="4" chest="4" boots="4" weapon="4" />
-		<equiped_skills skill1="1" skill2="2" skill3="11" skill4="15" />
+		<equiped_skills skill1="1" skill2="10" skill3="11" skill4="15" />
 	</assassin>
 	<healer>
 		<basic_stats health="100" mana="60" speed="30" power="50" />

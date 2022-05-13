@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <dialog>
 	<renato>
-		<actual_text value="3" />
+		<actual_text value="6" />
 		<text1 linea1="Buenas, mis queridos amigos." linea2="Tened, os doy unos libros de habilidades." />
 		<text2 linea1="Nuestro primer objetivo es el Suboficial Templario." linea2="Sin embargo, desconozco su paradero actual." />
 		<text3 linea1="Lo que si se es donde podeis encontrar a sus lacayos." linea2="Estan acampando en el bosque al sur este del pueblo." />
 		<text4 linea1="Cuando los derroteis, traedme sus cruces templarias." linea2="Recordad, estan al Sur Este del poblado." />
-		<text5 linea1="Buen trabajo! Aqui teneis un pequeño regalo a cambio." linea2="Ahora, vamos a lo importante." />
+		<text5 linea1="Buen trabajo! Aqui teneis un pequeno regalo a cambio." linea2="Ahora, vamos a lo importante." />
 		<text6 linea1="Normalmente, los templarios suelen ocultar" linea2="información importante en el interior de sus cruces." />
 		<text7 linea1="Efectivamente, aqui esta el mensaje de su superior. Segun" linea2="esto, el Suboficial se encuentra en el campo de batalla." />
 		<text8 linea1="Id a matarlo y volved a informarme." />
@@ -36,7 +36,7 @@
 		<text1 linea1="Te has quedado encallado?" linea2="Pulsa R para resetear las cajas." />
 	</signal>
 	<granjero>
-		<actual_text value="5" />
+		<actual_text value="-1" />
 		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector." />
 		<text2 linea1="Dicen que era un dragon!! Por lo visto murio hace ya mucho." />
 		<text3 linea1="Dicen que hay personas con la capacidad de no perder" linea2="turno al recargar." />
