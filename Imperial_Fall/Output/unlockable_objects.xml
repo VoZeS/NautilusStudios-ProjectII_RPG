@@ -1,42 +1,42 @@
 <?xml version="1.0"?>
 <objects>
 	<items>
-		<unlocked item0="true" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
-		<uses item0="2" item1="0" item2="0" item3="0" item4="0" item5="0" item6="0" item7="0" />
+		<unlocked item0="false" item1="false" item2="false" item3="false" item4="false" item5="false" item6="false" item7="false" />
+		<uses item0="0" item1="0" item2="0" item3="0" item4="0" item5="0" item6="0" item7="0" />
 	</items>
 	<assassin>
 		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
-		<chest gear1="true" gear2="false" gear3="false" gear4="false" />
-		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
-		<weapon gear1="true" gear2="false" gear3="false" gear4="false" />
-		<skills skill0="true" skill1="true" skill2="true" skill3="false" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
-		<experience value="27" level="2" />
-	</assassin>
-	<healer>
-		<helmet gear1="true" gear2="false" gear3="false" gear4="false" />
 		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
 		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
 		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
-		<skills skill0="true" skill1="true" skill2="true" skill3="true" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
-		<experience value="4" level="2" />
+		<skills skill0="true" skill1="false" skill2="false" skill3="false" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
+		<experience value="0" level="1" />
+	</assassin>
+	<healer>
+		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
+		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
+		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
+		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+		<skills skill0="true" skill1="false" skill2="false" skill3="false" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
+		<experience value="0" level="1" />
 	</healer>
 	<tank>
 		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
 		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
 		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
 		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
-		<skills skill0="true" skill1="true" skill2="true" skill3="true" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
-		<experience value="87" level="1" />
+		<skills skill0="true" skill1="false" skill2="false" skill3="false" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
+		<experience value="0" level="1" />
 	</tank>
 	<wizard>
 		<helmet gear1="false" gear2="false" gear3="false" gear4="false" />
 		<chest gear1="false" gear2="false" gear3="false" gear4="false" />
 		<boots gear1="false" gear2="false" gear3="false" gear4="false" />
-		<weapon gear1="true" gear2="false" gear3="false" gear4="false" />
-		<skills skill0="true" skill1="true" skill2="true" skill3="false" skill4="true" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
-		<experience value="87" level="1" />
+		<weapon gear1="false" gear2="false" gear3="false" gear4="false" />
+		<skills skill0="true" skill1="false" skill2="false" skill3="false" skill4="false" skill5="false" skill6="false" skill7="false" skill8="false" skill9="false" skill10="false" skill11="false" skill12="false" skill13="false" skill14="false" skill15="false" skill16="false" />
+		<experience value="0" level="1" />
 	</wizard>
-	<currency assassin_points="0" healer_points="0" tank_points="0" wizard_points="0" gold="4" />
+	<currency assassin_points="0" healer_points="0" tank_points="0" wizard_points="0" gold="0" />
 	<shops>
 		<shop1 selled0="false" selled1="false" selled2="false" selled3="false" />
 		<shop2 selled0="false" selled1="false" selled2="false" selled3="false" />
