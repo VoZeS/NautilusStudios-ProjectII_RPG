@@ -364,7 +364,6 @@ bool Menu::PreUpdate()
 		{
 			subplaymenu = false;
 			settings = false;
-			app->audio->StopMusic(0.5f);
 		}
 
 		if (app->scene->esc == true)
