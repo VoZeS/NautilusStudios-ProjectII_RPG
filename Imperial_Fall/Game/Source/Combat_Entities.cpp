@@ -1150,18 +1150,14 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 5: // level 2 skills
 			skill.owner = owner;
-			skill.skill_name = "Fast Stab";
-			skill.skill_description0 = "Low damage to a single target. The user boost his";
-			skill.skill_description1 = "speed for two turn.";
-			skill.att_effect = ATT_EFFECT::PHYSIC;
+			skill.skill_name = "Rise";
+			skill.skill_description0 = "The user boost his power for two turn.";
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 15;
-			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
-			skill.att_strenght = 0;
-			skill.buff_type = BUFF_TYPE::QUICK;
-			skill.buff_turns = 1;
+			skill.buff_type = BUFF_TYPE::STRONG;
+			skill.buff_turns = 2;
 			break;
 		case 6:
 			skill.owner = owner;
@@ -1186,14 +1182,18 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 			break;
 		case 8:
 			skill.owner = owner;
-			skill.skill_name = "Rise";
-			skill.skill_description0 = "The user boost his power for two turn.";
+			skill.skill_name = "Fast Stab";
+			skill.skill_description0 = "Low damage to a single target. The user boost his";
+			skill.skill_description1 = "speed for two turn.";
+			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.supp_effect = SUPP_EFFECT::BUFF;
 			skill.mana_cost = 15;
+			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
 			skill.ally_objective = ALLY_OBJECTIVE::SELF;
 			skill.element = 0;
-			skill.buff_type = BUFF_TYPE::STRONG;
-			skill.buff_turns = 2;
+			skill.att_strenght = 0;
+			skill.buff_type = BUFF_TYPE::QUICK;
+			skill.buff_turns = 1;
 			break;
 		case 9: // level 3 up root skills
 			skill.owner = owner;

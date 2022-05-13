@@ -160,7 +160,7 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
-
+	
 	r.x = c_x;
 	r.y = c_y;
 	if (a > 250)
@@ -506,7 +506,7 @@ int Frontground::CheckAdventureState()
 	switch (res)
 	{
 	case -1: app->dialog->SaveRenatoDialog(-1); app->dialog->SaveFarmerDialog(); break;
-	case 0: app->dialog->SaveRenatoDialog(3); app->dialog->SaveFarmerDialog(); break;
+	case 0: app->dialog->SaveRenatoDialog(2); app->dialog->SaveFarmerDialog(); break;
 	case 1: app->dialog->SaveRenatoDialog(6); app->dialog->SaveFarmerDialog(-1); break;
 	case 2: app->dialog->SaveRenatoDialog(7); app->dialog->SaveFarmerDialog(-1); break;
 	case 3: app->dialog->SaveRenatoDialog(10); app->dialog->SaveFarmerDialog(2); break;

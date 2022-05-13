@@ -83,8 +83,8 @@ bool Dialog::Start()
 
 
 
-	linea1String_Medico = dialog.child("granjero").child("text1").attribute("linea1").as_string();
-	linea2String_Medico = dialog.child("granjero").child("text1").attribute("linea2").as_string();
+	linea1String_Medico = dialog.child("medico").child("text1").attribute("linea1").as_string();
+	linea2String_Medico = dialog.child("medico").child("text1").attribute("linea2").as_string();
 
 	linea1Char_Medico = linea1String_Medico.c_str();
 	linea2Char_Medico = linea2String_Medico.c_str();
