@@ -10,7 +10,7 @@
 		<coins_in_room6 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 	</coins>
 	<books0>
-		<books_in_room0 picked0="true" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
+		<books_in_room0 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room1 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room2 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
 		<books_in_room3 picked0="false" picked1="false" picked2="false" picked3="false" picked4="false" picked5="false" picked6="false" picked7="false" picked8="false" picked9="false" />
