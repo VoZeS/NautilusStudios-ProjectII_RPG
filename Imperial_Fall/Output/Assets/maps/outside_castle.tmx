@@ -46141,7 +46141,7 @@
  </layer>
  <layer id="23" name="DoorCastleCollision" width="62" height="53">
   <properties>
-   <property name="Collision" type="int" value="90"/>
+   <property name="Collision" type="int" value="40"/>
    <property name="Draw" type="int" value="0"/>
    <property name="Height" type="int" value="1"/>
    <property name="Width" type="int" value="4"/>
@@ -49338,7 +49338,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

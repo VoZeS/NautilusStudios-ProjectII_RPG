@@ -35,6 +35,18 @@ Outside_Castle::Outside_Castle(bool enabled) : Module(enabled)
 	lever2Anim.PushBack({ 0, 64, 32,  32 });
 	lever2Anim.speed = 1.0f;
 	lever2Anim.loop = false;
+
+	doorOpenAnim.PushBack({ 0, 0, 144,  96 });
+	doorOpenAnim.PushBack({ 144, 0, 144,  96 });
+	doorOpenAnim.PushBack({ 288, 0, 144,  96 });
+	doorOpenAnim.PushBack({ 0, 96, 144,  96 });
+	doorOpenAnim.PushBack({ 144, 96, 144,  96 });
+	doorOpenAnim.PushBack({ 288, 96, 144,  96 });
+	doorOpenAnim.PushBack({ 0, 192, 144,  96 });
+	doorOpenAnim.PushBack({ 144, 192, 144,  96 });
+	doorOpenAnim.PushBack({ 288, 192, 144,  96 });
+	doorOpenAnim.speed = 0.1f;
+	doorOpenAnim.loop = false;
 }
 
 // Destructor
@@ -95,9 +107,11 @@ bool Outside_Castle::Start()
 		}
 
 		leverText = app->tex->Load("Assets/textures/lever.png");
+		doorText = app->tex->Load("Assets/textures/Puertas.png");
 
 		currentAnimL1 = &lever1Anim;
 		currentAnimL2 = &lever2Anim;
+		currentAnimDoor = &doorOpenAnim;
 
 	}
 
@@ -131,6 +145,13 @@ bool Outside_Castle::Update(float dt)
 
 	}
 
+	if (lever1Active && lever2Active && app->map->doorCastle != nullptr)
+	{
+		app->map->doorCastle->SetSensor(true);
+		currentAnimDoor->Update();
+
+	}
+
 	// Draw map
 	app->map->Draw();
 
@@ -146,7 +167,9 @@ bool Outside_Castle::PostUpdate()
 		app->render->AddrenderObject(leverText, { METERS_TO_PIXELS(app->physics->lever[1].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(app->physics->lever[1].body->GetPosition().y - 32.0f) }, currentAnimL2->GetCurrentFrame(), 1, 1.0f, 0.0f);
 
 	}
-	
+
+	app->render->AddrenderObject(doorText, { METERS_TO_PIXELS(18.55f), METERS_TO_PIXELS(-1.0f) }, currentAnimDoor->GetCurrentFrame(), 1, 1.0f, 0.0f);
+
 	return true;
 }
 
