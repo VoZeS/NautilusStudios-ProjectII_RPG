@@ -1582,12 +1582,14 @@ bool Inventory::CleanUp()
 	}
 	for (size_t i = 0; i < MAX_BOOKS; i++)
 	{
-		app->physics->books_in_floor[i].alive = false;
+		app->physics->books_in_floor0[i].alive = false;
+		app->physics->books_in_floor1[i].alive = false;
+		app->physics->books_in_floor2[i].alive = false;
+		app->physics->books_in_floor3[i].alive = false;
 	}
 	app->physics->coin_picked = false;
 	app->physics->coins_number = 0;
 	app->physics->book_picked = false;
-	app->physics->book_number = 0;
 
 	return true;
 }

@@ -144681,6 +144681,7 @@
    <property name="Collision" type="int" value="22"/>
    <property name="Draw" type="int" value="0"/>
    <property name="Height" type="int" value="1"/>
+   <property name="Index" type="int" value="0"/>
    <property name="Width" type="int" value="1"/>
   </properties>
   <data>
@@ -148391,6 +148392,7 @@
    <property name="Collision" type="int" value="27"/>
    <property name="Draw" type="int" value="0"/>
    <property name="Height" type="int" value="1"/>
+   <property name="Index" type="int" value="0"/>
    <property name="Width" type="int" value="1"/>
   </properties>
   <data>

@@ -202,10 +202,6 @@ private:
     bool mapLoaded;
 
 	int coins_index = 0;
-	int books0_index = 0;
-	int books1_index = 0;
-	int books2_index = 0;
-	int books3_index = 0;
 
 };
 

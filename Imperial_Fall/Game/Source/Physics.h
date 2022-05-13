@@ -18,7 +18,7 @@
 #define RADTODEG 57.295779513082320876f
 
 #define MAX_COINS 9
-#define MAX_BOOKS 9
+#define MAX_BOOKS 3
 
 struct Miscelenea
 {
@@ -51,7 +51,7 @@ public:
 	
 	b2Fixture* CreateDynamicBox(int x, int y, int w, int h);
 
-	bool CreateMiscelanea(int x, int y, int w, int h, int collision);
+	bool CreateMiscelanea(int x, int y, int w, int h, int collision, int book_id);
 
 	bool CleanMapBoxes();
 
@@ -63,7 +63,10 @@ public:
 	b2World* world;
 
 	Miscelenea coins_in_floor[MAX_COINS];
-	Miscelenea books_in_floor[MAX_BOOKS];
+	Miscelenea books_in_floor0[MAX_BOOKS];
+	Miscelenea books_in_floor1[MAX_BOOKS];
+	Miscelenea books_in_floor2[MAX_BOOKS];
+	Miscelenea books_in_floor3[MAX_BOOKS];
 	Miscelenea lever[2];
 
 	int on_collosion;
@@ -114,7 +117,6 @@ public:
 	int coins_number = 0;
 	void DestroyCoins();
 	bool book_picked = false;
-	int book_number = 0;
 	void DestroyBook();
 	void ResetMiscelanea();
 
