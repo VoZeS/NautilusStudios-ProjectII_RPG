@@ -254,6 +254,8 @@ bool Inventory::Start()
 		skill_image2 = app->tex->Load("Assets/textures/skill_images2.png");
 		skill_image3 = app->tex->Load("Assets/textures/skill_images3.png");
 
+		inventory = app->tex->Load("Assets/textures/Inventori_Sprite.png");
+
 		coin = app->tex->Load("Assets/textures/coin.png");
 		coins_obtained = 0;
 		coins_cd = 0;
@@ -955,7 +957,7 @@ bool Inventory::PostUpdate()
 {
 	int cx = -app->render->camera.x;
 	int cy = -app->render->camera.y;
-
+	
 	if (!hide)
 	{
 		SDL_Rect rect = book->GetCurrentFrame();
@@ -968,6 +970,7 @@ bool Inventory::PostUpdate()
 		}
 
 		app->render->DrawTexture(book_tex, cx, cy, &rect);
+		
 
 		// arrows
 		if (submenu == SUB_INV::NOTHING && (book == &page1 || book == &page2 || book == &page3 || book == &page4 || book == &page5) && !in_skill_tree)
@@ -1581,6 +1584,7 @@ bool Inventory::PostUpdate()
 	}
 	else
 	{
+	app->render->DrawTexture(inventory, cx+5, 600 + cy);
 		DisplayCoins();
 	}
 
@@ -4285,8 +4289,10 @@ void Inventory::DisplayCoins()
 		s = std::to_string(coins);
 	}
 	
-	app->fonts->BlitCombatText(1120 + cx, 20 + cy, app->fonts->textFont2, s.c_str());
-	app->render->DrawTexture(coin, 1182 + cx, 4 + cy);
+	app->fonts->BlitCombatText(1070 + cx, 20 + cy, app->fonts->textFont2, s.c_str());
+	app->render->DrawTexture(coin, 1150 + cx, 4 + cy);
+
+	
 
 	if (coins_obtained != 0)
 	{

@@ -201,6 +201,8 @@ private:
 	SDL_Texture* skill_image2; // tank
 	SDL_Texture* skill_image3; // wizard
 
+	SDL_Texture* inventory;
+
 	// coins
 	void DisplayCoins();
 	SDL_Texture* coin;
