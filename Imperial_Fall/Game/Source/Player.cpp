@@ -1092,7 +1092,7 @@ bool Player::Draw()
 
 			break;
 		}*/
-		app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 62.0f) }, rect, 2, 1.0f, 0.0f);
+		app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 62.0f) }, rect, 1, 1.0f, 0.0f);
 	}
 	
 	return true;
