@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -45,21 +46,23 @@ bool Dungeon::Start()
 		app->map->Load("dungeon.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/dungeon.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
 		app->dialog->Enable();
 
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(200),
-			PIXELS_TO_METERS(950), PIXELS_TO_METERS(200), PIXELS_TO_METERS(900), PIXELS_TO_METERS(200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
 
 
 		int w, h;
 		uchar* data = NULL;
+		tp = false;
 
 		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
 
@@ -71,6 +74,7 @@ bool Dungeon::Start()
 		{
 			app->LoadGameRequest(false);
 		}
+
 		in_ice = 0;
 	}
 
@@ -81,8 +85,16 @@ bool Dungeon::Start()
 // Called each loop iteration
 bool Dungeon::PreUpdate()
 {
-	LOG("%d", in_ice);
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/zone3.ogg");
+	}
 
+	if (tp)
+	{
+		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
+		tp = false;
+	}
 	return true;
 }
 
@@ -111,6 +123,7 @@ bool Dungeon::CleanUp()
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
+	app->inventory->Disable();
 	app->entities->Disable();
 
 	// clean textures

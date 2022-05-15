@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Pathfinding.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Frontground.h"
 #include "Dungeon.h"
 
@@ -19,43 +20,59 @@
 Player::Player() : Entity()
 {
 	// main idle animation
-	idleAnimD.PushBack({ 5, 2, 50, 72 });
-	idleAnimD.PushBack({ 65, 2, 50, 72 });
+	idleAnimD.PushBack({ 5, 0, 50, 74 });
+	idleAnimD.PushBack({ 65, 0, 50, 74 });
 	idleAnimD.speed = 0.03f;
 
-	idleAnimU.PushBack({ 5, 242, 50, 72 });
-	idleAnimU.PushBack({ 65, 242, 50, 72 });
+	idleAnimU.PushBack({ 5, 240, 50, 74 });
+	idleAnimU.PushBack({ 65, 240, 50, 74 });
 	idleAnimU.speed = 0.03f;
 
-	idleAnimL.PushBack({ 5, 82, 50, 72 });
-	idleAnimL.PushBack({ 65, 82, 50, 72 });
+	idleAnimL.PushBack({ 5, 80, 50, 74 });
+	idleAnimL.PushBack({ 65, 80, 50, 74 });
 	idleAnimL.speed = 0.03f;
 
-	idleAnimR.PushBack({ 5, 161, 50, 72 });
-	idleAnimR.PushBack({ 65, 161, 50, 72 });
+	idleAnimR.PushBack({ 5, 159, 50, 74 });
+	idleAnimR.PushBack({ 65, 159, 50, 74 });
 	idleAnimR.speed = 0.03f;
 
 	// main walk animation
-	walkAnimD.PushBack({ 5, 2, 50, 72 });
-	walkAnimD.PushBack({ 65, 2, 50, 72 });
-	walkAnimD.PushBack({ 125, 2, 50, 72 });
+	walkAnimD.PushBack({ 5, 0, 50, 74 });
+	walkAnimD.PushBack({ 65, 0, 50, 74 });
+	walkAnimD.PushBack({ 125, 0, 50, 74 });
 	walkAnimD.speed = 0.1f;
 
-	walkAnimU.PushBack({ 5, 242, 50, 72 });
-	walkAnimU.PushBack({ 65, 242, 50, 72 });
-	walkAnimU.PushBack({ 125, 242, 50, 72 });
+	walkAnimU.PushBack({ 5, 240, 50, 74 });
+	walkAnimU.PushBack({ 65, 240, 50, 74 });
+	walkAnimU.PushBack({ 125, 240, 50, 74 });
 	walkAnimU.speed = 0.1f;
 
-	walkAnimL.PushBack({ 5, 82, 50, 72 });
-	walkAnimL.PushBack({ 65, 82, 50, 72 });
-	walkAnimL.PushBack({ 125, 82, 50, 72 });
+	walkAnimL.PushBack({ 5, 80, 50, 74 });
+	walkAnimL.PushBack({ 65, 80, 50, 74 });
+	walkAnimL.PushBack({ 125, 80, 50, 74 });
 	walkAnimL.speed = 0.1f;
 
-	walkAnimR.PushBack({ 5, 161, 50, 72 });
-	walkAnimR.PushBack({ 65, 161, 50, 72 });
-	walkAnimR.PushBack({ 125, 161, 50, 72 });
+	walkAnimR.PushBack({ 5, 159, 50, 74 });
+	walkAnimR.PushBack({ 65, 159, 50, 74 });
+	walkAnimR.PushBack({ 125, 159, 50, 74 });
 	walkAnimR.speed = 0.1f;
 
+	//Ice animations
+	iceU.PushBack({ 65, 240, 50, 74 });
+	iceU.loop = false;
+
+	iceD.PushBack({ 65, 0, 50, 74 });
+	iceD.loop = false;
+
+	iceL.PushBack({ 65, 80, 50, 74 });
+	iceL.loop = false;
+
+	iceR.PushBack({ 65, 159, 50, 74 });
+	iceR.loop = false;
+
+
+
+	/*
 	// c0 idle animation
 	c0_idleAnimD.PushBack({ 5, 2, 50, 72 });
 	c0_idleAnimD.PushBack({ 65, 2, 50, 72 });
@@ -168,7 +185,7 @@ Player::Player() : Entity()
 	c2_walkAnimR.PushBack({ 5, 161, 50, 72 });
 	c2_walkAnimR.PushBack({ 65, 161, 50, 72 });
 	c2_walkAnimR.PushBack({ 125, 161, 50, 72 });
-	c2_walkAnimR.speed = 0.1f;
+	c2_walkAnimR.speed = 0.1f;*/
 }
 
 // Destructor
@@ -204,7 +221,7 @@ void Player::InitCustomEntity(int npc)
 	bodyFixture = body->CreateFixture(&fixture);
 	bodyFixture->SetSensor(false);
 	bodyFixture->SetUserData((void*)1); // player collision
-
+	/*
 	// companion 0
 	c0.comp_number = 0;
 	c0.currentAnimation = &c0_idleAnimD;
@@ -245,7 +262,7 @@ void Player::InitCustomEntity(int npc)
 	c2.body = app->physics->world->CreateBody(&c2_body);
 
 	b2Fixture* c2_Fixture = body->CreateFixture(&fixture);
-	c2_Fixture->SetSensor(true);
+	c2_Fixture->SetSensor(true);*/
 }
 
 // Called each loop iteration
@@ -255,14 +272,14 @@ bool Player::PreUpdate()
 	{
 		position.x = body->GetPosition().x;
 		position.y = body->GetPosition().y;
-
+		/*
 		// companions
 		c0.position.x = c0.body->GetPosition().x;
 		c0.position.y = c0.body->GetPosition().y;
 		c1.position.x = c1.body->GetPosition().x;
 		c1.position.y = c1.body->GetPosition().y;
 		c2.position.x = c2.body->GetPosition().x;
-		c2.position.y = c2.body->GetPosition().y;
+		c2.position.y = c2.body->GetPosition().y;*/
 	}
 
 	return true;
@@ -335,6 +352,11 @@ void Player::HandleInput(float dt)
 			}
 		}
 
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			fixedSpeed *= 1.5f;
+		}
+
 		if (!app->menu->GetGameState())
 		{
 			if (app->dungeon->Enabled())
@@ -345,31 +367,31 @@ void Player::HandleInput(float dt)
 					{
 						if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 						{
-							// move up
-							if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-							{
-								body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
-								look_dir = 0;
-
-								if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+							//move up
+								if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 								{
-									walkAnimU.Reset();
-									currentAnimation = &walkAnimU;
+									body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
+									look_dir = 0;
+
+									if (currentAnimation != &iceU && body->GetLinearVelocity().x == 0)
+									{
+										iceU.Reset();
+										currentAnimation = &iceU;
+									}
 								}
-							}
 
-							// move down
-							if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-							{
-								body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed * 2 });
-								look_dir = 1;
-
-								if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+							//move down
+								if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 								{
-									walkAnimD.Reset();
-									currentAnimation = &walkAnimD;
+									body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed * 2 });
+									look_dir = 1;
+
+									if (currentAnimation != &iceD && body->GetLinearVelocity().x == 0)
+									{
+										iceD.Reset();
+										currentAnimation = &iceD;
+									}
 								}
-							}
 						}
 						else
 						{
@@ -378,31 +400,31 @@ void Player::HandleInput(float dt)
 
 						if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
 						{
-							// move left
-							if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-							{
-								body->SetLinearVelocity({ -fixedSpeed * 2, body->GetLinearVelocity().y });
-								look_dir = 2;
-
-								if (currentAnimation != &walkAnimL)
+							//move left
+								if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 								{
-									walkAnimL.Reset();
-									currentAnimation = &walkAnimL;
+									body->SetLinearVelocity({ -fixedSpeed * 2, body->GetLinearVelocity().y });
+									look_dir = 2;
+
+									if (currentAnimation != &iceL)
+									{
+										iceL.Reset();
+										currentAnimation = &iceL;
+									}
 								}
-							}
 
 							//Move Right
-							if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-							{
-								body->SetLinearVelocity({ fixedSpeed * 2, body->GetLinearVelocity().y });
-								look_dir = 3;
-
-								if (currentAnimation != &walkAnimR)
+								if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 								{
-									walkAnimR.Reset();
-									currentAnimation = &walkAnimR;
+									body->SetLinearVelocity({ fixedSpeed * 2, body->GetLinearVelocity().y });
+									look_dir = 3;
+
+									if (currentAnimation != &iceR)
+									{
+										iceR.Reset();
+										currentAnimation = &iceR;
+									}
 								}
-							}
 						}
 						else
 						{
@@ -414,10 +436,136 @@ void Player::HandleInput(float dt)
 				{
 					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
 					{
-						// move up
+						//move up
+							if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
+								look_dir = 0;
+
+								if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+								{
+									walkAnimU.Reset();
+									currentAnimation = &walkAnimU;
+								}
+							}
+							else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+							{
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+								if (currentAnimation != &idleAnimU)
+								{
+									idleAnimU.Reset();
+									currentAnimation = &idleAnimU;
+								}
+							}
+
+						//move down
+							if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
+								look_dir = 1;
+
+								if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+								{
+									walkAnimD.Reset();
+									currentAnimation = &walkAnimD;
+								}
+							}
+							else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+							{
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+
+								if (currentAnimation != &idleAnimD)
+								{
+									idleAnimD.Reset();
+									currentAnimation = &idleAnimD;
+								}
+							}
+					}
+					else
+					{
+						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+					}
+
+					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+					{
+						//move left
+							if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
+								look_dir = 2;
+
+								if (currentAnimation != &walkAnimL)
+								{
+									walkAnimL.Reset();
+									currentAnimation = &walkAnimL;
+								}
+							}
+							else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+							{
+								body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+								if (currentAnimation != &idleAnimL)
+								{
+									idleAnimL.Reset();
+									currentAnimation = &idleAnimL;
+								}
+							}
+
+						//Move Right
+							if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+							{
+								body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
+								look_dir = 3;
+
+								if (currentAnimation != &walkAnimR)
+								{
+									walkAnimR.Reset();
+									currentAnimation = &walkAnimR;
+								}
+							}
+							else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+							{
+								body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+
+								if (currentAnimation != &idleAnimR)
+								{
+									idleAnimR.Reset();
+									currentAnimation = &idleAnimR;
+								}
+							}
+					}
+					else
+					{
+						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
+					}
+
+
+					if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
+					{
+						walk_cd -= dt;
+						if (walk_cd = 0)
+						{
+							app->audio->PlayFx(walk_sound);
+							walk_cd = 320;
+						}
+					}
+
+					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE
+						&& app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
+					{
+						body->SetLinearVelocity({ 0, 0 });
+					}
+				}
+			}
+			else
+			{
+				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
+				{
+					//move up
 						if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 						{
-							body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
+							body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
 							look_dir = 0;
 
 							if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
@@ -437,7 +585,7 @@ void Player::HandleInput(float dt)
 							}
 						}
 
-						// move down
+					//move down
 						if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 						{
 							body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
@@ -459,15 +607,15 @@ void Player::HandleInput(float dt)
 								currentAnimation = &idleAnimD;
 							}
 						}
-					}
-					else
-					{
-						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-					}
+				}
+				else
+				{
+					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
+				}
 
-					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
-					{
-						// move left
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+				{
+					//move left
 						if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 						{
 							body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
@@ -490,7 +638,7 @@ void Player::HandleInput(float dt)
 							}
 						}
 
-						//Move Right
+					//Move Right
 						if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 						{
 							body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
@@ -512,132 +660,6 @@ void Player::HandleInput(float dt)
 								currentAnimation = &idleAnimR;
 							}
 						}
-					}
-					else
-					{
-						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-					}
-
-
-					if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
-					{
-						walk_cd -= dt;
-						if (walk_cd <= 0)
-						{
-							app->audio->PlayFx(walk_sound);
-							walk_cd = 320;
-						}
-					}
-
-					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE
-						&& app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)
-					{
-						body->SetLinearVelocity({ 0, 0 });
-					}
-				}
-			}
-			else
-			{
-				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE)
-				{
-					// move up
-					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-					{
-						body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
-						look_dir = 0;
-
-						if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
-						{
-							walkAnimU.Reset();
-							currentAnimation = &walkAnimU;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-					{
-						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-
-						if (currentAnimation != &idleAnimU)
-						{
-							idleAnimU.Reset();
-							currentAnimation = &idleAnimU;
-						}
-					}
-
-					// move down
-					if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-					{
-						body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed });
-						look_dir = 1;
-
-						if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
-						{
-							walkAnimD.Reset();
-							currentAnimation = &walkAnimD;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-					{
-						body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-
-						if (currentAnimation != &idleAnimD)
-						{
-							idleAnimD.Reset();
-							currentAnimation = &idleAnimD;
-						}
-					}
-				}
-				else
-				{
-					body->SetLinearVelocity({ body->GetLinearVelocity().x, 0 });
-				}
-
-				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE || app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
-				{
-					// move left
-					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-					{
-						body->SetLinearVelocity({ -fixedSpeed, body->GetLinearVelocity().y });
-						look_dir = 2;
-
-						if (currentAnimation != &walkAnimL)
-						{
-							walkAnimL.Reset();
-							currentAnimation = &walkAnimL;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-					{
-						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-
-						if (currentAnimation != &idleAnimL)
-						{
-							idleAnimL.Reset();
-							currentAnimation = &idleAnimL;
-						}
-					}
-
-					//Move Right
-					if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-					{
-						body->SetLinearVelocity({ fixedSpeed, body->GetLinearVelocity().y });
-						look_dir = 3;
-
-						if (currentAnimation != &walkAnimR)
-						{
-							walkAnimR.Reset();
-							currentAnimation = &walkAnimR;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-					{
-						body->SetLinearVelocity({ 0, body->GetLinearVelocity().y });
-
-						if (currentAnimation != &idleAnimR)
-						{
-							idleAnimR.Reset();
-							currentAnimation = &idleAnimR;
-						}
-					}
 				}
 				else
 				{
@@ -648,7 +670,7 @@ void Player::HandleInput(float dt)
 				if (body->GetLinearVelocity().x != 0 || body->GetLinearVelocity().y != 0)
 				{
 					walk_cd -= dt;
-					if (walk_cd <= 0)
+					if (walk_cd = 0)
 					{
 						app->audio->PlayFx(walk_sound);
 						walk_cd = 320;
@@ -662,32 +684,32 @@ void Player::HandleInput(float dt)
 				switch (look_dir)
 				{
 				case 0:
-					if (currentAnimation != &idleAnimU)
-					{
-						idleAnimU.Reset();
-						currentAnimation = &idleAnimU;
-					}
+						if (currentAnimation != &idleAnimU)
+						{
+							idleAnimU.Reset();
+							currentAnimation = &idleAnimU;
+						}
 					break;
 				case 1:
-					if (currentAnimation != &idleAnimD)
-					{
-						idleAnimD.Reset();
-						currentAnimation = &idleAnimD;
-					}
+						if (currentAnimation != &idleAnimD)
+						{
+							idleAnimD.Reset();
+							currentAnimation = &idleAnimD;
+						}
 					break;
 				case 2:
-					if (currentAnimation != &idleAnimL)
-					{
-						idleAnimL.Reset();
-						currentAnimation = &idleAnimL;
-					}
+						if (currentAnimation != &idleAnimL)
+						{
+							idleAnimL.Reset();
+							currentAnimation = &idleAnimL;
+						}
 					break;
 				case 3:
-					if (currentAnimation != &idleAnimR)
-					{
-						idleAnimR.Reset();
-						currentAnimation = &idleAnimR;
-					}
+						if (currentAnimation != &idleAnimR)
+						{
+							idleAnimR.Reset();
+							currentAnimation = &idleAnimR;
+						}
 					break;
 				}
 			}
@@ -695,7 +717,7 @@ void Player::HandleInput(float dt)
 			currentAnimation->Update();
 		}
 
-		if (app->entities->freeze)
+		if (app->entities->freeze || app->menu->object_obtained || app->menu->unlock_state != 0)
 		{
 			body->SetLinearVelocity({ 0, 0 });
 		}
@@ -726,7 +748,52 @@ bool Player::Update(float dt)
 {
 	if (player_enabled)
 	{
-		FollowPlayer(c0, c0, dt);
+		if (app->dungeon->Enabled() && app->dungeon->in_ice > 0)
+		{
+			float fixedSpeed = speed * dt;
+			if (body->GetLinearVelocity().x > fixedSpeed-1 && body->GetLinearVelocity().y==0)
+			{
+				body->SetLinearVelocity({fixedSpeed*2, body->GetLinearVelocity().y});
+
+				if (currentAnimation != &iceR)
+				{
+					iceR.Reset();
+					currentAnimation = &iceR;
+				}
+			}
+			else if (body->GetLinearVelocity().x < -fixedSpeed + 1 && body->GetLinearVelocity().y == 0)
+			{
+				body->SetLinearVelocity({ -fixedSpeed * 2, body->GetLinearVelocity().y });
+
+				if (currentAnimation != &iceL)
+				{
+					iceL.Reset();
+					currentAnimation = &iceL;
+				}
+			}
+			else if (body->GetLinearVelocity().y < -fixedSpeed + 1 && body->GetLinearVelocity().x == 0)
+			{
+				body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2});
+
+				if (currentAnimation != &iceU)
+				{
+					iceU.Reset();
+					currentAnimation = &iceU;
+				}
+			}
+			else if (body->GetLinearVelocity().y > fixedSpeed - 1 && body->GetLinearVelocity().x == 0)
+			{
+				body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed * 2 });
+
+				if (currentAnimation != &iceD)
+				{
+					iceD.Reset();
+					currentAnimation = &iceD;
+				}
+			}
+		}
+		
+		/*FollowPlayer(c0, c0, dt);
 		FollowPlayer(c1, c0, dt);
 		FollowPlayer(c2, c1, dt);
 
@@ -968,7 +1035,7 @@ bool Player::Update(float dt)
 			}
 		}
 
-		c2.currentAnimation->Update();
+		c2.currentAnimation->Update();*/
 	}
 
 	return true;
@@ -980,787 +1047,52 @@ bool Player::Draw()
 	if (plan_to_delete)
 	{
 		app->physics->world->DestroyBody(body);
-		app->physics->world->DestroyBody(c0.body);
-		app->physics->world->DestroyBody(c1.body);
-		app->physics->world->DestroyBody(c2.body);
+		//app->physics->world->DestroyBody(c0.body);
+		//app->physics->world->DestroyBody(c1.body);
+		//app->physics->world->DestroyBody(c2.body);
 		plan_to_delete = false;
 	}
 
 	if (player_enabled)
 	{
 		SDL_Rect rect = currentAnimation->GetCurrentFrame();
-		SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
-		SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
-		SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
+		//SDL_Rect c0_rect = c0.currentAnimation->GetCurrentFrame();
+		//SDL_Rect c1_rect = c1.currentAnimation->GetCurrentFrame();
+		//SDL_Rect c2_rect = c2.currentAnimation->GetCurrentFrame();
 
-
-		switch (char_control)
+		/*switch (char_control)
 		{
 		case 0:
-			/*app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f) }, c2_rect, 1, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f) }, c1_rect, 1, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f) }, c0_rect, 1, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f) }, rect, 1, 1.0f, 0.0f);
-			*/
 			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
-			if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			//---
-			else if (c0.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			//---
-			else if (c1.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			//---
-			if (c2.position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}
-			else if (c2.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 1, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 1, 1.0f, 0.0f);
+			
 			break;
 		case 1:
-			/*app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f)}, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f) }, rect, 2, 1.0f, 0.0f);
-			*/
-			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
-			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			//---
-			else if (c0.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			//---
-			else if (c1.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			//---
-			if (c2.position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}
-			else if (c2.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}*/
 			break;
 		case 2:
-			/*app->render->AddrenderObject(app->entities->wizard_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f)}, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f) }, rect, 2, 1.0f, 0.0f);
-			*/
-			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
-			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			//---
-			else if (c0.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			//---
-			else if (c1.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			//---
-			if (c2.position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}
-			else if (c2.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}*/
 			break;
 		case 3:
-			/*app->render->AddrenderObject(app->entities->healer_texture, {METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f)}, c2_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f) }, c1_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f) }, c0_rect, 2, 1.0f, 0.0f);
-			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f) }, rect, 2, 1.0f, 0.0f);
-			*/
-			// ------------------------------------------------------------------------------------------------------- PRINT ORDER
-			/*if (position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			else if (position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-			}
-			//---
-			else if (c0.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
+			app->render->AddrenderObject(app->entities->healer_texture, { METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 60.0f) }, c2_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->tank_texture, { METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 60.0f) }, c1_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->assassin_texture, { METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 60.0f) }, c0_rect, 2, 1.0f, 0.0f);
+			app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 60.0f) }, rect, 2, 1.0f, 0.0f);
 
-			}
-			else if (c0.position.y >= c1.position.y && c1.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			else if (c0.position.y >= c2.position.y && c2.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-
-			}
-			//---
-			else if (c1.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c2.position.y)
-			{
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= position.y && position.y >= c2.position.y && c2.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-			}
-			else if (c1.position.y >= c0.position.y && c0.position.y >= c2.position.y && c2.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			else if (c1.position.y >= c2.position.y && c2.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-
-			}
-			//---
-			if (c2.position.y >= c0.position.y && c0.position.y >= c1.position.y && c1.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= c0.position.y && c0.position.y >= position.y)
-			{
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c1.position.y && c1.position.y >= position.y && position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= c0.position.y && c0.position.y >= position.y && position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-
-			}
-			else if (c2.position.y >= position.y && position.y >= c0.position.y && c0.position.y >= c1.position.y)
-			{
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}
-			else if (c2.position.y >= position.y && position.y >= c1.position.y && c1.position.y >= c0.position.y)
-			{
-				app->render->DrawTexture(app->entities->tank_texture, METERS_TO_PIXELS(c0.position.x - 25.0f), METERS_TO_PIXELS(c0.position.y - 36.0f), &c0_rect);
-				app->render->DrawTexture(app->entities->healer_texture, METERS_TO_PIXELS(c1.position.x - 25.0f), METERS_TO_PIXELS(c1.position.y - 36.0f), &c1_rect);
-				app->render->DrawTexture(app->entities->wizard_texture, METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 36.0f), &rect);
-				app->render->DrawTexture(app->entities->assassin_texture, METERS_TO_PIXELS(c2.position.x - 25.0f), METERS_TO_PIXELS(c2.position.y - 36.0f), &c2_rect);
-			}*/
 			break;
-		}
+		}*/
+		app->render->AddrenderObject(app->entities->wizard_texture, { METERS_TO_PIXELS(position.x - 25.0f), METERS_TO_PIXELS(position.y - 62.0f) }, rect, 1, 1.0f, 0.0f);
 	}
 	
 	return true;
@@ -1770,17 +1102,17 @@ bool Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("player").child("position").attribute("x").as_int();
 	position.y = data.child("player").child("position").attribute("y").as_int();
-	c0.position.x = data.child("player").child("comp0").attribute("x").as_int();
+	/*c0.position.x = data.child("player").child("comp0").attribute("x").as_int();
 	c0.position.y = data.child("player").child("comp0").attribute("y").as_int();
 	c1.position.x = data.child("player").child("comp1").attribute("x").as_int();
 	c1.position.y = data.child("player").child("comp1").attribute("y").as_int();
 	c2.position.x = data.child("player").child("comp2").attribute("x").as_int();
-	c2.position.y = data.child("player").child("comp2").attribute("y").as_int();
+	c2.position.y = data.child("player").child("comp2").attribute("y").as_int();*/
 
 	body->SetTransform({ position.x + PIXELS_TO_METERS(w), position.y + PIXELS_TO_METERS(h) }, body->GetAngle());
-	c0.body->SetTransform({ c0.position.x + PIXELS_TO_METERS(w), c0.position.y + PIXELS_TO_METERS(h) }, c0.body->GetAngle());
+	/*c0.body->SetTransform({c0.position.x + PIXELS_TO_METERS(w), c0.position.y + PIXELS_TO_METERS(h)}, c0.body->GetAngle());
 	c1.body->SetTransform({ c1.position.x + PIXELS_TO_METERS(w), c1.position.y + PIXELS_TO_METERS(h) }, c1.body->GetAngle());
-	c2.body->SetTransform({ c2.position.x + PIXELS_TO_METERS(w), c2.position.y + PIXELS_TO_METERS(h) }, c2.body->GetAngle());
+	c2.body->SetTransform({ c2.position.x + PIXELS_TO_METERS(w), c2.position.y + PIXELS_TO_METERS(h) }, c2.body->GetAngle());*/
 
 	look_dir = 1;
 
@@ -1791,12 +1123,12 @@ bool Player::Save(pugi::xml_node& data)
 {
 	data.child("player").child("position").attribute("x").set_value(position.x);
 	data.child("player").child("position").attribute("y").set_value(position.y);
-	data.child("player").child("comp0").attribute("x").set_value(c0.position.x);
+	/*data.child("player").child("comp0").attribute("x").set_value(c0.position.x);
 	data.child("player").child("comp0").attribute("y").set_value(c0.position.y);
 	data.child("player").child("comp1").attribute("x").set_value(c1.position.x);
 	data.child("player").child("comp1").attribute("y").set_value(c1.position.y);
 	data.child("player").child("comp2").attribute("x").set_value(c2.position.x);
-	data.child("player").child("comp2").attribute("y").set_value(c2.position.y);
+	data.child("player").child("comp2").attribute("y").set_value(c2.position.y);*/
 
 	return true;
 }
@@ -1805,7 +1137,7 @@ fPoint Player::GetPlayerPosition()
 {
 	return position;
 }
-fPoint Player::GetCompanion0Position()
+/*fPoint Player::GetCompanion0Position()
 {
 	return c0.position;
 
@@ -1817,7 +1149,7 @@ fPoint Player::GetCompanion1Position()
 fPoint Player::GetCompanion2Position()
 {
 	return c2.position;
-}
+}*/
 
 void Player::SetPlayerPosition(int new_x, int new_y)
 {
@@ -1825,10 +1157,10 @@ void Player::SetPlayerPosition(int new_x, int new_y)
 	position.y = new_y;
 
 	body->SetTransform({ position.x, position.y }, body->GetAngle());
-	body->ApplyForceToCenter({ 0, 1 }, true);
+	
 }
 
-void Player::SetCompanion0Position(int new_x, int new_y)
+/*void Player::SetCompanion0Position(int new_x, int new_y)
 {
 	c0.position.x = new_x;
 	c0.position.y = new_y;
@@ -1868,7 +1200,7 @@ void Player::SetCompanion1LookDir(int lookDir)
 void Player::SetCompanion2LookDir(int lookDir)
 {
 	c2.look_dir = lookDir;
-}
+}*/
 
 void Player::SetPlayerLookDir(int lookDir)
 {
@@ -1894,7 +1226,7 @@ int Player::GetCharControl()
 	return char_control;
 }
 
-void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
+/*void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 {
 	fPoint obj;
 
@@ -1994,4 +1326,4 @@ void Player::FollowPlayer(Companion c, Companion pre_c, float dt)
 	}
 
 	c.body->SetLinearVelocity({ distx * speed * dt,  disty * speed * dt });
-}
+}*/

@@ -8,11 +8,14 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
-#define CONFIG_FILENAME		"config.xml"
+#define STARTED_FILENAME "started.xml"
+#define CONFIG_FILENAME	"config.xml"
 #define ORIGIN_SAVE_STATE_FILENAME "origin_save_game.xml"
 #define SAVE_STATE_FILENAME "save_game.xml"
-#define DIALOG_FILENAME		"dialog.xml"
-#define HEROES_STATS_FILENAME		"heroes_stats.xml"
+#define DIALOG_FILENAME	"dialog.xml"
+#define HEROES_STATS_FILENAME	"heroes_stats.xml"
+#define UNLOCKABLE_OBJECTS_FILENAME	"unlockable_objects.xml"
+#define MISCELANEA_FILENAME	"miscelanea.xml"
 
 // Modules
 class Window;
@@ -29,6 +32,7 @@ class Fonts;
 class Combat_Manager;
 class Combat_Menu;
 class Menu;
+class Inventory;
 class Particles;
 class Frontground;
 class Town1;
@@ -39,6 +43,7 @@ class Dungeon;
 class Outside_Castle;
 class Inside_Castle;
 class Combat_Scene;
+class End_Combat_Scene;
 class Dialog;
 class LogoScreen;
 
@@ -120,6 +125,7 @@ public:
 	Combat_Manager* combat_manager;
 	Combat_Menu* combat_menu;
 	Menu* menu;
+	Inventory* inventory;
 	Particles* particles;
 	Frontground* frontground;
 	Town1* town1;
@@ -130,6 +136,7 @@ public:
 	Outside_Castle* outside;
 	Inside_Castle* inside;
 	Combat_Scene* combat_scene;
+	End_Combat_Scene* end_combat_scene;
 	Dialog* dialog;
 	LogoScreen* logo;
 

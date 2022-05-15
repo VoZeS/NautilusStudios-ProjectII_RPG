@@ -7,7 +7,9 @@
 #include "Scene.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Dialog.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Player.h"
 #include "Defs.h"
@@ -21,6 +23,7 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
@@ -129,8 +132,11 @@ bool Menu::Start()
 		chosed = 0;
 		app->win->GetWindowSize(win_w, win_h);
 
+		open_book_sound = app->audio->LoadFx("Assets/audio/fx/open_book.wav");
 		click_sound = app->audio->LoadFx("Assets/audio/fx/pop.wav");
 		hover_sound = app->audio->LoadFx("Assets/audio/fx/hover.wav");
+		win_sound = app->audio->LoadFx("Assets/audio/fx/win.wav");
+		lose_sound = app->audio->LoadFx("Assets/audio/fx/lose.wav");
 
 		for (size_t i = 0; i < NUM_PAUSE_BUTTONS; i++)
 		{
@@ -150,9 +156,14 @@ bool Menu::Start()
 			settings_buttons[i].rect.y = ((int)win_h / (NUM_PAUSE_BUTTONS + 1)) * (i + 1);
 		}
 
+		whitemark_128x128 = app->tex->Load("Assets/textures/128x128_whitemark.png");
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
+		whitemark_800x150 = app->tex->Load("Assets/textures/800x150_whitemark.png");
 		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 		skills_icons = app->tex->Load("Assets/textures/skill_icons.png");
+		accept_tex = app->tex->Load("Assets/textures/accept_cancel.png");
+		desc_icons = app->tex->Load("Assets/textures/descriptions_icons.png");
+		rew_icons = app->tex->Load("Assets/textures/rewards.png");
 
 		win_button.rect.w = 500;
 		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2);
@@ -229,15 +240,22 @@ bool Menu::Start()
 		settings_buttons[3].alt_tex_selec = app->tex->Load("Assets/textures/Fullscreen_No_Select.png");
 		settings_buttons[3].alt_tex = app->tex->Load("Assets/textures/Vsync_si.png"); // Vsync Si
 
-		win_button.tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
-		lose_buttons[0].tex = app->tex->Load("Assets/textures/Exit.png"); // Try again
-		lose_buttons[1].tex = app->tex->Load("Assets/textures/Exit.png"); // Return field
 
-		combat_back = app->tex->Load("Assets/textures/Temporal_Background.png");
-		combat_win = app->tex->Load("Assets/textures/win_text.png");
-		combat_lose = app->tex->Load("Assets/textures/lose_text.png");
+
+		win_button.tex = app->tex->Load("Assets/textures/Close_Buton_Win.png"); // Return field
+		win_button.alt_tex = app->tex->Load("Assets/textures/Close_Buton_Win_Select.png"); // Return field
+	
+		lose_buttons[0].tex = app->tex->Load("Assets/textures/Retry_Buton_Lose.png"); // Try again
+		lose_buttons[0].alt_tex = app->tex->Load("Assets/textures/Retry_Buton_Lose_Select.png"); // Try again
+
+		lose_buttons[1].tex = app->tex->Load("Assets/textures/Run_Boton_Lose.png"); // Return field
+		lose_buttons[1].alt_tex = app->tex->Load("Assets/textures/Run_Boton_Lose_Select.png"); // Return field
+
+		Scape_BackGround = app->tex->Load("Assets/textures/Temporal_Background.png");
+		Lose_BackGround = app->tex->Load("Assets/textures/Lose_Screen.png");
+		Win_BackGround = app->tex->Load("Assets/textures/Win_Screen.png");
+
 		combat_scape = app->tex->Load("Assets/textures/scape_text.png");
-
 
 		torch_fire = app->tex->Load("Assets/textures/Torch_Fire.png");
 		light_fire1 = app->tex->Load("Assets/textures/Torch1_light.png");
@@ -259,6 +277,40 @@ bool Menu::Start()
 
 		hover_playing = false;
 		cursor.tex = app->tex->Load("Assets/textures/cursor_default.png");
+
+		// unlock animation
+		unlock_cd = 120;
+		unlock_state = 0;
+		unlock_pos = { 576, 200 };
+		unlock_rect = { 0, 0, 128, 128 };
+		unknow_tex = app->tex->Load("Assets/textures/unknow.png");
+		gear_tex = app->tex->Load("Assets/textures/gear.png");
+		items_tex = app->tex->Load("Assets/textures/Objects/items.png");
+		object_buttons[0].rect.w = 500;
+		object_buttons[1].rect.w = 500;
+		unlock_fx = app->audio->LoadFx("Assets/audio/fx/unlock.wav");
+		equip_sound = app->audio->LoadFx("Assets/audio/fx/equip.wav");
+
+		sub_newgame = false;
+		for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+		{
+			ask_buttons[i].rect.w = 128;
+			ask_buttons[i].rect.h = 128;
+		}
+
+		count_xp = false;
+		xp0 = 0;
+		xp1 = 0;
+		xp2 = 0;
+		xp3 = 0;
+		pugi::xml_document saveGame;
+		saveGame.load_file(UNLOCKABLE_OBJECTS_FILENAME);
+		axp0 = saveGame.child("objects").child("assassin").child("experience").attribute("value").as_int();
+		axp1 = saveGame.child("objects").child("healer").child("experience").attribute("value").as_int();
+		axp2 = saveGame.child("objects").child("tank").child("experience").attribute("value").as_int();
+		axp3 = saveGame.child("objects").child("wizard").child("experience").attribute("value").as_int();
+
+		theseion2 = false;
 	}
 
 	return true;
@@ -279,13 +331,27 @@ bool Menu::PreUpdate()
 		app->entities->KillEnemy();
 	}
 
+	if (object_obtained && app->inventory->Enabled() && app->frontground->GetA() <= 50)
+	{
+		unlock_state = 1;
+		object_obtained = false;
+		app->audio->PlayFx(unlock_fx);
+	}
+
 	if (!app->frontground->controller) // keyboard
 	{
-		//app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
-
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !intro && description_disabled && app->inventory->hide && unlock_state == 0
+			&& !app->dialog->InDialog() && app->frontground->fix)
 		{
 			paused = !paused;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN && !intro && !paused && !settings && description_disabled
+			&& app->inventory->hide && app->inventory->Enabled() && unlock_state == 0)
+		{
+			app->inventory->hide = false;
+			app->inventory->SetTextCd(30);
+			app->audio->PlayFx(open_book_sound);
 		}
 
 		if (intro && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -341,7 +407,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && !settings)
+			else if (intro && !settings && !sub_newgame)
 			{
 				for (size_t i = 0; i < NUM_MENU_BUTTONS; i++)
 				{
@@ -350,7 +416,7 @@ bool Menu::PreUpdate()
 					{
 						if (!hover_playing)
 						{
-							if (firstime && i == 4) {}
+							if (app->frontground->first_time && i == 4) {}
 							else
 							{
 								if (subplaymenu && (i == 4 || i == 5))
@@ -371,6 +437,27 @@ bool Menu::PreUpdate()
 					else
 					{
 						menu_buttons[i].state = 0;
+					}
+				}
+			}
+			else if (intro && !settings && sub_newgame)
+			{
+				for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+				{
+					SDL_Rect rect = ask_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (!hover_playing)
+						{
+							app->audio->PlayFx(hover_sound);
+							hover_playing = true;
+						}
+						chosed = i;
+						ask_buttons[i].state = 1;
+					}
+					else
+					{
+						ask_buttons[i].state = 0;
 					}
 				}
 			}
@@ -456,6 +543,33 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
+
+			if (unlock_state == 2)
+			{
+				for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+				{
+					SDL_Rect rect = object_buttons[i].rect;
+					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					{
+						if (i == 0 && app->frontground->reward[0] == '4')
+						{}
+						else
+						{
+							if (!hover_playing)
+							{
+								app->audio->PlayFx(hover_sound);
+								hover_playing = true;
+							}
+							chosed = i;
+							object_buttons[i].state = 1;
+						}
+					}
+					else
+					{
+						object_buttons[i].state = 0;
+					}
+				}
+			}
 		}
 	}
 	else // controller
@@ -482,12 +596,25 @@ bool Menu::PreUpdate()
 		{
 			app->input->SetKey(SDL_SCANCODE_U, KEY_REPEAT);
 		}
+		if (pad.start == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_B, KEY_REPEAT);
+		}
 
 
-		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_UP && !intro)
+		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_UP && !intro && description_disabled && app->inventory->hide && unlock_state == 0
+			&& !app->dialog->InDialog() && app->frontground->fix)
 		{
 			paused = !paused;
 			chosed = 0;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_B) == KEY_UP && !intro && !paused && !settings && description_disabled
+			&& app->inventory->hide && app->inventory->Enabled() && unlock_state == 0)
+		{
+			app->inventory->hide = false;
+			app->inventory->SetTextCd(30);
+			app->audio->PlayFx(open_book_sound);
 		}
 
 		if (intro && subplaymenu && app->input->GetKey(SDL_SCANCODE_U) == KEY_UP)
@@ -605,7 +732,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && !settings)
+			else if (intro && !settings && !subplaymenu)
 			{
 				if (menu_buttons[0].state == 1)
 				{
@@ -662,7 +789,7 @@ bool Menu::PreUpdate()
 					}
 				}
 			}
-			else if (intro && subplaymenu)
+			else if (intro && subplaymenu && !sub_newgame)
 			{
 				if (menu_buttons[4].state == 1)
 				{
@@ -676,11 +803,34 @@ bool Menu::PreUpdate()
 				}
 				else if (menu_buttons[5].state == 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !firstime)
+					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && !app->frontground->first_time)
 					{
 						menu_buttons[5].state = 0;
 						menu_buttons[4].state = 1;
 						chosed = 4;
+						app->audio->PlayFx(hover_sound);
+					}
+				}
+			}
+			else if (intro && subplaymenu && sub_newgame)
+			{
+				if (ask_buttons[0].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+					{
+						ask_buttons[0].state = 0;
+						ask_buttons[1].state = 1;
+						chosed = 1;
+						app->audio->PlayFx(hover_sound);
+					}
+				}
+				else if (ask_buttons[1].state == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP && !app->frontground->first_time)
+					{
+						ask_buttons[1].state = 0;
+						ask_buttons[0].state = 1;
+						chosed = 0;
 						app->audio->PlayFx(hover_sound);
 					}
 				}
@@ -813,7 +963,7 @@ bool Menu::PreUpdate()
 		}
 	}
 
-	if (app->combat_menu->in_description)
+	if (app->combat_menu->in_description || app->inventory->in_description)
 	{
 		description_disabled = false;
 	}
@@ -885,7 +1035,7 @@ bool Menu::Update(float dt)
 		}
 
 		//menu buttons
-		if (intro && !settings && !credits)
+		if (intro && !settings && !credits && !sub_newgame)
 		{
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && menu_buttons[chosed].state == 1)
 			{
@@ -896,7 +1046,7 @@ bool Menu::Update(float dt)
 					subplaymenu = true;
 					if (app->frontground->controller)
 					{
-						if (firstime)
+						if (app->frontground->first_time)
 						{
 							menu_buttons[0].state = 0;
 							menu_buttons[5].state = 1;
@@ -937,7 +1087,7 @@ bool Menu::Update(float dt)
 					break;
 
 				case 4: // PLAY AND CONTINUE
-					if (!started && !firstime)
+					if (!started && !app->frontground->first_time)
 					{
 						app->LoadGameRequest(false);
 						switch (app->frontground->current_level)
@@ -963,22 +1113,36 @@ bool Menu::Update(float dt)
 						saving = true;
 						intro = false;
 						paused = false;
-						//started = true;
 						subplaymenu = false;
 					}
 					break;
 
 				case 5: // NEW GAME
-					if (!started)
+					if (!started && app->frontground->first_time)
 					{
 						app->LoadGame(true); // load now, not at frames end
+						app->frontground->SetFirstTime(false);
 						app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
 						app->frontground->FadeToBlack();
 						saving = false;
 						intro = false;
 						paused = false;
-						app->menu->redtemplar_killed = false;
+						app->frontground->adventure_phase = -1;
 						subplaymenu = false;
+						app->inventory->BlockAll();
+						app->inventory->ResetItems();
+						app->inventory->ResetGear();
+						app->inventory->ResetSkills();
+						app->physics->ResetMiscelanea();
+						app->dialog->ResetShop();
+						app->dialog->ResetDialogs();
+						app->dialog->SaveRenatoDialog();
+					}
+					else if (!app->frontground->first_time)
+					{
+						sub_newgame = true;
+						ask_buttons[0].state = 1;
+						chosed = 0;
 					}
 					break;
 				}
@@ -986,6 +1150,45 @@ bool Menu::Update(float dt)
 				{
 					menu_buttons[chosed].state = 2;
 				}
+			}
+		}
+
+		else if (sub_newgame)
+		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && ask_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					app->LoadGame(true); // load now, not at frames end
+					app->frontground->SetFirstTime(false);
+					app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
+					app->frontground->FadeToBlack();
+					saving = false;
+					intro = false;
+					paused = false;
+					app->frontground->adventure_phase = -1;
+					subplaymenu = false;
+					app->inventory->BlockAll();
+					app->inventory->ResetItems();
+					app->inventory->ResetGear();
+					app->inventory->ResetSkills();
+					app->physics->ResetMiscelanea();
+					app->dialog->ResetShop();
+					app->dialog->ResetDialogs();
+					app->dialog->SaveRenatoDialog();
+					sub_newgame = false;
+					break;
+				case 1:
+					sub_newgame = false;
+					menu_buttons[5].state = 1;
+					ask_buttons[1].state = 0;
+					chosed = 5;
+					break;
+				}
+
+				ask_buttons[chosed].state = 2;
 			}
 		}
 
@@ -1097,9 +1300,35 @@ bool Menu::Update(float dt)
 			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && win_button.state == 1)
 			{
 				app->audio->PlayFx(click_sound);
-				app->frontground->ReturnToField();
+				if (!theseion2)
+				{
+					app->frontground->ReturnToField();
+					app->inventory->AddXP(0, app->frontground->combat_xp0);
+					app->inventory->AddXP(1, app->frontground->combat_xp1);
+					app->inventory->AddXP(2, app->frontground->combat_xp2);
+					app->inventory->AddXP(3, app->frontground->combat_xp3);
+					app->inventory->AddCoins(app->frontground->combat_gold);
+				}
+				else
+				{
+					ENEMIES enemies[4];
+					enemies[0] = ENEMIES::NECRO_THESEION;
+					enemies[1] = ENEMIES::NOTHING;
+					enemies[2] = ENEMIES::DRAGON;
+					enemies[3] = ENEMIES::NOTHING;
+					app->frontground->move_to = MOVE_TO::COMBAT_FINALCOMBAT;
+					app->frontground->FadeInCombat(enemies, "999");
+					theseion2 = true;
+				}
+				
+				count_xp = true;
 				win_button.state = 2;
 				kill_enemy = true;
+
+				if (app->frontground->reward != "999")
+				{
+					object_obtained = true;
+				}
 			}
 			if (chosed == -1)
 			{
@@ -1123,9 +1352,14 @@ bool Menu::Update(float dt)
 				case 1:
 					// return field
 					app->frontground->ReturnToField();
+					app->frontground->reward = "999";
 					break;
 				}
 
+				app->inventory->AddXP(0, -5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(1, -5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(2, -5 - (2 * app->frontground->adventure_phase));
+				app->inventory->AddXP(3, -5 - (2 * app->frontground->adventure_phase));
 				lose_buttons[chosed].state = 2;
 			}
 			if (chosed == -1)
@@ -1146,6 +1380,7 @@ bool Menu::Update(float dt)
 				case 0:
 					// sure to scape
 					app->frontground->ReturnToField();
+					app->frontground->reward = "999";
 					break;
 				case 1:
 					// cancel scape
@@ -1163,6 +1398,29 @@ bool Menu::Update(float dt)
 			{
 				scape_buttons[0].state = 1;
 				chosed = 0;
+			}
+		}
+
+		if (unlock_state == 2)
+		{
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && object_buttons[chosed].state == 1)
+			{
+				app->audio->PlayFx(click_sound);
+				switch (chosed)
+				{
+				case 0:
+					// equip and close
+					app->inventory->EquipGear(app->frontground->reward.c_str());
+					app->audio->PlayFx(equip_sound);
+					break;
+				case 1:
+					// only close
+					break;
+				}
+
+				app->frontground->reward = "999";
+				unlock_state = 0;
+				object_buttons[chosed].state = 2;
 			}
 		}
 	}
@@ -1194,7 +1452,7 @@ bool Menu::Update(float dt)
 
 			app->frontground->FadeToBlack();
 		}
-		/*else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		else if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		{
 			app->frontground->move_to = MOVE_TO::SCENE_DUNGEON;
 
@@ -1211,7 +1469,12 @@ bool Menu::Update(float dt)
 			app->frontground->move_to = MOVE_TO::SCENE_INSIDE;
 
 			app->frontground->FadeToBlack();
-		}*/
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		{
+			app->inventory->UnlockAll();
+			app->inventory->EquipAllMaxGear();
+		}
 		else if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
 			app->SaveGameRequest();
@@ -1219,6 +1482,14 @@ bool Menu::Update(float dt)
 		else if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		{
 			app->LoadGameRequest(false);
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		{
+			app->inventory->AddCoins(30);
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+		{
+			app->inventory->AddCoins(-30);
 		}
 	}
 	
@@ -1234,7 +1505,7 @@ bool Menu::Update(float dt)
 	{
 		app->frontground->fast_combat = !app->frontground->fast_combat;
 	}
-
+	
 	return true;
 }
 
@@ -1247,10 +1518,58 @@ bool Menu::PostUpdate()
 	r.x = c_x;
 	r.y = c_y;
 
+	if (count_xp)
+	{
+		if (app->frontground->combat_xp0 > 0)
+		{
+			app->frontground->combat_xp0--;
+			xp0++;
+			while (axp0 + xp0 > 100)
+			{
+				xp0 -= 100;
+			}
+		}
+		if (app->frontground->combat_xp1 > 0)
+		{
+			app->frontground->combat_xp1--;
+			xp1++;
+			while (axp1 + xp1 > 100)
+			{
+				xp1 -= 100;
+			}
+		}
+		if (app->frontground->combat_xp2 > 0)
+		{
+			app->frontground->combat_xp2--;
+			xp2++;
+			while (axp2 + xp2 > 100)
+			{
+				xp2 -= 100;
+			}
+		}
+		if (app->frontground->combat_xp3 > 0)
+		{
+			app->frontground->combat_xp3--;
+			xp3++;
+			while (axp3 + xp3 > 100)
+			{
+				xp3 -= 100;
+			}
+		}
+		if (app->frontground->combat_gold > 0)
+		{
+			app->frontground->combat_gold--;
+		}
+		if (app->frontground->combat_xp0 == 0 && app->frontground->combat_xp1 == 0 && app->frontground->combat_xp2 == 0 && 
+			app->frontground->combat_xp3 == 0 && app->frontground->combat_gold == 0)
+		{
+			count_xp = false;
+		}
+	}
+
 	if (app->scene->fuegoSeguir == true )
 	{
-		seguir-=10;
-	
+		seguir -= 10;
 	}
 	if (seguir <= 900 )
 	{
@@ -1393,10 +1712,10 @@ bool Menu::PostUpdate()
 				menu_buttons[5].rect.x = c_x + 70;
 				menu_buttons[5].rect.y = c_y + 250;
 
-				if (menu_buttons[4].state == 0 && subplaymenu && firstime)
+				if (menu_buttons[4].state == 0 && subplaymenu && app->frontground->first_time)
 					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
-				if (menu_buttons[4].state == 0 && subplaymenu && !firstime)
+				if (menu_buttons[4].state == 0 && subplaymenu && !app->frontground->first_time)
 					app->render->DrawTexture(menu_buttons[4].tex, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 
 				if (menu_buttons[5].state == 0 && subplaymenu)
@@ -1404,12 +1723,12 @@ bool Menu::PostUpdate()
 
 
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu && firstime)
+				if (menu_buttons[4].state == 1 && subplaymenu && app->frontground->first_time)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex2, menu_buttons[4].rect.x + 10, menu_buttons[4].rect.y - 5);
 				}
 				//Se iluminan las letras cuando pasas por encima
-				if (menu_buttons[4].state == 1 && subplaymenu && !firstime)
+				if (menu_buttons[4].state == 1 && subplaymenu && !app->frontground->first_time)
 				{
 					app->render->DrawTexture(menu_buttons[4].alt_tex, menu_buttons[4].rect.x, menu_buttons[4].rect.y - 20);
 				}
@@ -1506,6 +1825,56 @@ bool Menu::PostUpdate()
 			{
 				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 70, PauseMenuHUD.y);
 			}
+		}
+
+		if (sub_newgame)
+		{
+			app->render->DrawTexture(whitemark_800x150, 240 + c_x, 300 + c_y);
+
+			SDL_Rect b0;
+			if (ask_buttons[0].state == 0)
+			{
+				b0 = { 0, 0, 128, 128 };
+			}
+			else if (ask_buttons[0].state == 1)
+			{
+				b0 = { 0, 128, 128, 128 };
+			}
+			else if (ask_buttons[0].state == 2)
+			{
+				b0 = { 0, 256, 128, 128 };
+			}
+
+			SDL_Rect b1;
+			if (ask_buttons[1].state == 0)
+			{
+				b1 = { 0, 0, 128, 128 };
+			}
+			else if (ask_buttons[1].state == 1)
+			{
+				b1 = { 0, 128, 128, 128 };
+			}
+			else if (ask_buttons[1].state == 2)
+			{
+				b1 = { 0, 256, 128, 128 };
+			}
+
+			SDL_Rect a_rect = { 0, 0, 128, 128 };
+			std::string p_siting;
+
+			ask_buttons[0].rect.x = 400 + c_x;
+			ask_buttons[0].rect.y = 400 + c_y;
+			ask_buttons[1].rect.x = ask_buttons[0].rect.x + 300;
+			ask_buttons[1].rect.y = ask_buttons[0].rect.y;
+			app->render->DrawTexture(whitemark_128x128, ask_buttons[0].rect.x, ask_buttons[0].rect.y, &b0);
+			app->render->DrawTexture(whitemark_128x128, ask_buttons[1].rect.x, ask_buttons[1].rect.y, &b1);
+			app->render->DrawTexture(accept_tex, ask_buttons[0].rect.x, ask_buttons[0].rect.y, &a_rect);
+			a_rect = { 128, 0, 128, 128 };
+			app->render->DrawTexture(accept_tex, ask_buttons[1].rect.x, ask_buttons[1].rect.y, &a_rect);
+			p_siting = "Are you sure to start again?";
+			app->fonts->BlitCombatText(320 + c_x, 310 + c_y, app->fonts->textFont3, p_siting.c_str());
+			p_siting = "You will lose the actual save.";
+			app->fonts->BlitCombatText(320 + c_x, 350 + c_y, app->fonts->textFont3, p_siting.c_str());
 		}
 
 		//---------------------------------------------------------HUD PAUSE---------------------------------------------
@@ -1686,67 +2055,106 @@ bool Menu::PostUpdate()
 	SDL_Rect rect;
 	if (win)
 	{
-		app->render->DrawTexture(combat_back, c_x, c_y);
-		app->render->DrawTexture(combat_win, c_x, c_y);
+		app->render->DrawTexture(Win_BackGround, c_x, c_y);
+		//app->render->DrawTexture(combat_win, c_x, c_y);
 
-		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x;
-		win_button.rect.y = (int)win_h / 2 + 200 + c_y;
+		win_button.rect.x = ((int)win_w / 2) - (win_button.rect.w / 2) + c_x+530;
+		win_button.rect.y = (int)win_h / 2 + 200 + c_y-370;
 
 		if (win_button.state == 0)
 		{
-			rect = { 0, 0, 500, 70 };
-			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
-		}
-		else if (win_button.state == 1)
-		{
-			rect = { 0, 70, 500, 70 };
-			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
-		}
-		else if (win_button.state == 2)
-		{
-			rect = { 0, 140, 500, 70 };
-			app->render->DrawTexture(whitemark_500x70, win_button.rect.x, win_button.rect.y, &rect);
+			app->render->DrawTexture(win_button.tex, win_button.rect.x , win_button.rect.y);
 		}
 
-		app->fonts->BlitCombatText(win_button.rect.x, win_button.rect.y + 15, app->fonts->textFont1, "return to field");
+		else if (win_button.state == 1)
+		{
+			app->render->DrawTexture(win_button.alt_tex, win_button.rect.x - 20 , win_button.rect.y - 20);
+		}
+
+		rect = { 0, 0, 64, 64 };
+		app->render->DrawTexture(rew_icons, 100 + (315 * 0), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 0), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp0).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 0), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 0), 512, (axp0 + xp0) * 2 + 1, 22 }, 50, 50, 50);
+		app->render->DrawTexture(rew_icons, 100 + (315 * 1), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 1), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp1).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 1), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 1), 512, (axp1 + xp1) * 2 + 1, 22 }, 50, 50, 50);
+		app->render->DrawTexture(rew_icons, 100 + (315 * 2), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 2), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp2).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 2), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 2), 512, (axp2 + xp2) * 2 + 1, 22 }, 50, 50, 50);
+		app->render->DrawTexture(rew_icons, 100 + (315 * 3), 450, &rect);
+		app->fonts->BlitCombatText(170 + (315 * 3), 470, app->fonts->textFont2, std::to_string(app->frontground->combat_xp3).c_str());
+		app->render->DrawRectangle({ 60 + (315 * 3), 510, 200, 26 }, 200, 200, 200);
+		app->render->DrawRectangle({ 62 + (315 * 3), 512, (axp3 + xp3) * 2 + 1, 22 }, 50, 50, 50);
+		
+		rect = { 64, 0, 64, 64 };
+		for (size_t i = 0; i < 4; i++)
+		{
+			app->render->DrawTexture(rew_icons, 100 + (315 * i), 550, &rect);
+			app->fonts->BlitCombatText(170 + (315 * i), 570, app->fonts->textFont2, std::to_string(app->frontground->combat_gold).c_str());
+		}
 	}
 
 	if (lose)
 	{
-		app->render->DrawTexture(combat_back, c_x, c_y);
-		app->render->DrawTexture(combat_lose, c_x, c_y);
+		app->render->DrawTexture(Lose_BackGround, c_x, c_y);
+		//app->render->DrawTexture(combat_lose, c_x, c_y);
 
-		lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) - 300 + c_x;
-		lose_buttons[0].rect.y = (int)win_h / 2 + 200 + c_y;
-		lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2) + 300 + c_x;
-		lose_buttons[1].rect.y = (int)win_h / 2 + 200 + c_y;
+		lose_buttons[0].rect.x = ((int)win_w / 2) - (lose_buttons[0].rect.w / 2) + c_x-400;
+		lose_buttons[0].rect.y = (int)win_h / 2  + c_y;
+		lose_buttons[0].rect.w = 200;
+		lose_buttons[0].rect.h = 100;
+
+		lose_buttons[1].rect.x = ((int)win_w / 2) - (lose_buttons[1].rect.w / 2)  + c_x+280;
+		lose_buttons[1].rect.y = (int)win_h / 2  + c_y + 130;
+		lose_buttons[1].rect.w = 200;
+		lose_buttons[1].rect.h = 100;
 
 		for (size_t i = 0; i < NUM_LOSE_BUTTONS; i++)
 		{
-			if (lose_buttons[i].state == 0)
+			//Retry button
+			if (lose_buttons[0].state == 0)
 			{
-				rect = { 0, 0, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				//rect = { 0, 0, 500, 70 };
+				app->render->DrawTexture(lose_buttons[0].tex, lose_buttons[0].rect.x, lose_buttons[0].rect.y);
 			}
-			else if (lose_buttons[i].state == 1)
+			else if (lose_buttons[0].state == 1)
 			{
-				rect = { 0, 70, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				//rect = { 0, 70, 500, 70 };
+				app->render->DrawTexture(lose_buttons[0].alt_tex, lose_buttons[0].rect.x - 20, lose_buttons[0].rect.y - 20);
+			}
+
+			//Run button
+			if (lose_buttons[1].state == 0)
+			{
+				//rect = { 0, 0, 500, 70 };
+				app->render->DrawTexture(lose_buttons[1].tex, lose_buttons[1].rect.x, lose_buttons[1].rect.y);
+			}
+			else if (lose_buttons[1].state == 1)
+			{
+				//rect = { 0, 70, 500, 70 };
+				app->render->DrawTexture(lose_buttons[1].alt_tex, lose_buttons[1].rect.x-20, lose_buttons[1].rect.y-20);
 			}
 			else if (lose_buttons[i].state == 2)
 			{
-				rect = { 0, 140, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				//rect = { 0, 140, 500, 70 };
+				//app->render->DrawTexture(whitemark_500x70, lose_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
 			}
 		}
+
+		rect = { 0, 0, 64, 64 };
+		app->render->DrawTexture(rew_icons, 550, 300, &rect);
+		app->fonts->BlitCombatText(620, 300, app->fonts->textFont2, std::to_string(-5 - (2 * app->frontground->adventure_phase)).c_str());
 		
-		app->fonts->BlitCombatText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
-		app->fonts->BlitCombatText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
+		//app->fonts->BlitText(lose_buttons[0].rect.x, lose_buttons[0].rect.y + 15, app->fonts->textFont1, "restart battle");
+		//app->fonts->BlitText(lose_buttons[1].rect.x, lose_buttons[1].rect.y + 15, app->fonts->textFont1, "return to field");
 	}
 
 	if (scape)
 	{
-		app->render->DrawTexture(combat_back, c_x, c_y);
+		app->render->DrawTexture(Scape_BackGround, c_x, c_y);
 		app->render->DrawTexture(combat_scape, c_x, c_y);
 
 		scape_buttons[0].rect.x = ((int)win_w / 2) - (scape_buttons[0].rect.w / 2) - 300 + c_x;
@@ -1759,26 +2167,26 @@ bool Menu::PostUpdate()
 			if (scape_buttons[i].state == 0)
 			{
 				rect = { 0, 0, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 			else if (scape_buttons[i].state == 1)
 			{
 				rect = { 0, 70, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 			else if (scape_buttons[i].state == 2)
 			{
 				rect = { 0, 140, 500, 70 };
-				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, lose_buttons[i].rect.y, &rect);
+				app->render->DrawTexture(whitemark_500x70, scape_buttons[i].rect.x, scape_buttons[i].rect.y, &rect);
 			}
 		}
 
-		app->fonts->BlitCombatText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
-		app->fonts->BlitCombatText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
+		app->fonts->BlitText(scape_buttons[0].rect.x, scape_buttons[0].rect.y + 15, app->fonts->textFont1, "sure to leave");
+		app->fonts->BlitText(scape_buttons[1].rect.x, scape_buttons[1].rect.y + 15, app->fonts->textFont1, "cancel scape");
 	}
 
 	// skills descriptions
-	if (!description_disabled)
+	if (!description_disabled && app->combat_menu->Enabled())
 	{
 		switch (app->combat_menu->description_type)
 		{
@@ -1789,8 +2197,97 @@ bool Menu::PostUpdate()
 		}
 	}
 
+	if (unlock_state != 0)
+	{
+		SDL_Rect or = { 0, 0, 128, 128 };
+		unlock_cd--;
+
+		if (app->frontground->fast_combat)
+		{
+			unlock_cd -= 4;
+		}
+
+		if (unlock_cd <= 0)
+		{
+			unlock_state = 2;
+			unlock_cd = 120;
+
+			app->inventory->UnlockObject(app->frontground->reward.c_str());
+		}
+		if (unlock_state == 1)
+		{
+			if (unlock_cd % 4 == 0)
+			{
+				unlock_pos.x += 2;
+			}
+			else if (unlock_cd % 4 == 1)
+			{
+				unlock_pos.x -= 2;
+			}
+			else if (unlock_cd % 4 == 2)
+			{
+				unlock_pos.y += 2;
+			}
+			else if (unlock_cd % 4 == 3)
+			{
+				unlock_pos.y -= 2;
+			}
+
+			app->render->DrawTexture(whitemark_128x128, unlock_pos.x + c_x, unlock_pos.y + c_y, &or);
+			app->render->DrawTexture(unknow_tex, unlock_pos.x + c_x, unlock_pos.y + c_y);
+		}
+		else
+		{
+			app->render->DrawTexture(whitemark_128x128, unlock_pos.x + c_x, unlock_pos.y + c_y, &or );
+
+			if (app->frontground->reward[0] != '4')
+			{
+				app->render->DrawTexture(gear_tex, unlock_pos.x + c_x, unlock_pos.y + c_y, &GetUnlockRect(app->frontground->reward));
+			}
+			else if (app->frontground->reward[0] == '4')
+			{
+				app->render->DrawTexture(items_tex, unlock_pos.x + c_x, unlock_pos.y + c_y, &GetUnlockRect(app->frontground->reward));
+			}
+
+			object_buttons[0].rect.x = (640 - (object_buttons[0].rect.w / 2) + c_x);
+			object_buttons[0].rect.y = unlock_pos.y + 200 + c_y;
+			object_buttons[1].rect.x = (640 - (object_buttons[0].rect.w / 2) + c_x);
+			object_buttons[1].rect.y = unlock_pos.y + 300 + c_y;
+
+			for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+			{
+				if (object_buttons[i].state == 0)
+				{
+					or = { 0, 0, 500, 70 };
+				}
+				else if (object_buttons[i].state == 1)
+				{
+					or = { 0, 70, 500, 70 };
+				}
+				else if (object_buttons[i].state == 2)
+				{
+					or = { 0, 140, 500, 70 };
+				}
+
+				if (i == 0 && app->frontground->reward[0] == '4')
+				{}
+				else
+				{
+					app->render->DrawTexture(whitemark_500x70, object_buttons[i].rect.x, object_buttons[i].rect.y, &or );
+				}
+			}
+
+			if (app->frontground->reward[0] != '4')
+			{
+				app->fonts->BlitText(object_buttons[0].rect.x, object_buttons[0].rect.y + 15, app->fonts->textFont1, "Equip and close");
+			}
+			
+			app->fonts->BlitText(object_buttons[1].rect.x, object_buttons[1].rect.y + 15, app->fonts->textFont1, "Close");
+		}
+	}
+
 	// draw cursor
-	if (!app->frontground->controller)
+	if (!app->frontground->controller && app->inventory->Disabled())
 	{
 		app->input->GetMousePosition(cursor.pos.x, cursor.pos.y);
 		app->render->DrawTexture(cursor.tex, cursor.pos.x + c_x, cursor.pos.y + c_y);
@@ -1815,6 +2312,10 @@ void Menu::SetWinLoseScape(int n)
 {
 	if (n == 0)
 	{
+		if (!win)
+		{
+			app->audio->PlayFx(win_sound);
+		}
 		win = true;
 		if (app->frontground->controller)
 		{
@@ -1824,6 +2325,10 @@ void Menu::SetWinLoseScape(int n)
 	}
 	else if (n == 1)
 	{
+		if (!lose)
+		{
+			app->audio->PlayFx(lose_sound);
+		}
 		lose = true;
 		if (app->frontground->controller)
 		{
@@ -1858,16 +2363,17 @@ bool Menu::ReturnStartScreen()
 
 void Menu::DisableAll()
 {
-	app->logo->Disable();
-	app->scene->Disable();
-	app->town1->Disable();
-	app->town2->Disable();
-	app->forest->Disable();
-	app->battlefield->Disable();
-	app->dungeon->Disable();
-	app->outside->Disable();
-	app->inside->Disable();
-	app->combat_scene->Disable();
+	if (app->logo->Enabled()) { app->logo->Disable(); }
+	if (app->scene->Enabled()) { app->scene->Disable(); }
+	if (app->town1->Enabled()) { app->town1->Disable(); }
+	if (app->town2->Enabled()) { app->town2->Disable(); }
+	if (app->forest->Enabled()) { app->forest->Disable(); }
+	if (app->battlefield->Enabled()) { app->battlefield->Disable(); }
+	if (app->dungeon->Enabled()) { app->dungeon->Disable(); }
+	if (app->outside->Enabled()) { app->outside->Disable(); }
+	if (app->inside->Enabled()) { app->inside->Disable(); }
+	if (app->combat_scene->Enabled()) { app->combat_scene->Disable(); }
+	if (app->end_combat_scene->Enabled()) { app->end_combat_scene->Disable(); }
 }
 
 void Menu::InitPlayer()
@@ -1898,68 +2404,76 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 	case 5: a = "Mushroom"; break;
 	case 6: a = "Goblin"; break;
 	case 7: a = "Skeleton"; break;
-	case 8: a = "Templar Master"; break;
+	case 9: a = "Lloyd, the reborn dragon"; break;
+	case 10: a = "Theseion"; break;
+	case 11: a = "Theseion, the necromancer"; break;
 	default: a = " "; break;
 	}
 	const char* res = a.c_str();
 	app->fonts->BlitCombatText(50, 50, app->fonts->textFont2, res);
 
 	// Health
-	a = "Health: ";
+	SDL_Rect rect = { 0, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 50, 100, &rect);
 	std::string b = std::to_string(entity->GetActualHealth());
 	std::string c = " / ";
 	std::string d = std::to_string(entity->GetMaxHealth());
-	std::string r = a + b + c + d;
+	std::string r = b + c + d;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 100, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(85, 100, app->fonts->textFont2, res);
 
 	// Mana
-	a = "Mana: ";
+	rect = { 32, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 50, 150, &rect);
 	b = std::to_string(entity->GetActualMana());
 	d = std::to_string(entity->GetMaxMana());
-	r = a + b + c + d;
+	r = b + c + d;
 	res = r.c_str();
-	app->fonts->BlitCombatText(700, 100, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(85, 150, app->fonts->textFont2, res);
 
 	// Speed
-	a = "Speed: ";
+	rect = { 64, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 700, 100, &rect);
 	b = std::to_string(entity->GetSpeed());
-	r = a + b;
+	r = b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 150, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(735, 100, app->fonts->textFont2, res);
 
 	// Power
-	a = "Power: ";
+	rect = { 128, 32, 32, 32 };
+	app->render->DrawTexture(desc_icons, 700, 150, &rect);
 	b = std::to_string(entity->GetPower());
-	r = a + b;
+	r = b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(700, 150, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(735, 150, app->fonts->textFont2, res);
 
 	// Shield
 	if (entity->GetShield() > 0)
 	{
-		a = "Shield: ";
+		rect = { 96, 32, 32, 32 };
+		app->render->DrawTexture(desc_icons, 50, 200, &rect);
 		b = std::to_string(entity->GetShield());
 		c = ", ";
 		d = std::to_string(entity->GetShieldTurns());
 		std::string e = " turns remaining";
-		r = a + b + c + d + e;
+		r = b + c + d + e;
 		res = r.c_str();
-		app->fonts->BlitCombatText(50, 200, app->fonts->textFont2, res);
+		app->fonts->BlitCombatText(85, 200, app->fonts->textFont2, res);
 	}
 
 	// Weakness
 	a = "Weakness: ";
 	switch (entity->GetWeakness())
 	{
-	case -1: b = "No weakness"; break;
-	case 0: b = "Physic"; break;
-	case 1: b = "Fire"; break;
-	case 2: b = "Lightning"; break;
-	case 3: b = "Water"; break;
-	default: b = " "; break;
+	case -1: rect = { 160, 0, 32, 32 }; break;
+	case 0: rect = { 128, 0, 32, 32 }; break;
+	case 1: rect = { 0, 0, 32, 32 }; break;
+	case 2: rect = { 32, 0, 32, 32 }; break;
+	case 3: rect = { 64, 0, 32, 32 }; break;
+	default: rect = { -32, 0, 32, 32 }; break;
 	}
-	r = a + b;
+	app->render->DrawTexture(desc_icons, 925, 200, &rect);
+	r = a;
 	res = r.c_str();
 	app->fonts->BlitCombatText(700, 200, app->fonts->textFont2, res);
 
@@ -1969,30 +2483,35 @@ void Menu::DisplayEntityInfo(Combat_Entities* entity)
 
 void Menu::DisplaySkillInfo(Skill skill)
 {
-	app->render->DrawTexture(whitemark_1240x680, 20, 20);
+	int cx = -app->render->camera.x;
+	int cy = -app->render->camera.y;
+
+	app->render->DrawTexture(whitemark_1240x680, 20 + cx, 20 + cy);
 
 	// Name
 	std::string a = skill.skill_name;
 	const char* res = a.c_str();
-	app->fonts->BlitCombatText(50, 50, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 50 + cy, app->fonts->textFont2, res);
 
 	// Element
 	a = "Element: ";
 	std::string b;
+	SDL_Rect rect;
 	switch (skill.element)
 	{
-	case 0: b = "Physic"; break;
-	case 1: b = "Fire"; break;
-	case 2: b = "Lightning"; break;
-	case 3: b = "Water"; break;
-	default: b = " "; break;
+	case 0: rect = { 128, 0, 32, 32 }; break;
+	case 1: rect = { 0, 0, 32, 32 }; break;
+	case 2: rect = { 32, 0, 32, 32 }; break;
+	case 3: rect = { 64, 0, 32, 32 }; break;
+	case 4: rect = { 96, 0, 32, 32 }; break;
+	default: rect = { -32, 0, 32, 32 }; break;
 	}
-	std::string r = a + b;
+	app->render->DrawTexture(desc_icons, 240 + cx, 120 + cy, &rect);
+	std::string r = a;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 120, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 120 + cy, app->fonts->textFont2, res);
 
 	// Objective
-	SDL_Rect rect;
 	if (skill.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
 	{
 		rect = { 40, 0, 40, 40 };
@@ -2018,64 +2537,38 @@ void Menu::DisplaySkillInfo(Skill skill)
 		rect = { 160, 0, 40, 40 };
 		b = "Self";
 	}
-	app->render->DrawTexture(skills_icons, 50, 170, &rect);
+	app->render->DrawTexture(skills_icons, 50 + cx, 170 + cy, &rect);
 	a = "Objective: ";
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(90, 175, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(90 + cx, 175 + cy, app->fonts->textFont2, res);
 
 	// Mana cost
 	a = "Mana Cost: ";
 	b = std::to_string(skill.mana_cost);
 	r = a + b;
 	res = r.c_str();
-	app->fonts->BlitCombatText(800, 120, app->fonts->textFont2, res);
-
-	// Attack Strenght
-	a = "Attack Strenght: ";
-	switch (skill.att_strenght)
-	{
-	case -1: b = "No damage"; break;
-	case 0: b = "Low damage"; break;
-	case 1: b = "Medium damage"; break;
-	case 2: b = "High damage"; break;
-	}
-	r = a + b;
-	res = r.c_str();
-	app->fonts->BlitCombatText(50, 225, app->fonts->textFont2, res);
-
-	// Support Strenght
-	a = "Support Strenght: ";
-	switch (skill.supp_strenght)
-	{
-	case -1: b = "No support strenght"; break;
-	case 0: b = "Low strenght"; break;
-	case 1: b = "Medium strenght"; break;
-	case 2: b = "High strenght"; break;
-	}
-	r = a + b;
-	res = r.c_str();
-	app->fonts->BlitCombatText(50, 275, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(800 + cx, 120 + cy, app->fonts->textFont2, res);
 
 	// Buffs mand Debuffs
-	app->combat_menu->DisplaySkillEffects(skill, 50, 350);
+	app->combat_menu->DisplaySkillEffects(skill, 50 + cx, 350 + cy);
 
 	// Description
 	r = "Description:";
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 - 34, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 - 34 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description0;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description1;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 + 34, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + 34 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description2;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 + 68, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + 68 + cy, app->fonts->textFont2, res);
 	r = skill.skill_description3;
 	res = r.c_str();
-	app->fonts->BlitCombatText(50, 550 + 102, app->fonts->textFont2, res);
+	app->fonts->BlitCombatText(50 + cx, 550 + 102 + cy, app->fonts->textFont2, res);
 }
 
 bool Menu::InAnyButton()
@@ -2119,6 +2612,373 @@ bool Menu::InAnyButton()
 			return true;
 		}
 	}
+	for (size_t i = 0; i < NUM_OBJECT_BUTTONS; i++)
+	{
+		if (object_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
+	for (size_t i = 0; i < NUM_ASK_BUTTONS; i++)
+	{
+		if (ask_buttons[i].state == 1)
+		{
+			return true;
+		}
+	}
 
 	return false;
+}
+
+SDL_Rect Menu::GetUnlockRect(std::string aei)
+{
+	SDL_Rect res = { -128, 0, 128, 128 };
+
+	if (aei == "999")
+	{
+		return res;
+	}
+
+	if (aei[0] == '0') // assassin
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 0, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 0, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 0, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 0, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 128, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 128, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 128, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 128, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 256, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 256, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 256, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 256, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 384, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 384, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 384, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 384, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '1') // healer
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 512, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 512, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 512, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 512, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 640, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 640, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 640, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 640, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 768, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 768, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 768, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 768, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 896, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 896, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 896, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 896, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '2') // tank
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1024, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1024, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1024, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1024, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1152, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1152, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1152, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1152, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1280, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1280, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1280, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1280, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1408, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1408, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1408, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1408, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '3') // wizard
+	{
+		if (aei[1] == '0') // helmet
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1536, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1536, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1536, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1536, 128, 128 };
+			}
+		}
+		else if (aei[1] == '1') // chestplate
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1664, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1664, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1664, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1664, 128, 128 };
+			}
+		}
+		else if (aei[1] == '2') // boots
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1792, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1792, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1792, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1792, 128, 128 };
+			}
+		}
+		else if (aei[1] == '3') // weapon
+		{
+			if (aei[2] == '1')
+			{
+				res = { 0, 1920, 128, 128 };
+			}
+			else if (aei[2] == '2')
+			{
+				res = { 128, 1920, 128, 128 };
+			}
+			else if (aei[2] == '3')
+			{
+				res = { 256, 1920, 128, 128 };
+			}
+			else if (aei[2] == '4')
+			{
+				res = { 384, 1920, 128, 128 };
+			}
+		}
+	}
+	else if (aei[0] == '4') // items
+	{
+		switch (aei[1])
+		{
+		case '0': res = { 256, 0, 128, 128 }; break;
+		case '1': res = { 384, 0, 128, 128 }; break;
+		case '2': res = { 512, 0, 128, 128 }; break;
+		case '3': res = { 0, 128, 128, 128 }; break;
+		case '4': res = { 128, 128, 128, 128 }; break;
+		case '5': res = { 256, 128, 128, 128 }; break;
+		case '6': res = { 384, 128, 128, 128 }; break;
+		case '7': res = { 512, 128, 128, 128 }; break;
+		}
+	}
+	else if (aei[0] == '5') // items
+	{
+		switch (aei[1])
+		{
+		case '0': res = { 128, 256, 128, 128 }; break;
+		case '1': res = { 256, 256, 128, 128 }; break;
+		case '2': res = { 384, 256, 128, 128 }; break;
+		case '3': res = { 512, 256, 128, 128 }; break;
+		}
+	}
+
+	return res;
 }

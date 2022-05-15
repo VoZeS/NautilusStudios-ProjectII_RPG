@@ -84,7 +84,7 @@ struct Skill
 public:
 	int owner; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
 
-	const char* skill_name = "name";
+	const char* skill_name = "no skill";
 	const char* skill_description0 = "description";
 	const char* skill_description1 = "";
 	const char* skill_description2 = "";
@@ -96,7 +96,7 @@ public:
 	ENEMY_OBJECTIVE enemy_objective = ENEMY_OBJECTIVE::NOTHING;
 	// ally objective
 	ALLY_OBJECTIVE ally_objective = ALLY_OBJECTIVE::NOTHING;
-	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water
+	// 0 --> physic, 1 --> fire, 2 --> lightning, 3 --> water, 4 --> heal
 	int element = 0;
 	// 0 --> low damage, 1 --> mid damage, 2 --> high damage
 	int att_strenght = -1;

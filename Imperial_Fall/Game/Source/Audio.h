@@ -36,6 +36,10 @@ public:
 
 	void SetFX(int volume);
 
+	void StopMusic(float fade_time);
+
+	bool MusicPlaying();
+
 private:
 
 	_Mix_Music* music;

@@ -18,11 +18,14 @@ enum class ENTITY_TYPE
 	GRANJERO,
 	ALDEANO,
 	SIGNAL,
+	SABIO,
 	W_TEMPLAR,
 	MUSHROOM,
 	GOBLIN,
 	SKELETON,
-	R_TEMPLAR
+	R_TEMPLAR,
+	A_TEMPLAR,
+	THESEION
 };
 
 class Entity
@@ -49,7 +52,7 @@ public:
 	virtual void SetPlayerPosition(int new_x, int new_y);
 	virtual void SetPlayerLookDir(int lookDir);
 
-	virtual fPoint GetCompanion0Position();
+	/*virtual fPoint GetCompanion0Position();
 	virtual fPoint GetCompanion1Position();
 	virtual fPoint GetCompanion2Position();
 
@@ -59,12 +62,13 @@ public:
 
 	virtual void SetCompanion0LookDir(int lookDir);
 	virtual void SetCompanion1LookDir(int lookDir);
-	virtual void SetCompanion2LookDir(int lookDir);
+	virtual void SetCompanion2LookDir(int lookDir);*/
 
 	virtual bool IsPlayerEnabled();
 	virtual void ImpulsePlayer();
 	
 	virtual ENEMIES GetCombatEnemy(int n);
+	virtual std::string GetReward();
 
 	bool SaveSingleEnemy();
 
@@ -108,10 +112,10 @@ public:
 	bool SaveState(pugi::xml_node&);
 
 	fPoint GetPlayerSavedPos();
-	void SetPlayerSavedPos(float x, float y, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y);
+	void SetPlayerSavedPos(float x, float y);//, float c0x, float c0y, float c1x, float c1y, float c2x, float c2y);
 
 public:
-	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1);
+	void CreateEntity(ENTITY_TYPE entity_type, float x, float y, int index = -1, int en1 = -1, int en2 = -1, int en3 = -1, int en4 = -1, const char* rew = "999");
 
 	List<Entity*> entities;
 	DynArray<bool> entities_state;
@@ -134,15 +138,18 @@ public:
 	SDL_Texture* wizard_texture = NULL;
 	SDL_Texture* curandero = NULL;
 	SDL_Texture* herrero = NULL;
-	SDL_Texture* granjero = NULL;
+	SDL_Texture* sabio = NULL;
 	SDL_Texture* aldeano = NULL;
 	SDL_Texture* signal = NULL;
+	SDL_Texture* granjero = NULL;
 	SDL_Texture* renato_bueno = NULL;
 	SDL_Texture* white_templar = NULL;
 	SDL_Texture* mushroom = NULL;
 	SDL_Texture* goblin = NULL;
 	SDL_Texture* skeleton = NULL;
 	SDL_Texture* red_templar = NULL;
+	SDL_Texture* armored_templar = NULL;
+	SDL_Texture* theseion = NULL;
 	
 };
 

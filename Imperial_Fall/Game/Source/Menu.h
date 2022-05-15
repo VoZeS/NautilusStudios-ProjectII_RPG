@@ -11,6 +11,8 @@
 #define NUM_LOSE_BUTTONS 2
 #define NUM_SCAPE_BUTTONS 2
 #define NUM_SETTINGS_BUTTONS 4
+#define NUM_OBJECT_BUTTONS 2
+#define NUM_ASK_BUTTONS 2
 
 struct Button {
 	SDL_Rect rect = { 0, 0, 220, 70 };
@@ -118,14 +120,20 @@ public:
 		win_button.state = 1;
 		lose_buttons[0].state = 1;
 		scape_buttons[0].state = 1;
+		ask_buttons[0].state = 1;
 	}
-
-	//Dialog checker
-	bool redtemplar_killed = false;
 
 	//Descriptions
 	void DisplayEntityInfo(Combat_Entities* entity);
 	void DisplaySkillInfo(Skill skill);
+
+	// unlock object animation
+	bool object_obtained = false;
+	int unlock_state; // 0 --> none, 1 --> moving, 2 --> stoped
+	SDL_Rect GetUnlockRect(std::string aei);
+
+	// final battle
+	bool theseion2 = false;
 
 private:
 
@@ -159,15 +167,22 @@ private:
 	Button win_button;
 	Button lose_buttons[NUM_LOSE_BUTTONS];
 	Button scape_buttons[NUM_SCAPE_BUTTONS];
+	Button ask_buttons[NUM_ASK_BUTTONS];
 
-	SDL_Texture* combat_back = NULL;
-	SDL_Texture* combat_win = NULL;
-	SDL_Texture* combat_lose = NULL;
+	SDL_Texture* Scape_BackGround = NULL;
+	SDL_Texture* Lose_BackGround = NULL;
+	SDL_Texture* Win_BackGround = NULL;
+
 	SDL_Texture* combat_scape = NULL;
 
+	SDL_Texture* whitemark_128x128 = NULL;
 	SDL_Texture* whitemark_500x70 = NULL;
+	SDL_Texture* whitemark_800x150 = NULL;
 	SDL_Texture* whitemark_1240x680 = NULL;
 	SDL_Texture* skills_icons = NULL;
+	SDL_Texture* accept_tex = NULL;
+	SDL_Texture* desc_icons = NULL;
+	SDL_Texture* rew_icons = NULL;
 
 	Uint8 idleColorR = 18;
 	Uint8 idleColorG = 188;
@@ -187,11 +202,38 @@ private:
 	int save_cd = 50;
 	bool saving = false;
 
+	bool count_xp;
+	int xp0;
+	int xp1;
+	int xp2;
+	int xp3;
+	int axp0;
+	int axp1;
+	int axp2;
+	int axp3;
+
 	// sound
+	uint open_book_sound;
 	uint click_sound;
 	uint hover_sound;
 	bool hover_playing = false;
 	bool InAnyButton();
+	uint win_sound;
+	uint lose_sound;
+
+	// unlock object animation
+	int unlock_cd;
+	iPoint unlock_pos;
+	SDL_Rect unlock_rect;
+	uint unlock_fx;
+	uint equip_sound;
+	SDL_Texture* unknow_tex;
+	SDL_Texture* gear_tex;
+	SDL_Texture* items_tex;
+	Button object_buttons[NUM_OBJECT_BUTTONS];
+
+	// ask new game
+	bool sub_newgame;
 	
 };
 

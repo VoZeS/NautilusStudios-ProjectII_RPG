@@ -42,6 +42,8 @@
     <ClCompile Include="Source\Town2.cpp" />
     <ClCompile Include="Source\Combat_Scene.cpp" />
     <ClCompile Include="Source\LogoScreen.cpp" />
+    <ClCompile Include="Source\Inventory.cpp" />
+    <ClCompile Include="Source\End_Combat_Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -110,6 +112,8 @@
     <ClInclude Include="Source\Town2.h" />
     <ClInclude Include="Source\Combat_Scene.h" />
     <ClInclude Include="Source\LogoScreen.h" />
+    <ClInclude Include="Source\Inventory.h" />
+    <ClInclude Include="Source\End_Combat_Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

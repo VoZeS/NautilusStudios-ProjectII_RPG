@@ -164,6 +164,9 @@ public:
 	b2Fixture* S2_Box;
 	b2Fixture* S3_Box;
 	b2Fixture* S4_Box;
+
+	b2Fixture* doorCastle;
+
 private:
 
 	// L03: Methods to load all required map data
@@ -184,6 +187,8 @@ private:
 
 	int c_tiles = 1;
 
+	std::string IntToString(int n);
+
 public:
 
     // L03: DONE 1: Add your struct for map info
@@ -197,6 +202,12 @@ private:
 
     SString folder;
     bool mapLoaded;
+
+	int coins_index = 0;
+	int books0_index = 0;
+	int books1_index = 0;
+	int books2_index = 0;
+	int books3_index = 0;
 
 };
 

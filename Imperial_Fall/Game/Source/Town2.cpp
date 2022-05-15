@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -42,13 +43,15 @@ bool Town2::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("town_2.tmx");
+		app->map->Load("town_2_64.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player &
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -57,31 +60,24 @@ bool Town2::Start()
 
 		if (app->frontground->move_to == MOVE_TO::TOWN1_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
-				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(256), PIXELS_TO_METERS(3328));
 		}
 		else if (app->frontground->move_to == MOVE_TO::FOREST_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2600), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2800),
-				PIXELS_TO_METERS(2350), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(3000));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(4736), PIXELS_TO_METERS(5429));
 		}
 		else if (app->frontground->move_to == MOVE_TO::BATTLEFIELD_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2350), PIXELS_TO_METERS(400), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(200),
-				PIXELS_TO_METERS(2350), PIXELS_TO_METERS(100), PIXELS_TO_METERS(2350), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(4672), PIXELS_TO_METERS(640));
 		}
 		else if (app->frontground->move_to == MOVE_TO::DUNGEON_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850),
-				PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850), PIXELS_TO_METERS(850), PIXELS_TO_METERS(1850));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1728), PIXELS_TO_METERS(4288));
 		}
 		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN2)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(400), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(200), PIXELS_TO_METERS(1600),
-				PIXELS_TO_METERS(100), PIXELS_TO_METERS(1600), PIXELS_TO_METERS(0), PIXELS_TO_METERS(1600));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1472), PIXELS_TO_METERS(3328));
 		}
-
-		app->audio->PlayMusic("Assets/audio/music/town2.ogg");
 
 		int w, h;
 		uchar* data = NULL;
@@ -104,6 +100,10 @@ bool Town2::Start()
 // Called each loop iteration
 bool Town2::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/zone2.ogg");
+	}
 
 	return true;
 }
@@ -134,6 +134,7 @@ bool Town2::CleanUp()
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
+	app->inventory->Disable();
 	app->entities->Disable();
 
 	// clean textures

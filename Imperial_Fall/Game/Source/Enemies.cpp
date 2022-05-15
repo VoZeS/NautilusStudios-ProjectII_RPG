@@ -17,7 +17,7 @@
 #include <time.h>
 
 // ENEMY
-Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
+Enemies::Enemies(int index, int en1, int en2, int en3, int en4, const char* rew) : Entity()
 {
 	switch (en1)
 	{
@@ -27,6 +27,8 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 3: combat_enemies[0] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[0] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[0] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[0] = ENEMIES::A_TEMPLAR; break;
+	case 7: combat_enemies[0] = ENEMIES::THESEION; break;
 	}
 	switch (en2)
 	{
@@ -36,6 +38,8 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 3: combat_enemies[1] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[1] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[1] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[1] = ENEMIES::A_TEMPLAR; break;
+	case 7: combat_enemies[1] = ENEMIES::THESEION; break;
 	}
 	switch (en3)
 	{
@@ -45,6 +49,8 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 3: combat_enemies[2] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[2] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[2] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[2] = ENEMIES::A_TEMPLAR; break;
+	case 7: combat_enemies[2] = ENEMIES::THESEION; break;
 	}
 	switch (en4)
 	{
@@ -54,9 +60,13 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	case 3: combat_enemies[3] = ENEMIES::GOBLIN; break;
 	case 4: combat_enemies[3] = ENEMIES::SKELETON; break;
 	case 5: combat_enemies[3] = ENEMIES::R_TEMPLAR; break;
+	case 6: combat_enemies[3] = ENEMIES::A_TEMPLAR; break;
+	case 7: combat_enemies[3] = ENEMIES::THESEION; break;
 	}
 	
 	p_in_array = index;
+
+	reward = rew;
 
 	// animations
 	mushroomAnim.PushBack({ 0, 0, 100, 125 });
@@ -75,6 +85,21 @@ Enemies::Enemies(int index, int en1, int en2, int en3, int en4) : Entity()
 	skeletonAnim.PushBack({ 192, 0, 192, 205 });
 	skeletonAnim.PushBack({ 384, 0, 192, 205 });
 	skeletonAnim.speed = 0.03f;
+
+	armoredAnim.PushBack({ 0, 0, 220, 140 });
+	armoredAnim.PushBack({ 220, 0, 220, 140 });
+	armoredAnim.PushBack({ 440, 0, 220, 140 });
+	armoredAnim.PushBack({ 660, 0, 220, 140 });
+	armoredAnim.PushBack({ 880, 0, 220, 140 });
+	armoredAnim.PushBack({ 0, 140, 220, 140 });
+	armoredAnim.PushBack({ 220, 140, 220, 140 });
+	armoredAnim.PushBack({ 440, 140, 220, 140 });
+	armoredAnim.PushBack({ 660, 140, 220, 140 });
+	armoredAnim.PushBack({ 880, 140, 220, 140 });
+	armoredAnim.speed = 0.08f;
+
+	theseionAnim.PushBack({ 68, 4, 46, 74 });
+	theseionAnim.speed = 0.03f;
 }
 
 // Destructor
@@ -92,6 +117,8 @@ void Enemies::InitCustomEntity(int enemy)
 	case 3: currentAnimation = &goblinAnim; break;
 	case 4: currentAnimation = &skeletonAnim; break;
 	case 5: currentAnimation = &mushroomAnim; break;
+	case 6: currentAnimation = &armoredAnim; break;
+	case 7: currentAnimation = &theseionAnim; break;
 	}
 
 	// body
@@ -182,19 +209,25 @@ bool Enemies::Draw()
 		switch (enemy_type)
 		{
 		case 1: 
-			app->render->DrawTexture(app->entities->white_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->white_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 2:
-			app->render->DrawTexture(app->entities->mushroom, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->mushroom, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 3:
-			app->render->DrawTexture(app->entities->goblin, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->goblin, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 4:
-			app->render->DrawTexture(app->entities->skeleton, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->skeleton, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		case 5:
-			app->render->DrawTexture(app->entities->red_templar, METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)), &rect);
+			app->render->AddrenderObject(app->entities->red_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
+			break;
+		case 6:
+			app->render->AddrenderObject(app->entities->armored_templar, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
+			break;
+		case 7:
+			app->render->AddrenderObject(app->entities->theseion, { METERS_TO_PIXELS(position.x - (rect.w / 2)), METERS_TO_PIXELS(position.y - (rect.h / 1.5f)) }, rect, 1);
 			break;
 		}
 	}

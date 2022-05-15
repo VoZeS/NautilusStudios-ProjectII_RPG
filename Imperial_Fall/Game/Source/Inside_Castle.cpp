@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -45,17 +46,18 @@ bool Inside_Castle::Start()
 		app->map->Load("inside_castle.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/inside_castle.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/inside_castle.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
 		app->dialog->Enable();
 
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1200),
-			PIXELS_TO_METERS(550), PIXELS_TO_METERS(1300), PIXELS_TO_METERS(550), PIXELS_TO_METERS(1400));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(550), PIXELS_TO_METERS(1000));
 
 		int w, h;
 		uchar* data = NULL;
@@ -79,6 +81,10 @@ bool Inside_Castle::Start()
 // Called each loop iteration
 bool Inside_Castle::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/inside_castle.ogg");
+	}
 
 	return true;
 }
@@ -108,6 +114,7 @@ bool Inside_Castle::CleanUp()
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
+	app->inventory->Disable();
 	app->entities->Disable();
 
 	// clean textures

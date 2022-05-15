@@ -43,17 +43,27 @@ bool Combat_Scene::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("combat.tmx");
+		switch (app->frontground->current_level)
+		{
+		case 1: app->map->Load("combat.tmx"); break;
+		case 2: app->map->Load("combat.tmx"); break;
+		case 3: app->map->Load("combat_dark.tmx"); break;
+		case 4: app->map->Load("combat_light.tmx"); break;
+		case 5: app->map->Load("combat.tmx"); break;
+		case 6: app->map->Load("combat.tmx"); break;
+		case 7: app->map->Load("combat_castle.tmx"); break;
+		}
 
 		// Load music
-		if (!app->entities->in_boss)
+		/*if (!app->entities->in_boss)
 		{
 			app->audio->PlayMusic("Assets/audio/music/combat.ogg");
 		}
 		else
 		{
 			app->audio->PlayMusic("Assets/audio/music/boss.ogg");
-		}
+		}*/
+		app->audio->StopMusic(1.0f);
 
 		//Enable combat
 		app->menu->Enable();
@@ -71,6 +81,17 @@ bool Combat_Scene::Start()
 // Called each loop iteration
 bool Combat_Scene::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		if (!app->entities->in_boss)
+		{
+			app->audio->PlayMusic("Assets/audio/music/combat.ogg");
+		}
+		else
+		{
+			app->audio->PlayMusic("Assets/audio/music/boss.ogg");
+		}
+	}
 
 	return true;
 }

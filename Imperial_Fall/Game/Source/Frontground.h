@@ -44,7 +44,8 @@ enum class MOVE_TO
 	INSIDE_OUTSIDE,
 	INSIDE_COMBAT,
 	FROM_COMBAT,
-	RESET_COMBAT
+	RESET_COMBAT,
+	COMBAT_FINALCOMBAT
 };
 
 class Frontground : public Module
@@ -76,14 +77,20 @@ public:
 		a = 0;
 	}
 
+	int GetA()
+	{
+		return a;
+	}
+
 	bool FadeToBlack();
 
 	bool FadeFromBlack();
 
-	bool FadeInCombat(ENEMIES enemies[]); // start combat
+	bool FadeInCombat(ENEMIES enemies[], std::string rew); // start combat
 
 
 	ENEMIES enemies_to_fight[4];
+	std::string reward = "999"; // default
 
 	ENEMIES GetEnemiesToFight(int n)
 	{
@@ -112,7 +119,18 @@ private:
 
 	int direction = -1; // 0 --> down, 1 --> up, 2 --> right, 3 --> left
 
+	// cutscene
+	uint letlengh = 0;
+	int letter_cd = 0;
+
 public:
+	// combat xp
+	int combat_xp0 = 0;
+	int combat_xp1 = 0;
+	int combat_xp2 = 0;
+	int combat_xp3 = 0;
+	int combat_gold = 0;
+
 	// controller
 	bool controller = false;
 
@@ -124,6 +142,27 @@ public:
 
 	// 0 --> scene, 1 --> town1, 2 --> town2, 3 --> forest, 4 --> battlefield, 5 --> dungeon, 6 --> outside, 7 --> inside
 	int current_level = 0;
+
+	// adventure phase
+	int adventure_phase = 0;
+	int CheckAdventureState();
+	bool check_phase_change = false;
+
+	// is there a save
+	bool first_time = false;
+	void SetFirstTime(bool state)
+	{
+		pugi::xml_document saveGame;
+		pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+		saveGame.child("started").child("first_time").attribute("value").set_value(state);
+
+		saveGame.save_file(STARTED_FILENAME);
+	}
+
+	void SaveStartUp();
+
+	bool fix = true;
 };
 
 #endif

@@ -13,6 +13,7 @@
 #include "Combat_Manager.h"
 #include "Combat_Menu.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Particles.h"
 #include "Frontground.h"
 #include "Town1.h"
@@ -23,6 +24,7 @@
 #include "Outside_Castle.h"
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
+#include "End_Combat_Scene.h"
 #include "Dialog.h"
 #include "LogoScreen.h"
 
@@ -45,10 +47,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new PathFinding(true);
 	physics = new Physics(true);
 	entities = new Entities(false);
-	fonts = new Fonts(false);
+	fonts = new Fonts(true);
 	combat_manager = new Combat_Manager(false);
 	combat_menu = new Combat_Menu(false);
 	menu = new Menu(true);
+	inventory = new Inventory(false);
 	particles = new Particles(false);
 	frontground = new Frontground(true);
 	town1 = new Town1(false);
@@ -59,6 +62,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	outside = new Outside_Castle(false);
 	inside = new Inside_Castle(false);
 	combat_scene = new Combat_Scene(false);
+	end_combat_scene = new End_Combat_Scene(false);
 	dialog = new Dialog(false);
 	logo = new LogoScreen(true);
 
@@ -77,6 +81,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(outside);
 	AddModule(inside);
 	AddModule(combat_scene);
+	AddModule(end_combat_scene);
 	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(entities);
@@ -84,9 +89,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fonts);
 	AddModule(combat_manager);
 	AddModule(combat_menu);
-	AddModule(menu);
 	AddModule(particles);
+	AddModule(menu);
 	AddModule(dialog);
+	AddModule(inventory);
 	AddModule(logo);
 	AddModule(frontground);
 
@@ -253,7 +259,14 @@ void App::FinishUpdate()
 		SDL_Delay(delay);
 	}
 
-	app->win->SetTitle(title);
+	if (physics->debug)
+	{
+		app->win->SetTitle(title);
+	}
+	else
+	{
+		app->win->SetTitle(configApp.child("title").child_value());
+	}
 
 	maxFrameRate = FPS;
 }
@@ -329,6 +342,8 @@ bool App::CleanUp()
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.end;
+
+	app->frontground->SaveStartUp();
 
 	while(item != NULL && ret == true)
 	{

@@ -9,6 +9,7 @@
 
 #define CASTING_TIME 2 // in seconds
 #define MAX_EFFECTS_DISPLAYED 4
+#define EXIT_DELAY 70
 
 class Combat_Entities;
 
@@ -73,16 +74,6 @@ public:
 		in_animation = n;
 	}
 
-	int GetItemsUses(int n)
-	{
-		return items_uses[n];
-	}
-
-	void SetItemsUses(int n)
-	{
-		items_uses[n]--;
-	}
-
 	void SetEntitiesPositions();
 
 	// 0 --> normal, 1 --> win, 2 --> lose
@@ -96,6 +87,13 @@ public:
 	}
 
 	SDL_Texture* status_effects = NULL;
+
+	int s_item_uses[4] = { 0 };
+	int f_item_uses[4] = { 0 };
+	int GetItemUses(int n)
+	{
+		return f_item_uses[n];
+	}
 
 private:
 	bool preupdatedone = false;
@@ -111,6 +109,10 @@ private:
 	Combat_Entities* enemies[4] = { NULL };
 	Combat_Entities* items = NULL;
 
+	void LoadItemUses();
+	void SaveItemUses();
+	bool items_saved;
+
 	int animation_cd = 0;
 	int in_animation = 0; // 0 --> no, 1 --> starting, 2 --> in
 
@@ -123,8 +125,6 @@ private:
 	pugi::xml_document heroes_statsFile;
 	pugi::xml_node heroes_stats;
 
-	int items_uses[4];
-
 	// textures
 	SDL_Texture* heroes_icons = NULL;
 	SDL_Texture* enemies_icons = NULL;
@@ -134,10 +134,17 @@ private:
 	SDL_Texture* whitemark_64x64 = NULL;
 	SDL_Texture* whitemark_32x32 = NULL;
 
+	uint dragon_breath;
+
 	// enemy casting skill
 	bool casting = false;
 	int casting_time = 0;
 	SDL_Rect casting_rect;
+
+	// exit combat
+	bool winning;
+	bool losing;
+	int exit_cd;
 };
 
 #endif

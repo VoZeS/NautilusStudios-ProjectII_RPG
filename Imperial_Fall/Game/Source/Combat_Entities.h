@@ -13,7 +13,11 @@ enum class ENEMIES
 	MUSHROOM,
 	GOBLIN,
 	SKELETON,
-	R_TEMPLAR
+	R_TEMPLAR,
+	DRAGON,
+	THESEION,
+	NECRO_THESEION,
+	A_TEMPLAR
 };
 
 struct BUFF {
@@ -32,6 +36,8 @@ public:
 	Combat_Entities(int health, int mana, int speed, int power, int owner, int skill1, int skill2, int skill3, int skill4);
 	Combat_Entities(ENEMIES enemy);
 	Combat_Entities();
+	// used in inventory
+	Combat_Entities(int owner, int set);
 	~Combat_Entities();
 
 	// 0 --> dead, 1 --> alive, 2 --> no exist
@@ -143,6 +149,8 @@ public:
 	void Revive()
 	{
 		alive = 1;
+		actual_health = max_health / 2;
+		actual_mana = max_mana / 2;
 	}
 
 	void UpdateShield();
@@ -193,6 +201,13 @@ public:
 
 	void DisplayStatus(int cx, int cy);
 	void DisplayStatusDescription(int cx, int cy);
+
+	// display damage
+	int damage_recived = 0;
+
+	// enemies xp
+	int xp = 0;
+	int gold = 0;
 
 private:
 	Skill SetSkill(int owner, int skill_number);

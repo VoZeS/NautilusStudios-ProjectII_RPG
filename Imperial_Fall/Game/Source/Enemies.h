@@ -18,7 +18,7 @@ enum class ENEMY_STATE
 class Enemies : public Entity
 {
 public:
-	Enemies(int index, int en1, int en2, int, int en4);
+	Enemies(int index, int en1, int en2, int, int en4, const char* rew);
 
 	virtual ~Enemies();
 
@@ -48,6 +48,11 @@ private:
 		return combat_enemies[n];
 	}
 
+	std::string GetReward()
+	{
+		return reward;
+	}
+
 public:
 	int w = 32, h = 32;
 
@@ -56,12 +61,15 @@ public:
 	Animation mushroomAnim;
 	Animation goblinAnim;
 	Animation skeletonAnim;
+	Animation armoredAnim;
+	Animation theseionAnim;
 
 	ENEMY_STATE state;
 
 	int enemy_type = 0; // 1 --> white templar, 2 --> mushroom, 3 --> goblin, 3 --> skeleton, 4 --> red templar
 
 	ENEMIES combat_enemies[4];
+	std::string reward;
 
 	//PathFinding* path_save = NULL;
 };

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Physics.h"
 
+struct _Mix_Music;
 struct SDL_Texture;
 enum class ENEMIES;
 
@@ -55,7 +56,6 @@ private:
 
 	SDL_Texture* start_screen;
 	SDL_Texture* settings_screen;
-
 };
 
 #endif // __SCENE_H__

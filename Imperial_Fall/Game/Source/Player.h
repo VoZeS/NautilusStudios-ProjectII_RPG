@@ -41,7 +41,7 @@ private:
 	void SetPlayerPosition(int new_x, int new_y);
 	void SetPlayerLookDir(int lookDir);
 
-	fPoint GetCompanion0Position();
+	/*fPoint GetCompanion0Position();
 	fPoint GetCompanion1Position();
 	fPoint GetCompanion2Position();
 
@@ -51,7 +51,7 @@ private:
 
 	void SetCompanion0LookDir(int lookDir);
 	void SetCompanion1LookDir(int lookDir);
-	void SetCompanion2LookDir(int lookDir);
+	void SetCompanion2LookDir(int lookDir);*/
 
 	bool DeleteEntity();
 	bool IsPlayerEnabled()
@@ -64,20 +64,19 @@ private:
 	int char_control = 0; // 0 --> assassin, 1 --> tank, 2 --> healer, 3 --> wizard
 	int GetCharControl();
 
-	void FollowPlayer(Companion c, Companion pre_c, float dt);
+	/*void FollowPlayer(Companion c, Companion pre_c, float dt);
 	Companion c0;
 	Companion c1;
-	Companion c2;
+	Companion c2;*/
 
 private:
-	int w = 20, h = 32;
+	int w = 20, h = 12;
 	float speed = 0.3f;
 	bool collision_active;
 	b2Fixture* bodyFixture;
 
 	bool player_enabled = true;
 	bool plan_to_delete = false;
-	
 
 public:
 	Animation* currentAnimation = NULL;
@@ -91,7 +90,11 @@ public:
 	Animation walkAnimD;
 	Animation walkAnimL;
 	Animation walkAnimR;
-
+	Animation iceU;
+	Animation iceD;
+	Animation iceL;
+	Animation iceR;
+	/*
 	// c0 Animations
 	Animation c0_idleAnimU;
 	Animation c0_idleAnimD;
@@ -120,15 +123,13 @@ public:
 	Animation c2_walkAnimU;
 	Animation c2_walkAnimD;
 	Animation c2_walkAnimL;
-	Animation c2_walkAnimR;
+	Animation c2_walkAnimR;*/
 
 	uint walk_sound;
 	int walk_cd = 320;
-	
+
 	int look_dir; // 0 --> up, 1 --> down, 2 --> left, 3 --> right
 
-	
-	
 };
 
 #endif

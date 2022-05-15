@@ -34,6 +34,20 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	SDL_Texture* leverText;
+	SDL_Texture* doorText;
+
+
+	Animation* currentAnimL1;
+	Animation* currentAnimL2;
+	Animation* currentAnimDoor;
+	Animation lever1Anim;
+	Animation lever2Anim;
+	Animation doorOpenAnim;
+
+	bool lever1Active = false;
+	bool lever2Active = false;
+
 };
 
 #endif // __OUTSIDE_CASTLE_H__

@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -45,10 +46,12 @@ bool Battlefield::Start()
 		app->map->Load("battlefield.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -56,13 +59,11 @@ bool Battlefield::Start()
 
 	if (app->frontground->move_to == MOVE_TO::TOWN2_BATTLEFIELD)
 	{
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000),
-			PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
 	}
 	else if (app->frontground->move_to == MOVE_TO::SCENE_BATTLEFIELD)
 	{
-		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3000),
-			PIXELS_TO_METERS(600), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(600), PIXELS_TO_METERS(3200));
+		app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(600), PIXELS_TO_METERS(2800));
 	}
 		int w, h;
 		uchar* data = NULL;
@@ -86,6 +87,10 @@ bool Battlefield::Start()
 // Called each loop iteration
 bool Battlefield::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/battlefield.ogg");
+	}
 
 	return true;
 }
@@ -115,6 +120,7 @@ bool Battlefield::CleanUp()
 	app->fonts->Disable();
 	app->dialog->Disable();
 	app->map->Disable();
+	app->inventory->Disable();
 	app->entities->Disable();
 
 	// clean textures

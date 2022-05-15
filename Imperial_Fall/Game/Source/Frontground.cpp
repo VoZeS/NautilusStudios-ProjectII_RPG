@@ -19,7 +19,10 @@
 #include "Inside_Castle.h"
 #include "Combat_Scene.h"
 #include "Combat_Menu.h"
+#include "Inventory.h"
+#include "End_Combat_Scene.h"
 #include "LogoScreen.h"
+#include "Dialog.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -53,6 +56,13 @@ bool Frontground::Start()
 
 	SDL_ShowCursor(false);
 
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+	first_time = saveGame.child("started").child("first_time").attribute("value").as_bool();
+	current_level = saveGame.child("started").child("current_level").attribute("value").as_int();;
+	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();;
+
 	return true;
 }
 
@@ -68,6 +78,17 @@ bool Frontground::PreUpdate()
 			app->menu->SetController();
 			app->combat_menu->SetController();
 		}
+	}
+
+	if (check_phase_change)
+	{
+		adventure_phase = CheckAdventureState();
+		check_phase_change = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		adventure_phase++;
 	}
 	
 	if (go_black)
@@ -99,12 +120,32 @@ bool Frontground::PreUpdate()
 // Called each loop iteration
 bool Frontground::Update(float dt)
 {
-
 	if (a >= 255)
 	{
 		go_black = false;
 
-		FadeFromBlack();
+ 		if (!app->end_combat_scene->in_cutscene && fix)
+		{
+			FadeFromBlack();
+		}
+		else if (app->end_combat_scene->cutcene_cd > BLACK_TIME)
+		{
+			fix = false;
+			letter_cd ++;
+
+			if (letter_cd >= 60 * 0.05f && letlengh <= app->dialog->limitLenght)
+			{
+				letlengh++;
+				app->dialog->PlayLetterSound();
+				letter_cd = 0;
+			}
+
+			if (app->end_combat_scene->cutcene_cd == 199 + BLACK_TIME || app->end_combat_scene->cutcene_cd == 399 + BLACK_TIME
+				|| app->end_combat_scene->cutcene_cd == 599 + BLACK_TIME || app->end_combat_scene->cutcene_cd == 799 + BLACK_TIME)
+			{
+				letlengh = 0;
+			}
+		}
 	}
 	else if (a <= 0)
 	{
@@ -122,13 +163,48 @@ bool Frontground::PostUpdate()
 	
 	r.x = c_x;
 	r.y = c_y;
-	
-	if (a == 254)
+	if (a > 250)
 	{
-		a++;
+		app->render->DrawRectangle(r, 0, 0, 0, 255);
+	}
+	else
+	{
+		app->render->DrawRectangle(r, 0, 0, 0, a);
 	}
 
-	app->render->DrawRectangle(r, 0, 0, 0, a);
+	if (app->end_combat_scene->in_cutscene && app->end_combat_scene->Enabled() && app->end_combat_scene->cutcene_cd > BLACK_TIME)
+	{
+		if (app->end_combat_scene->cutcene_cd < 199 + BLACK_TIME )
+		{
+			app->render->DrawTexture(app->end_combat_scene->whitemark_1200x140, 40 + c_x, 290 + c_y);
+			app->fonts->BlitTextLetter(300 + c_x, 320 + c_y, app->fonts->textFont1, "Pensabais que esto habia acabado????", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else if(app->end_combat_scene->cutcene_cd < 399 + BLACK_TIME)
+		{
+			app->render->DrawTexture(app->end_combat_scene->whitemark_1200x140, 40 + c_x, 290 + c_y);
+			app->fonts->BlitTextLetter(300 + c_x, 320 + c_y, app->fonts->textFont1, "Nunca podreis acabar conmigo!!!!", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else if (app->end_combat_scene->cutcene_cd < 599 + BLACK_TIME)
+		{
+			app->render->DrawTexture(app->end_combat_scene->whitemark_1200x140, 40 + c_x, 290 + c_y);
+			app->fonts->BlitTextLetter(300 + c_x, 320 + c_y, app->fonts->textFont1, "Oh, gran Lloyd resurge de nuevo...", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else if (app->end_combat_scene->cutcene_cd < 799 + BLACK_TIME)
+		{
+			app->render->DrawTexture(app->end_combat_scene->whitemark_1200x140, 40 + c_x, 290 + c_y);
+			app->fonts->BlitTextLetter(300 + c_x, 320 + c_y, app->fonts->textFont1, "Y REDUCE A CENIZAS A ESTOS SERES!!!!", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		}
+		else
+		{
+			return_black = true;
+			fix = true;
+		}
+	}
+	else if (!fix)
+	{
+		return_black = true;
+		fix = true;
+	}
 
 	return true;
 }
@@ -173,7 +249,7 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::SCENE_OUTSIDE: app->outside->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_INSIDE: app->town1->Enable(); app->menu->InitPlayer();
+	case MOVE_TO::SCENE_INSIDE: app->inside->Enable(); app->menu->InitPlayer();
 		break;
 	case MOVE_TO::TOWN1_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;
@@ -252,6 +328,8 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::RESET_COMBAT: app->combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
 		break;
+	case MOVE_TO::COMBAT_FINALCOMBAT: app->end_combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
+		return_black = false; break;
 	default:
 		break;
 	}
@@ -259,7 +337,7 @@ bool Frontground::FadeFromBlack()
 	return true;
 }
 
-bool Frontground::FadeInCombat(ENEMIES enemies[])
+bool Frontground::FadeInCombat(ENEMIES enemies[], std::string rew)
 {
 	go_black = true;
 
@@ -267,6 +345,8 @@ bool Frontground::FadeInCombat(ENEMIES enemies[])
 	{
 		enemies_to_fight[i] = enemies[i];
 	}
+
+	reward = rew;
 
 	return true;
 }
@@ -285,7 +365,10 @@ bool Frontground::ReturnToField()
 
 bool Frontground::ResetCombat()
 {
-	move_to = MOVE_TO::RESET_COMBAT;
+	if (move_to != MOVE_TO::COMBAT_FINALCOMBAT)
+	{
+		move_to = MOVE_TO::RESET_COMBAT;
+	}
 
 	FadeToBlack();
 
@@ -380,4 +463,81 @@ void Frontground::SetController()
 {
 	app->menu->SetController();
 	app->combat_menu->SetController();
+}
+
+int Frontground::CheckAdventureState()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_node atr;
+
+	int res = -1;
+
+	atr = saveGame.child("game_state").child("entities").child("enemies");
+	if (!atr.child("enemy0").attribute("state").as_bool() && !atr.child("enemy1").attribute("state").as_bool() && !atr.child("enemy2").attribute("state").as_bool()) // mison 1
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 6)
+	{
+		res++;
+	}
+	if (!atr.child("enemy3").attribute("state").as_bool()) // mision 2
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 10)
+	{
+		res++;
+	}
+	if (!atr.child("enemy4").attribute("state").as_bool()) // mision 3
+	{
+		res++;
+	}
+	if (app->dialog->GetRenatoText() >= 14)
+	{
+		res++;
+	}
+	if (!atr.child("enemy5").attribute("state").as_bool()) // castillo
+	{
+		res++;
+	}
+
+	switch (res)
+	{
+	case -1: app->dialog->SaveRenatoDialog(-1); app->dialog->SaveFarmerDialog(); break;
+	case 0: app->dialog->SaveRenatoDialog(2); app->dialog->SaveFarmerDialog(); break;
+	case 1: app->dialog->SaveRenatoDialog(6); app->dialog->SaveFarmerDialog(-1); break;
+	case 2: app->dialog->SaveRenatoDialog(7); app->dialog->SaveFarmerDialog(-1); break;
+	case 3: app->dialog->SaveRenatoDialog(10); app->dialog->SaveFarmerDialog(2); break;
+	case 4: app->dialog->SaveRenatoDialog(11); app->dialog->SaveFarmerDialog(2); break;
+	case 5: app->dialog->SaveRenatoDialog(14); app->dialog->SaveFarmerDialog(5); break;
+	case 6: app->dialog->SaveRenatoDialog(15); app->dialog->SaveFarmerDialog(5); break;
+	}
+
+	if (res > adventure_phase)
+	{
+		if (res == 1 || res == 3 || res == 5)
+		{
+			app->dialog->UpdateShop();
+		}
+		
+		move_to = MOVE_TO::FROM_COMBAT;
+		FadeToBlack();
+	}
+
+	return res;
+}
+
+void Frontground::SaveStartUp()
+{
+	pugi::xml_document saveGame;
+	pugi::xml_parse_result result = saveGame.load_file(STARTED_FILENAME);
+
+	saveGame.child("started").child("current_level").attribute("value").set_value(current_level);
+	saveGame.child("started").child("adventure_phase").attribute("value").set_value(adventure_phase);
+
+	saveGame.save_file(STARTED_FILENAME);
+
+	app->dialog->SaveShop();
 }

@@ -6,6 +6,8 @@
 #include "Enemies.h"
 #include "Fonts.h"
 #include "Scene.h"
+#include "Outside_Castle.h"
+#include "Frontground.h"
 #include "Forest.h"
 #include "Dungeon.h"
 
@@ -55,6 +57,32 @@ bool Map::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		collision_loaded = false;
+		coins_index = 0;
+		books0_index = 0;
+		books1_index = 0;
+		books2_index = 0;
+		books3_index = 0;
+
+		S1_Coll = NULL;
+		S2_Coll = NULL;
+		S3_Coll = NULL;
+		S4_Coll = NULL;
+		S5_Coll = NULL;
+		S6_Coll = NULL;
+
+		S1_Sens = NULL;
+		S2_Sens = NULL;
+		S3_Sens = NULL;
+		S4_Sens = NULL;
+		S5_Sens = NULL;
+		S6_Sens = NULL;
+
+		S1_Box = NULL;
+		S2_Box = NULL;
+		S3_Box = NULL;
+		S4_Box = NULL;
+
+		doorCastle = NULL;
 	}
 
 	return true;
@@ -64,38 +92,78 @@ bool Map::Start()
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-
+	
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
 
 	while (mapLayerItem != NULL) {
-
+		
 		for (int x = 0; x < mapLayerItem->data->width; x++)
 		{
 			for (int y = 0; y < mapLayerItem->data->height; y++)
 			{
 				// L04: DONE 9: Complete the draw function
 				int gid = mapLayerItem->data->Get(x, y);
-
+				
 				if (gid > 0) {
 					TileSet* tileset = GetTilesetFromTileId(gid);
-
+					
 					SDL_Rect r = tileset->GetTileRect(gid);
 					iPoint pos = MapToWorld(x, y);
 
 					if (mapLayerItem->data->properties.GetProperty("Draw") == 1)
 					{
-						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 50 ) &&
-							(-app->render->camera.y < pos.y + 50 && -app->render->camera.y > pos.y - 800))
+						if (mapLayerItem->data->properties.GetProperty("Layer") == 0)
 						{
-							app->render->DrawTexture(tileset->texture,
-								pos.x,
-								pos.y,
-								&r);
-
+							if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+								(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+							{
+								app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+							}
+						}
+						else
+						{
+							if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+								(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+							{
+								app->render->AddrenderObject(tileset->texture, pos, r, mapLayerItem->data->properties.GetProperty("Layer"));
+							}
 						}
 					}
-
+					
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 2 && app->frontground->adventure_phase < 1)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 3 && app->frontground->adventure_phase < 3)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 4 && app->frontground->adventure_phase < 5)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+					else if (mapLayerItem->data->properties.GetProperty("Draw") == 5 && app->forest->allBoxesDone)
+					{
+						if ((-app->render->camera.x > pos.x - 1400 && -app->render->camera.x < pos.x + 200) &&
+							(-app->render->camera.y < pos.y + 200 && -app->render->camera.y > pos.y - 800))
+						{
+							app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+					
 					if (!collision_loaded)
 					{
 						int width = mapLayerItem->data->properties.GetProperty("Width");
@@ -106,92 +174,103 @@ void Map::Draw()
 							// dungeon ice sensor
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 30);
 						}
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 99 && app->dungeon->Enabled())
+						{
+							// dungeon spike sensor
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 99);
+						}
+
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
-
 						}
+						
 						// -------------------------------------------------------------------------- BOXES SOUKOBAN
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 301)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 301 && !app->forest->allBoxesDone)
 						{
 							S1_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 302)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 302 && !app->forest->allBoxesDone)
 						{
 							S2_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 303)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 303 && !app->forest->allBoxesDone)
 						{
 							S3_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 304)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 304 && !app->forest->allBoxesDone)
 						{
 							S4_Box = app->physics->CreateDynamicBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2);
 
 						}
-
+						// -------------------------------------------------------------------------- DOOR CASTLE
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 40 && (!app->outside->lever1Active || !app->outside->lever2Active))
+						{
+							// collision door castle
+							doorCastle = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 40);
+						}
 						// -------------------------------------------------------------------- RIVER COLLISIONS SOUKOBAN PUZZLE
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 101)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 101 && !app->forest->allBoxesDone)
 						{
 							S1_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 101);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 102)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 102 && !app->forest->allBoxesDone)
 						{
 							S2_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 102);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 103)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 103 && !app->forest->allBoxesDone)
 						{
 							S3_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 103);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 104)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 104 && !app->forest->allBoxesDone)
 						{
 							S4_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 104);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 105)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 105 && !app->forest->allBoxesDone)
 						{
 							S5_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 105);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 106)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 106 && !app->forest->allBoxesDone)
 						{
 							S6_Coll = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 106);
 
 						}
 						// --------------------------------------------------------------------- SENSOR SOUKOBAN PUZZLE
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 201)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 201 && !app->forest->allBoxesDone)
 						{
 							S1_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 201);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 202)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 202 && !app->forest->allBoxesDone)
 						{
 							S2_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 202);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 203)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 203 && !app->forest->allBoxesDone)
 						{
 							S3_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 203);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 204)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 204 && !app->forest->allBoxesDone)
 						{
 							S4_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 204);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 205)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 205 && !app->forest->allBoxesDone)
 						{
 							S5_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 205);
 
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 206)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 206 && !app->forest->allBoxesDone)
 						{
 							S6_Sens = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 206);
 
@@ -212,6 +291,22 @@ void Map::Draw()
 
 						}
 
+						
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 92 && app->frontground->adventure_phase < 1)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 93 && app->frontground->adventure_phase < 3)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 94 && app->frontground->adventure_phase < 5)
+						{
+							// collision ground
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 100);
+						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 5)
 						{
 							// Renato
@@ -229,83 +324,300 @@ void Map::Draw()
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 8)
 						{
-							// Granjero
-							app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
+							// Sabio
+							app->entities->CreateEntity(ENTITY_TYPE::SABIO, pos.x, pos.y);
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 15)
 						{
 							// Aldeano
 							app->entities->CreateEntity(ENTITY_TYPE::ALDEANO, pos.x, pos.y);
 						}
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 16)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 900)
 						{
-						// SIGNAL SOUKOBAN
-						app->entities->CreateEntity(ENTITY_TYPE::SIGNAL, pos.x, pos.y);
+							// SIGNAL SOUKOBAN
+							app->entities->CreateEntity(ENTITY_TYPE::SIGNAL, pos.x, pos.y);
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 901)
+						{
+							if (app->frontground->adventure_phase > 0)
+							{
+								// Granjero
+								app->entities->CreateEntity(ENTITY_TYPE::GRANJERO, pos.x, pos.y);
+							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 9)
 						{
 							// White templar
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::W_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 10)
 						{
 							// Mushroom
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::MUSHROOM, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 11)
 						{
 							// Goblin
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::GOBLIN, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 13)
 						{
 							// Skeleton
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::SKELETON, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
 						}
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 14)
 						{
 							// Red Templar
 							int index = mapLayerItem->data->properties.GetProperty("Index");
-							if (GetEnemyStateXml(index))
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
 							{
 								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
 								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
 								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
 								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
-								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4);
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::R_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
 							}
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 17)
+						{
+							// Armored Templar
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::A_TEMPLAR, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
+							}
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 18)
+						{
+							// Theseion
+							int index = mapLayerItem->data->properties.GetProperty("Index");
+							if (GetEnemyStateXml(index) && mapLayerItem->data->properties.GetProperty("Phase") == app->frontground->adventure_phase)
+							{
+								int en1 = mapLayerItem->data->properties.GetProperty("Enemy1");
+								int en2 = mapLayerItem->data->properties.GetProperty("Enemy2");
+								int en3 = mapLayerItem->data->properties.GetProperty("Enemy3");
+								int en4 = mapLayerItem->data->properties.GetProperty("Enemy4");
+								std::string s = IntToString(mapLayerItem->data->properties.GetProperty("Reward"));
+								app->entities->CreateEntity(ENTITY_TYPE::THESEION, pos.x, pos.y, index, en1, en2, en3, en4, s.c_str());
+							}
+						}
+						// ------------------------ miscelanea
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 20)
+						{
+							// coins
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "coins_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(coins_index);
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("coins").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 20, 0);
+							}
+							coins_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 22)
+						{
+							// assassin book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books0").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 22, mapLayerItem->data->properties.GetProperty("Index"));
+							}
+							books0_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 26)
+						{
+							// healer book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books1").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 26, mapLayerItem->data->properties.GetProperty("Index"));
+							}
+							books1_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 27)
+						{
+							// tank book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books2").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 27, mapLayerItem->data->properties.GetProperty("Index"));
+							}
+							books2_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 28)
+						{
+							// wizard book
+							pugi::xml_document saveGame;
+							pugi::xml_parse_result result = saveGame.load_file(MISCELANEA_FILENAME);
+
+							std::string p1 = "books_in_room";
+							std::string s1;
+							switch (app->frontground->current_level)
+							{
+							case 1: s1 = std::to_string(0); break;
+							case 2: s1 = std::to_string(1); break;
+							case 3: s1 = std::to_string(2); break;
+							case 4: s1 = std::to_string(3); break;
+							case 5: s1 = std::to_string(4); break;
+							case 6: s1 = std::to_string(5); break;
+							case 7: s1 = std::to_string(6); break;
+							default: break;
+							}
+							std::string t1 = p1 + s1;
+							const char* c1 = t1.c_str();
+
+							std::string p2 = "picked";
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
+							std::string t2 = p2 + s2;
+							const char* c2 = t2.c_str();
+
+							if (!saveGame.child("miscelanea").child("books3").child(c1).attribute(c2).as_bool())
+							{
+								app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 28, mapLayerItem->data->properties.GetProperty("Index"));
+							}
+							books3_index++;
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 60)
+						{
+							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 60, 0);
+
+						}
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 70)
+						{
+							app->physics->CreateMiscelanea(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 70, 0);
+
 						}
 						// --------------------------------------------------------------------------- PASS LEVELS
 						else if (mapLayerItem->data->properties.GetProperty("Collision") == 12)
@@ -395,7 +707,7 @@ iPoint Map::MapToWorld(int x, int y) const
 		ret.x = (x - y) * (mapData.tileWidth * 0.5f);
 		ret.y = (x + y) * (mapData.tileHeight * 0.5f);
 	}
-
+	
 	return ret;
 }
 
@@ -424,7 +736,7 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 {
 	ListItem<TileSet*>* item = mapData.tilesets.start;
 	TileSet* set = item->data;
-
+	
 	for (set; set; item = item->next,  set = item->data)
 	{
 		if (id >= set->firstgid && id < set->firstgid + set->tilecount)
@@ -434,6 +746,29 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	}
 
 	return set;
+}
+
+std::string Map::IntToString(int n)
+{
+	std::string s;
+	std::string r;
+
+	if (n < 10)
+	{
+		s = std::to_string(n);
+		r = "00" + s;
+	}
+	else if (n < 100)
+	{
+		s = std::to_string(n);
+		r = "0" + s;
+	}
+	else
+	{
+		r = std::to_string(n);
+	}
+
+	return r;
 }
 
 // Get relative Tile rectangle
@@ -447,7 +782,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	rect.h = tileHeight;
 	rect.x = margin + ((rect.w + spacing) * (relativeId % columns));
 	rect.y = margin + ((rect.h + spacing) * (relativeId / columns));
-
+	
 	return rect;
 }
 
@@ -455,7 +790,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 bool Map::CleanUp()
 {
     LOG("Unloading map");
-
+	
     // L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
     // Remove all tilesets
 	ListItem<TileSet*>* item;
@@ -489,7 +824,7 @@ bool Map::Load(const char* filename)
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
 
-	pugi::xml_document mapFile;
+	pugi::xml_document mapFile; 
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
     if(result == NULL)
@@ -518,11 +853,11 @@ bool Map::Load(const char* filename)
 	{
 		ret = LoadAllLayers(mapFile.child("map"));
 	}
-
+    
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
-
+		 
 		/*LOG("Successfully parsed map XML file: %s", filename);
 		LOG("width: %d", mapData.width);
 		LOG("height: %d", mapData.height);
@@ -567,7 +902,7 @@ bool Map::Load(const char* filename)
 			LOG("name: %s", layer->data->name.GetString());
 			LOG("width: %d", layer->data->width);
 			LOG("height: %d", layer->data->height);*/
-
+			
 			layerCtr++;
 			layer = layer->next;
 		}
@@ -734,7 +1069,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 
 		properties.list.Add(p);
 	}
-
+	
 	return ret;
 }
 

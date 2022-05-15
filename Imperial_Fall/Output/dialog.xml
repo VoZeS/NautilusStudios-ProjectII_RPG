@@ -1,30 +1,51 @@
+<?xml version="1.0"?>
 <dialog>
 	<renato>
-		<text1 linea1="Buenas, mis queridos amigos."/>
-		<text2 linea1="Antes de empezar la aventura, debo" linea2="comprobar vuestras habilidades en combate."/>
-		<text3 linea1="Id a derrotar al lider templario" linea2="en el campo de batalla."/>	
-		<text4 linea1="Cuando lo derroteis, volved y os contare el plan."/>
-		<text5 linea1="Enhorabuena, has completado la Vertical Slice." linea2="Mas al subir la escalera."/>	
+		<actual_text value="-1" />
+		<text1 linea1="Buenas, mis queridos amigos." linea2="Tened, os doy unos libros de habilidades." />
+		<text2 linea1="Nuestro primer objetivo es el Suboficial Templario." linea2="Sin embargo, desconozco su paradero actual." />
+		<text3 linea1="Lo que si se es donde podeis encontrar a sus lacayos." linea2="Estan acampando en el bosque al sur este del pueblo." />
+		<text4 linea1="Cuando los derroteis, traedme sus cruces templarias." linea2="Recordad, estan al Sur Este del poblado." />
+		<text5 linea1="Buen trabajo! Aqui teneis un pequeno regalo a cambio." linea2="Ahora, vamos a lo importante." />
+		<text6 linea1="Normalmente, los templarios suelen ocultar" linea2="informacion importante en el interior de sus cruces." />
+		<text7 linea1="Efectivamente, aqui esta el mensaje de su superior. Segun" linea2="esto, el Suboficial se encuentra en el campo de batalla." />
+		<text8 linea1="Id a matarlo y volved a informarme." />
+		<text9 linea1="Bien hecho. Aqui teneis vuestra recompensa." linea2="Esto os ayudara para vuestros futuros combates." />
+		<text10 linea1="Por lo que veo, sabemos donde esta Theseion," linea2="pero aun nos falta informacion." />
+		<text11 linea1="Contra una persona como el, hay que ir preparados." linea2="Id a por su mano derecha, el Almirante." />
+		<text12 linea1="Fue a investigar la mazmorra que hay en el pueblo" linea2="Matadlo, y de paso averiguad que buscaba ahi dentro." />
+		<text13 linea1="Enhorabuena! Un Rainbow Grace, no lo malgastareis." linea2="Ahora ya podemos ir a por Theseion en condiciones." />
+		<text14 linea1="Segun los datos que me habeis proporcionado," linea2="Theseion esta descansando en su castillo." />
+		<text15 linea1="Al parecer, acaba de volver de una larga mision." linea2="Estara exausto, hay que aprovechar esta oportunidad." />
+		<text16 linea1="No perdais mas el tiempo, id a por el" linea2="Su castillo esta al norte del poblado." />
+		<text17 linea1="A que esperais? Id a por Thesion." />
 	</renato>
 	<herrero>
-		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado"/>
+		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado." />
 	</herrero>
-	<granjero>
-		<text1 linea1="Hola! Ahora mismo estamos sin existencias." linea2="Volved mas adelante."/>
-	</granjero>
+	<sabio>
+		<text1 linea1="Hola! Pasad." linea2="No os arrepentireis." />
+	</sabio>
 	<medico>
-		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!"/>
+		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!" />
 	</medico>
 	<aldeano>
-		<text1 linea1="No tengo nada que decir. No molestes."/>
+		<text1 linea1="No tengo nada que decir. No molestes." />
 	</aldeano>
 	<signal>
-		<text1 linea1="¿Te has quedado encallado?" linea2="Pulsa R para resetear las cajas."/>
+		<text1 linea1="Te has quedado encallado?" linea2="Pulsa R para resetear las cajas." />
 	</signal>
-	<templario>
-		<text1 linea1="Y vosotros quienes sois?" linea2="Largaos de aqui!"/>
-	</templario>
-	<seta>
-		<text1 linea1="Camino bloqueado." linea2="No puedes pasar"/>
-	</seta>
+	<granjero>
+		<actual_text value="-1" />
+		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector." />
+		<text2 linea1="Dicen que era un dragon!! Por lo visto murio hace ya mucho." />
+		<text3 linea1="Dicen que hay personas con la capacidad de no perder" linea2="turno al recargar." />
+		<text4 linea1="En vez de eso, aprovechan el momento para usar poderosos" linea2="ataques." />
+		<text5 linea1="La leyenda cuenta que el aliento igneo de Lloyd producia" linea2="tanto calor que nadie podia soportarlo." />
+		<text6 linea1="Esa majestuosa llamarada obtuvo el nombre de..." linea2="Flame of calamity." />
+	</granjero>
+	<enemy>
+		<text1 linea1="Como es posible?" />
+		<text2 linea1="Esto no puede haber ocurrido..." linea2="Unos simples flipados...no..." />
+	</enemy>
 </dialog>

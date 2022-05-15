@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Menu.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Fonts.h"
 #include "Frontground.h"
@@ -42,13 +43,15 @@ bool Town1::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		//Load Map
-		app->map->Load("town_1.tmx");
+		app->map->Load("town_1_64.tmx");
 
 		// Load music
-		app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
+		app->audio->StopMusic(1.0f);
 
 		//Enable Player & map
 		app->menu->Enable();
+		app->inventory->Enable();
 		app->entities->Enable();
 		app->map->Enable();
 		app->fonts->Enable();
@@ -56,18 +59,15 @@ bool Town1::Start()
 	
 		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(2700), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(2900), PIXELS_TO_METERS(1000),
-				PIXELS_TO_METERS(3000), PIXELS_TO_METERS(1000), PIXELS_TO_METERS(3100), PIXELS_TO_METERS(1000));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(5504), PIXELS_TO_METERS(1984));
 		}
 		else if (app->frontground->move_to == MOVE_TO::OUTSIDE_TOWN1 == true)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(800), PIXELS_TO_METERS(300), PIXELS_TO_METERS(800), PIXELS_TO_METERS(100),
-				PIXELS_TO_METERS(800), PIXELS_TO_METERS(0), PIXELS_TO_METERS(800), PIXELS_TO_METERS(0));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1568), PIXELS_TO_METERS(704));
 		}
 		else if (app->frontground->move_to == MOVE_TO::SCENE_TOWN1)
 		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(800), PIXELS_TO_METERS(950), PIXELS_TO_METERS(750), PIXELS_TO_METERS(950),
-				PIXELS_TO_METERS(700), PIXELS_TO_METERS(950), PIXELS_TO_METERS(650), PIXELS_TO_METERS(950));
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1600), PIXELS_TO_METERS(1800));
 		}
 
 		int w, h;
@@ -91,7 +91,10 @@ bool Town1::Start()
 // Called each loop iteration
 bool Town1::PreUpdate()
 {
-
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
+	}
 	return true;
 }
 
@@ -100,18 +103,6 @@ bool Town1::Update(float dt)
 {
 	// Draw map
 	app->map->Draw();
-
-	//testing
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	{
-		ENEMIES enemies[4];
-		enemies[0] = ENEMIES::MUSHROOM;
-		enemies[1] = ENEMIES::MUSHROOM;
-		enemies[2] = ENEMIES::MUSHROOM;
-		enemies[3] = ENEMIES::MUSHROOM;
-		app->frontground->move_to = MOVE_TO::TOWN1_COMBAT;
-		app->frontground->FadeInCombat(enemies);
-	}
 
 	return true;
 }
@@ -132,6 +123,7 @@ bool Town1::CleanUp()
 	app->dialog->Disable();
 	app->map->Disable();
 	app->entities->Disable();
+	app->inventory->Disable();
 	app->menu->Disable();
 
 	// clean textures

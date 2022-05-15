@@ -39,12 +39,15 @@ bool Scene::Start()
 {
 	if (this->Enabled() && !this->Disabled())
 	{
+		app->fonts->Enable();
+
 		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
 
 		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
 
-		app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+		//app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+		app->audio->StopMusic(1.0f);
 
 		if (!app->menu->Enabled())
 		{
@@ -58,6 +61,11 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+	if (!app->audio->MusicPlaying())
+	{
+		app->audio->PlayMusic("Assets/audio/music/menu.ogg");
+	}
+
 	return true;
 }
 
@@ -135,6 +143,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	
+	app->fonts->Disable();
 	app->menu->Disable();
 
 	// clean textures

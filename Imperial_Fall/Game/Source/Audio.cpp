@@ -135,7 +135,7 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 			}
 		}
 	}
-
+	
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -192,4 +192,20 @@ void Audio::SetFX(int volume)
 	{
 		Mix_VolumeChunk(fx.At(i)->data, volume);
 	}
+}
+
+void Audio::StopMusic(float fade_time)
+{
+	if (music != NULL)
+	{
+		Mix_FadeOutMusic(int(fade_time * 1000.0f));
+
+		Mix_FreeMusic(music);
+		music = NULL;
+	}
+}
+
+bool Audio::MusicPlaying()
+{
+	return Mix_PlayingMusic();
 }
