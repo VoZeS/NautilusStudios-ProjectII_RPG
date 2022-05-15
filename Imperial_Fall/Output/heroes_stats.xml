@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <heroes_stats>
 	<items_stored>
-		<equiped item0="1" item1="-1" item2="-1" item3="-1" />
+		<equiped item0="4" item1="6" item2="5" item3="1" />
 	</items_stored>
 	<assassin>
 		<basic_stats health="70" mana="50" speed="50" power="65" />

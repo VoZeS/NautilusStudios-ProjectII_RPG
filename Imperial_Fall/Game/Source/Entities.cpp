@@ -501,7 +501,8 @@ void Entities::StartCombat()
 
 		if ((entity->entity_type == ENTITY_TYPE::W_TEMPLAR || entity->entity_type == ENTITY_TYPE::MUSHROOM
 			|| entity->entity_type == ENTITY_TYPE::GOBLIN || entity->entity_type == ENTITY_TYPE::SKELETON
-			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR)
+			|| entity->entity_type == ENTITY_TYPE::R_TEMPLAR || entity->entity_type == ENTITY_TYPE::A_TEMPLAR
+			|| entity->entity_type == ENTITY_TYPE::THESEION)
 			&& (GetPlayer()->GetPlayerPosition().DistanceTo(entity->position) < max))
 		{
 			combat_entity = entity;
