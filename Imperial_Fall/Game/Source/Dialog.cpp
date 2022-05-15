@@ -10,7 +10,6 @@
 #include "Physics.h"
 #include "Frontground.h"
 #include "Dialog.h"
-#include "Outside_Castle.h"
 #include "Entities.h"
 
 #include "Defs.h"
@@ -26,10 +25,6 @@ Dialog::Dialog(bool enabled) : Module(enabled)
 	idle_e.PushBack({ 0, 0, 128, 136 });
 	idle_e.PushBack({ 128, 0, 128, 136 });
 	idle_e.speed = 0.05f;
-
-	idle_e_lever.PushBack({ 0, 0, 94, 64 });
-	idle_e_lever.PushBack({ 95, 0, 94, 64 });
-	idle_e_lever.speed = 0.05f;
 }
 
 // Destructor
@@ -50,9 +45,7 @@ bool Dialog::Start()
 	whitemark_300x80 = app->tex->Load("Assets/textures/300x80_whitemark.png");
 
 	press_e = app->tex->Load("Assets/textures/Boton_E.png");
-	press_e_lever = app->tex->Load("Assets/textures/Boton_E_Lever.png");
 	anim = &idle_e;
-	anime_lever = &idle_e_lever;
 
 	LoadDialog();
 	letter_fx = app->audio->LoadFx("Assets/audio/fx/letter.wav");
@@ -987,15 +980,7 @@ bool Dialog::Update(float dt)
 
 	if (!press_e_hide)
 	{
-		if (app->physics->inLever1 || app->physics->inLever2)
-		{
-			anime_lever->Update();
-		}
-		else
-		{
-			anim->Update();
-
-		}
+		anim->Update();
 	}
 
 	return true;
@@ -1257,20 +1242,10 @@ bool Dialog::PostUpdate()
 	}
 
 	SDL_Rect rect = anim->GetCurrentFrame();
-	SDL_Rect rect_lever = anime_lever->GetCurrentFrame();
 
 	if (!press_e_hide)
 	{
-		if (app->physics->inLever1 || app->physics->inLever2)
-		{
-			app->render->DrawTexture(press_e_lever, c_x + 1110, c_y + 650, &rect_lever);
-
-		}
-		else
-		{
-			app->render->DrawTexture(press_e, c_x + 1110, c_y + 550, &rect);
-
-		}
+		app->render->DrawTexture(press_e, c_x + 1110, c_y + 550, &rect);
 	}
 
 	return true;

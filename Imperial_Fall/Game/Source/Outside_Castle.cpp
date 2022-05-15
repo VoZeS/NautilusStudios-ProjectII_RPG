@@ -89,10 +89,6 @@ bool Outside_Castle::Start()
 		{
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
 		}
-		else if (app->frontground->move_to == MOVE_TO::SCENE_OUTSIDE == true)
-		{
-			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300));
-		}
 
 		int w, h;
 		uchar* data = NULL;
@@ -111,13 +107,12 @@ bool Outside_Castle::Start()
 		leverText = app->tex->Load("Assets/textures/lever.png");
 		doorText = app->tex->Load("Assets/textures/Puertas.png");
 
+		currentAnimL1 = &lever1Anim;
+		currentAnimL2 = &lever2Anim;
+		currentAnimDoor = &doorOpenAnim;
 
 	}
 
-
-	currentAnimL1 = &lever1Anim;
-	currentAnimL2 = &lever2Anim;
-	currentAnimDoor = &doorOpenAnim;
 
 	return true;
 }

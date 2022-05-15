@@ -172,12 +172,9 @@ private:
 	SDL_Texture* whitemark_1200x140 = NULL;
 
 	SDL_Texture* press_e;
-	SDL_Texture* press_e_lever;
 	bool press_e_hide = true;
 	Animation* anim = NULL;
-	Animation* anime_lever = NULL;
 	Animation idle_e;
-	Animation idle_e_lever;
 
 	bool ContinueDialog(int& actual_text, int max_text);
 
