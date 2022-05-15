@@ -114,7 +114,6 @@
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\End_Combat_Scene.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -126,11 +125,5 @@
     <Filter Include="External\PugiXml">
       <UniqueIdentifier>{2855ff7f-53a1-413d-a75b-18b4ade921dd}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Game.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\Ejecutable_Logo.png" />
   </ItemGroup>
 </Project>
