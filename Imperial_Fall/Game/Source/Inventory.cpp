@@ -4289,9 +4289,10 @@ void Inventory::DisplayCoins()
 		s = std::to_string(coins);
 	}
 	
-	app->fonts->BlitCombatText(1070 + cx, 20 + cy, app->fonts->textFont2, s.c_str());
-	app->render->DrawTexture(coin, 1150 + cx, 4 + cy);
+	app->render->DrawTexture(coin, 1090 + cx, cy);
 
+	app->fonts->BlitCombatText(1130 + cx, 20 + cy, app->fonts->textFont2, s.c_str());
+	
 	
 
 	if (coins_obtained != 0)
