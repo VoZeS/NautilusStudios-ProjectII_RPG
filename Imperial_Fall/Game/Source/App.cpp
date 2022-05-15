@@ -259,7 +259,14 @@ void App::FinishUpdate()
 		SDL_Delay(delay);
 	}
 
-	app->win->SetTitle(title);
+	if (physics->debug)
+	{
+		app->win->SetTitle(title);
+	}
+	else
+	{
+		app->win->SetTitle(configApp.child("title").child_value());
+	}
 
 	maxFrameRate = FPS;
 }

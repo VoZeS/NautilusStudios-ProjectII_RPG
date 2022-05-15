@@ -2,7 +2,7 @@
 <!-- L01: DONE 1: Create configuration file-->
 <config>
   <app>
-    <title>Game Development Testbed</title>
+    <title>Imperial Fall</title>
     <organization>UPC</organization>
     <frame_rate fps="16"/>
   </app>
