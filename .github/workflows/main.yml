@@ -31,6 +31,8 @@ jobs:
 
     - name: Setup Environment
       run: | 
+        dir
+        mkdir build
         cd build
         mkdir $
         cd ../../NautilusStudios-ProjectII_RPG
