@@ -10,7 +10,7 @@
 	</renderer>
 	<entities>
 		<player>
-			<position x="22" y="4" />
+			<position x="20" y="26" />
 			<comp0 x="15.8" y="20.0" />
 			<comp1 x="15.6" y="20.0" />
 			<comp2 x="15.4" y="20.0" />
