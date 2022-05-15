@@ -63,6 +63,25 @@ bool Map::Start()
 		books2_index = 0;
 		books3_index = 0;
 
+		S1_Coll = NULL;
+		S2_Coll = NULL;
+		S3_Coll = NULL;
+		S4_Coll = NULL;
+		S5_Coll = NULL;
+		S6_Coll = NULL;
+
+		S1_Sens = NULL;
+		S2_Sens = NULL;
+		S3_Sens = NULL;
+		S4_Sens = NULL;
+		S5_Sens = NULL;
+		S6_Sens = NULL;
+
+		S1_Box = NULL;
+		S2_Box = NULL;
+		S3_Box = NULL;
+		S4_Box = NULL;
+
 		doorCastle = NULL;
 	}
 
@@ -514,7 +533,7 @@ void Map::Draw()
 							const char* c1 = t1.c_str();
 
 							std::string p2 = "picked";
-							std::string s2 = std::to_string(books1_index);
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
 							std::string t2 = p2 + s2;
 							const char* c2 = t2.c_str();
 
@@ -547,7 +566,7 @@ void Map::Draw()
 							const char* c1 = t1.c_str();
 
 							std::string p2 = "picked";
-							std::string s2 = std::to_string(books2_index);
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
 							std::string t2 = p2 + s2;
 							const char* c2 = t2.c_str();
 
@@ -580,7 +599,7 @@ void Map::Draw()
 							const char* c1 = t1.c_str();
 
 							std::string p2 = "picked";
-							std::string s2 = std::to_string(books3_index);
+							std::string s2 = std::to_string(mapLayerItem->data->properties.GetProperty("Index"));
 							std::string t2 = p2 + s2;
 							const char* c2 = t2.c_str();
 
