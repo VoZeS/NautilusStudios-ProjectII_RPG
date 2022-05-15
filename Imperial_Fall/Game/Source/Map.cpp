@@ -62,6 +62,8 @@ bool Map::Start()
 		books1_index = 0;
 		books2_index = 0;
 		books3_index = 0;
+
+		doorCastle = NULL;
 	}
 
 	return true;

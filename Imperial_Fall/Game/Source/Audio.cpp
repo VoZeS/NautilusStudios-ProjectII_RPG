@@ -201,6 +201,7 @@ void Audio::StopMusic(float fade_time)
 		Mix_FadeOutMusic(int(fade_time * 1000.0f));
 
 		Mix_FreeMusic(music);
+		music = NULL;
 	}
 }
 
