@@ -293,6 +293,7 @@ b2Fixture* Physics::CreateMapBox(int x, int y, int w, int h, int collision)
 	else if (collision == 12) fixture.isSensor = true;
 	else if (collision == 21) fixture.isSensor = true;
 	else if (collision == 30) fixture.isSensor = true;
+	else if (collision == 99) fixture.isSensor = true;
 
 	// SOUKOBAN PUZZLE SENSORS
 	else if (collision == 201) fixture.isSensor = true;
@@ -491,6 +492,14 @@ void Physics::BeginContact(b2Contact* contact)
 			app->dungeon->in_ice++;
 		}
 
+		if ((int)fixtureUserDataB == 99)
+		{
+			//spike sensor-------------------------------------------------------------
+			app->dungeon->tp = true;
+			
+
+			
+		}
 		if ((int)fixtureUserDataB == 2)
 		{
 			// renato contact
@@ -679,9 +688,14 @@ void Physics::BeginContact(b2Contact* contact)
 		{
 			//dungeon sensor
 			app->dungeon->in_ice++;
-
-
 		}
+		if ((int)fixtureUserDataA == 99)
+		{
+			//spike sensor-------------------------------------------------------------
+			app->dungeon->tp = true;
+		}
+
+		
 		if ((int)fixtureUserDataA == 2)
 		{
 			// renato contact

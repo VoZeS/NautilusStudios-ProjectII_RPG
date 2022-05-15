@@ -153,6 +153,12 @@ void Map::Draw()
 							// dungeon ice sensor
 							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 30);
 						}
+						if (mapLayerItem->data->properties.GetProperty("Collision") == 99 && app->dungeon->Enabled())
+						{
+							// dungeon spike sensor
+							app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 99);
+						}
+
 						if (mapLayerItem->data->properties.GetProperty("Collision") == 1)
 						{
 							// collision ground

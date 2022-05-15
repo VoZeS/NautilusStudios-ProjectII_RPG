@@ -95,7 +95,6 @@ bool Town1::PreUpdate()
 	{
 		app->audio->PlayMusic("Assets/audio/music/zone1.ogg");
 	}
-
 	return true;
 }
 

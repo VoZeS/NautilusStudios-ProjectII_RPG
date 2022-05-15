@@ -90,6 +90,10 @@ public:
 	Animation walkAnimD;
 	Animation walkAnimL;
 	Animation walkAnimR;
+	Animation iceU;
+	Animation iceD;
+	Animation iceL;
+	Animation iceR;
 	/*
 	// c0 Animations
 	Animation c0_idleAnimU;

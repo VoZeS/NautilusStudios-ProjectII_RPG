@@ -62,6 +62,7 @@ bool Dungeon::Start()
 
 		int w, h;
 		uchar* data = NULL;
+		tp = false;
 
 		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
 
@@ -89,6 +90,11 @@ bool Dungeon::PreUpdate()
 		app->audio->PlayMusic("Assets/audio/music/zone3.ogg");
 	}
 
+	if (tp)
+	{
+		app->entities->GetPlayer()->SetPlayerPosition(PIXELS_TO_METERS(1100), PIXELS_TO_METERS(200));
+		tp = false;
+	}
 	return true;
 }
 

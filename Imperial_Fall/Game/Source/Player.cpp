@@ -56,6 +56,22 @@ Player::Player() : Entity()
 	walkAnimR.PushBack({ 65, 159, 50, 74 });
 	walkAnimR.PushBack({ 125, 159, 50, 74 });
 	walkAnimR.speed = 0.1f;
+
+	//Ice animations
+	iceU.PushBack({ 65, 240, 50, 74 });
+	iceU.loop = false;
+
+	iceD.PushBack({ 65, 0, 50, 74 });
+	iceD.loop = false;
+
+	iceL.PushBack({ 65, 80, 50, 74 });
+	iceL.loop = false;
+
+	iceR.PushBack({ 65, 159, 50, 74 });
+	iceR.loop = false;
+
+
+
 	/*
 	// c0 idle animation
 	c0_idleAnimD.PushBack({ 5, 2, 50, 72 });
@@ -357,10 +373,10 @@ void Player::HandleInput(float dt)
 									body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
 									look_dir = 0;
 
-									if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)
+									if (currentAnimation != &iceU && body->GetLinearVelocity().x == 0)
 									{
-										walkAnimU.Reset();
-										currentAnimation = &walkAnimU;
+										iceU.Reset();
+										currentAnimation = &iceU;
 									}
 								}
 
@@ -370,10 +386,10 @@ void Player::HandleInput(float dt)
 									body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed * 2 });
 									look_dir = 1;
 
-									if (currentAnimation != &walkAnimD && body->GetLinearVelocity().x == 0)
+									if (currentAnimation != &iceD && body->GetLinearVelocity().x == 0)
 									{
-										walkAnimD.Reset();
-										currentAnimation = &walkAnimD;
+										iceD.Reset();
+										currentAnimation = &iceD;
 									}
 								}
 						}
@@ -390,10 +406,10 @@ void Player::HandleInput(float dt)
 									body->SetLinearVelocity({ -fixedSpeed * 2, body->GetLinearVelocity().y });
 									look_dir = 2;
 
-									if (currentAnimation != &walkAnimL)
+									if (currentAnimation != &iceL)
 									{
-										walkAnimL.Reset();
-										currentAnimation = &walkAnimL;
+										iceL.Reset();
+										currentAnimation = &iceL;
 									}
 								}
 
@@ -403,10 +419,10 @@ void Player::HandleInput(float dt)
 									body->SetLinearVelocity({ fixedSpeed * 2, body->GetLinearVelocity().y });
 									look_dir = 3;
 
-									if (currentAnimation != &walkAnimR)
+									if (currentAnimation != &iceR)
 									{
-										walkAnimR.Reset();
-										currentAnimation = &walkAnimR;
+										iceR.Reset();
+										currentAnimation = &iceR;
 									}
 								}
 						}
@@ -730,9 +746,54 @@ void Player::HandleInput(float dt)
 // Called each loop iteration
 bool Player::Update(float dt)
 {
-	/*if (player_enabled)
+	if (player_enabled)
 	{
-		FollowPlayer(c0, c0, dt);
+		if (app->dungeon->Enabled() && app->dungeon->in_ice > 0)
+		{
+			float fixedSpeed = speed * dt;
+			if (body->GetLinearVelocity().x > fixedSpeed-1 && body->GetLinearVelocity().y==0)
+			{
+				body->SetLinearVelocity({fixedSpeed*2, body->GetLinearVelocity().y});
+
+				if (currentAnimation != &iceR)
+				{
+					iceR.Reset();
+					currentAnimation = &iceR;
+				}
+			}
+			else if (body->GetLinearVelocity().x < -fixedSpeed + 1 && body->GetLinearVelocity().y == 0)
+			{
+				body->SetLinearVelocity({ -fixedSpeed * 2, body->GetLinearVelocity().y });
+
+				if (currentAnimation != &iceL)
+				{
+					iceL.Reset();
+					currentAnimation = &iceL;
+				}
+			}
+			else if (body->GetLinearVelocity().y < -fixedSpeed + 1 && body->GetLinearVelocity().x == 0)
+			{
+				body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2});
+
+				if (currentAnimation != &iceU)
+				{
+					iceU.Reset();
+					currentAnimation = &iceU;
+				}
+			}
+			else if (body->GetLinearVelocity().y > fixedSpeed - 1 && body->GetLinearVelocity().x == 0)
+			{
+				body->SetLinearVelocity({ body->GetLinearVelocity().x, fixedSpeed * 2 });
+
+				if (currentAnimation != &iceD)
+				{
+					iceD.Reset();
+					currentAnimation = &iceD;
+				}
+			}
+		}
+		
+		/*FollowPlayer(c0, c0, dt);
 		FollowPlayer(c1, c0, dt);
 		FollowPlayer(c2, c1, dt);
 
@@ -974,8 +1035,8 @@ bool Player::Update(float dt)
 			}
 		}
 
-		c2.currentAnimation->Update();
-	}*/
+		c2.currentAnimation->Update();*/
+	}
 
 	return true;
 }
@@ -1096,7 +1157,7 @@ void Player::SetPlayerPosition(int new_x, int new_y)
 	position.y = new_y;
 
 	body->SetTransform({ position.x, position.y }, body->GetAngle());
-	body->ApplyForceToCenter({ 0, 1 }, true);
+	
 }
 
 /*void Player::SetCompanion0Position(int new_x, int new_y)

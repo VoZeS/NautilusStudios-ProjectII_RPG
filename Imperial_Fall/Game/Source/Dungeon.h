@@ -36,6 +36,7 @@ public:
 
 public:
 	int in_ice = 0;
+	bool tp = false;
 
 };
 
