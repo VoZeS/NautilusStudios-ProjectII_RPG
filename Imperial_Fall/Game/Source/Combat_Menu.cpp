@@ -2659,13 +2659,18 @@ void Combat_Menu::DisplaySkillEffects(Skill skill, int cx, int cy)
 		app->fonts->BlitCombatText(cx + 33, cy + ((64 + 25) * i) + 32, app->fonts->textFont2, res);
 	}
 }
+
 int Combat_Menu::GetItemByName(const char* skill_name)
 {
-	if (skill_name == "HP Potion")
+	if (skill_name == NULL)
+	{
+		return -1;
+	}
+	else if (!std::strcmp(skill_name, "HP Potion"))
 	{
 		return 0;
 	}
-	else if (skill_name == "MP Potion")
+	else if (!std::strcmp(skill_name, "MP Potion"))
 	{
 		return 1;
 	}

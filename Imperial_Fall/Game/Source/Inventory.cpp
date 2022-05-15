@@ -12,6 +12,7 @@
 #include "Combat_Manager.h"
 #include "Defs.h"
 #include "Log.h"
+#include "Dialog.h"
 
 Inventory::Inventory(bool enabled) : Module(enabled)
 {
@@ -1584,7 +1585,11 @@ bool Inventory::PostUpdate()
 	}
 	else
 	{
-	app->render->DrawTexture(inventory, cx+5, 600 + cy);
+		if (!app->dialog->inDialog && !app->menu->paused)
+		{
+			app->render->DrawTexture(inventory, cx + 5, 600 + cy);
+		}
+		
 		DisplayCoins();
 	}
 

@@ -439,7 +439,7 @@ void Player::HandleInput(float dt)
 						//move up
 							if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 							{
-								body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed * 2 });
+								body->SetLinearVelocity({ body->GetLinearVelocity().x, -fixedSpeed });
 								look_dir = 0;
 
 								if (currentAnimation != &walkAnimU && body->GetLinearVelocity().x == 0)

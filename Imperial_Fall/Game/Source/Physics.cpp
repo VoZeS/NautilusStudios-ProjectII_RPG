@@ -90,6 +90,35 @@ bool Physics::Update(float dt)
 		debug = !debug;
 	}
 
+	for (size_t i = 0; i < MAX_BOOKS; i++)
+	{
+		SDL_Rect rect = { 256, 0, 64, 64 };
+		if (books_in_floor0[i].alive)
+		{
+			rect = { 0, 0, 64, 64 };
+
+			app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().y - 32.0f), &rect);
+		}
+		if (books_in_floor1[i].alive)
+		{
+			rect = { 64, 0, 64, 64 };
+
+			app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().y - 32.0f), &rect);
+		}
+		if (books_in_floor2[i].alive)
+		{
+			rect = { 128, 0, 64, 64 };
+
+			app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().y - 32.0f), &rect);
+		}
+		if (books_in_floor3[i].alive)
+		{
+			rect = { 192, 0, 64, 64 };
+
+			app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().y - 32.0f), &rect);
+		}
+	}
+
 	return true;
 }
 
@@ -116,34 +145,6 @@ bool Physics::PostUpdate()
 			{
 				app->render->AddrenderObject(app->inventory->misc, { METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().y - 32.0f) }, rect, 1, 1.0f, 0.0f);
 				//app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().x) - 32, METERS_TO_PIXELS(coins_in_floor[i].body->GetPosition().y) - 32, &rect);
-			}
-		}
-
-		for (size_t i = 0; i < MAX_BOOKS; i++)
-		{
-			if (books_in_floor0[i].alive)
-			{
-				rect = { 0, 0, 64, 64 };
-
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor0[i].body->GetPosition().y - 32.0f), &rect);
-			}
-			if (books_in_floor1[i].alive)
-			{
-				rect = { 64, 0, 64, 64 };
-
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor1[i].body->GetPosition().y - 32.0f), &rect);
-			}
-			if (books_in_floor2[i].alive)
-			{
-				rect = { 128, 0, 64, 64 };
-
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor2[i].body->GetPosition().y - 32.0f), &rect);
-			}
-			if (books_in_floor3[i].alive)
-			{
-				rect = { 192, 0, 64, 64 };
-
-				app->render->DrawTexture(app->inventory->misc, METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().x - 32.0f), METERS_TO_PIXELS(books_in_floor3[i].body->GetPosition().y - 32.0f), &rect);
 			}
 		}
 	}

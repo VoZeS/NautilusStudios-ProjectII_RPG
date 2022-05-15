@@ -26,6 +26,7 @@
   * Shift + 5: Go to the dungeon
   * Shift + 6: Go to the outside castle
   * Shift + 7: Go to the inside castle
+  * F2 Unlock All items
   * F5 Save the current game state
   * F6 Load the previous game state
   * F9 Enable hitbox vision
