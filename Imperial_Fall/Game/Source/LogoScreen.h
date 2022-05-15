@@ -29,6 +29,8 @@ public:
 	// Performs the render call of all the parts of the scene's background
 	bool PostUpdate() override;
 
+	bool CleanUp();
+
 private:
 	// Members Texture
 	SDL_Texture* logo;
@@ -37,6 +39,9 @@ private:
 	SDL_Rect logoRect;
 
 	Timer logoTimer;
+
+	Animation* currentAnim = NULL;
+	Animation logo_anim;
 };
 
 #endif //__MODULE_LOGOSCREEN_H__
