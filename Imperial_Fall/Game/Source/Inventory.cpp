@@ -4460,7 +4460,6 @@ void Inventory::AddXP(int owner, int amount)
 				lvl++;
 			} while (exp_stored >= 100);
 			xp.set_value(exp_stored);
-			AddSkillPoint(owner, skill_point);
 		}
 	}
 	else if (amount < 0)
@@ -4477,4 +4476,5 @@ void Inventory::AddXP(int owner, int amount)
 
 	saveGame.child("objects").child(s).child("experience").attribute("level").set_value(lvl);
 	saveGame.save_file(UNLOCKABLE_OBJECTS_FILENAME);
+	AddSkillPoint(owner, skill_point);
 }

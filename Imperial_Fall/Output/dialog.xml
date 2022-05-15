@@ -7,7 +7,7 @@
 		<text3 linea1="Lo que si se es donde podeis encontrar a sus lacayos." linea2="Estan acampando en el bosque al sur este del pueblo." />
 		<text4 linea1="Cuando los derroteis, traedme sus cruces templarias." linea2="Recordad, estan al Sur Este del poblado." />
 		<text5 linea1="Buen trabajo! Aqui teneis un pequeno regalo a cambio." linea2="Ahora, vamos a lo importante." />
-		<text6 linea1="Normalmente, los templarios suelen ocultar" linea2="información importante en el interior de sus cruces." />
+		<text6 linea1="Normalmente, los templarios suelen ocultar" linea2="informacion importante en el interior de sus cruces." />
 		<text7 linea1="Efectivamente, aqui esta el mensaje de su superior. Segun" linea2="esto, el Suboficial se encuentra en el campo de batalla." />
 		<text8 linea1="Id a matarlo y volved a informarme." />
 		<text9 linea1="Bien hecho. Aqui teneis vuestra recompensa." linea2="Esto os ayudara para vuestros futuros combates." />
@@ -21,10 +21,10 @@
 		<text17 linea1="A que esperais? Id a por Thesion." />
 	</renato>
 	<herrero>
-		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado" />
+		<text1 linea1="Buenos dias! Si quieres armas," linea2="habeis venido al lugar indicado." />
 	</herrero>
 	<sabio>
-		<text1 linea1="Hola! Ahora mismo estamos sin existencias." linea2="Volved mas adelante." />
+		<text1 linea1="Hola! Pasad." linea2="No os arrepentireis." />
 	</sabio>
 	<medico>
 		<text1 linea1="Saludos! Quereis comprar algunas pociones?" linea2="Estan a buen precio!" />
