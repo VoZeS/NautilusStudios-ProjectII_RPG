@@ -128,6 +128,7 @@
     <ClCompile Include="Source\Town1.cpp" />
     <ClCompile Include="Source\Town2.cpp" />
     <ClCompile Include="Source\Window.cpp" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Battlefield.h" />
     <ClInclude Include="Source\Combat_Entities.h" />
@@ -178,6 +179,12 @@
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp" />
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Ejecutable_Logo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
