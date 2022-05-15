@@ -249,7 +249,7 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::SCENE_OUTSIDE: app->outside->Enable(); app->menu->InitPlayer();
 		break;
-	case MOVE_TO::SCENE_INSIDE: app->town1->Enable(); app->menu->InitPlayer();
+	case MOVE_TO::SCENE_INSIDE: app->inside->Enable(); app->menu->InitPlayer();
 		break;
 	case MOVE_TO::TOWN1_SCENE: app->scene->Enable(); app->menu->started = false;
 		break;

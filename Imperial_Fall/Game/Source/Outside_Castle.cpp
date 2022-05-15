@@ -89,6 +89,10 @@ bool Outside_Castle::Start()
 		{
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(300));
 		}
+		else if (app->frontground->move_to == MOVE_TO::SCENE_OUTSIDE == true)
+		{
+			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(1000), PIXELS_TO_METERS(1300));
+		}
 
 		int w, h;
 		uchar* data = NULL;
