@@ -187,7 +187,7 @@ void Map::Draw()
 
 						}
 						// -------------------------------------------------------------------------- DOOR CASTLE
-						else if (mapLayerItem->data->properties.GetProperty("Collision") == 40)
+						else if (mapLayerItem->data->properties.GetProperty("Collision") == 40 && (!app->outside->lever1Active || !app->outside->lever2Active))
 						{
 							// collision door castle
 							doorCastle = app->physics->CreateMapBox(pos.x + ((r.w * width) / 2), pos.y + ((r.h * height) / 2), (r.w * width) / 2, (r.h * height) / 2, 40);

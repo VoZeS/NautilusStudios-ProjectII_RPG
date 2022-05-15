@@ -404,7 +404,7 @@ bool Physics::CreateMiscelanea(int x, int y, int w, int h, int collision, int bo
 		lever[1].body = world->CreateBody(&g);
 		lever[1].number = 1;
 		lever[1].alive = true;
-		lever[1].misc_type = 5;
+		lever[1].misc_type = 6;
 	}
 
 	b2PolygonShape box;
