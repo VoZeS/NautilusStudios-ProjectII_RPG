@@ -35,7 +35,7 @@ jobs:
         mkdir build
         cd build
         mkdir $
-        cd ../../TheBulletRace
+        cd ../../NautilusStudios-ProjectII_RPG
         dir
       
     - name: Generate Artifacts
