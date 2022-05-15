@@ -18,38 +18,24 @@ LogoScreen::LogoScreen(bool enabled) : Module(enabled)
 	logo_anim.PushBack({ 2560, 0, 1280, 720 });
 	logo_anim.PushBack({ 3840, 0, 1280, 720 });
 	logo_anim.PushBack({ 5120, 0, 1280, 720 });
-	logo_anim.PushBack({ 6400, 0, 1280, 720 });
 	logo_anim.PushBack({ 0, 720, 1280, 720 });
 	logo_anim.PushBack({ 1280, 720, 1280, 720 });
 	logo_anim.PushBack({ 2560, 720, 1280, 720 });
 	logo_anim.PushBack({ 3840, 720, 1280, 720 });
 	logo_anim.PushBack({ 5120, 720, 1280, 720 });
-	logo_anim.PushBack({ 6400, 720, 1280, 720 });
 	logo_anim.PushBack({ 0, 0, 1280, 720 });
 	logo_anim.PushBack({ 1280, 1440, 1280, 720 });
 	logo_anim.PushBack({ 2560, 1440, 1280, 720 });
 	logo_anim.PushBack({ 3840, 1440, 1280, 720 });
 	logo_anim.PushBack({ 5120, 1440, 1280, 720 });
-	logo_anim.PushBack({ 6400, 1440, 1280, 720 });
 	logo_anim.PushBack({ 0, 2160, 1280, 720 });
 	logo_anim.PushBack({ 1280, 2160, 1280, 720 });
 	logo_anim.PushBack({ 2560, 2160, 1280, 720 });
 	logo_anim.PushBack({ 3840, 2160, 1280, 720 });
-	logo_anim.PushBack({ 5120, 2160, 1280, 720 });
-	logo_anim.PushBack({ 6400, 2160, 1280, 720 });
-	logo_anim.PushBack({ 0, 2880, 1280, 720 });
-	logo_anim.PushBack({ 1280, 2880, 1280, 720 });
-	logo_anim.PushBack({ 2560, 2880, 1280, 720 });
-	logo_anim.PushBack({ 3840, 2880, 1280, 720 });
-	logo_anim.PushBack({ 5120, 2880, 1280, 720 });
-	logo_anim.PushBack({ 6400, 2880, 1280, 720 });
-	logo_anim.PushBack({ 0, 0, 1280, 720 });
-	logo_anim.PushBack({ 1280, 3600, 1280, 720 });
-	logo_anim.PushBack({ 2560, 3600, 1280, 720 });
-	logo_anim.PushBack({ 3840, 3600, 1280, 720 });
-	logo_anim.PushBack({ 5120, 3600, 1280, 720 });
-	logo_anim.PushBack({ 6400, 3600, 1280, 720 });
-	logo_anim.speed = 0.03f;
+	logo_anim.PushBack({ 3840, 2160, 1280, 720 });
+	logo_anim.PushBack({ 3840, 2160, 1280, 720 });
+	logo_anim.PushBack({ 3840, 2160, 1280, 720 });
+	logo_anim.speed = 0.2f;
 	logo_anim.loop = false;
 }
 
@@ -120,9 +106,9 @@ bool LogoScreen::Update(float dt)
 bool LogoScreen::PostUpdate()
 {
 	SDL_Rect r = currentAnim->GetCurrentFrame();
-	app->render->DrawRectangle(backgroundLogo, 84, 133, 255, 255);
+	//app->render->DrawRectangle(backgroundLogo, 84, 133, 255, 255);
 	//app->render->DrawTexture(logo, logoRect.x, logoRect.y, false, NULL);
-	app->render->DrawTexture(logo, logoRect.x, logoRect.y, &r);
+	app->render->DrawTexture(logo, 0, 0, &r);
 
 	return true;
 }
