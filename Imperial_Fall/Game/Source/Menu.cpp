@@ -1137,6 +1137,7 @@ bool Menu::Update(float dt)
 						app->dialog->ResetShop();
 						app->dialog->ResetDialogs();
 						app->dialog->SaveRenatoDialog();
+						app->frontground->SetFirstTime(false);
 					}
 					else if (!app->frontground->first_time)
 					{
