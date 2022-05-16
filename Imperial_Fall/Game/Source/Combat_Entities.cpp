@@ -1525,7 +1525,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Piercing Slash";
-			skill.skill_description0 = "Low damage to a single target, this tactical attack ignores the enemy shield.";
+			skill.skill_description0 = "Low damage to a single target, this tactical attack";
+			skill.skill_description0 = "ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;
