@@ -1878,10 +1878,17 @@ bool Menu::PostUpdate()
 			app->fonts->BlitCombatText(320 + c_x, 350 + c_y, app->fonts->textFont3, p_siting.c_str());
 		}
 
-		//---------------------------------------------------------HUD PAUSE---------------------------------------------
+		//---------------------------------------------------------Menu Settings Inicio---------------------------------------------
 		if (settings)
 		{
+			
 			int w;
+			if (c_y_corre >= 0.0f) {
+				
+			}
+			else
+			c_y_corre += 50.0f;
+		
 			if (!app->frontground->controller)
 			{
 				app->input->GetMousePosition(z1, w);
@@ -1891,16 +1898,16 @@ bool Menu::PostUpdate()
 			for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
 			{
 				settings_buttons[0].rect.x = c_x + 20;
-				settings_buttons[0].rect.y = c_y + 200;
+				settings_buttons[0].rect.y = c_y + 200+ c_y_corre;
 
 				settings_buttons[1].rect.x = c_x + 20;
-				settings_buttons[1].rect.y = c_y + 320;
+				settings_buttons[1].rect.y = c_y + 320 + c_y_corre;
 
 				settings_buttons[2].rect.x = c_x + 20;
-				settings_buttons[2].rect.y = c_y + 400;
+				settings_buttons[2].rect.y = c_y + 400 + c_y_corre;
 
 				settings_buttons[3].rect.x = c_x + 20;
-				settings_buttons[3].rect.y = c_y + 500;
+				settings_buttons[3].rect.y = c_y + 500 + c_y_corre;
 
 				app->render->DrawTexture(settings_buttons[0].alt_tex2, settings_buttons[0].rect.x + 10, settings_buttons[0].rect.y - 40);
 				app->render->DrawTexture(settings_buttons[1].alt_tex2, settings_buttons[1].rect.x + 10, settings_buttons[1].rect.y - 40);
@@ -2051,6 +2058,8 @@ bool Menu::PostUpdate()
 
 			}
 		}
+else
+c_y_corre = -700.0f;
 	}
 
 	SDL_Rect rect;

@@ -45,6 +45,7 @@ bool Scene::Start()
 
 		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
+	
 
 		//app->audio->PlayMusic("Assets/audio/music/menu.ogg");
 		app->audio->StopMusic(1.0f);
@@ -126,7 +127,10 @@ bool Scene::PostUpdate()
 	//-------------------Settings
 	if (app->menu->settings == true)
 	{
-		app->render->DrawTexture(settings_screen, c_x, c_y);
+		
+		app->render->DrawTexture(start_screen, c_x, c_y - 700);
+		app->render->DrawRectangle(app->menu->r, 0, 0, 0, 200);
+		app->render->DrawTexture(settings_screen, c_x, app->menu->c_y_corre);
 	}
 	
 	//Segunda Pantalla Menu
