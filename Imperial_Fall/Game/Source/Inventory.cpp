@@ -270,7 +270,9 @@ bool Inventory::Start()
 bool Inventory::PreUpdate()
 {
 	int x, y;
-	app->input->GetMousePosition(x, y);
+	x = app->frontground->c_mouse_pos.x;
+	y = app->frontground->c_mouse_pos.y;
+	//app->input->GetMousePosition(x, y);
 
 	float cx = -app->render->camera.x;
 	float cy = -app->render->camera.y;

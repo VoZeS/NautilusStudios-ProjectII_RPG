@@ -340,49 +340,51 @@ bool Combat_Menu::PreUpdate()
 	if (!app->menu->GetGameState() && allies_turn && !app->menu->scape && !in_description)
 	{
 		int x, y;
-			app->input->GetMousePosition(x, y);
-			float cx = -app->render->camera.x;
-			float cy = -app->render->camera.y;
+		x = app->frontground->c_mouse_pos.x;
+		y = app->frontground->c_mouse_pos.y;
+		//app->input->GetMousePosition(x, y);
+		float cx = -app->render->camera.x;
+		float cy = -app->render->camera.y;
 
-			if (!in_items && !in_enemies && !in_allies)
+		if (!in_items && !in_enemies && !in_allies)
+		{
+			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
-				for (size_t i = 0; i < NUM_BUTTONS; i++)
+				SDL_Rect rect = general_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					SDL_Rect rect = general_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 					{
-						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
-						{
-							chosed = i;
-							general_buttons[i].state = 3;
-						}
-						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
-						{
-							general_buttons[i].state = 0;
-						}
-						else
-						{
-							chosed = i;
-							general_buttons[i].state = 1;
-						}
+						chosed = i;
+						general_buttons[i].state = 3;
+					}
+					else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+					{
+						general_buttons[i].state = 0;
 					}
 					else
 					{
-						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
-						{
-							general_buttons[i].state = 3;
-						}
-						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
-						{
-							general_buttons[i].state = 0;
-						}
-						else
-						{
-							general_buttons[i].state = 0;
-						}
+						chosed = i;
+						general_buttons[i].state = 1;
+					}
+				}
+				else
+				{
+					if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
+					{
+						general_buttons[i].state = 3;
+					}
+					else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+					{
+						general_buttons[i].state = 0;
+					}
+					else
+					{
+						general_buttons[i].state = 0;
 					}
 				}
 			}
+		}
 
 		if (in_items && !in_enemies && !in_allies)
 		{

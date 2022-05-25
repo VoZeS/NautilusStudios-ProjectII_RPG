@@ -130,6 +130,10 @@ public:
 	// final battle
 	bool theseion2 = false;
 
+
+	// controller
+	SDL_Texture* cursor_tex = NULL;
+
 private:
 
 	bool description_disabled = true;
@@ -227,6 +231,7 @@ private:
 
 	// ask new game
 	bool sub_newgame;
+
 	
 };
 

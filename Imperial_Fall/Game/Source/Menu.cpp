@@ -310,6 +310,8 @@ bool Menu::Start()
 		axp3 = saveGame.child("objects").child("wizard").child("experience").attribute("value").as_int();
 
 		theseion2 = false;
+
+		cursor_tex = app->tex->Load("Assets/textures/cursor_default.png");
 	}
 
 	return true;
@@ -336,7 +338,7 @@ bool Menu::PreUpdate()
 		object_obtained = false;
 		app->audio->PlayFx(unlock_fx);
 	}
-
+	
 	if ((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_U) == KEY_UP) && !intro && description_disabled && app->inventory->hide && unlock_state == 0
 		&& !app->dialog->InDialog() && app->frontground->fix)
 	{
@@ -366,7 +368,9 @@ bool Menu::PreUpdate()
 	if (app->scene->esc == true)
 	{
 		int x, y;
-		app->input->GetMousePosition(x, y);
+		x = app->frontground->c_mouse_pos.x;
+		y = app->frontground->c_mouse_pos.y;
+		//app->input->GetMousePosition(x, y);
 
 		float cx = -app->render->camera.x;
 		float cy = -app->render->camera.y;

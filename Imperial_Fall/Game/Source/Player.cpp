@@ -331,7 +331,7 @@ void Player::HandleInput(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
 		{
-			fixedSpeed *= 1.5f;
+			fixedSpeed *= 2.0f;
 		}
 
 		if (!app->menu->GetGameState())

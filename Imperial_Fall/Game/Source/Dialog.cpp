@@ -329,7 +329,9 @@ bool Dialog::PreUpdate()
 	srand(time(NULL));
 
 	int x, y;
-	app->input->GetMousePosition(x, y);
+	x = app->frontground->c_mouse_pos.x;
+	y = app->frontground->c_mouse_pos.y;
+	//app->input->GetMousePosition(x, y);
 
 	float cx = -app->render->camera.x;
 	float cy = -app->render->camera.y;
@@ -418,7 +420,7 @@ bool Dialog::Update(float dt)
 
 			showEnemy = false;
 		}
-		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN	|| app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN	|| app->input->GetKey(SDL_SCANCODE_T) == KEY_UP)
 		{
 			if (app->physics->inCoins)
 			{

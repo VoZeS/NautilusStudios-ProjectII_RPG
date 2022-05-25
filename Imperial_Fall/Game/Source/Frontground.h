@@ -125,10 +125,6 @@ private:
 	uint letlengh = 0;
 	int letter_cd = 0;
 
-	// controller
-	iPoint c_mouse_pos;
-	SDL_Texture* cursor_tex = NULL;
-
 public:
 	// combat xp
 	int combat_xp0 = 0;
@@ -139,6 +135,7 @@ public:
 
 	// controller
 	bool controller = false;
+	iPoint c_mouse_pos;
 
 	// god mode
 	bool godmode = false;
