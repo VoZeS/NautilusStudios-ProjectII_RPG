@@ -61,7 +61,10 @@ bool Frontground::Start()
 
 	first_time = saveGame.child("started").child("first_time").attribute("value").as_bool();
 	current_level = saveGame.child("started").child("current_level").attribute("value").as_int();;
-	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();;
+	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();
+
+	c_mouse_pos = { 640, 360 };
+	cursor_tex = app->tex->Load("Assets/textures/cursor_default.png");
 
 	return true;
 }
@@ -78,6 +81,82 @@ bool Frontground::PreUpdate()
 			app->menu->SetController();
 			app->combat_menu->SetController();
 		}
+	}
+
+	if (controller)
+	{
+		GamePad& pad = app->input->pads[0];
+
+		if (pad.right_y < -0.5f)
+		{
+			c_mouse_pos.y -= 5;
+		}
+		if (pad.right_y > 0.5f)
+		{
+			c_mouse_pos.y += 5;
+		}
+		if (pad.right_x < -0.5f)
+		{
+			c_mouse_pos.x -= 5;
+		}
+		if (pad.right_x > 0.5f)
+		{
+			c_mouse_pos.x += 5;
+		}
+		if (pad.left_y < -0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+		}
+		if (pad.left_y > 0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+		}
+		if (pad.left_x < -0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+		}
+		if (pad.left_x > 0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+		}
+		if (pad.a == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_Z, KEY_REPEAT);
+		}
+		if (pad.b == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_X, KEY_REPEAT);
+		}
+		if (pad.y == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
+		}
+		if (pad.x == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_T, KEY_REPEAT);
+		}
+		if (pad.r1 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_H, KEY_REPEAT);
+		}
+		if (pad.l1 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_G, KEY_REPEAT);
+		}
+		if (pad.start == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_U, KEY_REPEAT);
+		}
+		if (pad.back == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_O, KEY_REPEAT);
+		}
+		if (pad.l2 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_L, KEY_REPEAT);
+		}
+
+		SDL_WarpMouseInWindow(app->win->window, c_mouse_pos.x, c_mouse_pos.y);
 	}
 
 	if (check_phase_change)
@@ -204,6 +283,17 @@ bool Frontground::PostUpdate()
 	{
 		return_black = true;
 		fix = true;
+	}
+
+	// draw cursor
+	if (!controller)
+	{
+		app->input->GetMousePosition(c_mouse_pos.x, c_mouse_pos.y);
+		app->render->DrawTexture(cursor_tex, c_mouse_pos.x + c_x, c_mouse_pos.y + c_y);
+	}
+	else
+	{
+		app->render->DrawTexture(cursor_tex, c_mouse_pos.x + c_x, c_mouse_pos.y + c_y);
 	}
 
 	return true;

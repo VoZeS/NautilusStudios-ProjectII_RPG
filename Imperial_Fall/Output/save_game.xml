@@ -6,11 +6,11 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-160" y="-500" />
 	</renderer>
 	<entities>
 		<player>
-			<position x="11" y="20" />
+			<position x="32" y="36" />
 			<comp0 x="15.8" y="20.0" />
 			<comp1 x="15.6" y="20.0" />
 			<comp2 x="15.4" y="20.0" />
@@ -22,7 +22,7 @@
 			<enemy3 state="true" />
 			<enemy4 state="true" />
 			<enemy5 state="true" />
-			<enemy6 state="false" />
+			<enemy6 state="true" />
 			<enemy7 state="true" />
 			<enemy8 state="true" />
 			<enemy9 state="true" />

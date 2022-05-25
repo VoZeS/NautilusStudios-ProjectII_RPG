@@ -101,9 +101,6 @@ public:
 	Skill desc_skill;
 
 private:
-	Cursor cursor;
-	iPoint c_mouse_pos;
-
 	// book
 	Animation* book;
 	Animation open;

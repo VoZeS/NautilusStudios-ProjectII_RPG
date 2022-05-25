@@ -289,29 +289,6 @@ void Player::HandleInput(float dt)
 {
 	if (player_enabled)
 	{
-		if (app->frontground->controller)
-		{
-			// Get gamepad info
-			GamePad& pad = app->input->pads[0];
-
-			if (pad.left_y < -0.5f)
-			{
-				app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
-			}
-			if (pad.left_y > 0.5f)
-			{
-				app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
-			}
-			if (pad.left_x < -0.5f)
-			{
-				app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
-			}
-			if (pad.left_x > 0.5f)
-			{
-				app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
-			}
-		}
-
 		float fixedSpeed = speed * dt;
 
 		if (app->frontground->godmode)
@@ -352,7 +329,7 @@ void Player::HandleInput(float dt)
 			}
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
 		{
 			fixedSpeed *= 1.5f;
 		}

@@ -25,12 +25,6 @@ struct Button {
 	int state = 0; // 0 --> idle, 1 --> above, 2 --> pressed
 };
 
-struct Cursor
-{
-	SDL_Texture* tex = NULL;
-	iPoint pos;
-};
-
 class Menu : public Module
 {
 public:
@@ -137,8 +131,6 @@ public:
 	bool theseion2 = false;
 
 private:
-
-	Cursor cursor;
 
 	bool description_disabled = true;
 	
