@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Point.h"
+#include "Textures.h"
 
 enum class ENEMIES;
 
@@ -133,6 +135,7 @@ public:
 
 	// controller
 	bool controller = false;
+	iPoint c_mouse_pos;
 
 	// god mode
 	bool godmode = false;

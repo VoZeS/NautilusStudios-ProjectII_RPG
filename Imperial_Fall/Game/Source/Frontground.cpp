@@ -61,7 +61,9 @@ bool Frontground::Start()
 
 	first_time = saveGame.child("started").child("first_time").attribute("value").as_bool();
 	current_level = saveGame.child("started").child("current_level").attribute("value").as_int();;
-	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();;
+	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();
+
+	c_mouse_pos = { 640, 360 };
 
 	return true;
 }
@@ -160,6 +162,17 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+
+	// draw cursor
+	if (!controller)
+	{
+		app->input->GetMousePosition(c_mouse_pos.x, c_mouse_pos.y);
+		app->render->DrawTexture(app->menu->cursor_tex, c_mouse_pos.x + c_x, c_mouse_pos.y + c_y);
+	}
+	else
+	{
+		app->render->DrawTexture(app->menu->cursor_tex, c_mouse_pos.x + c_x, c_mouse_pos.y + c_y);
+	}
 	
 	r.x = c_x;
 	r.y = c_y;

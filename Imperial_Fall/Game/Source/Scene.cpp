@@ -85,22 +85,12 @@ bool Scene::PostUpdate()
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;	
 
-	if (app->frontground->controller)
-	{
-		GamePad& pad = app->input->pads[0];
-
-		if (pad.a == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
-		}
-	}
-	
 	//--------------------------------------MENU----------------------------
 
 
 	//Desplazamiento del fondo al inicio del juego
 	//Una vez pulses el Espacio entrara el menu de opciones
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP || desMenu == true)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP || desMenu == true)
 	{
 		space_boton = false;
 		desMenu = true;

@@ -25,12 +25,6 @@ struct Button {
 	int state = 0; // 0 --> idle, 1 --> above, 2 --> pressed
 };
 
-struct Cursor
-{
-	SDL_Texture* tex = NULL;
-	iPoint pos;
-};
-
 class Menu : public Module
 {
 public:
@@ -136,9 +130,11 @@ public:
 	// final battle
 	bool theseion2 = false;
 
-private:
 
-	Cursor cursor;
+	// controller
+	SDL_Texture* cursor_tex = NULL;
+
+private:
 
 	bool description_disabled = true;
 	
@@ -235,6 +231,7 @@ private:
 
 	// ask new game
 	bool sub_newgame;
+
 	
 };
 
