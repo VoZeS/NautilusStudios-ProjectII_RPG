@@ -1,39 +1,76 @@
-## Welcome to GitHub Pages
 
-**Just Testing**
+# Imperial Fall
 
-You can use the [editor on GitHub](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/No%20background%20Game%20Logo.PNG)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Nautilus Studios
 
-### Markdown
+![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/LOGO-1.png)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Game Description:
 
-```markdown
-Syntax highlighted code block
+Imperial Fall is a medieval videogame RPG with Turn-Based-Combat, set in the witch hunt period. In this game, you will revenge the death of Fernan's, the Wizard, family, with the help of his friends: Gera, the Healer; Asteriol, the Giant; and Igol, the Astute. Together, they will kill Theseion, the Templar's lider, and end with his fearsome command. Or at least they will try...
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+## Gameplay:
 
-1. Numbered
-2. List
+<iframe width="560" height="315" src="https://www.youtube.com/embed/G27xBVIa7fs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br>
 
-**Bold** and _Italic_ and `Code` text
+## Features:
 
-[Link](url) and ![Image](src)
-```
+- Open World
+- Inventory, with gear and items
+- 3 puzzles (ice, boxes, toggles)
+- NPCs and vendors
+- Xp and economy system
+- Quest system
+- Skill tree
+- Debuff and buff system
+- Final boss
+- Cinematics
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+## Debug Features
 
-### Jekyll Themes
+- F1: skip enemy delay in combat
+- Shift + 1: Go to the main town
+- Shift + 2: Go to the town exit
+- Shift + 3: Go to the forest
+- Shift + 4: Go to the battlefield
+- Shift + 5: Go to the dungeon
+- Shift + 6: Go to the outside castle
+- Shift + 7: Go to the inside castle
+- F2 Unlock All items
+- F5 Save the current game state
+- F6 Load the previous game state
+- F9 Enable hitbox vision
+- F10 God Mode
+- F11 Game limited to 30 fps
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Controls:
+### Keyboard:
+- Movement with WASD.
+- SHIFT to run.
+- E to open inventory
+- ESC to pause and exit menus.
+- Mouse: Left click for menu navigation and choosing options.
+- Mouse: Right click to see attacks and skills description. 
 
-### Support or Contact
+### Controller:
+- IN PROGRESS
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Group Members:
+
+- [Alejandro Giralt](https://github.com/zapper163)
+- [Ruben Ayora](https://github.com/RubokiReuchi)
+- [David Boces](https://github.com/VoZeS)
+- [Juan de Dios García](https://github.com/JuanDeDiosGarcia)
+- [Adrián Martín](https://github.com/Astrorey776)
+- [Erik Martín](https://github.com/eriik1212)
+- [Luis Fernández](https://github.com/Ludef26)
+ 
+![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/team_photo_nautilus.png)
+  
+## More Information:
+
+- Check the project wiki [HERE](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/wiki).
+- Visit our GitHub repository [HERE](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG).
