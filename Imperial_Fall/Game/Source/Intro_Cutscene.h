@@ -39,21 +39,42 @@ public:
 
 	bool cutscene_finished = false;
 
+	int counter = 0;
+
 private:
+	// cutscene
+	uint letlengh = 0;
+	uint letlengh2 = 0;
+	int letter_cd = 0;
+
+	bool inDialog = false;
+
 	SDL_Rect Wizard;
 	SDL_Rect Tank;
 	SDL_Rect Healer;
 	SDL_Rect Assassin;
+	SDL_Rect Theseion;
+	SDL_Rect Renato;
 
 	SDL_Texture* assassin_texture = NULL;
 	SDL_Texture* tank_texture = NULL;
 	SDL_Texture* healer_texture = NULL;
 	SDL_Texture* wizard_texture = NULL;
+	SDL_Texture* theseion_texture = NULL;
+	SDL_Texture* renato_texture = NULL;
+
+	SDL_Rect whiteMark_Name;
+
+	SDL_Texture* whitemark_300x80 = NULL;
+	SDL_Texture* whitemark_500x70 = NULL;
+	SDL_Texture* whitemark_1200x140;
 
 	Animation* W_currentAnimation = NULL;
 	Animation* T_currentAnimation = NULL;
 	Animation* H_currentAnimation = NULL;
 	Animation* A_currentAnimation = NULL;
+	Animation* TH_currentAnimation = NULL;
+	Animation* R_currentAnimation = NULL;
 
 	// WIZARD main Animations
 	Animation W_idleAnimU;
@@ -94,6 +115,26 @@ private:
 	Animation A_walkAnimD;
 	Animation A_walkAnimL;
 	Animation A_walkAnimR;
+
+	// THESEION main Animations
+	Animation TH_idleAnimU;
+	Animation TH_idleAnimD;
+	Animation TH_idleAnimL;
+	Animation TH_idleAnimR;
+	Animation TH_walkAnimU;
+	Animation TH_walkAnimD;
+	Animation TH_walkAnimL;
+	Animation TH_walkAnimR;
+
+	// RENATO main Animations
+	Animation R_idleAnimU;
+	Animation R_idleAnimD;
+	Animation R_idleAnimL;
+	Animation R_idleAnimR;
+	Animation R_walkAnimU;
+	Animation R_walkAnimD;
+	Animation R_walkAnimL;
+	Animation R_walkAnimR;
 };
 
 #endif // __INTROCUTSCENE_H__
