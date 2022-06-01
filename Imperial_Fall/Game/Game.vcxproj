@@ -105,6 +105,7 @@
     <ClCompile Include="Source\Forest.cpp" />
     <ClCompile Include="Source\Frontground.cpp" />
     <ClCompile Include="Source\Inside_Castle.cpp" />
+    <ClCompile Include="Source\Intro_Cutscene.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Source\Forest.h" />
     <ClInclude Include="Source\Frontground.h" />
     <ClInclude Include="Source\Inside_Castle.h" />
+    <ClInclude Include="Source\Intro_Cutscene.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Map.h" />

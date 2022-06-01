@@ -23,6 +23,7 @@
 #include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 #include "Dialog.h"
+#include "Intro_Cutscene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -248,6 +249,8 @@ bool Frontground::FadeFromBlack()
 
 	switch (move_to)
 	{
+	case MOVE_TO::SCENE_CUTSCENE_1: app->intro->Enable(); 
+		break;
 	case MOVE_TO::LOGO_SCENE: app->scene->Enable();  app->menu->started = false;
 		break;
 	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->menu->InitPlayer();

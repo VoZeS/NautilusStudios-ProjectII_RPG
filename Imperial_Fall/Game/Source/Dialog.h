@@ -20,7 +20,11 @@ enum class DIALOGS
 	ALDEANO,
 	GRANJERO,
 	SIGNAL,
-	ENEMIGO
+	ENEMIGO,
+	WIZARD,
+	TANK,
+	HEALER,
+	ASSASSIN
 };
 
 struct Shop_objects
@@ -162,6 +166,13 @@ private:
 	const char* linea2Char_Enemy[6];
 	int enemy_text = -1;
 	int enemy_maxtext = 6;
+
+	/*std::string linea1String_Wizard;
+	std::string linea2String_Wizard;
+	const char* linea1Char_Wizard;
+	const char* linea2Char_Wizard;
+	int wizard_text = -1;
+	int wizard_maxtext = 1;*/
 
 	bool LoadDialog();
 	uint letter_fx; // normal

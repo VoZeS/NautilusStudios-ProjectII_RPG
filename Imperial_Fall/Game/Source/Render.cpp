@@ -6,6 +6,7 @@
 #include "Combat_Scene.h"
 #include "End_Combat_Scene.h"
 #include "Frontground.h"
+#include "Intro_Cutscene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -80,11 +81,16 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->entities->entities.start && app->scene->Disabled() && app->combat_scene->Disabled() && app->end_combat_scene->Disabled())
+	if (app->entities->entities.start && app->scene->Disabled() && app->intro->Disabled() && app->combat_scene->Disabled() && app->end_combat_scene->Disabled())
 	{
 		Entity* entity = app->entities->GetPlayer();
-		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
-		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
+
+		if (entity != nullptr)
+		{
+			camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
+			camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
+		}
+		
 	}
 	else if (app->combat_scene->Enabled() || app->end_combat_scene->Enabled())
 	{

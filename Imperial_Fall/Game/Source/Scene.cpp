@@ -40,12 +40,16 @@ bool Scene::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		app->fonts->Enable();
-
-		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
+		app->menu->Enable();
 
 		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
-	
+
+		app->render->camera.x = 0;
+		app->render->camera.y = 0;
+
+		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
+
 
 		//app->audio->PlayMusic("Assets/audio/music/menu.ogg");
 		app->audio->StopMusic(1.0f);

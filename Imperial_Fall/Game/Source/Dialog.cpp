@@ -320,6 +320,12 @@ bool Dialog::Start()
 	linea1Char_Signal = linea1String_Signal.c_str();
 	linea2Char_Signal = linea2String_Signal.c_str();
 
+	/*linea1String_Wizard = dialog.child("signal").child("text1").attribute("linea1").as_string();
+	linea2String_Wizard = dialog.child("signal").child("text1").attribute("linea2").as_string();
+
+	linea1Char_Wizard = linea1String_Wizard.c_str();
+	linea2Char_Wizard = linea2String_Wizard.c_str();*/
+
 	return true;
 }
 
