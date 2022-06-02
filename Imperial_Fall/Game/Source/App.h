@@ -47,6 +47,7 @@ class End_Combat_Scene;
 class Dialog;
 class LogoScreen;
 class Intro_Cutscene;
+class Final_Cutscene;
 
 
 
@@ -141,6 +142,7 @@ public:
 	Dialog* dialog;
 	LogoScreen* logo;
 	Intro_Cutscene* intro;
+	Final_Cutscene* final_cut;
 
 
 private:

@@ -24,6 +24,7 @@
 #include "LogoScreen.h"
 #include "Dialog.h"
 #include "Intro_Cutscene.h"
+#include "Final_Cutscene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -153,6 +154,13 @@ bool Frontground::Update(float dt)
 	else if (a <= 0)
 	{
 		return_black = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		//Fade Out
+		app->frontground->move_to = MOVE_TO::FINALCOMBAT_CUTSCENE_2;
+		app->frontground->FadeToBlack();
 	}
 
 	return true;
@@ -346,6 +354,8 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::COMBAT_FINALCOMBAT: app->end_combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
 		return_black = false; break;
+	case MOVE_TO::FINALCOMBAT_CUTSCENE_2: app->final_cut->Enable();
+		break;
 	default:
 		break;
 	}

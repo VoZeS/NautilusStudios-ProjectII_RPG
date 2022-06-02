@@ -28,6 +28,7 @@
 #include "Dialog.h"
 #include "LogoScreen.h"
 #include "Intro_Cutscene.h"
+#include "Final_Cutscene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -67,6 +68,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	dialog = new Dialog(false);
 	logo = new LogoScreen(true);
 	intro = new Intro_Cutscene(false);
+	final_cut = new Final_Cutscene(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -87,6 +89,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(physics);
 	AddModule(intro);
+	AddModule(final_cut);
 	AddModule(entities);
 	AddModule(map);
 	AddModule(fonts);

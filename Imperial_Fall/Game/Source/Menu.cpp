@@ -26,6 +26,7 @@
 #include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 #include "Intro_Cutscene.h"
+#include "Final_Cutscene.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -1960,6 +1961,7 @@ void Menu::DisableAll()
 {
 	if (app->logo->Enabled()) { app->logo->Disable(); }
 	if (app->intro->Enabled()) { app->intro->Disable(); }
+	if (app->final_cut->Enabled()) { app->final_cut->Disable(); }
 	if (app->scene->Enabled()) { app->scene->Disable(); }
 	if (app->town1->Enabled()) { app->town1->Disable(); }
 	if (app->town2->Enabled()) { app->town2->Disable(); }
