@@ -49,6 +49,9 @@ private:
 
 	bool inDialog = false;
 
+	uint door_fx;
+	bool fx_played = false;
+
 	SDL_Rect Wizard;
 	SDL_Rect Tank;
 	SDL_Rect Healer;

@@ -291,6 +291,8 @@ bool Final_Cutscene::Start()
 		whitemark_1200x140 = app->tex->Load("Assets/textures/1200x140_whitemark.png");
 		whitemark_1240x680 = app->tex->Load("Assets/textures/1240x680_whitemark.png");
 
+		door_fx = app->audio->LoadFx("Assets/audio/fx/azote_puerta.wav");
+
 		W_currentAnimation = &W_idleAnimU;
 		T_currentAnimation = &T_idleAnimU;
 		H_currentAnimation = &H_idleAnimU;
@@ -325,6 +327,7 @@ bool Final_Cutscene::Start()
 		whiteMark_Name.w = 500;
 		whiteMark_Name.h = 70;
 
+		fx_played = false;
 	}
 
 	return true;
@@ -456,7 +459,11 @@ bool Final_Cutscene::PostUpdate()
 	if (counter >= 5200)
 	{
 	app->render->DrawRectangle({ 0,0,2200,1080 }, 0, 0, 0, 255);
-	//playfx
+	if (!fx_played)
+	{
+		app->audio->PlayFx(door_fx);
+		fx_played = true;
+	}
 	app->audio->StopMusic(0.0f);
 	}
 
