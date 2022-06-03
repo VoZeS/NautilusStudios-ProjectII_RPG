@@ -101,10 +101,12 @@
     <ClCompile Include="Source\End_Combat_Scene.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
+    <ClCompile Include="Source\Final_Cutscene.cpp" />
     <ClCompile Include="Source\Fonts.cpp" />
     <ClCompile Include="Source\Forest.cpp" />
     <ClCompile Include="Source\Frontground.cpp" />
     <ClCompile Include="Source\Inside_Castle.cpp" />
+    <ClCompile Include="Source\Intro_Cutscene.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -139,10 +141,12 @@
     <ClInclude Include="Source\End_Combat_Scene.h" />
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\Entities.h" />
+    <ClInclude Include="Source\Final_Cutscene.h" />
     <ClInclude Include="Source\Fonts.h" />
     <ClInclude Include="Source\Forest.h" />
     <ClInclude Include="Source\Frontground.h" />
     <ClInclude Include="Source\Inside_Castle.h" />
+    <ClInclude Include="Source\Intro_Cutscene.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Map.h" />

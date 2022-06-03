@@ -25,6 +25,8 @@
 #include "Combat_Menu.h"
 #include "End_Combat_Scene.h"
 #include "LogoScreen.h"
+#include "Intro_Cutscene.h"
+#include "Final_Cutscene.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -763,7 +765,7 @@ bool Menu::Update(float dt)
 				case 0:
 					app->LoadGame(true); // load now, not at frames end
 					app->frontground->SetFirstTime(false);
-					app->frontground->move_to = MOVE_TO::SCENE_TOWN1;
+					app->frontground->move_to = MOVE_TO::SCENE_CUTSCENE_1;
 					app->frontground->FadeToBlack();
 					saving = false;
 					intro = false;
@@ -1956,6 +1958,8 @@ bool Menu::ReturnStartScreen()
 void Menu::DisableAll()
 {
 	if (app->logo->Enabled()) { app->logo->Disable(); }
+	if (app->intro->Enabled()) { app->intro->Disable(); }
+	if (app->final_cut->Enabled()) { app->final_cut->Disable(); }
 	if (app->scene->Enabled()) { app->scene->Disable(); }
 	if (app->town1->Enabled()) { app->town1->Disable(); }
 	if (app->town2->Enabled()) { app->town2->Disable(); }
