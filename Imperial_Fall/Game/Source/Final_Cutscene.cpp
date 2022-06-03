@@ -381,8 +381,7 @@ bool Final_Cutscene::Update(float dt)
 		}
 
 		if (counter == 100 || counter == 500 || counter == 900 || counter == 1300 || counter == 1700 || counter == 2300 || counter == 2700
-			|| counter == 3200 || counter == 3600 || counter == 4000 || counter == 4400 || counter == 4800 || counter == 5200 || counter == 5750
-			|| counter == 6200 || counter == 6600 || counter == 7000)
+			|| counter == 3200 || counter == 3600 || counter == 4000 || counter == 4400 || counter == 4800 || counter == 5200 || counter == 5750)
 		{
 			letlengh = 0;
 			letlengh2 = 0;
@@ -417,7 +416,7 @@ bool Final_Cutscene::Update(float dt)
 		A_currentAnimation = &A_idleAnimD;
 		A_idleAnimD.Update();
 	}
-	else if (counter > 7050)
+	else if (counter > 5750)
 	{
 		cutscene_finished = true;
 	}
@@ -528,7 +527,7 @@ bool Final_Cutscene::PostUpdate()
 		app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
 		app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "Renato, el Sabio:");
 		app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, "HAHAHAHAHAH! Tan gracioso como siempre, Igol...", 1, 255, 255, 255, 1920, 1, letlengh, 1);
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, "Gracias por acabar con Theseion. Quien me lo diria...", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, "Gracias por acabar con Theseion. Quien lo diria...", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 	}
 	else if (counter >= 3600 && counter < 4000)
 	{
@@ -536,7 +535,7 @@ bool Final_Cutscene::PostUpdate()
 		app->render->DrawTexture(whitemark_500x70, 30 + c_x, 480 + c_y, &whiteMark_Name);
 		app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 560 + c_y);
 		app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "Renato, el Sabio:");
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, "Quien me diria que unos simples crios conseguirian lo que", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, "Quien diria que unos simples crios conseguirian lo que", 1, 255, 255, 255, 1920, 1, letlengh, 1);
 		app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, "tanto ansiaba... Pero ahora ya esta hecho! Ya tengo el poder!", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 	}
 	else if (counter >= 4000 && counter < 4400)
@@ -574,27 +573,6 @@ bool Final_Cutscene::PostUpdate()
 		app->fonts->BlitText(c_x + 50, c_y + 500, app->fonts->textFont1, "Renato, el Sabio:");
 		app->fonts->BlitTextLetter(c_x + 50, c_y + 600, app->fonts->textFont1, "Es vuestro fin muchachos. Ya no valeis nada para mi.", 1, 255, 255, 255, 1920, 1, letlengh, 1);
 		app->fonts->BlitTextLetter(c_x + 50, c_y + 640, app->fonts->textFont1, "Pero tranquilos... No os va a doler mucho...", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
-	}
-	else if (counter >= 5800 && counter < 6200)
-	{
-	inDialog = true;
-	app->render->DrawTexture(whitemark_1240x680, 20 + c_x, 20 + c_y);
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 170, app->fonts->textFont1, "Los 4 jovenes fueron encerrados. Pero todos ellos deseaban", 1, 255, 255, 255, 1920, 1, letlengh, 1);
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 210, app->fonts->textFont1, "salir. Asi pues, todo lo que viviras a continuacion...", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
-	}
-	else if (counter >= 6200 && counter < 6600)
-	{
-	inDialog = true;
-	app->render->DrawTexture(whitemark_1240x680, 20 + c_x, 20 + c_y);
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 250, app->fonts->textFont1, "... solo ocurriria en la mente de 4 jovenes maltratados.", 1, 255, 255, 255, 1920, 1, letlengh, 1);
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 290, app->fonts->textFont1, "Pues la imaginacion es mas fuerte que la aceptacion...", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
-	}
-	else if (counter >= 6600 && counter < 7000)
-	{
-	inDialog = true;
-	app->render->DrawTexture(whitemark_1240x680, 20 + c_x, 20 + c_y);
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 330, app->fonts->textFont1, "Disfruta del poder de la imaginacion, aventurero. Y recuerda:", 1, 255, 255, 255, 1920, 1, letlengh, 1);
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 370, app->fonts->textFont1, "Nunca confies en nadie mas que en ti mismo.", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 	}
 	else
 	{
