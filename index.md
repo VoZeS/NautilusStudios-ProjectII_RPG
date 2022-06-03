@@ -68,7 +68,7 @@ Imperial Fall is a medieval videogame RPG with Turn-Based-Combat, set in the wit
 - [Erik Martín](https://github.com/eriik1212)
 - [Luis Fernández](https://github.com/Ludef26)
  
-![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/team_photo_nautilus.png)
+![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/team_photo_nautilus.png?raw=true)
   
 ## More Information:
 
