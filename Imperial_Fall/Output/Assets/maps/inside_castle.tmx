@@ -22790,11 +22790,11 @@
    <tile/>
   </data>
  </layer>
- <layer id="11" name="collision2x1" width="66" height="43">
+ <layer id="11" name="collision2x2" width="66" height="43">
   <properties>
    <property name="Collision" type="int" value="1"/>
    <property name="Draw" type="int" value="0"/>
-   <property name="Height" type="int" value="1"/>
+   <property name="Height" type="int" value="2"/>
    <property name="Width" type="int" value="2"/>
   </properties>
   <data>

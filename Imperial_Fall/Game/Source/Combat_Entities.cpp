@@ -628,6 +628,10 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		{
 			app->menu->theseion2 = true;
 		}
+		if (entity_type == 11)
+		{
+			app->menu->dragonDefeated = true;
+		}
 	}
 
 	if (shield <= 0)

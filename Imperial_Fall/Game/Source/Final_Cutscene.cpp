@@ -285,6 +285,7 @@ bool Final_Cutscene::Start()
 		wizard_texture = app->tex->Load("Assets/textures/Mago.png");
 		theseion_texture = app->tex->Load("Assets/textures/Theseion.png");
 		renato_texture = app->tex->Load("Assets/textures/Renato_malo.png");
+		dead_dragon_texture = app->tex->Load("Assets/maps/dragon1__r1732475211.png");
 
 		whitemark_300x80 = app->tex->Load("Assets/textures/300x80_whitemark.png");
 		whitemark_500x70 = app->tex->Load("Assets/textures/500x70_whitemark.png");
@@ -317,6 +318,9 @@ bool Final_Cutscene::Start()
 
 		Renato.x = 700;
 		Renato.y = 500;
+
+		Dragon.x = 1600;
+		Dragon.y = 100;
 
 		counter = 0;
 
@@ -454,6 +458,7 @@ bool Final_Cutscene::PostUpdate()
 	app->render->AddrenderObject(tank_texture, iPoint(Tank.x, Tank.y), T_currentAnimation->GetCurrentFrame(), 1);
 	app->render->AddrenderObject(theseion_texture, iPoint(Theseion.x, Theseion.y), TH_currentAnimation->GetCurrentFrame(), 1);
 	app->render->AddrenderObject(renato_texture, iPoint(Renato.x, Renato.y), R_currentAnimation->GetCurrentFrame(), 1);
+	app->render->AddrenderObject(dead_dragon_texture, iPoint(Dragon.x, Dragon.y), Dragon, 1);
 
 	if (counter >= 5200)
 	{

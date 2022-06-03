@@ -10,6 +10,7 @@
 #include "Dialog.h"
 #include "Fonts.h"
 #include "Frontground.h"
+#include "Town1.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -17,6 +18,17 @@
 Intro_Cutscene::Intro_Cutscene(bool enabled) : Module(enabled)
 {
 	name.Create("intro_cutscene");
+
+	bonfire_anim.PushBack({ 0,0,341,527 });
+	bonfire_anim.PushBack({ 367,0,341,527 });
+	bonfire_anim.PushBack({ 734,0,341,527 });
+	bonfire_anim.PushBack({ 1108,0,341,527 });
+	bonfire_anim.PushBack({ 1483,0,341,527 });
+	bonfire_anim.PushBack({ 1861,0,341,527 });
+	bonfire_anim.PushBack({ 2239,0,341,527 });
+
+	bonfire_anim.speed = 0.1f;
+	bonfire_anim.loop = true;
 
 	// WIZARD idle animation
 	W_idleAnimD.PushBack({ 5, 0, 50, 74 });
@@ -281,6 +293,7 @@ bool Intro_Cutscene::Start()
 
 		cutscene_finished = false;
 
+		bonfire = app->tex->Load("Assets/textures/Bonfire.png"); // Hoguera
 		assassin_texture = app->tex->Load("Assets/textures/Asesino.png");
 		tank_texture = app->tex->Load("Assets/textures/Tanque.png");
 		healer_texture = app->tex->Load("Assets/textures/Healer.png");
@@ -312,7 +325,7 @@ bool Intro_Cutscene::Start()
 		Assassin.y = 1800;
 
 		Theseion.x = 1575;
-		Theseion.y = 1250;
+		Theseion.y = 1100;
 
 		Renato.x = 2300;
 		Renato.y = 1800;
@@ -320,6 +333,7 @@ bool Intro_Cutscene::Start()
 		counter = 0;
 
 		inDialog = false;
+		TheseionIn = false;
 
 		whiteMark_Name.x = 0;
 		whiteMark_Name.y = 70;
@@ -356,6 +370,7 @@ bool Intro_Cutscene::Update(float dt)
 	A_idleAnimU.Update();
 	TH_idleAnimD.Update();
 	R_idleAnimL.Update();
+	bonfire_anim.Update();
 
 	// Draw map
 	app->map->Draw();
@@ -394,14 +409,23 @@ bool Intro_Cutscene::Update(float dt)
 
 	if (counter >= 2400 && counter < 3250)
 	{
-		if (Theseion.x < 2000)
+		TheseionIn = true;
+
+		if (Theseion.y < 1250)
+		{
+			TH_currentAnimation = &TH_walkAnimD;
+			TH_walkAnimD.Update();
+
+			Theseion.y += 10;
+		}
+		else if (Theseion.x < 2000)
 		{
 			TH_currentAnimation = &TH_walkAnimR;
 			TH_walkAnimR.Update();
 
 			Theseion.x += 2;
 		}
-		else if (Theseion.y < 1590)
+		else if (Theseion.y < 1500)
 		{
 			TH_currentAnimation = &TH_walkAnimD;
 			TH_walkAnimD.Update();
@@ -425,6 +449,13 @@ bool Intro_Cutscene::Update(float dt)
 			TH_walkAnimL.Update();
 
 			Theseion.x -= 2;
+		}
+		else if (Theseion.y > 1100)
+		{
+			TH_currentAnimation = &TH_walkAnimU;
+			TH_walkAnimU.Update();
+
+			Theseion.y -= 2;
 		}
 	}
 	else if (counter >= 3700 && counter <= 7000)
@@ -496,8 +527,10 @@ bool Intro_Cutscene::PostUpdate()
 	app->render->AddrenderObject(healer_texture, iPoint(Healer.x, Healer.y), H_currentAnimation->GetCurrentFrame(), 1);
 	app->render->AddrenderObject(assassin_texture, iPoint(Assassin.x, Assassin.y), A_currentAnimation->GetCurrentFrame(), 1);
 	app->render->AddrenderObject(tank_texture, iPoint(Tank.x, Tank.y), T_currentAnimation->GetCurrentFrame(), 1);
-	app->render->AddrenderObject(theseion_texture, iPoint(Theseion.x, Theseion.y), TH_currentAnimation->GetCurrentFrame(), 1);
+	if(TheseionIn) app->render->AddrenderObject(theseion_texture, iPoint(Theseion.x, Theseion.y), TH_currentAnimation->GetCurrentFrame(), 1);
 	app->render->AddrenderObject(renato_texture, iPoint(Renato.x, Renato.y), R_currentAnimation->GetCurrentFrame(), 1);
+	app->render->DrawTexture(bonfire, 1425, 1000, &(bonfire_anim.GetCurrentFrame()));
+
 
 	if (counter >= 400 && counter < 800)
 	{
@@ -594,7 +627,7 @@ bool Intro_Cutscene::PostUpdate()
 		app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 20 + c_y);
 		app->fonts->BlitText(c_x + 50, c_y + 180, app->fonts->textFont1, "Igol, el Astuto:");
 		app->fonts->BlitTextLetter(c_x + 50, c_y + 60, app->fonts->textFont1, "Un viejo iniciando conversacion con 4 jovenes?", 1, 255, 255, 255, 1920, 1, letlengh, 1);
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 100, app->fonts->textFont1, "Llamaria a los guardias, pero estos son templarios.", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
+		app->fonts->BlitTextLetter(c_x + 50, c_y + 100, app->fonts->textFont1, "Llamaria a los guardias, pero estos son templarios...", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 
 	}
 	else if (counter >= 5200 && counter < 5600)
@@ -603,7 +636,7 @@ bool Intro_Cutscene::PostUpdate()
 		app->render->DrawTexture(whitemark_500x70, 30 + c_x, 160 + c_y, &whiteMark_Name);
 		app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 20 + c_y);
 		app->fonts->BlitText(c_x + 50, c_y + 180, app->fonts->textFont1, "Igol, el Astuto:");
-		app->fonts->BlitTextLetter(c_x + 50, c_y + 60, app->fonts->textFont1, "No es que nos llevemos muy bien... asi que si la situacion", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+		app->fonts->BlitTextLetter(c_x + 50, c_y + 60, app->fonts->textFont1, "Y no es que nos llevemos muy bien. Asi que si la situacion", 1, 255, 255, 255, 1920, 1, letlengh, 1);
 		app->fonts->BlitTextLetter(c_x + 50, c_y + 100, app->fonts->textFont1, "se pone tensa voy a sacar el cuchillo, te lo advierto.", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 
 	}
@@ -613,7 +646,7 @@ bool Intro_Cutscene::PostUpdate()
 	app->render->DrawTexture(whitemark_500x70, 30 + c_x, 160 + c_y, &whiteMark_Name);
 	app->render->DrawTexture(whitemark_1200x140, 30 + c_x, 20 + c_y);
 	app->fonts->BlitText(c_x + 50, c_y + 180, app->fonts->textFont1, "Renato, el Sabio");
-	app->fonts->BlitTextLetter(c_x + 50, c_y + 60, app->fonts->textFont1, "Ja, ja.        Tranquilos. Me llamo Renato. Y yo tampoco", 1, 255, 255, 255, 1920, 1, letlengh, 1);
+	app->fonts->BlitTextLetter(c_x + 50, c_y + 60, app->fonts->textFont1, "Ja, ja, ja, ja. Tranquilos. Me llamo Renato. Y yo tampoco", 1, 255, 255, 255, 1920, 1, letlengh, 1);
 	app->fonts->BlitTextLetter(c_x + 50, c_y + 100, app->fonts->textFont1, "me llevo demasiado bien con los templarios.", 1, 255, 255, 255, 1920, 1, letlengh2, 2);
 
 	}

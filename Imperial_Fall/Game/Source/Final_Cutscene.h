@@ -58,6 +58,7 @@ private:
 	SDL_Rect Assassin;
 	SDL_Rect Theseion;
 	SDL_Rect Renato;
+	SDL_Rect Dragon;
 
 	SDL_Texture* assassin_texture = NULL;
 	SDL_Texture* tank_texture = NULL;
@@ -65,6 +66,7 @@ private:
 	SDL_Texture* wizard_texture = NULL;
 	SDL_Texture* theseion_texture = NULL;
 	SDL_Texture* renato_texture = NULL;
+	SDL_Texture* dead_dragon_texture = NULL;
 
 	SDL_Rect whiteMark_Name;
 

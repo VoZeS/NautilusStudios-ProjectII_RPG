@@ -125,7 +125,7 @@ bool Town1::Update(float dt)
 // Called each loop iteration
 bool Town1::PostUpdate()
 {
-	app->render->DrawTexture(bonfire, 1450, 1000, &(bonfire_anim.GetCurrentFrame()));
+	app->render->DrawTexture(bonfire, 1425, 1000, &(bonfire_anim.GetCurrentFrame()));
 
 	return true;
 }

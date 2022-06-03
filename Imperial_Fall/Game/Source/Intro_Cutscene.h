@@ -48,6 +48,7 @@ private:
 	int letter_cd = 0;
 
 	bool inDialog = false;
+	bool TheseionIn = false;
 
 	SDL_Rect Wizard;
 	SDL_Rect Tank;
@@ -75,6 +76,9 @@ private:
 	Animation* A_currentAnimation = NULL;
 	Animation* TH_currentAnimation = NULL;
 	Animation* R_currentAnimation = NULL;
+
+	SDL_Texture* bonfire = NULL;
+	Animation bonfire_anim;
 
 	// WIZARD main Animations
 	Animation W_idleAnimU;

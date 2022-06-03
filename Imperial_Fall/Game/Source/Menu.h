@@ -129,6 +129,7 @@ public:
 
 	// final battle
 	bool theseion2 = false;
+	bool dragonDefeated = false;
 
 
 	// controller
