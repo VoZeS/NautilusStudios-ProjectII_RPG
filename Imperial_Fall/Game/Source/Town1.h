@@ -34,6 +34,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	SDL_Texture* bonfire = NULL;
+	Animation bonfire_anim;
+
 };
 
 #endif // __TOWN1_H__
