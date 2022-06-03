@@ -161,6 +161,8 @@ public:
 		saveGame.child("started").child("first_time").attribute("value").set_value(state);
 
 		saveGame.save_file(STARTED_FILENAME);
+
+		first_time = state;
 	}
 
 	void SaveStartUp();

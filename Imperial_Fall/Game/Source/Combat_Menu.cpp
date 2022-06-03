@@ -15,6 +15,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include <string.h>
+
 Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 {
 	name.Create("combat_menu");
@@ -358,7 +360,7 @@ bool Combat_Menu::PreUpdate()
 						chosed = i;
 						general_buttons[i].state = 3;
 					}
-					else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+					else if (i < 4 && std::string(app->combat_manager->GetActualEntity()->GetSkill(i).skill_name) == "no skill")
 					{
 						general_buttons[i].state = 0;
 					}
@@ -374,7 +376,7 @@ bool Combat_Menu::PreUpdate()
 					{
 						general_buttons[i].state = 3;
 					}
-					else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
+					else if (i < 4 && std::string(app->combat_manager->GetActualEntity()->GetSkill(i).skill_name) == "no skill")
 					{
 						general_buttons[i].state = 0;
 					}

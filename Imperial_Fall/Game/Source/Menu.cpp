@@ -623,7 +623,6 @@ bool Menu::Update(float dt)
 					break;
 				case 2:
 					app->frontground->ReturnStartScreen();
-
 					paused = false;
 					break;
 				case 3:
@@ -738,7 +737,6 @@ bool Menu::Update(float dt)
 						app->dialog->ResetShop();
 						app->dialog->ResetDialogs();
 						app->dialog->SaveRenatoDialog();
-						app->frontground->SetFirstTime(false);
 					}
 					else if (!app->frontground->first_time)
 					{
