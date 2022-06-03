@@ -1,11 +1,11 @@
 
 # Imperial Fall
 
-![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/No%20background%20Game%20Logo.PNG)
+![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/No%20background%20Game%20Logo.PNG?raw=true)
 
 ## Nautilus Studios
 
-![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/LOGO-1.png)
+![](https://github.com/VoZeS/NautilusStudios-ProjectII_RPG/blob/main/wiki_images/LOGO-1.png?raw=true)
 
 ## Game Description:
 
