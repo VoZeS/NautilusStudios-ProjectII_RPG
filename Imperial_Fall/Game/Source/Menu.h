@@ -72,6 +72,8 @@ public:
 	//Foto de nuestro gran equipo
 	SDL_Texture* team_photo = NULL;
 
+	SDL_Texture* creditsTexture = NULL;
+
 	SDL_Rect PauseMenuHUD;
 
 	// -1 --> all false, 0 --> win, 1 --> lose, 2 --> scape

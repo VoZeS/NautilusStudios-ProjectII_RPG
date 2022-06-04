@@ -277,6 +277,8 @@ bool Menu::Start()
 
 		team_photo = app->tex->Load("Assets/textures/TeamPhoto.png");
 
+		creditsTexture = app->tex->Load("Assets/textures/Creditos.png");
+
 		hover_playing = false;
 
 		// unlock animation
@@ -1425,7 +1427,7 @@ bool Menu::PostUpdate()
 
 			if (credits)
 			{
-				app->render->DrawTexture(team_photo, PauseMenuHUD.x - 70, PauseMenuHUD.y);
+				app->render->DrawTexture(creditsTexture, PauseMenuHUD.x - 60, PauseMenuHUD.y);
 			}
 		}
 
