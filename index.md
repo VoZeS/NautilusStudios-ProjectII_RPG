@@ -56,7 +56,20 @@ Imperial Fall is a medieval videogame RPG with Turn-Based-Combat, set in the wit
 - Mouse: Right click to see attacks and skills description. 
 
 ### Controller:
-- IN PROGRESS
+- Left joystick --> cursor
+- Right joystick --> movement
+
+- A --> select
+- B --> back
+- Y --> descriptions
+- X --> interact
+
+- RB --> next page (inventory)
+- RL --> previous page (inventory)
+
+- cross down --> pause game
+- ZR --> open/close inventory
+- ZL --> open/close inventory
 
 ## Group Members:
 
