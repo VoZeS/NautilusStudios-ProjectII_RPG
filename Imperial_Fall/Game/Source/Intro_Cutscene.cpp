@@ -398,7 +398,7 @@ bool Intro_Cutscene::Update(float dt)
 			letter_cd = 0;
 		}
 
-		if (counter == 800 || counter == 1200 || counter == 1500 || counter == 1600 || counter == 2000 || counter == 2400 || counter == 3200
+		if (counter == 0 || counter == 800 || counter == 1200 || counter == 1500 || counter == 1600 || counter == 2000 || counter == 2400 || counter == 3200
 			|| counter == 4000 || counter == 4400 || counter == 4800 || counter == 5200 || counter == 5600 || counter == 6000 
 			|| counter == 6400 || counter == 6600 || counter == 7000 || counter == 7400)
 		{

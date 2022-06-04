@@ -384,7 +384,7 @@ bool Final_Cutscene::Update(float dt)
 			letter_cd = 0;
 		}
 
-		if (counter == 100 || counter == 500 || counter == 900 || counter == 1300 || counter == 1700 || counter == 2300 || counter == 2700
+		if (counter == 0 || counter == 100 || counter == 500 || counter == 900 || counter == 1300 || counter == 1700 || counter == 2300 || counter == 2700
 			|| counter == 3200 || counter == 3600 || counter == 4000 || counter == 4400 || counter == 4800 || counter == 5200 || counter == 5750)
 		{
 			letlengh = 0;
