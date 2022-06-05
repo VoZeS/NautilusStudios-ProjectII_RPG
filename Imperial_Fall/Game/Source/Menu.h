@@ -98,8 +98,14 @@ public:
 	
 	bool stop = false;
 	bool desMenu = false; //Menu in game que aparece cuando le das a ESC
-	float c_x_menu=200.0f; //Posicion del menu in game.
+	bool desMenu2 = false;
+
+	float c_x_menu = 200.0f; //Posicion del menu in game.
 	float c_y_corre = -400.0f;
+
+	bool ocultarMenu = false;
+	bool quitarOpciones = false;
+
 
 	bool menu = false;
 

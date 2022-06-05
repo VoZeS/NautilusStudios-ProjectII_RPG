@@ -346,8 +346,9 @@ bool Menu::PreUpdate()
 	if ((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_U) == KEY_UP) && !intro && description_disabled && app->inventory->hide && unlock_state == 0
 		&& !app->dialog->InDialog() && app->frontground->fix)
 	{
-		paused = !paused;
+		paused = true;
 	}
+
 
 	if ((app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_O) == KEY_UP) && !intro && !paused && !settings && description_disabled
 		&& app->inventory->hide && app->inventory->Enabled() && unlock_state == 0)
@@ -357,16 +358,18 @@ bool Menu::PreUpdate()
 		app->audio->PlayFx(open_book_sound);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP)
-		subplaymenu = false;
 
 	if (intro && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP))
 		credits = false;
 
 	if (settings && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP))
 	{
+		quitarOpciones = true;
+	}
+
+	if (subplaymenu && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP))
+	{
 		subplaymenu = false;
-		settings = false;
 	}
 
 	if (app->scene->esc == true)
@@ -1307,6 +1310,7 @@ bool Menu::PostUpdate()
 			{
 				app->render->DrawRectangle(r, 0, 0, 0, 200);
 				menu_play_anim.Update();
+
 				app->render->DrawTexture(menu_play, c_x + c_x_menu - 10, c_y, &(menu_play_anim.GetCurrentFrame()));
 
 				menu_buttons[4].rect.x = c_x + 70;
@@ -1486,11 +1490,27 @@ bool Menu::PostUpdate()
 		{
 			
 			int w;
-			if (c_y_corre >= 0.0f) {
-				
+			if (ocultarMenu == false) 
+			{
+				if (c_y_corre >= 0.0f)
+				{
+					ocultarMenu = true;
+				}
+				else
+					c_y_corre += 50.0f;
 			}
-			else
-			c_y_corre += 50.0f;
+
+			if (ocultarMenu == true && quitarOpciones == true )
+			{
+				if (c_y_corre <= -700.0f) {
+					ocultarMenu = false;
+					quitarOpciones = false;
+					settings = false;
+				}
+				else c_y_corre -= 50.0f;
+			}
+			
+
 		
 			if (!app->frontground->controller)
 			{
@@ -1500,17 +1520,17 @@ bool Menu::PostUpdate()
 
 			for (size_t i = 0; i < NUM_SETTINGS_BUTTONS; i++)
 			{
-				settings_buttons[0].rect.x = c_x + 20;
-				settings_buttons[0].rect.y = c_y + 200+ c_y_corre;
+				settings_buttons[0].rect.x = c_x + 20 + c_y_corre;
+				settings_buttons[0].rect.y = c_y + 200;
 
-				settings_buttons[1].rect.x = c_x + 20;
-				settings_buttons[1].rect.y = c_y + 320 + c_y_corre;
+				settings_buttons[1].rect.x = c_x + 20 + c_y_corre;
+				settings_buttons[1].rect.y = c_y + 320 ;
 
-				settings_buttons[2].rect.x = c_x + 20;
-				settings_buttons[2].rect.y = c_y + 400 + c_y_corre;
+				settings_buttons[2].rect.x = c_x + 20 + c_y_corre;
+				settings_buttons[2].rect.y = c_y + 400 ;
 
-				settings_buttons[3].rect.x = c_x + 20;
-				settings_buttons[3].rect.y = c_y + 500 + c_y_corre;
+				settings_buttons[3].rect.x = c_x + 20 + c_y_corre;
+				settings_buttons[3].rect.y = c_y + 500 ;
 
 				app->render->DrawTexture(settings_buttons[0].alt_tex2, settings_buttons[0].rect.x + 10, settings_buttons[0].rect.y - 40);
 				app->render->DrawTexture(settings_buttons[1].alt_tex2, settings_buttons[1].rect.x + 10, settings_buttons[1].rect.y - 40);
@@ -1580,13 +1600,14 @@ bool Menu::PostUpdate()
 					}
 					
 					xbarra = z1;
-					app->render->DrawTexture(settings_buttons[0].alt_tex, z1 + c_x - 3, settings_buttons[0].rect.y);
+					app->render->DrawTexture(settings_buttons[0].alt_tex, z1 + c_x - 3, settings_buttons[0].rect.y + c_y_corre);
 					app->audio->SetMusic((z1 - 25) / 2);
 				}
 				else
 
 				{
-					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x - 3, settings_buttons[0].rect.y);
+					if (c_y_corre >= 0.0f)
+					app->render->DrawTexture(settings_buttons[0].alt_tex, xbarra + c_x - 3, settings_buttons[0].rect.y + c_y_corre);
 				}
 
 				if (slider2)
@@ -1629,12 +1650,13 @@ bool Menu::PostUpdate()
 					}
 
 					xbarra2 = z2;
-					app->render->DrawTexture(settings_buttons[1].alt_tex, z2 + c_x - 3, settings_buttons[1].rect.y);
+					app->render->DrawTexture(settings_buttons[1].alt_tex, z2 + c_x - 3, settings_buttons[1].rect.y + c_y_corre);
 					app->audio->SetFX((z2 - 30) / 2);
 				}
 				else
 				{
-					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x - 3, settings_buttons[1].rect.y);
+					if (c_y_corre >= 0.0f) 
+					app->render->DrawTexture(settings_buttons[1].alt_tex, xbarra2 + c_x - 3, settings_buttons[1].rect.y + c_y_corre);
 				}
 
 				if (vsync && i == 3)
@@ -1651,8 +1673,7 @@ bool Menu::PostUpdate()
 
 			}
 		}
-else
-c_y_corre = -700.0f;
+
 	}
 
 	SDL_Rect rect;
