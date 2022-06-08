@@ -644,6 +644,8 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		damage_recived = health_before;
 	}
 
+	app->render->CameraShake();
+
 	return true;
 }
 

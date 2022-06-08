@@ -95,8 +95,29 @@ bool Render::Update(float dt)
 	}
 	else if (app->combat_scene->Enabled() || app->end_combat_scene->Enabled())
 	{
-		camera.x = 0;
-		camera.y = 0;
+		if (!shake)
+		{
+			camera.x = 0;
+			camera.y = 0;
+		}
+		else
+		{
+			if (shake_cd < 8)
+			{
+				switch (shake_cd % 4)
+				{
+				case 0: camera.x++; break;
+				case 1: camera.y++; break;
+				case 2: camera.x--; break;
+				case 3: camera.y--; break;
+				}
+			}
+			else
+			{
+				shake = false;
+				shake_cd = 0;
+			}
+		}
 	}
 	
 	if (app->frontground->current_level == 1)
@@ -598,4 +619,9 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	{
 		layers[layer].push_back(renderobject);
 	}
+}
+
+void Render::CameraShake()
+{
+	shake = true;
 }

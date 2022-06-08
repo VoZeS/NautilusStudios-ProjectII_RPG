@@ -81,6 +81,8 @@ public:
 
 	void MoveCamera(int movement);
 
+	void CameraShake();
+
 public:
 
 	SDL_Renderer* renderer;
@@ -92,6 +94,9 @@ private:
 	vector< vector<renderObject>> layers;
 
 	int cont = 0;
+
+	bool shake = false;
+	int shake_cd = 0;
 
 };
 
