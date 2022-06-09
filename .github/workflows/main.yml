@@ -44,7 +44,7 @@ jobs:
 
     - name: Build Solution (MSVC16)
       run: |
-        msbuild.exe Imperial_Fall.sln  /property:Configuration=Release
+        msbuild.exe Imperial_Fall\Imperial_Fall.sln  /property:Configuration=Release
         copy /Y Imperial_Fall\build\Release\Game.exe build\$\Game.exe
       shell: cmd
       
