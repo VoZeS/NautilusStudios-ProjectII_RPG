@@ -52,5 +52,5 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: $.zip
+        name: Imperial_fall.zip
         path: ./build/$.zip
