@@ -50,7 +50,7 @@ jobs:
       
     - name: Generate Artifacts
       run: |
-        robocopy .\Output .\build\$\Output /S
+        robocopy .\Output .\build\$\Imperial_Fall\Output /S
         robocopy .\build\$ .\build\$\Output Game.exe /MOVE
         copy /Y .\README.md .\build\$\README.md
         copy /Y .\LICENSE .\build\$\LICENSE
