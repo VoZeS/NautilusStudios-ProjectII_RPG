@@ -45,7 +45,6 @@ jobs:
         copy /Y .\README.md .\build\$\README.md
         copy /Y .\LICENSE .\build\$\LICENSE
         cd build
-        7z a ./$.zip 
         dir
       shell: cmd
 
