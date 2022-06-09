@@ -45,7 +45,7 @@ jobs:
     - name: Build Solution (MSVC16)
       run: |
         msbuild.exe Imperial_Fall.sln  /property:Configuration=Release
-        copy /Y build\Release\Game.exe build\$\Game.exe
+        copy /Y Imperial_Fall\build\Release\Game.exe build\$\Game.exe
       shell: cmd
       
     - name: Generate Artifacts
