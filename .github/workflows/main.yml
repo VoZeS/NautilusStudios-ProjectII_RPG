@@ -37,6 +37,16 @@ jobs:
         mkdir $
         cd ../../NautilusStudios-ProjectII_RPG
         dir
+        
+      # Setup MSBuild.exe path if required
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build Solution (MSVC16)
+      run: |
+        msbuild.exe Imperial_Fall.sln  /property:Configuration=Release
+        copy /Y build\Release\Game.exe build\$\Game.exe
+      shell: cmd
       
     - name: Generate Artifacts
       run: |
@@ -45,6 +55,7 @@ jobs:
         copy /Y .\README.md .\build\$\README.md
         copy /Y .\LICENSE .\build\$\LICENSE
         cd build
+        7z a ./$.zip
         dir
       shell: cmd
 
