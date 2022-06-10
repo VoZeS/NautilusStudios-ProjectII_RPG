@@ -45,7 +45,7 @@ bool Credits::Start()
 		creditsRect.x = 0;
 		creditsRect.y = 0;
 		creditsRect.w = 1280;
-		creditsRect.h = 2189;
+		creditsRect.h = 3648;
 
 		app->render->camera.x = 0;
 		app->render->camera.y = 0;
@@ -73,9 +73,18 @@ bool Credits::Update(float dt)
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
 
-	if (c_y < 2889)
+	if (c_y < creditsRect.h + 600)
 	{
-		app->render->camera.y -= 2;
+
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			app->render->camera.y -= 4;
+		}
+		else
+		{
+			app->render->camera.y -= 1;
+
+		}
 	}
 
 	return true;
@@ -91,7 +100,7 @@ bool Credits::PostUpdate()
 
 	app->render->DrawTexture(credits, 0, 600, &creditsRect);
 
-	if (c_y >= 2889)
+	if (c_y >= creditsRect.h + 600)
 	{
 		app->frontground->move_to = MOVE_TO::INSIDE_SCENE;
 		app->frontground->FadeToBlack();
