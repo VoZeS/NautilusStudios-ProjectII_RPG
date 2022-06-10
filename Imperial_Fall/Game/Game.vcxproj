@@ -96,6 +96,7 @@
     <ClCompile Include="Source\Combat_Manager.cpp" />
     <ClCompile Include="Source\Combat_Menu.cpp" />
     <ClCompile Include="Source\Combat_Scene.cpp" />
+    <ClCompile Include="Source\Credits.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Dungeon.cpp" />
     <ClCompile Include="Source\End_Combat_Scene.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Source\Combat_Manager.h" />
     <ClInclude Include="Source\Combat_Menu.h" />
     <ClInclude Include="Source\Combat_Scene.h" />
+    <ClInclude Include="Source\Credits.h" />
     <ClInclude Include="Source\Dialog.h" />
     <ClInclude Include="Source\Dungeon.h" />
     <ClInclude Include="Source\End_Combat_Scene.h" />

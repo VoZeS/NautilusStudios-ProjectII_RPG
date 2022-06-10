@@ -27,6 +27,7 @@
 #include "LogoScreen.h"
 #include "Intro_Cutscene.h"
 #include "Final_Cutscene.h"
+#include "Credits.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -1993,6 +1994,7 @@ void Menu::DisableAll()
 	if (app->inside->Enabled()) { app->inside->Disable(); }
 	if (app->combat_scene->Enabled()) { app->combat_scene->Disable(); }
 	if (app->end_combat_scene->Enabled()) { app->end_combat_scene->Disable(); }
+	if (app->credits->Enabled()) { app->credits->Disable(); }
 }
 
 void Menu::InitPlayer()
