@@ -156,8 +156,7 @@ bool Frontground::Update(float dt)
 		return_black = false;
 	}
 
-	//if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-	if (app->menu->dragonDefeated || app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (app->menu->dragonDefeated)// || app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		//Fade Out
 		app->frontground->move_to = MOVE_TO::FINALCOMBAT_CUTSCENE_2;

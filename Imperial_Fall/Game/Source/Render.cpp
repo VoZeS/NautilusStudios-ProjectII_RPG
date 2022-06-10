@@ -106,16 +106,19 @@ bool Render::Update(float dt)
 			{
 				switch (shake_cd % 4)
 				{
-				case 0: camera.x++; break;
-				case 1: camera.y++; break;
-				case 2: camera.x--; break;
-				case 3: camera.y--; break;
+				case 0: camera.x += shake_strenght; break;
+				case 1: camera.y -= shake_strenght; break;
+				case 2: camera.x -= shake_strenght; break;
+				case 3: camera.y += shake_strenght; break;
 				}
+				shake_cd++;
+				return true;
 			}
 			else
 			{
 				shake = false;
 				shake_cd = 0;
+				shake_strenght = 0;
 			}
 		}
 	}
@@ -621,7 +624,8 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	}
 }
 
-void Render::CameraShake()
+void Render::CameraShake(int strenght)
 {
 	shake = true;
+	shake_strenght = strenght / 40;
 }

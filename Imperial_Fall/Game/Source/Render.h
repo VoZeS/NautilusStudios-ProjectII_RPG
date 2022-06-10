@@ -81,7 +81,7 @@ public:
 
 	void MoveCamera(int movement);
 
-	void CameraShake();
+	void CameraShake(int strenght);
 
 public:
 
@@ -97,6 +97,7 @@ private:
 
 	bool shake = false;
 	int shake_cd = 0;
+	int shake_strenght = 0;
 
 };
 

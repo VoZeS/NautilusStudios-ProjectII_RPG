@@ -525,6 +525,8 @@ Combat_Entities::~Combat_Entities()
 
 bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 {
+	app->render->CameraShake(amount);
+
 	int health_before = actual_health;
 
 	if (shield > 0)
@@ -643,8 +645,6 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 	{
 		damage_recived = health_before;
 	}
-
-	app->render->CameraShake();
 
 	return true;
 }
