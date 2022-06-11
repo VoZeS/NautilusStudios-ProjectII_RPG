@@ -109,6 +109,9 @@ public:
 
 	bool menu = false;
 
+	bool menu1 = false;
+	bool menu2 = false;
+
 	bool started = false;
 
 	void InitPlayer();

@@ -27,6 +27,7 @@
 #include "LogoScreen.h"
 #include "Intro_Cutscene.h"
 #include "Final_Cutscene.h"
+#include "Credits.h"
 
 Menu::Menu(bool enabled) : Module(enabled)
 {
@@ -347,7 +348,23 @@ bool Menu::PreUpdate()
 		&& !app->dialog->InDialog() && app->frontground->fix)
 	{
 		paused = true;
+		menu1 = true;
+
+		if (menu1 == true && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && c_x_menu >= 470 && menu2==false)
+		{
+			paused = false;
+			menu1 = false;
+		}
+
+		if (menu2 == true && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			menu2 = false;
+		}
 	}
+
+
+	
+	
 
 
 	if ((app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_O) == KEY_UP) && !intro && !paused && !settings && description_disabled
@@ -627,6 +644,7 @@ bool Menu::Update(float dt)
 					settings = true;
 					paused = true;
 					started = true;
+					menu2 = true;
 					break;
 				case 2:
 					app->frontground->ReturnStartScreen();
@@ -1225,7 +1243,6 @@ bool Menu::PostUpdate()
 		//Hace que el menu aparezca
 		if (paused && !intro && !settings)
 		{
-
 			if (desMenu == true && c_x_menu <= 470)
 			{
 				c_x_menu += 15.0f;
@@ -1993,6 +2010,7 @@ void Menu::DisableAll()
 	if (app->inside->Enabled()) { app->inside->Disable(); }
 	if (app->combat_scene->Enabled()) { app->combat_scene->Disable(); }
 	if (app->end_combat_scene->Enabled()) { app->end_combat_scene->Disable(); }
+	if (app->credits->Enabled()) { app->credits->Disable(); }
 }
 
 void Menu::InitPlayer()

@@ -435,7 +435,7 @@ bool Final_Cutscene::Update(float dt)
 		cutscene_finished = false;
 
 		//Fade Out
-		app->frontground->move_to = MOVE_TO::SCENE_INSIDE;
+		app->frontground->move_to = MOVE_TO::CREDITS;
 		app->frontground->FadeToBlack();
 	}
 

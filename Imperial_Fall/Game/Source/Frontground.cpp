@@ -25,6 +25,7 @@
 #include "Dialog.h"
 #include "Intro_Cutscene.h"
 #include "Final_Cutscene.h"
+#include "Credits.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -162,6 +163,12 @@ bool Frontground::Update(float dt)
 		app->frontground->move_to = MOVE_TO::FINALCOMBAT_CUTSCENE_2;
 		app->frontground->FadeToBlack();
 		app->menu->dragonDefeated = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		app->frontground->move_to = MOVE_TO::CREDITS;
+		app->frontground->FadeToBlack();
 	}
 
 	return true;
@@ -356,6 +363,8 @@ bool Frontground::FadeFromBlack()
 	case MOVE_TO::COMBAT_FINALCOMBAT: app->end_combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
 		return_black = false; break;
 	case MOVE_TO::FINALCOMBAT_CUTSCENE_2: app->final_cut->Enable();
+		break;
+	case MOVE_TO::CREDITS: app->credits->Enable();
 		break;
 	default:
 		break;

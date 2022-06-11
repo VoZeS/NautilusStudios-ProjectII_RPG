@@ -48,6 +48,7 @@ class Dialog;
 class LogoScreen;
 class Intro_Cutscene;
 class Final_Cutscene;
+class Credits;
 
 
 
@@ -143,6 +144,7 @@ public:
 	LogoScreen* logo;
 	Intro_Cutscene* intro;
 	Final_Cutscene* final_cut;
+	Credits* credits;
 
 
 private:
