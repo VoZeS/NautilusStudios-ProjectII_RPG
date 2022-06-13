@@ -45,7 +45,7 @@ bool Credits::Start()
 		creditsRect.x = 0;
 		creditsRect.y = 0;
 		creditsRect.w = 1280;
-		creditsRect.h = 3648;
+		creditsRect.h = 3804;
 
 		app->render->camera.x = 0;
 		app->render->camera.y = 0;

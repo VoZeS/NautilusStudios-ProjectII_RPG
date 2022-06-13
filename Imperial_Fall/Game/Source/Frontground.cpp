@@ -165,11 +165,11 @@ bool Frontground::Update(float dt)
 		app->menu->dragonDefeated = false;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	/*if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		app->frontground->move_to = MOVE_TO::CREDITS;
 		app->frontground->FadeToBlack();
-	}
+	}*/
 
 	return true;
 }
