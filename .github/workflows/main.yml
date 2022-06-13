@@ -50,12 +50,12 @@ jobs:
       
     - name: Generate Artifacts
       run: |
-        robocopy .\Output .\build\$\Imperial_Fall\Output /S
+        robocopy .\Imperial_Fall\Output .\build\$\Output /S
         robocopy .\build\$ .\build\$\Output Game.exe /MOVE
         copy /Y .\README.md .\build\$\README.md
         copy /Y .\LICENSE .\build\$\LICENSE
         cd build
-        7z a ./$.zip
+        7z a ./Imperial_Fall.zip
         dir
       shell: cmd
 
@@ -63,4 +63,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Imperial_fall.zip
-        path: ./build/$.zip
+        path: ./build/Imperial_Fall.zip
