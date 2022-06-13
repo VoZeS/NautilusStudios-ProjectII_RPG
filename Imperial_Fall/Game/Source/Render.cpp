@@ -631,6 +631,13 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 
 void Render::CameraShake(int strenght)
 {
-	shake = true;
-	shake_strenght = strenght / 40;
+	if (shake_strenght == 0)
+	{
+		shake = true;
+		shake_strenght = strenght / 40;
+		if (shake_strenght < 1)
+		{
+			shake_strenght = 1;
+		}
+	}
 }
