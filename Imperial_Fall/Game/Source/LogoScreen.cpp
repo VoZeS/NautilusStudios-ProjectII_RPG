@@ -90,7 +90,7 @@ bool LogoScreen::Update(float dt)
 		return false;
 	}*/
 
-	if (logo_anim.HasFinished() || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP)
+	if (logo_anim.HasFinished() || app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP)
 	{
 		//Fade Out
 		app->frontground->move_to = MOVE_TO::LOGO_SCENE;

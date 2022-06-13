@@ -344,19 +344,19 @@ bool Menu::PreUpdate()
 		app->audio->PlayFx(unlock_fx);
 	}
 	
-	if ((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_U) == KEY_UP) && !intro && description_disabled && app->inventory->hide && unlock_state == 0
+	if ((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP) && !intro && description_disabled && app->inventory->hide && unlock_state == 0
 		&& !app->dialog->InDialog() && app->frontground->fix)
 	{
 		paused = true;
 		menu1 = true;
 
-		if (menu1 == true && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && c_x_menu >= 470 && menu2==false)
+		if (menu1 == true && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP) && c_x_menu >= 470 && menu2==false)
 		{
 			paused = false;
 			menu1 = false;
 		}
 
-		if (menu2 == true && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		if (menu2 == true && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP))
 		{
 			menu2 = false;
 		}
@@ -1006,14 +1006,15 @@ bool Menu::Update(float dt)
 					// sure to scape
 					app->frontground->ReturnToField();
 					app->frontground->reward = "999";
+					if (theseion2)
+					{
+						theseion2 = false;
+						dragonDefeated = false;
+					}
 					break;
 				case 1:
 					// cancel scape
 					scape = false;
-					if (app->frontground->controller)
-					{
-						app->combat_menu->SetController();
-					}
 					break;
 				}
 
