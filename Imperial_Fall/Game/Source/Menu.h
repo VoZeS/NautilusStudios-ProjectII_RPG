@@ -118,17 +118,6 @@ public:
 
 	void DisableAll();
 
-	void SetController()
-	{
-		pause_buttons[0].state = 1;
-		menu_buttons[0].state = 1;
-		settings_buttons[0].state = 1;
-		win_button.state = 1;
-		lose_buttons[0].state = 1;
-		scape_buttons[0].state = 1;
-		ask_buttons[0].state = 1;
-	}
-
 	//Descriptions
 	void DisplayEntityInfo(Combat_Entities* entity);
 	void DisplaySkillInfo(Skill skill);

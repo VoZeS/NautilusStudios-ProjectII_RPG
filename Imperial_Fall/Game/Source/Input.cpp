@@ -102,7 +102,6 @@ bool Input::PreUpdate()
 			case SDL_CONTROLLERDEVICEADDED:
 				HandleDeviceConnection(event.cdevice.which);
 				app->frontground->controller = true;
-				app->frontground->SetController();
 			break;
 
 			case SDL_CONTROLLERDEVICEREMOVED:
@@ -228,6 +227,10 @@ bool Input::PreUpdate()
 		if (pad.l2 == true)
 		{
 			app->input->SetKey(SDL_SCANCODE_L, KEY_REPEAT);
+		}
+		if (pad.start == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_ESCAPE, KEY_DOWN);
 		}
 	}
 	else

@@ -78,11 +78,6 @@ bool Frontground::PreUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
 		controller = !controller;
-		if (controller)
-		{
-			app->menu->SetController();
-			app->combat_menu->SetController();
-		}
 	}
 
 	if (check_phase_change)
@@ -493,12 +488,6 @@ void Frontground::MovePlayer()
 	}
 
 	direction = -1;
-}
-
-void Frontground::SetController()
-{
-	app->menu->SetController();
-	app->combat_menu->SetController();
 }
 
 int Frontground::CheckAdventureState()

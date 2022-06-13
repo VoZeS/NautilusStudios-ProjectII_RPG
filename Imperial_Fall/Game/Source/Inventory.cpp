@@ -3813,7 +3813,7 @@ bool Inventory::CheckGearUnlocked(int user, int piece, int level)
 	}
 	else if (user == 3) // wizard
 	{
-		hero = saveGame.child("objects").child("tank");
+		hero = saveGame.child("objects").child("wizard");
 		if (piece == 0) // helmet
 		{
 			set = hero.child("helmet");

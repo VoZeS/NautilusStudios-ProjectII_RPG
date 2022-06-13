@@ -496,7 +496,7 @@ bool Intro_Cutscene::Update(float dt)
 		cutscene_finished = true;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		cutscene_finished = true;
 	}
