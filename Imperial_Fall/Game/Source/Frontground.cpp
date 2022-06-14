@@ -23,6 +23,9 @@
 #include "End_Combat_Scene.h"
 #include "LogoScreen.h"
 #include "Dialog.h"
+#include "Intro_Cutscene.h"
+#include "Final_Cutscene.h"
+#include "Credits.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -61,7 +64,9 @@ bool Frontground::Start()
 
 	first_time = saveGame.child("started").child("first_time").attribute("value").as_bool();
 	current_level = saveGame.child("started").child("current_level").attribute("value").as_int();;
-	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();;
+	adventure_phase = saveGame.child("started").child("adventure_phase").attribute("value").as_int();
+
+	c_mouse_pos = { 640, 360 };
 
 	return true;
 }
@@ -73,11 +78,6 @@ bool Frontground::PreUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
 		controller = !controller;
-		if (controller)
-		{
-			app->menu->SetController();
-			app->combat_menu->SetController();
-		}
 	}
 
 	if (check_phase_change)
@@ -152,6 +152,20 @@ bool Frontground::Update(float dt)
 		return_black = false;
 	}
 
+	if (app->menu->dragonDefeated)// || app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		//Fade Out
+		app->frontground->move_to = MOVE_TO::FINALCOMBAT_CUTSCENE_2;
+		app->frontground->FadeToBlack();
+		app->menu->dragonDefeated = false;
+	}
+
+	/*if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		app->frontground->move_to = MOVE_TO::CREDITS;
+		app->frontground->FadeToBlack();
+	}*/
+
 	return true;
 }
 
@@ -160,6 +174,17 @@ bool Frontground::PostUpdate()
 {
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;
+
+	// draw cursor
+	if (!controller)
+	{
+		app->input->GetMousePosition(c_mouse_pos.x, c_mouse_pos.y);
+		app->render->DrawTexture(app->menu->cursor_tex, c_mouse_pos.x + c_x, c_mouse_pos.y + c_y);
+	}
+	else
+	{
+		app->render->DrawTexture(app->menu->cursor_tex, c_mouse_pos.x + c_x, c_mouse_pos.y + c_y);
+	}
 	
 	r.x = c_x;
 	r.y = c_y;
@@ -235,6 +260,8 @@ bool Frontground::FadeFromBlack()
 
 	switch (move_to)
 	{
+	case MOVE_TO::SCENE_CUTSCENE_1: app->intro->Enable(); 
+		break;
 	case MOVE_TO::LOGO_SCENE: app->scene->Enable();  app->menu->started = false;
 		break;
 	case MOVE_TO::SCENE_TOWN1: app->town1->Enable(); app->menu->InitPlayer();
@@ -330,6 +357,10 @@ bool Frontground::FadeFromBlack()
 		break;
 	case MOVE_TO::COMBAT_FINALCOMBAT: app->end_combat_scene->Enable(); app->menu->SetWinLoseScape(-1);
 		return_black = false; break;
+	case MOVE_TO::FINALCOMBAT_CUTSCENE_2: app->final_cut->Enable();
+		break;
+	case MOVE_TO::CREDITS: app->credits->Enable();
+		break;
 	default:
 		break;
 	}
@@ -457,12 +488,6 @@ void Frontground::MovePlayer()
 	}
 
 	direction = -1;
-}
-
-void Frontground::SetController()
-{
-	app->menu->SetController();
-	app->combat_menu->SetController();
 }
 
 int Frontground::CheckAdventureState()

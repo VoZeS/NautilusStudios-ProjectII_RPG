@@ -602,7 +602,7 @@ void Combat_Manager::UpdateHUD()
 		app->render->DrawTexture(enemies_icons, 8 + cx + 250 + 800, 8 + cy, &rect);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy, (int)(enemies[1]->GetMaxHealth() / divider), 15 }, 70, 0, 0);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy, (int)(enemies[1]->GetActualHealth() / divider), 13 }, 255, 0, 0);
-		app->render->DrawRectangle({ 76 + cx + (int)(enemies[2]->GetActualHealth() / divider) + 250 + 800, 9 + cy, (int)(enemies[1]->GetShield() / divider), 13 }, 120, 120, 120, 200);
+		app->render->DrawRectangle({ 76 + cx + (int)(enemies[1]->GetActualHealth() / divider) + 250 + 800, 9 + cy, (int)(enemies[1]->GetShield() / divider), 13 }, 120, 120, 120, 200);
 		app->render->DrawRectangle({ 75 + cx + 250 + 800, 8 + cy + 16, (int)(enemies[1]->GetMaxMana() / divider), 15 }, 0, 0, 70);
 		app->render->DrawRectangle({ 76 + cx + 250 + 800, 9 + cy + 16, (int)(enemies[1]->GetActualMana() / divider), 13 }, 0, 0, 255);
 		app->render->DrawRectangle({ 76 + cx + (int)(enemies[1]->GetActualHealth() / divider) + 250 + 800, 9 + cy, (int)(enemies[1]->damage_recived / divider), 13 }, 218, 155, 0);

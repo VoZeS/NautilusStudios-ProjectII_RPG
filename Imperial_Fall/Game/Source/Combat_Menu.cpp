@@ -15,6 +15,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#include <string.h>
+
 Combat_Menu::Combat_Menu(bool enabled) : Module(enabled)
 {
 	name.Create("combat_menu");
@@ -332,941 +334,251 @@ bool Combat_Menu::PreUpdate()
 		}
 	}
 
-	if (!app->frontground->controller) // keyboard
+	if (in_description && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP))
 	{
-		if (in_description && app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		{
-			in_description = false;
-		}
+		in_description = false;
+	}
 
-		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape && !in_description)
-		{
-			int x, y;
-			app->input->GetMousePosition(x, y);
-			float cx = -app->render->camera.x;
-			float cy = -app->render->camera.y;
+	if (!app->menu->GetGameState() && allies_turn && !app->menu->scape && !in_description)
+	{
+		int x, y;
+		x = app->frontground->c_mouse_pos.x;
+		y = app->frontground->c_mouse_pos.y;
+		//app->input->GetMousePosition(x, y);
+		float cx = -app->render->camera.x;
+		float cy = -app->render->camera.y;
 
-			if (!in_items && !in_enemies && !in_allies)
+		if (!in_items && !in_enemies && !in_allies)
+		{
+			for (size_t i = 0; i < NUM_BUTTONS; i++)
 			{
-				for (size_t i = 0; i < NUM_BUTTONS; i++)
+				SDL_Rect rect = general_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					SDL_Rect rect = general_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
 					{
-						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
-						{
-							chosed = i;
-							general_buttons[i].state = 3;
-						}
-						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
-						{
-							general_buttons[i].state = 0;
-						}
-						else
-						{
-							chosed = i;
-							general_buttons[i].state = 1;
-						}
+						chosed = i;
+						general_buttons[i].state = 3;
+					}
+					else if (i < 4 && std::string(app->combat_manager->GetActualEntity()->GetSkill(i).skill_name) == "no skill")
+					{
+						general_buttons[i].state = 0;
 					}
 					else
 					{
-						if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
-						{
-							general_buttons[i].state = 3;
-						}
-						else if (i < 4 && app->combat_manager->GetActualEntity()->GetSkill(i).skill_name == "no skill")
-						{
-							general_buttons[i].state = 0;
-						}
-						else
-						{
-							general_buttons[i].state = 0;
-						}
+						chosed = i;
+						general_buttons[i].state = 1;
+					}
+				}
+				else
+				{
+					if (i < 4 && app->combat_manager->GetActualEntity()->GetActualMana() < app->combat_manager->GetActualEntity()->GetSkill(i).mana_cost)
+					{
+						general_buttons[i].state = 3;
+					}
+					else if (i < 4 && std::string(app->combat_manager->GetActualEntity()->GetSkill(i).skill_name) == "no skill")
+					{
+						general_buttons[i].state = 0;
+					}
+					else
+					{
+						general_buttons[i].state = 0;
 					}
 				}
 			}
+		}
 
-			if (in_items && !in_enemies && !in_allies)
+		if (in_items && !in_enemies && !in_allies)
+		{
+			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
 			{
-				for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+				SDL_Rect rect = items_buttons[i].rect;
+				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					SDL_Rect rect = items_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
+					if (i == 4 || app->combat_manager->GetItemUses(i) > 0)
 					{
-						if (i == 4 || app->combat_manager->GetItemUses(i) > 0)
-						{
-							chosed = i;
-							items_buttons[i].state = 1;
-						}
-						else
-						{
-							items_buttons[i].state = 0;
-						}
+						chosed = i;
+						items_buttons[i].state = 1;
 					}
 					else
 					{
 						items_buttons[i].state = 0;
 					}
 				}
-			}
-
-			if (!in_items && in_enemies && !in_allies)
-			{
-				for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+				else
 				{
-					SDL_Rect rect = enemies_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-					{
-						chosed = i;
-						enemies_buttons[i].state = 1;
-					}
-					else
-					{
-						enemies_buttons[i].state = 0;
-					}
-				}
-				if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
-				{
-					if ((enemies_buttons[0].state == 1 && app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1) ||
-						(enemies_buttons[1].state == 1 && app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1) ||
-						(enemies_buttons[2].state == 1 && app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1) ||
-						(enemies_buttons[3].state == 1 && app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1))
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							enemies_buttons[i].state = 1;
-						}
-					}
-				}
-				for (size_t i = 0; i < 4; i++)
-				{
-					// if enemy dead
-					if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() != 1)
-					{
-						enemies_buttons[i].state = 0;
-					}
-
-					BUFF b;
-					// if one enemy taunt
-					b.buff_type = BUFF_TYPE::TAUNT;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
-					{
-						for (size_t j = 0; j < 4; j++)
-						{
-							if (j != i && app->combat_manager->GetEnemyByNumber(j)->FindBuff(b) == -1)
-							{
-								enemies_buttons[j].state = 0;
-							}
-						}
-					}
-					// if one enemy stealth
-					b.buff_type = BUFF_TYPE::STEALTH;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && enemies_buttons[i].state == 1
-						&& skill_prepared.enemy_objective != ENEMY_OBJECTIVE::ALL_ENEMY)
-					{
-						enemies_buttons[i].state = 3;
-
-						if ((app->combat_manager->GetEnemyByNumber(0)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(0)->GetEntityState() != 1)
-							&& (app->combat_manager->GetEnemyByNumber(1)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(1)->GetEntityState() != 1)
-							&& (app->combat_manager->GetEnemyByNumber(2)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(2)->GetEntityState() != 1)
-							&& (app->combat_manager->GetEnemyByNumber(3)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(3)->GetEntityState() != 1))
-						{
-							enemies_buttons[i].state = 1;
-						}
-					}
+					items_buttons[i].state = 0;
 				}
 			}
+		}
 
-			if (!in_items && !in_enemies && in_allies)
-			{
-				for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
-				{
-					SDL_Rect rect = allies_buttons[i].rect;
-					if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
-					{
-						chosed = i;
-						allies_buttons[i].state = 1;
-					}
-					else
-					{
-						allies_buttons[i].state = 0;
-					}
-				}
-				if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
-				{
-					if (allies_buttons[0].state == 1 || allies_buttons[1].state == 1 || allies_buttons[2].state == 1 || allies_buttons[3].state == 1)
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							allies_buttons[i].state = 1;
-						}
-					}
-				}
-				else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
-				{
-					if (allies_buttons[skill_prepared.owner].state != 1)
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							allies_buttons[i].state = 0;
-						}
-					}
-				}
-				for (size_t i = 0; i < 4; i++)
-				{
-					if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() != 1 && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
-					{
-						allies_buttons[i].state = 0;
-					}
-					else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1 && skill_prepared.support_type == SUPPORT_TYPE::REVIVE)
-					{
-						allies_buttons[i].state = 0;
-					}
-				}
-			}
-
-			// enemy description
-			int e = 0;
+		if (!in_items && in_enemies && !in_allies)
+		{
 			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
 			{
 				SDL_Rect rect = enemies_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					enemy_chosed = i;
-					e++;
+					chosed = i;
+					enemies_buttons[i].state = 1;
 				}
-				else if (e == 0)
+				else
 				{
-					enemy_chosed = -1;
+					enemies_buttons[i].state = 0;
 				}
 			}
+			if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
+			{
+				if ((enemies_buttons[0].state == 1 && app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1) ||
+					(enemies_buttons[1].state == 1 && app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1) ||
+					(enemies_buttons[2].state == 1 && app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1) ||
+					(enemies_buttons[3].state == 1 && app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1))
+				{
+					for (size_t i = 0; i < 4; i++)
+					{
+						enemies_buttons[i].state = 1;
+					}
+				}
+			}
+			for (size_t i = 0; i < 4; i++)
+			{
+				// if enemy dead
+				if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() != 1)
+				{
+					enemies_buttons[i].state = 0;
+				}
 
-			// ally description
-			int a = 0;
+				BUFF b;
+				// if one enemy taunt
+				b.buff_type = BUFF_TYPE::TAUNT;
+				if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
+				{
+					for (size_t j = 0; j < 4; j++)
+					{
+						if (j != i && app->combat_manager->GetEnemyByNumber(j)->FindBuff(b) == -1)
+						{
+							enemies_buttons[j].state = 0;
+						}
+					}
+				}
+				// if one enemy stealth
+				b.buff_type = BUFF_TYPE::STEALTH;
+				if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && enemies_buttons[i].state == 1
+					&& skill_prepared.enemy_objective != ENEMY_OBJECTIVE::ALL_ENEMY)
+				{
+					enemies_buttons[i].state = 3;
+
+					if ((app->combat_manager->GetEnemyByNumber(0)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(0)->GetEntityState() != 1)
+						&& (app->combat_manager->GetEnemyByNumber(1)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(1)->GetEntityState() != 1)
+						&& (app->combat_manager->GetEnemyByNumber(2)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(2)->GetEntityState() != 1)
+						&& (app->combat_manager->GetEnemyByNumber(3)->FindBuff(b) != -1 || app->combat_manager->GetEnemyByNumber(3)->GetEntityState() != 1))
+					{
+						enemies_buttons[i].state = 1;
+					}
+				}
+			}
+		}
+
+		if (!in_items && !in_enemies && in_allies)
+		{
 			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
 			{
 				SDL_Rect rect = allies_buttons[i].rect;
 				if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 				{
-					ally_chosed = i;
-					a++;
+					chosed = i;
+					allies_buttons[i].state = 1;
 				}
-				else if (a == 0)
+				else
 				{
-					ally_chosed = -1;
+					allies_buttons[i].state = 0;
 				}
 			}
-		}
-		else if (app->menu->GetGameState() || app->menu->scape || in_description)
-		{
-			for (size_t i = 0; i < NUM_BUTTONS; i++)
+			if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
 			{
-				general_buttons[i].state = 0;
-			}
-
-			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
-			{
-				items_buttons[i].state = 0;
-			}
-
-			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
-			{
-				enemies_buttons[i].state = 0;
-			}
-
-			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
-			{
-				allies_buttons[i].state = 0;
-			}
-		}
-	}
-	else // controller
-	{
-		GamePad& pad = app->input->pads[0];
-
-		if (pad.up == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_UP, KEY_REPEAT);
-		}
-		if (pad.down == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_DOWN, KEY_REPEAT);
-		}
-		if (pad.left == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_LEFT, KEY_REPEAT);
-		}
-		if (pad.right == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_RIGHT, KEY_REPEAT);
-		}
-
-
-		if (!app->menu->GetGameState() && allies_turn && !app->menu->scape && !in_description)
-		{
-			if (!in_items && !in_enemies && !in_allies)
-			{
-				if (general_buttons[0].state == 1)
+				if (allies_buttons[0].state == 1 || allies_buttons[1].state == 1 || allies_buttons[2].state == 1 || allies_buttons[3].state == 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+					for (size_t i = 0; i < 4; i++)
 					{
-						general_buttons[0].state = 0;
-						general_buttons[1].state = 1;
-						chosed = 1;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						general_buttons[0].state = 0;
-						general_buttons[2].state = 1;
-						chosed = 2;
-					}
-				}
-				else if (general_buttons[1].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						general_buttons[1].state = 0;
-						general_buttons[4].state = 1;
-						chosed = 4;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						general_buttons[1].state = 0;
-						general_buttons[0].state = 1;
-						chosed = 0;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						general_buttons[1].state = 0;
-						general_buttons[3].state = 1;
-						chosed = 3;
-					}
-				}
-				else if (general_buttons[2].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						general_buttons[2].state = 0;
-						general_buttons[0].state = 1;
-						chosed = 0;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						general_buttons[2].state = 0;
-						general_buttons[3].state = 1;
-						chosed = 3;
-					}
-				}
-				else if (general_buttons[3].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						general_buttons[3].state = 0;
-						general_buttons[1].state = 1;
-						chosed = 1;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						general_buttons[3].state = 0;
-						general_buttons[4].state = 1;
-						chosed = 4;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						general_buttons[3].state = 0;
-						general_buttons[2].state = 1;
-						chosed = 2;
-					}
-				}
-				else if (general_buttons[4].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						general_buttons[4].state = 0;
-						general_buttons[5].state = 1;
-						chosed = 5;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						general_buttons[4].state = 0;
-						general_buttons[1].state = 1;
-						chosed = 1;
-					}
-				}
-				else if (general_buttons[5].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						general_buttons[5].state = 0;
-						general_buttons[6].state = 1;
-						chosed = 6;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						general_buttons[5].state = 0;
-						general_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (general_buttons[6].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						general_buttons[6].state = 0;
-						general_buttons[5].state = 1;
-						chosed = 5;
+						allies_buttons[i].state = 1;
 					}
 				}
 			}
-
-			if (in_items && !in_enemies && !in_allies)
+			else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
 			{
-				if (items_buttons[0].state == 1)
+				if (allies_buttons[skill_prepared.owner].state != 1)
 				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						items_buttons[0].state = 0;
-						items_buttons[1].state = 1;
-						chosed = 1;
-					}
-				}
-				else if (items_buttons[1].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						items_buttons[1].state = 0;
-						items_buttons[2].state = 1;
-						chosed = 2;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						items_buttons[1].state = 0;
-						items_buttons[0].state = 1;
-						chosed = 0;
-					}
-				}
-				else if (items_buttons[2].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						items_buttons[2].state = 0;
-						items_buttons[3].state = 1;
-						chosed = 3;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						items_buttons[2].state = 0;
-						items_buttons[1].state = 1;
-						chosed = 1;
-					}
-				}
-				else if (items_buttons[3].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						items_buttons[3].state = 0;
-						items_buttons[4].state = 1;
-						chosed = 4;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						items_buttons[3].state = 0;
-						items_buttons[2].state = 1;
-						chosed = 2;
-					}
-				}
-				else if (items_buttons[4].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						items_buttons[4].state = 0;
-						items_buttons[3].state = 1;
-						chosed = 3;
-					}
-				}
-			}
-
-			if (!in_items && in_enemies && !in_allies)
-			{
-				if (enemies_buttons[0].state == 1 || enemies_buttons[0].state == 3)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1)
-						{
-							enemies_buttons[0].state = 0;
-							enemies_buttons[1].state = 1;
-							chosed = 1;
-						}
-						else
-						{
-							if (app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1)
-							{
-								enemies_buttons[0].state = 0;
-								enemies_buttons[2].state = 1;
-								chosed = 2;
-							}
-							else
-							{
-								if (app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1)
-								{
-									enemies_buttons[0].state = 0;
-									enemies_buttons[3].state = 1;
-									chosed = 3;
-								}
-							}
-						}
-						
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						enemies_buttons[0].state = 0;
-						enemies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (enemies_buttons[1].state == 1 || enemies_buttons[1].state == 3)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1)
-						{
-							enemies_buttons[1].state = 0;
-							enemies_buttons[2].state = 1;
-							chosed = 2;
-						}
-						else
-						{
-							if (app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1)
-							{
-								enemies_buttons[1].state = 0;
-								enemies_buttons[3].state = 1;
-								chosed = 3;
-							}
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1)
-						{
-							enemies_buttons[1].state = 0;
-							enemies_buttons[0].state = 1;
-							chosed = 0;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						enemies_buttons[1].state = 0;
-						enemies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (enemies_buttons[2].state == 1 || enemies_buttons[2].state == 3)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1)
-						{
-							enemies_buttons[2].state = 0;
-							enemies_buttons[3].state = 1;
-							chosed = 3;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1)
-						{
-							enemies_buttons[2].state = 0;
-							enemies_buttons[1].state = 1;
-							chosed = 1;
-						}
-						else
-						{
-							if (app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1)
-							{
-								enemies_buttons[2].state = 0;
-								enemies_buttons[0].state = 1;
-								chosed = 0;
-							}
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						enemies_buttons[2].state = 0;
-						enemies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (enemies_buttons[3].state == 1 || enemies_buttons[3].state == 3)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						enemies_buttons[3].state = 0;
-						enemies_buttons[4].state = 1;
-						chosed = 4;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1)
-						{
-							enemies_buttons[3].state = 0;
-							enemies_buttons[2].state = 1;
-							chosed = 2;
-						}
-						else
-						{
-							if (app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1)
-							{
-								enemies_buttons[3].state = 0;
-								enemies_buttons[1].state = 1;
-								chosed = 1;
-							}
-							else
-							{
-								if (app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1)
-								{
-									enemies_buttons[3].state = 0;
-									enemies_buttons[0].state = 1;
-									chosed = 0;
-								}
-							}
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						enemies_buttons[3].state = 0;
-						enemies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (enemies_buttons[4].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						if (app->combat_manager->GetEnemyByNumber(0)->GetEntityState() == 1)
-						{
-							enemies_buttons[4].state = 0;
-							enemies_buttons[0].state = 1;
-							chosed = 0;
-						}
-						else
-						{
-							if (app->combat_manager->GetEnemyByNumber(1)->GetEntityState() == 1)
-							{
-								enemies_buttons[4].state = 0;
-								enemies_buttons[1].state = 1;
-								chosed = 1;
-							}
-							else
-							{
-								if (app->combat_manager->GetEnemyByNumber(2)->GetEntityState() == 1)
-								{
-									enemies_buttons[4].state = 0;
-									enemies_buttons[2].state = 1;
-									chosed = 2;
-								}
-								else
-								{
-									if (app->combat_manager->GetEnemyByNumber(3)->GetEntityState() == 1)
-									{
-										enemies_buttons[4].state = 0;
-										enemies_buttons[3].state = 1;
-										chosed = 3;
-									}
-								}
-							}
-						}
-					}
-				}
-				if (skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ALL_ENEMY)
-				{
-					if ((enemies_buttons[0].state == 1 || enemies_buttons[1].state == 1 || enemies_buttons[2].state == 1 || enemies_buttons[3].state == 1) && enemies_buttons[4].state == 0)
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							if (app->combat_manager->GetEnemyByNumber(i)->GetEntityState() == 1)
-							{
-								enemies_buttons[i].state = 1;
-								chosed = i;
-							}
-						}
-					}
-					else
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							enemies_buttons[i].state = 0;
-						}
-					}
-				}
-				for (size_t i = 0; i < 4; i++)
-				{
-					BUFF b;
-					// if one enemy taunt
-					b.buff_type = BUFF_TYPE::TAUNT;
-					if (chosed < 4 && app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::ONE_ENEMY)
-					{
-						for (size_t j = 0; j < 4; j++)
-						{
-							enemies_buttons[j].state = 0;
-						}
-						enemies_buttons[i].state = 1;
-						chosed = i;
-					}
-					// if one enemy stealth
-					b.buff_type = BUFF_TYPE::STEALTH;
-					if (app->combat_manager->GetEnemyByNumber(i)->FindBuff(b) != -1 && enemies_buttons[i].state == 1
-						&& skill_prepared.enemy_objective != ENEMY_OBJECTIVE::ALL_ENEMY)
-					{
-						enemies_buttons[i].state = 3;
-					}
-				}
-			}
-
-			if (!in_items && !in_enemies && in_allies)
-			{
-				if (allies_buttons[0].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(1)->GetEntityState() == 1)
-						{
-							allies_buttons[0].state = 0;
-							allies_buttons[1].state = 1;
-							chosed = 1;
-						}
-						else
-						{
-							if (app->combat_manager->GetAllyByNumber(2)->GetEntityState() == 1)
-							{
-								allies_buttons[0].state = 0;
-								allies_buttons[2].state = 1;
-								chosed = 2;
-							}
-							else
-							{
-								if (app->combat_manager->GetAllyByNumber(3)->GetEntityState() == 1)
-								{
-									allies_buttons[0].state = 0;
-									allies_buttons[3].state = 1;
-									chosed = 3;
-								}
-							}
-						}
-
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						allies_buttons[0].state = 0;
-						allies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (allies_buttons[1].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(2)->GetEntityState() == 1)
-						{
-							allies_buttons[1].state = 0;
-							allies_buttons[2].state = 1;
-							chosed = 2;
-						}
-						else
-						{
-							if (app->combat_manager->GetAllyByNumber(3)->GetEntityState() == 1)
-							{
-								allies_buttons[1].state = 0;
-								allies_buttons[3].state = 1;
-								chosed = 3;
-							}
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(0)->GetEntityState() == 1)
-						{
-							allies_buttons[1].state = 0;
-							allies_buttons[0].state = 1;
-							chosed = 0;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						allies_buttons[1].state = 0;
-						allies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (allies_buttons[2].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(3)->GetEntityState() == 1)
-						{
-							allies_buttons[2].state = 0;
-							allies_buttons[3].state = 1;
-							chosed = 3;
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(1)->GetEntityState() == 1)
-						{
-							allies_buttons[2].state = 0;
-							allies_buttons[1].state = 1;
-							chosed = 1;
-						}
-						else
-						{
-							if (app->combat_manager->GetAllyByNumber(0)->GetEntityState() == 1)
-							{
-								allies_buttons[2].state = 0;
-								allies_buttons[0].state = 1;
-								chosed = 0;
-							}
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						allies_buttons[2].state = 0;
-						allies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (allies_buttons[3].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
-					{
-						allies_buttons[3].state = 0;
-						allies_buttons[4].state = 1;
-						chosed = 3;
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(2)->GetEntityState() == 1)
-						{
-							allies_buttons[3].state = 0;
-							allies_buttons[2].state = 1;
-							chosed = 2;
-						}
-						else
-						{
-							if (app->combat_manager->GetAllyByNumber(1)->GetEntityState() == 1)
-							{
-								allies_buttons[3].state = 0;
-								allies_buttons[1].state = 1;
-								chosed = 1;
-							}
-							else
-							{
-								if (app->combat_manager->GetAllyByNumber(0)->GetEntityState() == 1)
-								{
-									allies_buttons[3].state = 0;
-									allies_buttons[0].state = 1;
-									chosed = 0;
-								}
-							}
-						}
-					}
-					else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-					{
-						allies_buttons[3].state = 0;
-						allies_buttons[4].state = 1;
-						chosed = 4;
-					}
-				}
-				else if (allies_buttons[4].state == 1)
-				{
-					if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-					{
-						if (app->combat_manager->GetAllyByNumber(0)->GetEntityState() == 1)
-						{
-							allies_buttons[4].state = 0;
-							allies_buttons[0].state = 1;
-							chosed = 0;
-						}
-						else
-						{
-							if (app->combat_manager->GetAllyByNumber(1)->GetEntityState() == 1)
-							{
-								allies_buttons[4].state = 0;
-								allies_buttons[1].state = 1;
-								chosed = 1;
-							}
-							else
-							{
-								if (app->combat_manager->GetAllyByNumber(2)->GetEntityState() == 1)
-								{
-									allies_buttons[4].state = 0;
-									allies_buttons[2].state = 1;
-									chosed = 2;
-								}
-								else
-								{
-									if (app->combat_manager->GetAllyByNumber(3)->GetEntityState() == 1)
-									{
-										allies_buttons[4].state = 0;
-										allies_buttons[3].state = 1;
-										chosed = 3;
-									}
-								}
-							}
-						}
-					}
-				}
-				if (skill_prepared.ally_objective == ALLY_OBJECTIVE::ALL_ALLY && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
-				{
-					if ((allies_buttons[0].state == 1 || allies_buttons[1].state == 1 || allies_buttons[2].state == 1 || allies_buttons[3].state == 1) && allies_buttons[4].state == 0)
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							allies_buttons[i].state = 1;
-						}
-					}
-				}
-				else if (skill_prepared.ally_objective == ALLY_OBJECTIVE::SELF && skill_prepared.enemy_objective == ENEMY_OBJECTIVE::NOTHING)
-				{
-					if (allies_buttons[skill_prepared.owner].state != 1 && allies_buttons[4].state != 1)
-					{
-						for (size_t i = 0; i < 4; i++)
-						{
-							allies_buttons[i].state = 0;
-						}
-						allies_buttons[skill_prepared.owner].state = 1;
-						chosed = skill_prepared.owner;
-					}
-				}
-				for (size_t i = 0; i < 4; i++)
-				{
-					if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() != 1 && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
+					for (size_t i = 0; i < 4; i++)
 					{
 						allies_buttons[i].state = 0;
 					}
 				}
 			}
+			for (size_t i = 0; i < 4; i++)
+			{
+				if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() != 1 && skill_prepared.support_type != SUPPORT_TYPE::REVIVE)
+				{
+					allies_buttons[i].state = 0;
+				}
+				else if (app->combat_manager->GetAllyByNumber(i)->GetEntityState() == 1 && skill_prepared.support_type == SUPPORT_TYPE::REVIVE)
+				{
+					allies_buttons[i].state = 0;
+				}
+			}
 		}
-		else if (app->menu->GetGameState() || app->menu->scape || in_description)
+
+		// enemy description
+		int e = 0;
+		for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
 		{
-			for (size_t i = 0; i < NUM_BUTTONS; i++)
+			SDL_Rect rect = enemies_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				general_buttons[i].state = 0;
+				enemy_chosed = i;
+				e++;
 			}
+			else if (e == 0)
+			{
+				enemy_chosed = -1;
+			}
+		}
 
-			for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+		// ally description
+		int a = 0;
+		for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+		{
+			SDL_Rect rect = allies_buttons[i].rect;
+			if (x + cx > rect.x && x + cx < rect.x + rect.w && y + cy > rect.y && y + cy < rect.y + rect.h)
 			{
-				items_buttons[i].state = 0;
+				ally_chosed = i;
+				a++;
 			}
+			else if (a == 0)
+			{
+				ally_chosed = -1;
+			}
+		}
+	}
+	else if (app->menu->GetGameState() || app->menu->scape || in_description)
+	{
+		for (size_t i = 0; i < NUM_BUTTONS; i++)
+		{
+			general_buttons[i].state = 0;
+		}
 
-			for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
-			{
-				enemies_buttons[i].state = 0;
-			}
+		for (size_t i = 0; i < NUM_ITEMS_BUTTONS; i++)
+		{
+			items_buttons[i].state = 0;
+		}
 
-			for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
-			{
-				allies_buttons[i].state = 0;
-			}
+		for (size_t i = 0; i < NUM_ENEMIES_BUTTONS; i++)
+		{
+			enemies_buttons[i].state = 0;
+		}
+
+		for (size_t i = 0; i < NUM_ALLIES_BUTTONS; i++)
+		{
+			allies_buttons[i].state = 0;
 		}
 	}
 	
@@ -1420,20 +732,10 @@ bool Combat_Menu::Update(float dt)
 
 	if (allies_turn)
 	{
-		if (app->frontground->controller)
-		{
-			GamePad& pad = app->input->pads[0];
-
-			if (pad.a == true)
-			{
-				app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
-			}
-		}
-
 		// general buttons
 		if (!in_items && !in_enemies && !in_allies)
 		{
-			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && general_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP) && general_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1518,7 +820,7 @@ bool Combat_Menu::Update(float dt)
 					general_buttons[chosed].state = 2;
 				}
 			}
-			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && (general_buttons[chosed].state == 1 || general_buttons[chosed].state == 3))
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && (general_buttons[chosed].state == 1 || general_buttons[chosed].state == 3))
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1554,7 +856,7 @@ bool Combat_Menu::Update(float dt)
 		//items buttons
 		if (in_items && !in_enemies && !in_allies)
 		{
-			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && items_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP) && items_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1623,7 +925,7 @@ bool Combat_Menu::Update(float dt)
 				prep_in_items = 1;
 				items_buttons[chosed].state = 2;
 			}
-			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && items_buttons[chosed].state == 1 && chosed != 4)
+			else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && items_buttons[chosed].state == 1 && chosed != 4)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1659,7 +961,7 @@ bool Combat_Menu::Update(float dt)
 		//enemies buttons
 		if (!in_items && in_enemies && !in_allies)
 		{
-			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && enemies_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP) && enemies_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1717,7 +1019,7 @@ bool Combat_Menu::Update(float dt)
 		//allies buttons
 		if (!in_items && !in_enemies && in_allies)
 		{
-			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && allies_buttons[chosed].state == 1)
+			if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP) && allies_buttons[chosed].state == 1)
 			{
 				app->audio->PlayFx(click_sound);
 				switch (chosed)
@@ -1772,7 +1074,7 @@ bool Combat_Menu::Update(float dt)
 			}
 		}
 
-		if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && enemy_chosed != -1)
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && enemy_chosed != -1)
 		{
 			app->audio->PlayFx(click_sound);
 			switch (enemy_chosed)
@@ -1803,7 +1105,7 @@ bool Combat_Menu::Update(float dt)
 				break;
 			}
 		}
-		else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_T) == KEY_UP) && ally_chosed != -1)
+		else if ((app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && ally_chosed != -1)
 		{
 			app->audio->PlayFx(click_sound);
 			switch (ally_chosed)

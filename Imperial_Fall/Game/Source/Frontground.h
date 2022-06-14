@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Point.h"
+#include "Textures.h"
 
 enum class ENEMIES;
 
@@ -45,7 +47,10 @@ enum class MOVE_TO
 	INSIDE_COMBAT,
 	FROM_COMBAT,
 	RESET_COMBAT,
-	COMBAT_FINALCOMBAT
+	COMBAT_FINALCOMBAT,
+	SCENE_CUTSCENE_1,
+	FINALCOMBAT_CUTSCENE_2,
+	CREDITS
 };
 
 class Frontground : public Module
@@ -107,8 +112,6 @@ public:
 
 	MOVE_TO move_to = MOVE_TO::NOTHING;
 
-	void SetController();
-
 private:
 	SDL_Rect r;
 	Uint8 a;
@@ -133,6 +136,7 @@ public:
 
 	// controller
 	bool controller = false;
+	iPoint c_mouse_pos;
 
 	// god mode
 	bool godmode = false;
@@ -158,6 +162,8 @@ public:
 		saveGame.child("started").child("first_time").attribute("value").set_value(state);
 
 		saveGame.save_file(STARTED_FILENAME);
+
+		first_time = state;
 	}
 
 	void SaveStartUp();

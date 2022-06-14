@@ -102,7 +102,6 @@ bool Input::PreUpdate()
 			case SDL_CONTROLLERDEVICEADDED:
 				HandleDeviceConnection(event.cdevice.which);
 				app->frontground->controller = true;
-				app->frontground->SetController();
 			break;
 
 			case SDL_CONTROLLERDEVICEREMOVED:
@@ -156,6 +155,88 @@ bool Input::PreUpdate()
 	}
 
 	UpdateGamepadsInput();
+
+	if (app->frontground->controller)
+	{
+		GamePad& pad = app->input->pads[0];
+
+		if (pad.right_y < -0.3f)
+		{
+			app->frontground->c_mouse_pos.y += (pad.right_y * 10);
+		}
+		else if (pad.right_y > 0.3f)
+		{
+			app->frontground->c_mouse_pos.y += (pad.right_y * 10);
+		}
+		if (pad.right_x < -0.3f)
+		{
+			app->frontground->c_mouse_pos.x += (pad.right_x * 10);
+		}
+		else if (pad.right_x > 0.3f)
+		{
+			app->frontground->c_mouse_pos.x += (pad.right_x * 10);
+		}
+		if (pad.left_y < -0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_W, KEY_REPEAT);
+		}
+		if (pad.left_y > 0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_S, KEY_REPEAT);
+		}
+		if (pad.left_x < -0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_A, KEY_REPEAT);
+		}
+		if (pad.left_x > 0.5f)
+		{
+			app->input->SetKey(SDL_SCANCODE_D, KEY_REPEAT);
+		}
+		if (pad.a == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_Z, KEY_REPEAT);
+		}
+		if (pad.b == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_X, KEY_REPEAT);
+		}
+		if (pad.y == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
+		}
+		if (pad.x == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_T, KEY_REPEAT);
+		}
+		if (pad.r1 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_H, KEY_REPEAT);
+		}
+		if (pad.l1 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_G, KEY_REPEAT);
+		}
+		if (pad.down == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_U, KEY_REPEAT);
+		}
+		if (pad.r2 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_O, KEY_REPEAT);
+		}
+		if (pad.l2 == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_L, KEY_REPEAT);
+		}
+		if (pad.start == true)
+		{
+			app->input->SetKey(SDL_SCANCODE_ESCAPE, KEY_DOWN);
+		}
+	}
+	else
+	{
+		app->input->GetMousePosition(app->frontground->c_mouse_pos.x, app->frontground->c_mouse_pos.y);
+	}
 
 	return true;
 }

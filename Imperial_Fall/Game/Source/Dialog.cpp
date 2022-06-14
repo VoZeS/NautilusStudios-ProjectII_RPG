@@ -329,7 +329,9 @@ bool Dialog::PreUpdate()
 	srand(time(NULL));
 
 	int x, y;
-	app->input->GetMousePosition(x, y);
+	x = app->frontground->c_mouse_pos.x;
+	y = app->frontground->c_mouse_pos.y;
+	//app->input->GetMousePosition(x, y);
 
 	float cx = -app->render->camera.x;
 	float cy = -app->render->camera.y;
@@ -399,16 +401,6 @@ bool Dialog::PreUpdate()
 // Called each loop iteration
 bool Dialog::Update(float dt)
 {
-	if (app->frontground->controller)
-	{
-		GamePad& pad = app->input->pads[0];
-
-		if (pad.b == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_E, KEY_REPEAT);
-		}
-	}
-
 	if (in_shop == 0)
 	{
 		if (showEnemy)
@@ -428,7 +420,7 @@ bool Dialog::Update(float dt)
 
 			showEnemy = false;
 		}
-		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN	|| app->input->GetKey(SDL_SCANCODE_T) == KEY_UP)
 		{
 			if (app->physics->inCoins)
 			{
@@ -881,12 +873,12 @@ bool Dialog::Update(float dt)
 	}
 	else if (in_shop != 0 && item_saved == NULL)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_X) == KEY_UP)
 		{
 			in_shop = 0;
 		}
 
-		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_buttons[chosed].state == 1)
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP) && shop_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
 			switch (in_shop)
@@ -901,7 +893,7 @@ bool Dialog::Update(float dt)
 	}
 	else if (in_shop != 0)
 	{
-		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP) && shop_interact_buttons[chosed].state == 1)
+		if ((app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP) && shop_interact_buttons[chosed].state == 1)
 		{
 			app->audio->PlayFx(click_sound);
 			if (item_saved->cost > app->inventory->GetCoins())
@@ -935,7 +927,7 @@ bool Dialog::Update(float dt)
 
 	float speedlet = 0.05f;
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT)
 	{
 		speedlet = 0.01f;
 	}

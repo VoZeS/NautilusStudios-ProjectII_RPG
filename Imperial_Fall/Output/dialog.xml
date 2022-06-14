@@ -5,11 +5,11 @@
 		<text1 linea1="Buenas, mis queridos amigos." linea2="Tened, os doy unos libros de habilidades." />
 		<text2 linea1="Nuestro primer objetivo es el Suboficial Templario." linea2="Sin embargo, desconozco su paradero actual." />
 		<text3 linea1="Lo que si se es donde podeis encontrar a sus lacayos." linea2="Estan acampando en el bosque al sur este del pueblo." />
-		<text4 linea1="Cuando los derroteis, traedme sus cruces templarias." linea2="Recordad, estan al Sur Este del poblado." />
+		<text4 linea1="Cuando los derroteis, traedme sus cruces templarias." linea2="Recordad, estan al Sureste del poblado." />
 		<text5 linea1="Buen trabajo! Aqui teneis un pequeno regalo a cambio." linea2="Ahora, vamos a lo importante." />
 		<text6 linea1="Normalmente, los templarios suelen ocultar" linea2="informacion importante en el interior de sus cruces." />
 		<text7 linea1="Efectivamente, aqui esta el mensaje de su superior. Segun" linea2="esto, el Suboficial se encuentra en el campo de batalla." />
-		<text8 linea1="Id a matarlo y volved a informarme." />
+		<text8 linea1="Es decir, al Noreste del poblado." linea2="Id a matarlo y volved a informarme." />
 		<text9 linea1="Bien hecho. Aqui teneis vuestra recompensa." linea2="Esto os ayudara para vuestros futuros combates." />
 		<text10 linea1="Por lo que veo, sabemos donde esta Theseion," linea2="pero aun nos falta informacion." />
 		<text11 linea1="Contra una persona como el, hay que ir preparados." linea2="Id a por su mano derecha, el Almirante." />
@@ -33,10 +33,10 @@
 		<text1 linea1="No tengo nada que decir. No molestes." />
 	</aldeano>
 	<signal>
-		<text1 linea1="Te has quedado encallado?" linea2="Pulsa R para resetear las cajas." />
+		<text1 linea1="Te has quedado encallado?" linea2="Pulsa R/Rb para resetear las cajas." />
 	</signal>
 	<granjero>
-		<actual_text value="-1" />
+		<actual_text value="2" />
 		<text1 linea1="Cuenta una leyenda que hace mucho tiempo, aqui vivia un" linea2="dios protector." />
 		<text2 linea1="Dicen que era un dragon!! Por lo visto murio hace ya mucho." />
 		<text3 linea1="Dicen que hay personas con la capacidad de no perder" linea2="turno al recargar." />

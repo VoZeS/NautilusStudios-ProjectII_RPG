@@ -6,6 +6,9 @@
 #include "Combat_Scene.h"
 #include "End_Combat_Scene.h"
 #include "Frontground.h"
+#include "Intro_Cutscene.h"
+#include "Final_Cutscene.h"
+#include "Credits.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -80,159 +83,192 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->entities->entities.start && app->scene->Disabled() && app->combat_scene->Disabled() && app->end_combat_scene->Disabled())
+	if (app->entities->entities.start && app->scene->Disabled() && app->intro->Disabled() && app->credits->Disabled() && app->final_cut->Disabled() && app->combat_scene->Disabled() && app->end_combat_scene->Disabled())
 	{
 		Entity* entity = app->entities->GetPlayer();
-		camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
-		camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
+
+		if (entity != nullptr)
+		{
+			camera.x = -METERS_TO_PIXELS(entity->GetPlayerPosition().x) + (1280 / 2);
+			camera.y = -METERS_TO_PIXELS(entity->GetPlayerPosition().y) + (720 / 2);
+		}
+		
 	}
 	else if (app->combat_scene->Enabled() || app->end_combat_scene->Enabled())
 	{
-		camera.x = 0;
-		camera.y = 0;
+		if (!shake)
+		{
+			camera.x = 0;
+			camera.y = 0;
+		}
+		else
+		{
+			if (shake_cd < 8)
+			{
+				switch (shake_cd % 4)
+				{
+				case 0: camera.x += shake_strenght; break;
+				case 1: camera.y -= shake_strenght; break;
+				case 2: camera.x -= shake_strenght; break;
+				case 3: camera.y += shake_strenght; break;
+				}
+				shake_cd++;
+				return true;
+			}
+			else
+			{
+				shake = false;
+				shake_cd = 0;
+				shake_strenght = 0;
+			}
+		}
 	}
 	
-	if (app->frontground->current_level == 1)
+	if (app->credits->Disabled())
 	{
-		if (camera.x > 0)
+		if (app->frontground->current_level == 1)
 		{
-			camera.x = 0;
-		}
-		else if (camera.x < -5120)
-		{
-			camera.x = -5120;
-		}
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -5120)
+			{
+				camera.x = -5120;
+			}
 
-		if (camera.y > 0)
-		{
-			camera.y = 0;
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -1648)
+			{
+				camera.y = -1648;
+			}
 		}
-		else if (camera.y < -1648)
+		else if (app->frontground->current_level == 2)
 		{
-			camera.y = -1648;
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -4224)
+			{
+				camera.x = -4224;
+			}
+
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -5616)
+			{
+				camera.y = -5616;
+			}
+
+		}
+		else if (app->frontground->current_level == 3)
+		{
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -1600)
+			{
+				camera.x = -1600;
+			}
+
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -2000)
+			{
+				camera.y = -2000;
+			}
+		}
+		else if (app->frontground->current_level == 4)
+		{
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -1700)
+			{
+				camera.x = -1700;
+			}
+
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -2400)
+			{
+				camera.y = -2400;
+			}
+		}
+		else if (app->frontground->current_level == 5)
+		{
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -2300)
+			{
+				camera.x = -2300;
+			}
+
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -1320)
+			{
+				camera.y = -1320;
+			}
+		}
+		else if (app->frontground->current_level == 6)
+		{
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -700)
+			{
+				camera.x = -700;
+			}
+
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -970)
+			{
+				camera.y = -970;
+			}
+		}
+		else if (app->frontground->current_level == 7)
+		{
+			if (camera.x > 0)
+			{
+				camera.x = 0;
+			}
+			else if (camera.x < -830)
+			{
+				camera.x = -830;
+			}
+
+			if (camera.y > 0)
+			{
+				camera.y = 0;
+			}
+			else if (camera.y < -600)
+			{
+				camera.y = -600;
+			}
 		}
 	}
-	else if (app->frontground->current_level == 2)
-	{
-		if (camera.x > 0)
-		{
-			camera.x = 0;
-		}
-		else if (camera.x < -4224)
-		{
-			camera.x = -4224;
-		}
-
-		if (camera.y > 0)
-		{
-			camera.y = 0;
-		}
-		else if (camera.y < -5616)
-		{
-			camera.y = -5616;
-		}
-
-	}
-	else if (app->frontground->current_level == 3)
-	{
-		if (camera.x > 0)
-		{
-			camera.x = 0;
-		}
-		else if (camera.x < -1600)
-		{
-			camera.x = -1600;
-		}
-
-		if (camera.y > 0)
-		{
-			camera.y = 0;
-		}
-		else if (camera.y < -2000)
-		{
-			camera.y = -2000;
-		}
-	}
-	else if (app->frontground->current_level == 4)
-	{
-		if (camera.x > 0)
-		{
-			camera.x = 0;
-		}
-		else if (camera.x < -1700)
-		{
-			camera.x = -1700;
-		}
-
-		if (camera.y > 0)
-		{
-			camera.y = 0;
-		}
-		else if (camera.y < -2400)
-		{
-			camera.y = -2400;
-		}
-	}
-	else if (app->frontground->current_level == 5)
-	{
-		if (camera.x > 0)
-		{
-			camera.x = 0;
-		}
-		else if (camera.x < -2300)
-		{
-			camera.x = -2300;
-		}
-
-		if (camera.y > 0)
-		{
-			camera.y = 0;
-		}
-		else if (camera.y < -1320)
-		{
-			camera.y = -1320;
-		}
-	}
-	else if (app->frontground->current_level == 6)
-	{
-		if (camera.x > 0)
-		{
-			camera.x = 0;
-		}
-		else if (camera.x < -700)
-		{
-			camera.x = -700;
-		}
-
-		if (camera.y > 0)
-		{
-			camera.y = 0;
-		}
-		else if (camera.y < -970)
-		{
-			camera.y = -970;
-		}
-	}
-	else if (app->frontground->current_level == 7)
-	{
-		if (camera.x > 0)
-		{
-			camera.x = 0;
-		}
-		else if (camera.x < -830)
-		{
-			camera.x = -830;
-		}
-
-		if (camera.y > 0)
-		{
-			camera.y = 0;
-		}
-		else if (camera.y < -600)
-		{
-			camera.y = -600;
-		}
-	}
+	
 
 	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 
@@ -590,5 +626,18 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	if (IsinCamera(&renderobject))
 	{
 		layers[layer].push_back(renderobject);
+	}
+}
+
+void Render::CameraShake(int strenght)
+{
+	if (shake_strenght == 0)
+	{
+		shake = true;
+		shake_strenght = strenght / 40;
+		if (shake_strenght < 1)
+		{
+			shake_strenght = 1;
+		}
 	}
 }

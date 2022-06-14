@@ -44,6 +44,9 @@
     <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\End_Combat_Scene.cpp" />
+    <ClCompile Include="Source\Intro_Cutscene.cpp" />
+    <ClCompile Include="Source\Final_Cutscene.cpp" />
+    <ClCompile Include="Source\Credits.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -114,6 +117,9 @@
     <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\End_Combat_Scene.h" />
+    <ClInclude Include="Source\Intro_Cutscene.h" />
+    <ClInclude Include="Source\Final_Cutscene.h" />
+    <ClInclude Include="Source\Credits.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

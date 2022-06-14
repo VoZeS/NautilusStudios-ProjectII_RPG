@@ -106,7 +106,7 @@ bool Forest::PreUpdate()
 // Called each loop iteration
 bool Forest::Update(float dt)
 {
-	if (app->physics->inSignal && app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (app->physics->inSignal && (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_H) == KEY_UP))
 	{
 		// town_2 --> forest
 		app->frontground->move_to = MOVE_TO::TOWN2_FOREST;

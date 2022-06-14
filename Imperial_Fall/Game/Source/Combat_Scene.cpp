@@ -50,7 +50,7 @@ bool Combat_Scene::Start()
 		case 3: app->map->Load("combat_dark.tmx"); break;
 		case 4: app->map->Load("combat_light.tmx"); break;
 		case 5: app->map->Load("combat.tmx"); break;
-		case 6: app->map->Load("combat.tmx"); break;
+		case 6: app->map->Load("combat_outcastle.tmx"); break;
 		case 7: app->map->Load("combat_castle.tmx"); break;
 		}
 

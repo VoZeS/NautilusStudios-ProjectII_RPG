@@ -40,11 +40,16 @@ bool Scene::Start()
 	if (this->Enabled() && !this->Disabled())
 	{
 		app->fonts->Enable();
-
-		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
+		app->menu->Enable();
 
 		start_screen = app->tex->Load("Assets/textures/Menu_BackGround.png");
 		settings_screen = app->tex->Load("Assets/textures/Settings_BackGround.png");
+
+		app->render->camera.x = 0;
+		app->render->camera.y = 0;
+
+		c_y_menu = -app->render->camera.y + 0; // Posicion de la camara en el inicio del juego
+
 
 		//app->audio->PlayMusic("Assets/audio/music/menu.ogg");
 		app->audio->StopMusic(1.0f);
@@ -84,22 +89,12 @@ bool Scene::PostUpdate()
 	int c_x = -app->render->camera.x;
 	int c_y = -app->render->camera.y;	
 
-	if (app->frontground->controller)
-	{
-		GamePad& pad = app->input->pads[0];
-
-		if (pad.a == true)
-		{
-			app->input->SetKey(SDL_SCANCODE_Y, KEY_REPEAT);
-		}
-	}
-	
 	//--------------------------------------MENU----------------------------
 
 
 	//Desplazamiento del fondo al inicio del juego
 	//Una vez pulses el Espacio entrara el menu de opciones
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Y) == KEY_UP || desMenu == true)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP || desMenu == true)
 	{
 		space_boton = false;
 		desMenu = true;
@@ -126,7 +121,10 @@ bool Scene::PostUpdate()
 	//-------------------Settings
 	if (app->menu->settings == true)
 	{
-		app->render->DrawTexture(settings_screen, c_x, c_y);
+		
+		app->render->DrawTexture(start_screen, c_x, c_y - 700);
+		app->render->DrawRectangle(app->menu->r, 0, 0, 0, 200);
+		app->render->DrawTexture(settings_screen, c_x, app->menu->c_y_corre);
 	}
 	
 	//Segunda Pantalla Menu

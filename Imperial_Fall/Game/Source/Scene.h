@@ -56,6 +56,7 @@ private:
 
 	SDL_Texture* start_screen;
 	SDL_Texture* settings_screen;
+	
 };
 
 #endif // __SCENE_H__

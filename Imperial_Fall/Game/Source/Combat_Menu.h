@@ -61,14 +61,6 @@ public:
 
 	iPoint GetEntityPosition(bool ally, int n);
 
-	void SetController()
-	{
-		general_buttons[0].state = 1;
-		items_buttons[0].state = 1;
-		enemies_buttons[0].state = 1;
-		allies_buttons[0].state = 1;
-	}
-
 	// description
 	bool in_description;
 	int description_type = 0; // 0 --> entity, 1 --> skill

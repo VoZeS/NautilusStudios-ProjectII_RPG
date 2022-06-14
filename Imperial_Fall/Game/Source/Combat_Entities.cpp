@@ -525,6 +525,8 @@ Combat_Entities::~Combat_Entities()
 
 bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 {
+	app->render->CameraShake(amount);
+
 	int health_before = actual_health;
 
 	if (shield > 0)
@@ -627,6 +629,10 @@ bool Combat_Entities::DamageEntity(int amount, SKILL_BONUS bonus)
 		if (entity_type == 10)
 		{
 			app->menu->theseion2 = true;
+		}
+		if (entity_type == 11)
+		{
+			app->menu->dragonDefeated = true;
 		}
 	}
 
@@ -1525,7 +1531,8 @@ Skill Combat_Entities::SetSkill(int owner, int skill_number)
 		case 3:
 			skill.owner = owner;
 			skill.skill_name = "Piercing Slash";
-			skill.skill_description0 = "Low damage to a single target, this tactical attack ignores the enemy shield.";
+			skill.skill_description0 = "Low damage to a single target, this tactical attack";
+			skill.skill_description0 = "ignores the enemy shield.";
 			skill.att_effect = ATT_EFFECT::PHYSIC;
 			skill.mana_cost = 15;
 			skill.enemy_objective = ENEMY_OBJECTIVE::ONE_ENEMY;

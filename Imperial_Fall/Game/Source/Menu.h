@@ -25,12 +25,6 @@ struct Button {
 	int state = 0; // 0 --> idle, 1 --> above, 2 --> pressed
 };
 
-struct Cursor
-{
-	SDL_Texture* tex = NULL;
-	iPoint pos;
-};
-
 class Menu : public Module
 {
 public:
@@ -78,6 +72,8 @@ public:
 	//Foto de nuestro gran equipo
 	SDL_Texture* team_photo = NULL;
 
+	SDL_Texture* creditsTexture = NULL;
+
 	SDL_Rect PauseMenuHUD;
 
 	// -1 --> all false, 0 --> win, 1 --> lose, 2 --> scape
@@ -102,26 +98,25 @@ public:
 	
 	bool stop = false;
 	bool desMenu = false; //Menu in game que aparece cuando le das a ESC
-	float c_x_menu=200.0f; //Posicion del menu in game.
+	bool desMenu2 = false;
+
+	float c_x_menu = 200.0f; //Posicion del menu in game.
+	float c_y_corre = -400.0f;
+
+	bool ocultarMenu = false;
+	bool quitarOpciones = false;
+
 
 	bool menu = false;
+
+	bool menu1 = false;
+	bool menu2 = false;
 
 	bool started = false;
 
 	void InitPlayer();
 
 	void DisableAll();
-
-	void SetController()
-	{
-		pause_buttons[0].state = 1;
-		menu_buttons[0].state = 1;
-		settings_buttons[0].state = 1;
-		win_button.state = 1;
-		lose_buttons[0].state = 1;
-		scape_buttons[0].state = 1;
-		ask_buttons[0].state = 1;
-	}
 
 	//Descriptions
 	void DisplayEntityInfo(Combat_Entities* entity);
@@ -134,10 +129,13 @@ public:
 
 	// final battle
 	bool theseion2 = false;
+	bool dragonDefeated = false;
+
+
+	// controller
+	SDL_Texture* cursor_tex = NULL;
 
 private:
-
-	Cursor cursor;
 
 	bool description_disabled = true;
 	
@@ -234,6 +232,7 @@ private:
 
 	// ask new game
 	bool sub_newgame;
+
 	
 };
 

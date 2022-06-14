@@ -23,6 +23,17 @@
 Town1::Town1(bool enabled) : Module(enabled)
 {
 	name.Create("town1");
+
+	bonfire_anim.PushBack({ 0,0,341,527 });
+	bonfire_anim.PushBack({ 367,0,341,527 });
+	bonfire_anim.PushBack({ 734,0,341,527 });
+	bonfire_anim.PushBack({ 1108,0,341,527 });
+	bonfire_anim.PushBack({ 1483,0,341,527 });
+	bonfire_anim.PushBack({ 1861,0,341,527 });
+	bonfire_anim.PushBack({ 2239,0,341,527 });
+
+	bonfire_anim.speed = 0.1f;
+	bonfire_anim.loop = true;
 }
 
 // Destructor
@@ -57,6 +68,8 @@ bool Town1::Start()
 		app->fonts->Enable();
 		app->dialog->Enable();
 	
+		bonfire = app->tex->Load("Assets/textures/Bonfire.png"); // Hoguera
+
 		if (app->frontground->move_to == MOVE_TO::TOWN2_TOWN1)
 		{
 			app->entities->SetPlayerSavedPos(PIXELS_TO_METERS(5504), PIXELS_TO_METERS(1984));
@@ -104,12 +117,15 @@ bool Town1::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
+	bonfire_anim.Update();
+
 	return true;
 }
 
 // Called each loop iteration
 bool Town1::PostUpdate()
 {
+	app->render->DrawTexture(bonfire, 1425, 1000, &(bonfire_anim.GetCurrentFrame()));
 
 	return true;
 }

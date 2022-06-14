@@ -33,7 +33,7 @@
   * F10 God Mode
   * F11 Game limited to 30 fps
   
-Most features can only be activated while God Mode is enabled
+Must features can only be activatide while God Mode is enabled
 
 ## GAME DESCRIPTION:
   
