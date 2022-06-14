@@ -570,20 +570,13 @@ void Entities::KillEnemy()
 		}
 	}
 	
-	if (combat_entity != NULL)
+	if (combat_entity != NULL && combat_entity->p_in_array != 6)
 	{
 		combat_entity->alive = false;
 		combat_entity->plan_to_delete = true;
 		combat_entity->SaveSingleEnemy();
 		app->menu->kill_enemy = false;
 		app->frontground->check_phase_change = true;
-
-		// enemy dialogs
-		/*if (combat_entity->p_in_array == 0)
-		{
-			app->dialog->showEnemy = true;
-			app->entities->freeze = true;
-		}*/
 	}
 }
 

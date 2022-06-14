@@ -76,7 +76,7 @@ bool Credits::Update(float dt)
 	if (c_y < creditsRect.h + 600)
 	{
 
-		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT)
 		{
 			app->render->camera.y -= 4;
 		}

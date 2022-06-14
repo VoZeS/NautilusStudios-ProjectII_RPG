@@ -314,8 +314,6 @@ bool Menu::Start()
 		axp2 = saveGame.child("objects").child("tank").child("experience").attribute("value").as_int();
 		axp3 = saveGame.child("objects").child("wizard").child("experience").attribute("value").as_int();
 
-		theseion2 = false;
-
 		cursor_tex = app->tex->Load("Assets/textures/cursor_default.png");
 	}
 
