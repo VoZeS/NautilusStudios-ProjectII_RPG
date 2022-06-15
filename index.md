@@ -14,7 +14,7 @@ Imperial Fall is a medieval videogame RPG with Turn-Based-Combat, set in the wit
 
 ## Gameplay:
 
-<iframe width="560" height="315" src="https://youtu.be/ZcurcKaMgCU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZcurcKaMgCU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 
